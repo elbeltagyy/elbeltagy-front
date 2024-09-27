@@ -1,0 +1,51 @@
+@keyframes dnaMotion {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.test {
+    animation: name duration timing-function delay iteration-count direction fill-mode;
+}
+
+
+@media (max-width: 600px) {
+    .css-3krtj3-MuiPaper-root-MuiDataGrid-paper {
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .css-1t5wrdm-MuiDataGrid-filterForm {
+        flex-direction: column;
+    }
+}
+
+.css-heg063-MuiTabs-flexContainer {
+    display: 'flex';
+    justify-content: "center";
+}
+
+::-webkit-scrollbar {
+    width: 4px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00a76f;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}

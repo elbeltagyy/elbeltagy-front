@@ -1,0 +1,100 @@
+  #atom {
+      height: 80px;
+      width: 100%;
+      position: relative;
+      animation: 15s linear infinite alternate-reverse spin;
+  }
+
+  #nucleus {
+      height: 5em;
+      width: 5em;
+      position: absolute;
+      top: 3em;
+      left: 3em;
+  }
+
+  .particle {
+      border-radius: 50%;
+      height: 2em;
+      width: 2em;
+      box-shadow: 0 0 0.5em 0.1em whitesmoke;
+  }
+  /* margin-left: -0.6em; */
+  .n {
+      background-color: blue;
+      box-shadow: 0 0 0.2em 0.1em powderblue;
+  }
+
+  .p {
+      background-color: red;
+      box-shadow: 0 0 0.2em 0.1em pink;
+  }
+
+  .orbit {
+      height: 12em;
+      width: 10em;
+      border-radius: 50%;
+      border-left: 0.1em solid rgba(250, 250, 250, 0.3);
+      border-right: 0.1em solid rgba(250, 250, 250, 0.3);
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: 5s linear infinite revolve;
+  }
+
+  .orbit::after {
+      content: "";
+      display: block;
+      height: 1.2em;
+      width: 1.2em;
+      background-color: yellow;
+      box-shadow: 0 0 1em 0.5em powderblue;
+      border: 0.1em solid whitesmoke;
+      border-radius: 50%;
+      position: absolute;
+  }
+
+  .left.orbit::after {
+      top: 1em;
+      left: 1em;
+      animation: 5s linear infinite grow-shrink;
+  }
+
+  .right.orbit {
+      height: 10em;
+      width: 12em;
+  }
+
+  .right.orbit::after {
+      bottom: 1em;
+      right: 1em;
+      animation: 5s linear infinite reverse grow-shrink;
+  }
+
+  @keyframes spin {
+      to {
+          transform: rotate(360deg);
+      }
+  }
+
+  @keyframes revolve {
+      50% {
+          transform: rotate(180deg) scale(0.75);
+      }
+
+      to {
+          transform: rotate(360deg) scale(1);
+      }
+  }
+
+  @keyframes grow-shrink {
+      50% {
+          transform: scale(0.75);
+          box-shadow: 0 0 0.5em 0.1em whitesmoke;
+      }
+
+      to {
+          transform: scale(1);
+          box-shadow: 0 0 1em 0.5em powderblue;
+      }
+  }
