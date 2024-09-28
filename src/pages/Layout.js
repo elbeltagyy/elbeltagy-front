@@ -22,8 +22,8 @@ function Layout() {
     }, [location])
 
     useEffect(() => {
-        if (!localStorage.getItem('deviceId') || localStorage.getItem('deviceId').length !== 7) {
-            localStorage.setItem("deviceId", makeRandom(0, 9, 7))
+        if (localStorage.getItem('deviceId')) {
+            localStorage.removeItem("deviceId")
         }
     }, [location])
 

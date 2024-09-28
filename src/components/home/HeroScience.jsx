@@ -20,7 +20,7 @@ function HeroScience() {
 
                 <Box sx={{
                     bgcolor: 'orange',
-                    width: '400px',
+                    width: '300px',
                     mt: "16px",
                     height: '60px',
                     position: 'absolute',
@@ -43,7 +43,8 @@ function HeroScience() {
                 <FlexColumn sx={{
                     minHeight: "300px",
                     maxWidth: "500px",
-                    alignItems: 'flex-start'
+                    alignItems: 'flex-start',
+                    mt: '2rem'
                 }}>
                     <Typography variant='banner' component={'h1'} sx={{ scale: isMobileScreen ? '1.1' : '1' }}  >
                         م/ <span style={{ color: 'orange', }}>محمد البلتاجى</span>
