@@ -25,7 +25,6 @@ export default function MakeFieldArray({ props, input, inputName, values }) {
                                         <Box >
                                             <Button
                                                 style={{ width: "auto" }}
-                                                // onClick={addFc}
                                                 onClick={() => remove(index)}
                                             >
                                                 {input.removeLabel}
@@ -44,11 +43,10 @@ export default function MakeFieldArray({ props, input, inputName, values }) {
 
 
                     {input.addLabel && (
-                        <Box sx={{m: "8px 0"}} >
+                        <Box sx={{ m: "8px 0" }} >
                             <Button
                                 style={{ width: "auto" }}
-                                // onClick={addFc}
-                                onClick={() => push(input.add)}
+                                onClick={() => push(input.schema)}
                             >
                                 {input.addLabel}
                             </Button>

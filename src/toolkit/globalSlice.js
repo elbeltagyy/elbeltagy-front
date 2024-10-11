@@ -12,7 +12,7 @@ const getMode = () => {
             return mode
         }
     } else {
-        mode = "dark"
+        mode = "light"
     }
     return mode
 }

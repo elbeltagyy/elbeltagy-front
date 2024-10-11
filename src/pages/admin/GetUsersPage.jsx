@@ -56,10 +56,9 @@ function GetUsersPage() {
             const allGrades = await getUsersCount({ grade: 'all' })
             const grade1 = await getUsersCount({ grade: 1, })
             const grade2 = await getUsersCount({ grade: 2 })
-            const grade3 = await getUsersCount({ grade: 3 })
 
             setGradeCounts({
-                allGrades, grade1, grade2, grade3
+                allGrades, grade1, grade2
             })
         }
 

@@ -9,14 +9,10 @@ function MakeSwitch({ input, props, inputName }) {
 
     const value = getValues(inputName, props) || false
 
-    return <FormGroup  error={hasError(props, inputName) ? true : false} >
+    return <FormGroup error={hasError(props, inputName) ? true : undefined} >
         <FormLabel >{input.label}</FormLabel>
-        <Field as={Switch} name={inputName} label={'lablel'} checked={value} onChange={() => props.setFieldValue(inputName, !value)} />
+        <Field as={Switch} name={inputName} label={input.label} checked={Boolean(value)} onChange={() => props.setFieldValue(inputName, !value)} />
     </FormGroup>
-
-
-
-
 }
 
 export default MakeSwitch

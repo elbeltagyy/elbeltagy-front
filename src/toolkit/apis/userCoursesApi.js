@@ -3,44 +3,33 @@ import { apiSlice } from "../apiSlice";
 const userCoursesApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
 
-        getUserCourses: builder.query({
+        getCourseSubscriptions: builder.query({
             query: (queries) => {
                 const params = queries
-
                 return {
-                    url: "/user_courses/courses",
+                    url: "/subscriptions/courses",
                     params
                 }
             }
         }),
-        getOneUserCourse: builder.query({
-            query: (queries) => {
-                const params = queries
-
+        createSubscription: builder.mutation({
+            query: (data) => {
+                console.log('data ==>', data)
                 return {
-                    url: "/user_courses/courses/" + params.course,
-                    params
+                    url: "/subscriptions/courses",
+                    method: 'POST',
+                    body: data
                 }
             }
         }),
-        getAllUsersCourses: builder.query({
-            query: (queries) => {
-                const params = queries
-                return {
-                    url: "/user_courses/users",
-                    params
-                }
-            }
-        }),
-        subscribe: builder.mutation({
-            query: data => ({
-                url: '/user_courses/subscribe',
-                method: 'POST',
-                body: data
+        deleteSubscription: builder.mutation({
+            query: (data) => ({
+                url: "/subscriptions/courses/" + data._id,
+                method: 'DELETE',
             })
         }),
+
     })
 })
 
-export const { useLazyGetUserCoursesQuery, useGetUserCoursesQuery, useGetOneUserCourseQuery, useGetAllUsersCoursesQuery,useLazyGetAllUsersCoursesQuery, useSubscribeMutation
-} = userCoursesApi
+export const { useLazyGetCourseSubscriptionsQuery, useCreateSubscriptionMutation, useDeleteSubscriptionMutation } = userCoursesApi

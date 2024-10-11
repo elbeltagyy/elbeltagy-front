@@ -5,7 +5,9 @@ function MakeSelect({ title, value, setValue, options, reset = [] }) {
 
 
     useEffect(() => {
-        setValue("")
+        if (reset.length !== 0) {
+            setValue("")
+        }
     }, [...reset])
 
     return (
@@ -16,7 +18,7 @@ function MakeSelect({ title, value, setValue, options, reset = [] }) {
                 id="demo-simple-select"
                 value={value || ""}
                 label={title || "اختر"}
-                defaultValue={""} // Sets the default value to empty string
+                // defaultValue={""} // Sets the default value to empty string
                 onChange={(e, newValue) => { setValue(e.target.value) }}
             >
                 {options?.map((option, i) => {

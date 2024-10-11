@@ -1,9 +1,8 @@
 import { Box, Typography, useTheme } from '@mui/material'
 import React from 'react'
-import Section from '../../style/mui/styled/Section'
+
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import Image from '../ui/Image'
-import zIndex from '@mui/material/styles/zIndex'
 const SERVICES_HEADER1 = 'كيفية تحقيق اقصى'
 const ServicesHeader2 = 'استفاده من'
 const ServicesHeader3 = 'منصتنا'

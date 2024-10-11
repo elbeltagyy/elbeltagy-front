@@ -7,8 +7,6 @@ import { hasError } from './constants/hasError'
 
 export default function NestedInput({ inputName, input, props, index }) {
 
-    //index ==> question values
-    // console.log(inputName)
     return (
         <Box>
             {input.array && input.array.map((nestedInput, i) => {
@@ -27,9 +25,9 @@ export default function NestedInput({ inputName, input, props, index }) {
                         input={nestedInput}
                         props={props} inputName={nestedInputName} targetInputName={targetInputName} fromValue={fromValue} />
                 }
-                
+
                 return (
-                    <Box key={i}>
+                    <Box key={i} sx={{ my: '16px' }}>
                         <MakeInput input={nestedInput} props={props} nestedInputName={nestedInputName} />
                         {hasError(props, nestedInputName) && (
                             <Alert sx={{ m: "5px" }} severity='error'>{props.getFieldMeta(nestedInputName).error}</Alert>

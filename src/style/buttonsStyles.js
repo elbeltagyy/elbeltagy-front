@@ -73,7 +73,6 @@ export const sendSuccess = (theme) => {
 }
 
 export const outLinedHoverBtnStyle = (theme, colorm) => {
-    console.log(theme)
     return {
         textAlign: "center",
         width: 'fit-content',

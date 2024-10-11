@@ -3,7 +3,7 @@ import Section from '../../style/mui/styled/Section'
 import UserHeader from '../ui/UserHeader'
 import { useSelector } from 'react-redux'
 import { Alert, Divider, Typography } from '@mui/material'
-import { useLazyGetUserCoursesQuery } from '../../toolkit/apis/userCoursesApi'
+// import { useLazyGetUserCoursesQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import TitleSection from '../../components/ui/TitleSection'
 // import UserCourseDetails from '../../components/courses/UserCourseDetails'
@@ -18,22 +18,7 @@ function UserHome() {
     const { user } = useSelector(s => s.global)
 
     const [courses, setCourses] = useState(null)
-    const [open, setOpen] = useState(false)
-
-
-    const [getData, status] = useLazyGetUserCoursesQuery()
-    const [getUserCourses] = useLazyGetData(getData)
-
-    useEffect(() => {
-        const trigger = async () => {
-            const res = await getUserCourses()
-            setCourses(res)
-        }
-
-        if (!courses && open) {
-            trigger()
-        }
-    }, [open])
+  
 
     return (
         <Section sx={{ minHeight: '86vh' }}>

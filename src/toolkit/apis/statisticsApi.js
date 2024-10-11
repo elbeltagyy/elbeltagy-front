@@ -42,12 +42,16 @@ const statisticsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-
-
-
-
-
-
+        getSubscriptionsCount: builder.query({
+            query: (queries) => {
+                const params = queries
+                
+                return {
+                    url: "/statistics/subscriptions",
+                    params
+                }
+            }
+        }),
 
     })
 })
@@ -55,5 +59,5 @@ const statisticsApi = apiSlice.injectEndpoints({
 
 
 export const { useLazyGetUsersCountQuery,
-    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery
+    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery, useGetSubscriptionsCountQuery
 } = statisticsApi

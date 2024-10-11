@@ -31,9 +31,9 @@ export default function ModalStyled({ open, setOpen, title, desc, children, acti
             <Dialog
                 open={open}
                 TransitionComponent={Transition}
-                keepMounted
+                // keepMounted
                 onClose={handleClose}
-                // aria-describedby="alert-dialog-slide-description"
+                aria-describedby="alert-dialog-slide-description"
                 sx={{
                     '& .MuiPaper-root': {
                         minWidth: '250px', border: '1px solid rgba(255 255 255, .1)', outline: '1px solid #fff'
@@ -45,7 +45,7 @@ export default function ModalStyled({ open, setOpen, title, desc, children, acti
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                         </DialogContentText>
-                            {desc}
+                        {desc}
                     </DialogContent>
                 </>)}
                 <DialogActions>
@@ -54,7 +54,6 @@ export default function ModalStyled({ open, setOpen, title, desc, children, acti
                         borderRadius: '16px'
                     }} onClick={handleClose}>{lang.DISAGREE}</ErrorBtn>
                     {!children && (
-
                         <FilledHoverBtn sx={{
                             minWidth: '100px'
                         }} onClick={onAction}>{lang.AGREE}</FilledHoverBtn>

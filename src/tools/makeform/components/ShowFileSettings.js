@@ -2,10 +2,11 @@ import * as React from 'react';
 import ShowVid from './ShowVid';
 import ShowImg from './ShowImg';
 import { Alert } from '@mui/material';
+import ShowPdf from './ShowPdf';
 
 
 export default function ShowFileSettings({ file, removeFile }) {
-    const fileType = file?.resource_type || file?.type?.split("/")[0] || null
+    const fileType = file?.resource_type?.split("/")[0] || file?.type?.split("/")[0] || null
 
     const [realFile, setFile] = React.useState({})
 
@@ -34,6 +35,10 @@ export default function ShowFileSettings({ file, removeFile }) {
 
     if (fileType === "image") {
         return <ShowImg file={realFile} removeFile={removeFile} />
+    }
+
+    if (fileType === 'application') {
+        return <ShowPdf file={realFile} />
     }
     return (
         <Alert severity='error'>sorry, un supported file</Alert>

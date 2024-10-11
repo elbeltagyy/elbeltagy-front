@@ -17,6 +17,11 @@ import MakeChoosed from './components/MakeChoosed'
 import MakeFullDate from './components/MakeFullDate'
 import Text from '../text/Text'
 import MakeSwitch from './components/MakeSwitch'
+import ShowImg from './components/ShowImg'
+import ShowVid from './components/ShowVid'
+import ShowPdf from './components/ShowPdf'
+import MakeField from './MakeField'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
 
 
 const m = '6px 0'
@@ -26,34 +31,21 @@ export default function MakeInput({ input, props, nestedInputName, style }) {
     const inputName = getInputName(nestedInputName, input)
     const value = getValues(inputName, props)
 
-    // const refVal = useMemo(() => {
-    //     if (input.ref) {
-    //         // console.log('from ref =>', getValues(input.ref, props))
-    //         return getValues(input.ref, props)
-    //     }
-    // }, [props])
+    if (input.type === 'url') {
+        const file = { url: value }
 
-    // useEffect(() => {
+        return <FlexColumn gap={'22px'} sx={{ alignItems: "flex-start" }}>
+            <MakeField input={input} inputName={inputName} props={props} />
+            {input.player === 'youtube' ? (
+                <ShowVid file={file} />
+            ) : input.player === 'image' ? (
+                <ShowImg file={file} />
+            ) : <ShowPdf file={file} />}
+        </FlexColumn>
+    }
 
-    //     if (input.ref) {
-    //         if (!refVal) {
-    //             input.disabled = true
-    //             input.hidden = true
-    //         } else {
-    //             props.setFieldValue(inputName, '')
-    //             input.disabled = false
-    //             input.hidden = false
-    //         }
-    //     }
-
-    // }, [refVal])
-    // const inputName = useMemo(() => nestedInputName || input.name, [input])
-    // const [field, meta, helpers] = useField(inputName)
-    // const { value } = meta;
-    // const { setValue } = helpers;
-
-    if (input.type === 'compo') {
-        return input.compo
+    if (input.component) {
+        return <input.component input={{ ...input, component: false }} props={props} value={value} inputName={inputName} />
     }
 
     if (input.type === "chunk") {
@@ -112,52 +104,7 @@ export default function MakeInput({ input, props, nestedInputName, style }) {
         return <MakeSwitch input={input} props={props} inputName={inputName} />
     }
     return (
-        <Field
-            as={TextField}
-            sx={{
-                display: input.hidden && "none",
-                width: "100%",
-                direction: input.direction || 'ltr',
-                '& label': {
-                    top: '-6px',
-                }
-            }}
-
-            name={inputName}
-            type={input.type ? input.type : "text"}
-            label={
-                <Box display={"flex"} alignItems={"center"} gap={".3rem"} sx={{
-                    direction: 'ltr'
-                }}>
-                    {input.icon && input.icon}
-                    <Typography variant='overline'>
-                        {input.label}
-                    </Typography>
-                </Box>}
-            error={hasError(props, inputName) ? true : false}
-            helperText={hasError(props, inputName) ? < ErrorMessage name={inputName} /> : input.helperText || ""}
-
-            placeholder={input.placeholder && input.placeholder}
-            variant={input.variant ? input.variant : "outlined"}
-            color='success'
-
-            required={input.required || false}
-            disabled={input.disabled ? true : false}
-            hidden={input.hidden && true}
-            defaultValue={input.defaultValue && input.defaultValue}
-
-            multiline={input.rows && true}
-            rows={
-                input.rows || undefined
-            }
-            InputProps={input.endIcon && {
-                endAdornment: (
-                    <InputAdornment position="end">
-                        {input.endIcon}
-                    </InputAdornment>
-                ),
-            }}
-        />
+        <MakeField input={input} inputName={inputName} props={props} />
     )
 }
 

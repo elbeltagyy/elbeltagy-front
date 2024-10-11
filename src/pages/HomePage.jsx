@@ -11,8 +11,6 @@ import UserHome from '../components/home/UserHome'
 function HomePage() {
 
     const user = useSelector(s => s.global.user)
-   
-
     if (user) {
         return <UserHome />
     }

@@ -10,7 +10,7 @@ export default function usePostData(sendData, setLoading) {
     if (setLoading) {
       setLoading(true)
     }
-    
+
     data = values
 
     // removing spacing
@@ -25,7 +25,17 @@ export default function usePostData(sendData, setLoading) {
     let formData = data
     if (isMultiPart) {
       formData = new FormData()
-      Object.keys(data).forEach(key => formData.append(key, data[key]))
+
+      Object.keys(data).forEach(key => {
+
+        if (Array.isArray(data[key])) {
+          for (let i = 0; i < data[key].length; i++) {
+            formData.append(key, data[key][i]);
+          }
+        } else {
+          formData.append(key, data[key])
+        }
+      })
     }
 
     return new Promise(async (resolve, reject) => {

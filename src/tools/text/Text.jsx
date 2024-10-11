@@ -63,12 +63,24 @@ export default function Text({ setText, defaultData }) {
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
 
-    // const [defaulttext, setDefault] = useState(defaultData)
+
 
     useEffect(() => {
         setIsLayoutReady(true);
 
         return () => setIsLayoutReady(false);
+    }, []);
+
+
+    // on Destroy
+    let editorInstance = null;
+
+    useEffect(() => {
+        return () => {
+            if (editorInstance) {
+                editorInstance.destroy();
+            }
+        };
     }, []);
 
     const editorConfig = {
@@ -232,9 +244,12 @@ export default function Text({ setText, defaultData }) {
                     <div className="editor-container__toolbar" ref={editorToolbarRef}></div>
                     <div className="editor-container__editor-wrapper">
                         <div className="editor-container__editor">
-                            <div ref={editorRef} style={{color: "#000"}}>
+                            <div ref={editorRef} style={{ color: "#000" }}>
                                 {isLayoutReady && (
                                     <CKEditor
+                                        onInstanceReady={(event) => {
+                                            editorInstance = event.editor;
+                                        }}
                                         onChange={(e, editor) => setText(editor.getData())}
                                         onReady={editor => {
                                             editorToolbarRef.current.appendChild(editor.ui.view.toolbar.element);

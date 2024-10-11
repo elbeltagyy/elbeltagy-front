@@ -22,7 +22,6 @@ function App() {
 
 
   const routesObj = createBrowserRouter(routes)
-
   const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [prefixer, rtlPlugin],

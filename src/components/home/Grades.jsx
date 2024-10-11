@@ -5,6 +5,7 @@ import { Box, useTheme } from '@mui/material'
 import { FaSchool } from "react-icons/fa";
 import Grid from "../../style/vanilla/Grid"
 import CardHover from '../ui/CardHover';
+import gradeConstants from '../../settings/constants/gradeConstants';
 
 function Grades() {
     const theme = useTheme()
@@ -19,8 +20,9 @@ function Grades() {
             />
             <Box>
                 <Grid>
-                    <CardHover img={'/assets/science.jpg'} title={'العلوم المتكامله'} desc={'كورسات و شروحات على كل درس'} />
-                    <CardHover img={'/assets/geo.jpg'} title={'الجيولوحيا للصف الثالث الثانوى'} desc={'كورسات و شروحات على كل درس'} />
+                    {gradeConstants?.map((grade, i) => (
+                        <CardHover key={i} img={grade.img} title={grade.name} desc={grade.description} to={'/grades/' + grade.index} />
+                    ))}
                 </Grid>
             </Box>
         </Section>

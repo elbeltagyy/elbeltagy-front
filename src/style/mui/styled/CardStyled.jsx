@@ -4,7 +4,7 @@ import Separator from '../../../components/ui/Separator'
 
 function CardStyled({ img, title, description, children, btn1, btn2 }) {
     return (
-        <Card sx={{ maxWidth: "430px" }}>
+        <Card sx={{ maxWidth: "430px", display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ p: '16px', pb: 0, overflow: 'hidden' }}>
                 <CardMedia
                     sx={{ minHeight: 150, borderRadius: '16px', }}
@@ -12,8 +12,8 @@ function CardStyled({ img, title, description, children, btn1, btn2 }) {
                     title={title || 'thumbnail'}
                 />
             </Box>
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+            <CardContent sx={{ flex: 1}}>
+                <Typography gutterBottom variant="h5" component="div" >
                     {title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">

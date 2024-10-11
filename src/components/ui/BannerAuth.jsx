@@ -10,7 +10,7 @@ function BannerAuth({ img, title }) {
             backgroundImage: `url(${img})`, backgroundPosition: 'top 35% right 0', backgroundSize: 'cover', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', overflow: 'clip'
         }}>
             <Box sx={{ width: '100%', height: '100%', bgcolor: 'black', position: 'absolute', opacity: '.4' }}></Box>
-            <Typography variant='h2' sx={{ opacity: '1', color: 'primary.main', letterSpacing: '4px', bgcolor: '#fff', p: '5px', borderRadius: '16px' }}>
+            <Typography variant='h2' sx={{ color: 'primary.main', letterSpacing: '4px', bgcolor: '#fff', p: '5px', borderRadius: '16px', textAlign: 'center' }}>
                 {title}
             </Typography>
         </Box>

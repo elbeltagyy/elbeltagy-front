@@ -5,12 +5,12 @@ import { Box, Typography, useTheme } from '@mui/material'
 
 
 
-function RowInfo({ title, desc, icon, bgcolor = "orange", color = "#fff" }) {
+function RowInfo({ title, desc, icon, bgcolor = "orange", color = "#fff", fromStart = true }) {
 
     const theme = useTheme()
 
     return (
-        <FlexRow sx={{ justifyContent: 'space-between' }} mr={'auto'} bgcolor={bgcolor} p={"8px 12px"} borderRadius={'12px'} mt={'4px'} color={color} >
+        <FlexRow sx={{ justifyContent: 'space-between', flexWrap: 'nowrap' }} mr={fromStart && 'auto'} bgcolor={bgcolor} p={"8px 12px"} borderRadius={'12px'} mt={'4px'} color={color} >
             <Typography mx={"8px"} variant='subtitle1' borderRadius={'4px'}>{title} : </Typography>
             <FlexRow justifyContent="center" gap={'6px'} bgcolor={'#fff'} color={'#000'} p={'6px 8px'} borderRadius={'6px'} >
                 <Typography variant='subtitle2' borderRadius={'4px'} borderBottom={'4px solid '} borderColor={'primary.main'}>{desc}</Typography>

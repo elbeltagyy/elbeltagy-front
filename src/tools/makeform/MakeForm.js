@@ -3,7 +3,7 @@ import CreateFormik from './CreateFormik'
 import WrapperHandler from '../WrapperHandler'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 
-export default function MakeForm({ inputs, status, onSubmit, btnWidth, enableReinitialize, modalInfo }) {
+export default function MakeForm({ inputs, status, onSubmit, btnWidth, enableReinitialize , modalInfo }) {
 
     const [open, setOpen] = useState(false);
     const [values, setValues] = useState(null)

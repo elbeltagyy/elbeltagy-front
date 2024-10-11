@@ -20,6 +20,15 @@ const codesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getUserCodes: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/codes/user",
+                    params
+                }
+            }
+        }),
         getOneCode: builder.query({
             query: (queries) => {
                 const params = queries
@@ -59,6 +68,6 @@ const codesApi = apiSlice.injectEndpoints({
 })
 
 
-export const { useVerifyCodeMutation, useLazyGetCodesQuery, useLazyGetOneCodeQuery,
+export const { useVerifyCodeMutation, useGetUserCodesQuery, useLazyGetCodesQuery, useLazyGetOneCodeQuery, useGetCodesQuery,
     useCreateCodeMutation, useUpdateCodeMutation, useDeleteCodeMutation
 } = codesApi

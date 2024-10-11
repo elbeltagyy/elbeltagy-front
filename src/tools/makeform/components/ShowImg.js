@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ModalStyled from '../../../style/mui/styled/ModalStyled'
 import { MdCancel } from 'react-icons/md'
 
-export default function ShowImg({ file , removeFile}) {
+export default function ShowImg({ file, removeFile }) {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
 
@@ -12,8 +12,8 @@ export default function ShowImg({ file , removeFile}) {
             <CardMedia
                 component={"img"}
                 sx={{ height: 140 }}
-                image={file.url}
-                title="green iguana"
+                image={file?.url}
+                title="Image"
             />
             <CardHeader
                 avatar={
@@ -21,16 +21,20 @@ export default function ShowImg({ file , removeFile}) {
                         R
                     </Avatar>
                 }
-                title={file.original_filename}
-                subheader={`size: ${file.size / 1000000} mg`}
+                title={file.original_filename || file.name || "لم يتم العثور عليه"}
+                subheader={removeFile && `size: ${file.size / 1000000} mg`}
                 action={
                     <IconButton aria-label="settings" onClick={() => setOpen(true)}>
-                        <MdCancel style={{ color: 'red' }} />
+                        {removeFile && <MdCancel style={{ color: 'red' }} />}
                     </IconButton>
                 }
             />
 
-            <ModalStyled open={open} setOpen={setOpen} action={removeFile} />
+            {removeFile ?
+                <ModalStyled open={open} setOpen={setOpen} action={removeFile} />
+                :
+                <ModalStyled open={open} setOpen={setOpen} />
+            }
 
         </Card>
     )

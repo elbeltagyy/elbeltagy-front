@@ -46,10 +46,10 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
 
     // filtering
     const onFilterChange = React.useCallback((filterModel) => {
-
+        
         const filtered = {}
         filterModel?.items.map((item) => {
-            filtered[item.field] = item.value || ""
+            filtered[item.field] = item.operator + '_split_' + (item.value || '') || ""
             return filtered
         })
         setFilter(filtered)
@@ -286,7 +286,7 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
 
                 // Hide columns status and traderName, the other columns will remain visible
                 // columnVisibilityModel={hideColumns || []}
-                autoHeight={editing.autoHeight || false}
+                autoHeight={editing?.autoHeight || false}
                 sx={{
                     bgcolor: 'background.default',
                     height: '70vh',
@@ -296,6 +296,9 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                     boxShadow: theme.shadows[1],
                     "&  .muirtl-1iyq7zh-MuiDataGrid-columnHeaders": {
                         bgcolor: 'background.alt', my: '8px', color: 'neutral.0' //28323D
+                    },
+                    '&  .MuiTablePagination-input': {
+                        display: 'inline-flex'
                     }
                 }}
 
