@@ -76,7 +76,7 @@ function ExamCard({ exam }) {
                                 <TabInfo count={formatDuration(attempt.tokenTime)} i={2} title={"الوقت الماخوذ"} />
                                 <TabInfo count={getFullDate(attempt.createdAt)} i={1} title={"تم فى"} />
                             </FlexRow>
-                            <Button to={'/attempts/' + attempt._id} onClick={() => navigate('/attempts/' + attempt._id, { state: { ...attempt, exam } })}>عرض الايجابات</Button>
+                            <Button to={'/attempts/' + attempt._id} onClick={() => navigate('/attempts/' + attempt._id, { state: { attempt, ...exam } })}>عرض الايجابات</Button>
                         </FlexColumn>
                     })}
                 </Grid>

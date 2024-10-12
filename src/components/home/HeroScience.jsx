@@ -53,7 +53,7 @@ function HeroScience() {
                     <Typography variant='subBanner' color={'grey.0'}>منصتك فى العلوم المتكامله</Typography>
                     <Typography variant='subBanner' color={'grey.0'}> شرفتنا</Typography>
                     <FlexRow sx={{ width: '100%', justifyContent: 'center', mt: '16px' }}>
-                        <FilledHoverBtn component={Link} to={'/grades/2'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم الاساسيه</FilledHoverBtn>
+                        <FilledHoverBtn component={Link} to={'/grades/1'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم الاساسيه</FilledHoverBtn>
                     </FlexRow>
 
                 </FlexColumn>

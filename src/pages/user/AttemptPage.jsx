@@ -10,7 +10,7 @@ import { useLazyGetOneAttemptQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 
 const totalDegree = (exam) => {
-
+    
     const total = exam.questions.reduce((acc, question) => {
         return acc += question.points || 1
     }, 0)
