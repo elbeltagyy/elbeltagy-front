@@ -13,7 +13,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import TextTyping from '../animations/Text.typing'
-
+import { link } from 'react-router-dom'
 
 function Hero() {
     const theme = useTheme()
@@ -61,12 +61,12 @@ function Hero() {
                         }}></Box>
 
                         <Typography variant='h5' component={'h6'} lineHeight={'2.5rem'} sx={{ fontWeight: 700, fontSize: "2.5rem", color: 'orange', zIndex: 5, minWidth: '100px', position: 'relative' }} >
-                            <TextTyping texts={["إفهم", 'طبّق', 'كٌل']} cursorColor={theme.palette.primary.main} duration={2} />
+                            <TextTyping texts={["إفهم", 'طبّق', 'حِل']} cursorColor={theme.palette.primary.main} duration={2} />
                         </Typography>
                     </Box>
 
                     {/* <Typography variant='h6'>إحنا نغيب  غبتنا و نرجع بهيبتنا</Typography> */}
-                    <ScallyBtn sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الموقع</ScallyBtn>
+                    <ScallyBtn component={link} to={'/grades/1'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الچيولوچيا</ScallyBtn>
 
                     <Box display={'flex'} justifyContent={'space-around'} flexDirection={'row'} sx={{ minWidth: '250px' }}>
                         <IconButton>

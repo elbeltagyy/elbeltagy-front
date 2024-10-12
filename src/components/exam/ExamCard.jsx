@@ -64,7 +64,7 @@ function ExamCard({ exam }) {
             {exam?.attempts && (
                 <Grid>
                     {exam.attempts.map((attempt, i) => {
-                        const percentage = (examPoints / exam.total) * 100
+                        const percentage = (attempt.mark / examPoints) * 100
                         const rating = percentage >= 85 ? "ممتاز" : percentage >= 75 ? "جيد" : percentage >= 65 ? "متوسط" : "سئ"
                         const ratingColor = percentage >= 85 ? 1 : percentage >= 75 ? 2 : percentage >= 65 ? 2 : 3
 

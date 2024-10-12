@@ -4,6 +4,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import Image from '../ui/Image'
 import { FilledHoverBtn, ScallyBtn } from '../../style/buttonsStyles'
+import { Link } from 'react-router-dom'
 
 function HeroScience() {
     const theme = useTheme()
@@ -52,7 +53,7 @@ function HeroScience() {
                     <Typography variant='subBanner' color={'grey.0'}>منصتك فى العلوم المتكامله</Typography>
                     <Typography variant='subBanner' color={'grey.0'}> شرفتنا</Typography>
                     <FlexRow sx={{ width: '100%', justifyContent: 'center', mt: '16px' }}>
-                        <FilledHoverBtn sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم الاساسيه</FilledHoverBtn>
+                        <FilledHoverBtn component={Link} to={'/grades/2'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم الاساسيه</FilledHoverBtn>
                     </FlexRow>
 
                 </FlexColumn>
