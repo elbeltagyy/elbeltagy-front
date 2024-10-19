@@ -28,7 +28,7 @@ function AboutUS() {
             position: 'relative'
         }}>
             <Box sx={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                // backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                 position: 'absolute', top: 0, left: '0',
                 width: '100%', height: '100%', zIndex: 1
             }} />
@@ -36,13 +36,13 @@ function AboutUS() {
             <FlexColumn sx={{ zIndex: 2, width: '100%' }}>
 
                 <FlexColumn sx={{ position: 'relative' }}>
-                    <Image img={'/assets/quote.png'} sx={{ zIndex: 0,filter: 'drop-shadow(4px 5px 4px rgba(100,100,100,.1))' }} />
+                    <Image ratio={'auto'} img={'/assets/quote.png'} sx={{ zIndex: 0, filter: 'drop-shadow(4px 5px 4px rgba(100,100,100,.1))' }} />
 
                     <Typography variant='subBanner' component={'h5'} sx={{
                         color: 'grey.1000',
                         zIndex: 1, position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: { xs: '.9rem', sm: '1.5rem' }
                     }}>
-                        شد حيلك يا بطل 
+                        شد حيلك يا بطل
                         <span style={{ color: 'blue' }}> متضيعش وقت</span>
                         <span style={{ color: 'red' }}> مستقبلك بين ايديك</span>
                     </Typography>

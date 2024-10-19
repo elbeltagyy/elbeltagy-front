@@ -3,6 +3,7 @@ import { Avatar, Box, Button, Chip, Divider, IconButton, ImageListItem, useTheme
 
 
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox';
+import Image from './Image';
 
 
 
@@ -24,24 +25,7 @@ export default function CardCourse({ img, title, children, borderColor }) {
       }}
       display={'flex'} flexDirection={'column'}>
 
-      <ImageListItem sx={{
-        overflow: 'hidden',
-        borderRadius: '16px', width: '100%', maxHeight: '250px', bgcolor: 'orange',
-        transition: '.3s all ease', minWidth: '100%', minHeight: '200px'
-      }}>
-        <img
-          srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-          src={`${img}`}
-          alt={title}
-          loading="lazy"
-          style={{
-            borderRadius: '16px',
-            filter: 'saturate(70%)',
-            transition: '.3s all ease',
-
-          }}
-        />
-      </ImageListItem>
+      <Image img={img} />
 
       <Box sx={{
         transition: '.3s all ease',
@@ -65,3 +49,23 @@ export default function CardCourse({ img, title, children, borderColor }) {
     </Box >
   );
 }
+
+
+{/* <ImageListItem sx={{
+  overflow: 'hidden',
+  borderRadius: '16px', width: '100%', maxHeight: '250px', bgcolor: 'orange',
+  transition: '.3s all ease', minWidth: '100%', minHeight: '200px'
+}}>
+  <img
+    srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+    src={`${img}`}
+    alt={title}
+    loading="lazy"
+    style={{
+      borderRadius: '16px',
+      filter: 'saturate(70%)',
+      transition: '.3s all ease',
+
+    }}
+  />
+</ImageListItem> */}

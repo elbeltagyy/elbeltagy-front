@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import TitleSection from '../../components/ui/TitleSection'
 import TitleWithDividers from '../../components/ui/TitleWithDividers'
@@ -17,11 +17,13 @@ import Grid from '../../style/vanilla/Grid'
 import TabInfo from '../../components/ui/TabInfo'
 import Separator from '../../components/ui/Separator'
 import { FaCopy } from 'react-icons/fa'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 
 function GetCodesPage() {
 
     const [reset, setReset] = useState(false)
+    const btnRef = useRef(null)
 
     const [getData] = useLazyGetCodesQuery()
     const [getCodes] = useLazyGetData(getData)
@@ -53,20 +55,23 @@ function GetCodesPage() {
     const [openUsedBy, setOpenUsedBy] = useState(false)
     const columns = [
         {
+            field: 'isChecked',
+            headerName: "تم استعماله",
+            width: 170,
+            type: 'boolean',
+            editable: true
+        },
+        {
             field: 'code',
             headerName: "الكود",
             width: 200,
             renderCell: (params) => {
-                return <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'neutral.0' }} onClick={() => {
-                    navigator.clipboard.writeText(params.row.code).then(() => {
-                        alert("تم النسخ بنجاح");
-                    })
-                        .catch(err => {
-                            console.error("فشل النسخ: ", err);
-                        });
-                }}>
-                    {params.row.code}
-                </Button>
+                return <CopyToClipboard text={params.row.code} onCopy={() => alert("تم النسخ بنجاح")}>
+                    <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'neutral.0' }} onClick={() => {
+                    }}>
+                        {params.row.code}
+                    </Button >
+                </CopyToClipboard>
 
             }
         }, {
@@ -75,11 +80,6 @@ function GetCodesPage() {
             width: 170,
             type: 'number',
             editable: true
-        }, {
-            field: 'grade',
-            headerName: "السنه",
-            width: 170
-
         }, {
             field: 'type',
             headerName: 'نوع الكود',
@@ -142,7 +142,7 @@ function GetCodesPage() {
                     {usedBy.length !== 0 ? (
                         <Grid>
                             {usedBy.map((user, i) => (
-                                <DataWith3Items key={i} title={user?.name} src={user?.avatar?.url || false} />
+                                <DataWith3Items key={i} title={user?.userName} desc={user?.name} src={user?.avatar?.url || false} />
                             ))}
                         </Grid>
                     ) : (

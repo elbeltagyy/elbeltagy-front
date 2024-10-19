@@ -29,13 +29,13 @@ export const typographies = {
         textShadow: '0 20px 30px hsla(0, 0%, 0%, 0.1)',
         fontFamily: '"Changa", sans-serif'
     }, subBanner: {
-        fontSize: '2rem',
+        fontSize: '1.8rem',
         fontWeight: 600,
 
         letterSpacing: 1.8,
-        // '@media (max-width:600px)': {
-        //     fontSize: '1rem',
-        // },
+        '@media (max-width:600px)': {
+            fontSize: '1.5rem',
+        },
         textShadow: '0 20px 30px hsla(0, 0%, 0%, 0.1)'
     },
     h1: {

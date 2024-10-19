@@ -25,8 +25,10 @@ export const sidebarLinks = [
         name: "إدارة الطلاب", icon: <SignupIcon size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
         name: "تسجيلات الدخول", icon: <SignupIcon size="22px" />, to: "/management/sessions", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
-    },{
+    }, {
         name: "عرض الطلاب", icon: <SignupIcon size="22px" />, to: "/management/users", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+    }, {
+        name: "البحث عن طالب", icon: <SignupIcon size="22px" />, to: "/management/users/view", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
         name: "إدارة المحتوى", icon: <SignupIcon size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {

@@ -51,7 +51,7 @@ function ShowQuestion({ currentQuestion, isLoading, index }) {
             </Box>
 
             <Box>
-                <FormControl sx={{ width: '100%', color: 'neutral.0' }}>
+                <FormControl sx={{ width: '100%', color: 'neutral.0', overflow: 'auto' }}>
                     <FormLabel id="demo-controlled-radio-buttons-group">اختر مما يلى</FormLabel>
 
                     <RadioGroup
@@ -67,7 +67,7 @@ function ShowQuestion({ currentQuestion, isLoading, index }) {
                             {question.options && question.options.map((option, i) => {
 
                                 return (
-                                    <Grid key={i} item xs={12} md={6}>
+                                    <Grid key={i} item xs={12} >
                                         <Button onClick={() => {
                                             handleChange(option.id)
                                         }} sx={{ color: 'inherit' }}>

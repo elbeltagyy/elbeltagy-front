@@ -40,7 +40,7 @@ function GetSubscriptions() {
     if (!courseId || isLoadingCourse) return <LoaderSkeleton />
 
     const fetchFc = async (params) => {
-        const res = await getSubscriptions({ ...params, course: courseId }, false)
+        const res = await getSubscriptions({ ...params, course: courseId, populate: 'user' }, false)
         const modifiedRes = res.subscriptions.map((subscribe) => {
             return { ...subscribe.user, _id: subscribe._id, createdAt: subscribe.createdAt, currentIndex: subscribe.currentIndex, updatedAt: subscribe.updatedAt }
         })

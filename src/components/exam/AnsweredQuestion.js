@@ -70,7 +70,7 @@ function AnsweredQuestion({ currentQuestion, index }) {
                                     const isThisRightOption = (question.rtOptionId === option.id)
 
                                     return (
-                                        <Grid key={i} item xs={12} md={6}>
+                                        <Grid key={i} item xs={12}>
                                             {i + 1} -
                                             <FormControlLabel
                                                 sx={{ pointerEvents: 'none' }}

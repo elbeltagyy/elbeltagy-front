@@ -15,17 +15,18 @@ import { Box, FormControlLabel, Switch, Typography } from '@mui/material'
 import { useField } from 'formik'
 import MakeInput from '../../tools/makeform/MakeInput'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
+import dayjs from 'dayjs'
 
 const PreDiscount = ({ props, value, input, inputName }) => {
 
     const [isPreDiscount, setPreDiscount] = useState(value ? true : false)
 
     useEffect(() => {
-        setPreDiscount(value ? true : false)
-    }, [input])
+        setPreDiscount(value || value === 0 ? true : false)
+    }, [value])
 
     useEffect(() => {
-        props.setFieldValue(inputName, isPreDiscount ? value || 1 : 0)
+        props.setFieldValue(inputName, isPreDiscount ? value : '')
     }, [isPreDiscount])
 
     return <FlexRow sx={{
@@ -34,7 +35,7 @@ const PreDiscount = ({ props, value, input, inputName }) => {
         <FormControlLabel control={<Switch checked={isPreDiscount} onChange={() => setPreDiscount(!isPreDiscount)} />} label="اضافه سعر قبل الخصم" />
         <Box sx={{ width: { xs: '100%', md: '40%' } }}>
             {isPreDiscount && (
-                <MakeInput input={{ ...input, value: !isPreDiscount ? 0 : value }} props={props} />
+                <MakeInput input={{ ...input, value: value }} props={props} />
             )}
         </Box>
     </FlexRow>
@@ -43,7 +44,7 @@ const PreDiscount = ({ props, value, input, inputName }) => {
 
 function CourseUpdate({ course, setCourse }) {
 
-
+    
     const [sendData, status] = useUpdateCourseMutation()
     const [updateCourse] = usePostData(sendData)
     const inputs = [
@@ -69,10 +70,9 @@ function CourseUpdate({ course, setCourse }) {
             value: course.price,
             icon: <AiFillPoundCircle />,
             width: "100%",
-            validation: Yup
-                .number()
-                .integer()
-                .required()
+            validation: Yup.number()
+                .min(0, 'يجب ان يكون 0 او اكبر')
+                .required(lang.REQUERIED),
         }, {
             name: 'preDiscount',
             label: 'السعر قبل الخصم',
@@ -82,7 +82,6 @@ function CourseUpdate({ course, setCourse }) {
             component: PreDiscount,
             validation: Yup.number()
                 .nullable()
-                .typeError('يجب ان يكون اكبر من السعر الفعلى')
                 .when('price', (price, schema) => {
                     return price != null
                         ? schema.moreThan(price, 'يجب ان يكون اكبر من السعر الفعلى')
@@ -92,10 +91,47 @@ function CourseUpdate({ course, setCourse }) {
             name: 'isActive',
             label: lang.IS_ACTIVE,
             type: 'radio',
-            value: `${course.isActive || false}`,
+            value: `${course.isActive}`,
             options: [{ value: true, label: lang.ACTIVE }, { value: false, label: lang.NOT_ACTIVE }],
             icon: <VscSymbolBoolean />,
             width: "100%",
+        }, {
+            name: 'isMust',
+            label: 'تفعيل اكمال المحاضرات',
+            type: 'switch',
+            value: course.isMust,
+            icon: <VscSymbolBoolean />,
+            width: "100%",
+        }, {
+            name: 'dateStart',
+            label: 'تاريخ بدايه الكورس',
+            type: 'fullDate',
+            width: "100%",
+            value: course.dateStart ? dayjs(course.dateStart) : null,
+
+        }, {
+            name: 'dateEnd',
+            label: 'تاريخ نهايه الكورس',
+            type: 'fullDate',
+            width: "100%",
+            value: course.dateEnd ? dayjs(course.dateEnd) : null,
+            validation: Yup.mixed()
+                .nullable()
+                .when('dateStart', (dateStart, schema) =>
+                    dateStart
+                        ? schema.test(
+                            'is-after-start-date',
+                            'يجب ان يكون تاريخ النهايه بعد تاريخ البدايه',
+                            (dateEnd) => {
+                                if (dateEnd) {
+                                    return dayjs(dateEnd).isAfter(dayjs(dateStart))
+                                } else {
+                                    return true
+                                }
+                            }
+                        )
+                        : schema
+                ),
         }, {
             name: 'thumbnail',
             label: lang.THUMBNAIL,
@@ -103,15 +139,15 @@ function CourseUpdate({ course, setCourse }) {
             width: '100%',
             value: course.thumbnail,
             validation: Yup.mixed()
-                .required(lang.REQUERIED)
                 .test({
                     message: 'Please provide a supported image typed(jpg or png)',
                     test: (file, context) => {
-                        if (file) {
+                        if (file && !file.url) {
+                            console.log('file ==>', file)
                             if (file?.url) {
                                 file.type = file.resource_type + "/" + file.format
                             }
-                            const isValid = ['image/png', 'image/jpg', 'image/jpeg'].includes(file?.type);
+                            const isValid = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
                             if (!isValid) context?.createError();
                             return isValid;
                         } else {
@@ -120,10 +156,10 @@ function CourseUpdate({ course, setCourse }) {
                     }
                 })
                 .test({
-                    message: 'يجب ان يكون حجم الملف اقل من 15 ميغا فى وضع المشاهد',
+                    message: `يجب ان يكون حجم الملف اقل من ${Number(import.meta.env.MAX_FILE_SIZE) || 10} ميغا فى وضع المشاهد`,
                     test: (file) => {
-                        if (file) {
-                            const isValid = file?.size < 15 * 1000000;
+                        if (file && file.size) {
+                            const isValid = file?.size < (Number(import.meta.env.MAX_FILE_SIZE) || 10) * 1000000;
                             return isValid;
                         } else {
                             return true
@@ -139,6 +175,11 @@ function CourseUpdate({ course, setCourse }) {
             setCourse(res)
         }
     }
+
+    useEffect(() => {
+        status.reset()
+    }, [course._id])
+
     return (
         <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} />
     )

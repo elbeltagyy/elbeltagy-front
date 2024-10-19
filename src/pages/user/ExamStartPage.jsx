@@ -22,6 +22,15 @@ function ExamStartPage() {
     // console.log('exam ==>', exam)
     let exam = useMemo(() => JSON.parse(JSON.stringify(state)), [location])
 
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
+            [array[i], array[j]] = [array[j], array[i]];  // Swap elements
+        }
+        return array;
+    }
+
+
     const submit = async (attempt) => {
         //sendData 
         const res = await addAttempt(attempt)
@@ -30,7 +39,11 @@ function ExamStartPage() {
     }
 
     if (!state || !exam) return <LoaderSkeleton />
-
+    exam.questions = shuffleArray(exam.questions)
+    exam.questions.forEach(q => {
+        console.log('q ==>', q)
+        q.options = shuffleArray(q.options)
+    })
     return (
         <Section>
             <QuizCard exam={exam} submit={submit} isLoading={isLoading} />

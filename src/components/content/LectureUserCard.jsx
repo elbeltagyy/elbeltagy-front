@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom'
 
 function LectureUserCard({ lecture, i, isSubscribed }) {
     const navigate = useNavigate()
+    // console.log('lecture ==>', lecture)
     return (
         <Card sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column', position: 'relative' }}>
             <CardHeader
@@ -52,7 +53,7 @@ function LectureUserCard({ lecture, i, isSubscribed }) {
                     {lecture.exam && (
                         <>
                             <TabInfo count={lecture.exam?.time} i={0} title={'الوقت'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
-                            <TabInfo count={lecture.exam?.questionsLength} i={1} title={'عدد الاسئله'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
+                            <TabInfo count={lecture.exam?.questions?.length || lecture.exam?.questionsLength} i={1} title={'عدد الاسئله'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
                             <TabInfo count={lecture.exam?.attemptsNums} i={3} title={'عدد المحاولات'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
                         </>
                     )}

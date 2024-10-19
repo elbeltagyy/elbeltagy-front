@@ -1,80 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useLazyGetOneCourseQuery } from '../../toolkit/apis/coursesApi'
-import useLazyGetData from '../../hooks/useLazyGetData'
+import React from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
-
-import { v4 as uuidv4 } from 'uuid'
 import * as Yup from 'yup'
-import Section from '../../style/mui/styled/Section'
-import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import Loader from '../../style/mui/loaders/Loader'
-import { lang } from '../../settings/constants/arlang'
+import { v4 as uuidv4 } from 'uuid'
 import sectionConstants from '../../settings/constants/sectionConstants'
-import usePostData from '../../hooks/usePostData'
+import { lang } from '../../settings/constants/arlang'
+import dayjs from 'dayjs'
 
-import { useCreateExamMutation } from '../../toolkit/apis/lecturesApi'
-import { useUploadFilesMutation } from '../../toolkit/apis/filesApi'
 
 const durationRegex = /^(?:(?:\d+)\s*[hms]?)(?:\s+(?:(?:\d+)\s*[hms]))*$/;
 
-function CreateExamPage() {
-    const navigate = useNavigate()
-    const { courseId } = useParams()
-    const [course, setCourse] = useState()
 
-    const [getData] = useLazyGetOneCourseQuery()
-    const [getCourse] = useLazyGetData(getData)
 
-    const [uploadedFilesList, setUploadedFilesList] = useState([])
-    const [uploadData, { isLoading }] = useUploadFilesMutation()
-    const [uploadFiles] = usePostData(uploadData)
-
-    useEffect(() => {
-        const trigger = async () => {
-            const res = await getCourse({ _id: courseId, select: "name grade" })
-            setCourse(res)
-        }
-        trigger()
-    }, [courseId])
-
-    const [sendData, status] = useCreateExamMutation()
-    const [createExam] = usePostData(sendData)
-
-    const onSubmit = async (values) => {
-        let exam = JSON.parse(JSON.stringify(values));
-        let images = [];
-
-        //create images
-        values.questions.forEach((question, i) => {
-            if (question.image) {
-                images.push(values.questions[i].image);
-                exam.questions[i].image = images.length - 1;
-            } else {
-                delete exam.questions[i].image
-            }
-        });
-
-        //upload images
-        let savedFiles = uploadedFilesList || []
-        if (uploadedFilesList.length !== images.length && images.length !== 0) {
-            savedFiles = await uploadFiles({ files: [...images] }, true)
-            setUploadedFilesList(savedFiles)
-        }
-
-        //modify questions with images
-        exam.questions.forEach((question, i) => {
-            if (question.image || Number(question.image) === 0) {
-                const imageIndex = Number(question.image)
-                question.image = savedFiles[imageIndex];
-            }
-        });
-
-        //saving Exam
-        const res = await createExam(exam)
-        console.log('res ==.', res)
-        navigate(-1, { replace: true })
-    }
+function ExamForm({ lecture, status, onSubmit }) {
 
     const questionSchema = {
         title: "",
@@ -106,7 +43,6 @@ function CreateExamPage() {
         ]
     }
 
-
     const optionSchema = [
         {
             id: uuidv4(),
@@ -114,6 +50,7 @@ function CreateExamPage() {
         }
     ]
 
+    //lecture info
     const lectureInfoInputs = [
         {
             name: 'sectionType',
@@ -123,67 +60,70 @@ function CreateExamPage() {
         }, {
             name: 'grade',
             label: '',
-            value: course?.grade,
+            value: lecture?.grade,
             hidden: true,
         }, {
             name: 'course',
             label: '',
-            value: courseId,
+            value: lecture?.course,
             hidden: true,
         }, {
             name: 'name',
             label: lang.LECTURE_NAME,
+            value: lecture.name ?? ''
         }, {
             name: 'description',
             label: lang.LECTURE_DESCRIPTION,
             rows: 11,
+            value: lecture.description ?? ''
         }, {
             name: 'isActive',
             label: lang.IS_ACTIVE,
             type: 'switch',
-            value: true,
+            value: lecture.isActive ?? true,
         }
     ]
 
+    //exam info => in update nested
     const inputs = [...lectureInfoInputs,
     {
         name: "attemptsNums",
         label: "عدد المحاولات",
         type: 'number',
-        value: 1,
+        value: lecture?.exam?.attemptsNums ?? 1,
         validation: Yup.string()
             .required(lang.REQUERIED)
     }, {
         name: "dateStart",
         label: "تاريخ البدء",
         type: 'fullDate',
-        value: null,
+        value: lecture?.exam?.dateStart ? dayjs(lecture.exam.dateStart) : null,
+    }, {
+        name: "dateEnd",
+        label: "تاريخ الغاء الاختبار",
+        type: 'fullDate',
+        value: lecture?.exam?.dateEnd ? dayjs(lecture.exam.dateEnd) : null,
     }, {
         name: "showAnswersDate",
         label: "تاريخ اظهار الايجابات",
         type: 'fullDate',
-        value: null,
-    }, {
-        name: "isActive",
-        label: "الحاله (فعال)",
-        type: 'switch',
-        value: true,
+        value: lecture?.exam?.showAnswersDate ? dayjs(lecture.exam.showAnswersDate) : null,
     }, {
         name: "isShowAnswers",
         label: "هل تريد اظهار الايجابات",
         type: 'switch',
-        value: true,
+        value: lecture?.exam?.isShowAnswers ?? true,
     }, {
         name: "time",
-        value: '15m', //seconds
         label: "الوقت",
+        value: lecture?.exam?.time ?? '15m',
         validation: Yup.string()
             .matches(durationRegex, 'ارقام فقط, غير مسموح بوجود مساحات, h,m,s فقط')
             .required(lang.REQUERIED),
     }, {
         name: "questions",
         label: "الاسئله ==>",
-        value: [],
+        value: lecture?.exam?.questions ?? [],
         schema: questionSchema, //
         addLabel: "اضافه سؤال", // add schema for reply this field in main values
         removeLabel: "ازاله السؤال", //
@@ -251,14 +191,9 @@ function CreateExamPage() {
     }
     ]
 
-    if (!course) return <Loader />
-
     return (
-        <Section>
-            <TitleWithDividers title={'انشاء اختبار : ' + course.name} />
-            <MakeForm inputs={inputs} onSubmit={onSubmit} status={{ ...status, isLoading: isLoading || status.isLoading || false }} />
-        </Section>
+        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} />
     )
 }
 
-export default CreateExamPage
+export default ExamForm

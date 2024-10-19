@@ -6,8 +6,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { Box, CircularProgress, Grid, styled, Typography, useTheme } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, styled, Typography, useTheme } from '@mui/material';
 import ModalStyled from '../../style/mui/styled/ModalStyled';
+import ExportAsPdf from './ExportAsPdf';
+// import MakePdf from './MakePdf';
 
 
 
@@ -46,7 +48,7 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
 
     // filtering
     const onFilterChange = React.useCallback((filterModel) => {
-        
+
         const filtered = {}
         filterModel?.items.map((item) => {
             filtered[item.field] = item.operator + '_split_' + (item.value || '') || ""
@@ -211,6 +213,7 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
 
     }, [editing?.hideColumns])
 
+    const [chosenColumns, setColumns] = useState(columns)
 
     // slots
     function CustomToolbar() {
@@ -241,12 +244,16 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                             <GridToolbarExport />
                         </Grid>
                     }
+                    <Grid item>
+                        <ExportAsPdf columns={chosenColumns} rows={rows} />
+                        {/* <MakePdf /> */}
+                    </Grid>
                 </Grid>
             </GridToolbarContainer>
         );
     }
     return (
-        <>
+        <Box width={'100%'} sx={{ position: 'relative' }}>
             <DataGrid
                 apiRef={apiRef}
                 rows={rows || []}
@@ -256,6 +263,9 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                 getRowId={(param) => param._id}
 
                 pageSizeOptions={[5, 10, 50, 100]}
+
+
+                // isRowSelectable={(params) => params.row.isChecked}
 
                 // for pagination
                 paginationModel={paginationModel}
@@ -277,6 +287,17 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                 onProcessRowUpdateError={(err) => console.log(err)} // make err
                 editMode="row"
 
+                onColumnVisibilityModelChange={(columnState) => {//id: true
+                    setColumns(prev => {
+                        const colsToUpdate = [...prev]
+                        const updatedCols = colsToUpdate.map(col => {
+                            const isHasState = columnState[col.field] === false || false
+                            col.hidden = isHasState
+                            return col
+                        })
+                        return updatedCols
+                    })
+                }}
 
                 //slots
                 slots={{
@@ -299,13 +320,18 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                     },
                     '&  .MuiTablePagination-input': {
                         display: 'inline-flex'
-                    }
+                    },
+                    // '& .MuiDataGrid-overlay': {
+                    //     position: 'fixed',
+                    //     top: 0,
+                    //     width: '100%', height: '100%'
+                    // }
                 }}
 
             />
 
             <ModalStyled open={isOpen} setOpen={setOpenModal} title={'هل انت متاكد من الحذف  ؟'} action={handleDeleteClick(deleteId)} />
-        </>
+        </Box>
 
     )
 }

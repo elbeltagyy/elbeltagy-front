@@ -32,13 +32,12 @@ export default function ShowFileSettings({ file, removeFile }) {
         return <ShowVid file={realFile} removeFile={removeFile} />
     }
 
-
     if (fileType === "image") {
         return <ShowImg file={realFile} removeFile={removeFile} />
     }
 
     if (fileType === 'application') {
-        return <ShowPdf file={realFile} />
+        return <ShowPdf file={realFile} removeFile={removeFile} />
     }
     return (
         <Alert severity='error'>sorry, un supported file</Alert>

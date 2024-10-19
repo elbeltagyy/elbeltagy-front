@@ -8,7 +8,6 @@ export const apiSlice = createApi({
     reducerPath: "api", //from state
     baseQuery: customFetchBase,
 
-
     endpoints: builder => ({ // client fcs #########
         makeReq: builder.query({
             query: (params) => {

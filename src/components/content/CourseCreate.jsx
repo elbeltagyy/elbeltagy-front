@@ -12,13 +12,15 @@ import * as Yup from "yup"
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 import { Box, FormControlLabel, Switch } from '@mui/material'
 import MakeInput from '../../tools/makeform/MakeInput'
+import { MdOutlineDriveFileRenameOutline } from 'react-icons/md'
+import dayjs from 'dayjs'
 
 const PreDiscount = ({ props, value, input, inputName }) => {
 
     const [isPreDiscount, setPreDiscount] = useState(value ? true : false)
 
     useEffect(() => {
-        props.setFieldValue(inputName, isPreDiscount ? value : 0)
+        props.setFieldValue(inputName, isPreDiscount ? value : '')
     }, [isPreDiscount])
 
     return <FlexRow sx={{
@@ -59,7 +61,8 @@ function CourseCreate({ unit, grade, setCourses }) {
         },
         {
             name: 'name',
-            label: lang.COURSE_NAME
+            label: lang.COURSE_NAME,
+            icon: <MdOutlineDriveFileRenameOutline />
         }, {
             name: 'description',
             label: "Course description",
@@ -72,26 +75,60 @@ function CourseCreate({ unit, grade, setCourses }) {
             icon: <VscSymbolBoolean />,
             value: true
         }, {
+            name: 'isMust',
+            label: 'تفعيل اكمال المحاضرات',
+            type: 'switch',
+            icon: <VscSymbolBoolean />,
+            value: true
+        }, {
             name: 'price',
             label: lang.PRICE,
             icon: <AiFillPoundCircle />,
             width: "40%",
-            validation: Yup
-                .number()
-                .integer()
-                .required()
+            validation: Yup.number()
+                .min(0, 'يجب ان يكون 0 او اكبر')
+                .required(lang.REQUERIED),
         }, {
             name: 'preDiscount',
             label: 'السعر قبل الخصم',
             icon: <AiFillPoundCircle />,
             width: "100%",
             component: PreDiscount,
-            // validation: Yup
-            //     .number()
-            //     .required()
-            //     .integer()
-            //     .nullable()
-            //     .moreThan(Yup.ref("price")) //<-- a whole lot neater than using a when conditional...
+            validation: Yup.number()
+                .nullable() // Allow null or undefined
+                .when('price', (price, schema) => {
+                    return price
+                        ? schema.min(price, 'يجب ان يكون اكبر من السعر الفعلى')
+                        : schema // No validation if price is not provided
+                }
+                )
+        }, {
+            name: 'dateStart',
+            label: 'تاريخ بدايه الكورس',
+            type: 'fullDate',
+            width: "100%",
+        }, {
+            name: 'dateEnd',
+            label: 'تاريخ نهايه الكورس',
+            type: 'fullDate',
+            width: "100%",
+            validation: Yup.mixed()
+                .nullable()
+                .when('dateStart', (dateStart, schema) =>
+                    dateStart
+                        ? schema.test(
+                            'is-after-start-date',
+                            'يجب ان يكون تاريخ النهايه بعد تاريخ البدايه',
+                            (dateEnd) => {
+                                if (dateEnd) {
+                                    return dayjs(dateEnd).isAfter(dayjs(dateStart))
+                                } else {
+                                    return true
+                                }
+                            }
+                        )
+                        : schema
+                ),
         }, {
             name: 'thumbnail',
             label: lang.THUMBNAIL,
@@ -100,13 +137,13 @@ function CourseCreate({ unit, grade, setCourses }) {
             validation: Yup.mixed()
                 .required(lang.REQUERIED)
                 .test({
-                    message: 'Please provide a supported image typed(jpg or png)',
+                    message: 'Please provide a supported image typed(jpg or png or webp)',
                     test: (file, context) => {
                         if (file) {
                             if (file?.url) {
-                                file.type = file.resource_type + "/" + file.format
+                                file.type = file.resource_type + "/" + file.format //look
                             }
-                            const isValid = ['image/png', 'image/jpg', 'image/jpeg'].includes(file?.type);
+                            const isValid = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
                             if (!isValid) context?.createError();
                             return isValid;
                         } else {
@@ -115,7 +152,7 @@ function CourseCreate({ unit, grade, setCourses }) {
                     }
                 })
                 .test({
-                    message: 'يجب ان يكون حجم الملف اقل من 15 ميغا فى وضع المشاهد',
+                    message: `يجب ان يكون حجم الملف اقل من 15 ميغا فى وضع المشاهد`,
                     test: (file) => {
                         if (file) {
                             const isValid = file?.size < 15 * 1000000;

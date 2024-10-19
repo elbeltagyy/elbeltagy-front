@@ -12,7 +12,7 @@ import { RtArrow } from '../../components/header/Icons'
 import BannerAuth from '../../components/ui/BannerAuth'
 import TextBorderAround from '../../components/ui/TextBorderAround'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { lang } from '../../settings/constants/arlang'
 
 
@@ -22,8 +22,13 @@ function LoginPage() {
     const theme = useTheme()
     const navigate = useNavigate()
     const user = useSelector(s => s.global.user)
-
+    const location = useLocation()
+    const isPrev = location.state
+    
     useEffect(() => {
+        if (user && isPrev) {
+            navigate(-1)
+        }
         if (user) {
             navigate('/')
         }

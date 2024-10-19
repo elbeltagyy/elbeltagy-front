@@ -98,7 +98,10 @@ function SignupForm() {
             name: 'code',
             label: lang.CODE_optional,
             icon: <CiBarcode color='green' />,
-            validation: Yup.string().matches(/^[0-9 -]{19}$/, 'الكود عباره عن 16 رقم')
+            validation: Yup.string().matches(/^(act|wal|cen)\d{1}-\d{4}-\d{4}-\d{4}$/, {
+                message: 'Code must start with "act", "wal", or "cen", followed by a number, and be in the format wal0-0000-0000-0000',
+                excludeEmptyString: true,
+            })
         }, {
             name: 'password',
             label: lang.PASSWORD,
@@ -116,30 +119,34 @@ function SignupForm() {
             type: 'file',
             label: 'file confirm',
             icon: <TbPasswordUser color='green' />,
-            validation: Yup.mixed()
-                .test({
-                    message: 'Please provide a supported image typed(jpg or png)',
-                    test: (file, context) => {
-                        if (file) {
-                            const isValid = ['image/png', 'image/jpg', 'image/jpeg'].includes(file?.type);
-                            if (!isValid) context?.createError();
-                            return isValid;
-                        } else {
-                            return true
-                        }
+            validation: Yup.mixed().test('fileRequired', 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم', function (file) {
+                const { code } = this.parent; // Access the `code` field from the parent object
+                if (!code || code.length === 0) {
+                    // If `code` is empty, file is required
+                    if (!file) {
+                        return this.createError({
+                            message: 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم',
+                        });
                     }
-                })
-                .test({
-                    message: 'files must be < 10 mg',
-                    test: (file) => {
-                        if (file) {
-                            const isValid = file?.size < 15 * 1000000;
-                            return isValid;
-                        } else {
-                            return true
-                        }
+                    // File type validation
+                    const isValidType = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
+                    if (!isValidType) {
+                        return this.createError({
+                            message: 'Please provide a supported image type (jpg, png, or webp)',
+                        });
                     }
-                })
+                    // File size validation (must be less than 3MB)
+                    const isValidSize = file?.size <= 3 * 1024 * 1024; // 3MB
+                    if (!isValidSize) {
+                        return this.createError({
+                            message: 'File must be less than 3MB',
+                        });
+                    }
+                }
+
+                return true; // No validation error if `code` has a value or file is valid
+            })
+
         },
     ]
 

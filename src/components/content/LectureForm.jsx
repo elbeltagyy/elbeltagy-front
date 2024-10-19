@@ -16,15 +16,15 @@ import sectionConstants from '../../settings/constants/sectionConstants'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import { Link } from 'react-router-dom'
-import videoPlayers from '../../settings/constants/videoPlayers'
-import MakeInput from '../../tools/makeform/MakeInput'
-import { formatDuration } from '../../settings/constants/dateConstants'
 import filePlayers from '../../settings/constants/filePlayers'
 
 
-const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
-const durationRegex = /^(?:(?:\d+)\s*[hms]?)(?:\s+(?:(?:\d+)\s*[hms]))*$/;
-const bunnyIframeRegex = /^https:\/\/iframe\.mediadelivery\.net\/.+/;
+const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
+
+// const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
+const durationRegex = /^(?!^\d+$)(?:(?:\d+)\s*[hms]?)(?:\s+(?:(?:\d+)\s*[hms]))*$/;
+const bunnyRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
+
 
 function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
 
@@ -34,29 +34,45 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
 
     const lectureInfoInputs = [
         {
+            name: 'id',
+            label: '',
+            value: lecture?._id,
+            hidden: true,
+            disabled: true
+        }, {
             name: 'sectionType',
             label: '',
             value: sectionType,
             hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED)
         }, {
             name: 'grade',
             label: '',
             value: lecture?.grade ?? grade,
             hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED)
         }, {
             name: 'course',
             label: '',
             value: lecture?.course ?? course,
             hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED)
         }, {
             name: 'name',
             label: lang.LECTURE_NAME,
-            value: lecture?.name || ''
+            value: lecture?.name,//|| ''
+            validation: Yup.string()
+                .required(lang.REQUERIED)
         }, {
             name: 'description',
             label: lang.LECTURE_DESCRIPTION,
             rows: 11,
-            value: lecture?.description || ''
+            value: lecture?.description, //|| ''
+            validation: Yup.string()
+                .required(lang.REQUERIED)
         }, {
             name: 'isActive',
             label: lang.IS_ACTIVE,
@@ -73,7 +89,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
             name: 'player',
             label: 'المشغل',
             disabled: true,
-            value: videoPlayers.YOUTUBE
+            value: filePlayers.YOUTUBE
         }, {
             name: 'url',
             label: 'الصق url',
@@ -105,13 +121,16 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
             name: 'player',
             label: 'المشغل',
             disabled: true,
-            value: videoPlayers.BUNNY
+            value: filePlayers.BUNNY
         }, {
             name: 'url',
             label: 'الصق url',
-            type: 'url',
-            player: 'iframe',
-            value: lecture?.video?.url
+            type: 'iframe',
+            player: 'bunny',
+            value: lecture?.video?.url,
+            validation: Yup.string()
+                .matches(bunnyRegex, 'غير صالح')
+                .required(lang.REQUERIED),
         }, {
             name: 'duration',
             label: 'الوقت',
@@ -128,7 +147,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
         {
             name: 'player',
             label: 'نوع المشغل',
-            value: videoPlayer,
+            value: filePlayers.BUNNY_UPLOAD,
             disabled: true
         }, {
             name: 'video',
@@ -167,7 +186,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
         {
             name: 'player',
             label: '',
-            value: videoPlayer,
+            value: filePlayers.SERVER,
             disabled: true
         }, {
             name: 'video',
@@ -223,7 +242,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
     const fileInputs = [...lectureInfoInputs,
     {
         name: 'player',
-        value: filePlayers.URL,
+        value: filePlayers.GOOGLE_DRIVE,
         disabled: true,
         label: 'المشغل',
 
@@ -231,7 +250,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
         name: 'url',
         label: 'url',
         type: 'url',
-        player: 'iframe',
+        player: 'google',
         validation: Yup.string()
             .url('Invalid URL format')
             .required(lang.REQUERIED),
@@ -255,58 +274,66 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
                 .required(lang.REQUERIED)
                 .test('fileType', 'Uploaded file must be a PDF', (value) => {
                     if (!value) return false; // If no file, return false
-                    const fileType = value.type; // Get the MIME type of the file
+                    const fileType = value.type || value.resource_type; // Get the MIME type of the file
                     return fileType === 'application/pdf'; // Check if it's a PDF
                 })
-                .test('fileSize', 'File size is too large', (value) => {
-                    if (!value) return false; // If no file, return false
-                    return value.size <= 100 * 1024 * 1024; // Check if file size is less than or equal to 10MB
+                .test({
+                    message: `يجب ان يكون حجم الملف اقل من 100 ميغا فى وضع المشاهد`,
+                    test: (file) => {
+                        if (file && file.size) {
+                            const isValid = file?.size < 100 * 1024 * 1024;
+                            return isValid;
+                        } else {
+                            return true
+                        }
+                    }
                 })
         }
     ]
 
-    //file bunny
-    const fileBunnyInputs = [...lectureInfoInputs,
-    {
-        name: 'player',
-        label: 'نوع المشغل',
-        value: activeFilePlayer,
-        disabled: true
-    }, {
-        name: 'video',
-        label: 'اختر file',
-        type: 'file',
-        value: lecture?.file,
-    }
-    ]
+    // //file bunny
+    // const fileBunnyInputs = [...lectureInfoInputs,
+    // {
+    //     name: 'player',
+    //     label: 'نوع المشغل',
+    //     value: activeFilePlayer,
+    //     disabled: true
+    // }, {
+    //     name: 'video',
+    //     label: 'اختر file',
+    //     type: 'file',
+    //     value: lecture?.file,
+    // }
+    // ]
 
     const createExamBtnUrl = '/management/courses/' + course + '/exams/create'
-    const updateExamUrl = '/management/courses/' + lecture?.course + '/exams/' + lecture?._id + '/edit'
+    const updateExamUrl = '/management/courses/' + lecture?.course + '/exams/' + lecture?._id
 
     return (
         <Section>
             <TitleWithDividers title={'اختر القسم المناسب'} />
             <FlexColumn gap={'10px'}>
 
-                <MakeSelect title={'اختر القسم المناسب'} value={sectionType} setValue={setSectionType}
+                <MakeSelect disabled={location === 'update' ? true : false} title={'اختر القسم المناسب'} value={sectionType} setValue={setSectionType}
                     options={[sectionConstants.EXAM, sectionConstants.FILE, sectionConstants.LINK, sectionConstants.VIDEO]}
                 />
 
                 {/* Video setup */}
                 {sectionType === sectionConstants.VIDEO && (
-                    <MakeSelect title={'نوع مشغل الفيديو'} value={videoPlayer} setValue={setVideoPlayer}
-                        options={[videoPlayers.YOUTUBE, videoPlayers.BUNNY, videoPlayers.BUNNY_UPLOAD, videoPlayers.SERVER]} />
+                    <MakeSelect disabled={location === 'update' ? true : false} title={'نوع مشغل الفيديو'} value={videoPlayer} setValue={setVideoPlayer}
+                        options={[filePlayers.YOUTUBE, filePlayers.BUNNY]} /> //, filePlayers.BUNNY_UPLOAD, filePlayers.SERVER
                 )}
+
                 {sectionType === sectionConstants.VIDEO && videoPlayer && (
                     <>
-                        {videoPlayer === videoPlayers.YOUTUBE ?
+                        {videoPlayer === filePlayers.YOUTUBE ?
                             <MakeForm status={status} inputs={youtubeInputs} onSubmit={onSubmit} />
-                            : videoPlayer === videoPlayers.BUNNY ?
+                            : videoPlayer === filePlayers.BUNNY ?
                                 <MakeForm status={status} inputs={bunnyInputs} onSubmit={onSubmit} />
-                                : videoPlayer === videoPlayers.BUNNY_UPLOAD ?
+                                : videoPlayer === filePlayers.BUNNY_UPLOAD ?
                                     <MakeForm status={status} inputs={bunnyUploadInputs} onSubmit={onSubmit} />
                                     :
-                                    videoPlayer === videoPlayers.SERVER &&
+                                    videoPlayer === filePlayers.SERVER &&
                                     <MakeForm status={status} inputs={videoServerInputs} onSubmit={onSubmit} />}
                     </>
                     // End of videos section
@@ -315,18 +342,16 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
                 {/* file Section */}
                 {sectionType === sectionConstants.FILE && (
                     <MakeSelect title={'نوع مشغل PDF'} value={activeFilePlayer} setValue={setActiveFilePlayer}
-                        options={[filePlayers.URL, filePlayers.SERVER, 'bunny']} />
+                        options={[filePlayers.GOOGLE_DRIVE, filePlayers.SERVER]} />
                 )}
 
                 {sectionType === sectionConstants.FILE && activeFilePlayer && (
                     <>
                         {activeFilePlayer === filePlayers.SERVER ? (
                             <MakeForm status={status} inputs={fileServerInputs} onSubmit={onSubmit} />
-                        ) : activeFilePlayer === 'bunny' ?
-                            <MakeForm status={status} inputs={fileBunnyInputs} onSubmit={onSubmit} />
-                            : (
-                                <MakeForm status={status} inputs={fileInputs} onSubmit={onSubmit} />
-                            )}
+                        ) : (
+                            <MakeForm status={status} inputs={fileInputs} onSubmit={onSubmit} />
+                        )}
                     </>
                 )}
 
@@ -346,4 +371,6 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
     )
 }
 
+// : activeFilePlayer === 'bunny' ?
+//     <MakeForm status={status} inputs={fileBunnyInputs} onSubmit={onSubmit} />
 export default LectureForm

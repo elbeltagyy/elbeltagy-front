@@ -23,7 +23,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
             display: 'flex',
             alignItems: "center",
             justifyContent: 'flex-start',
-            flexDirection: isMobileScreen ? "column" : flexDirection, gap: 10
+            flexDirection: isMobileScreen ? "column" : flexDirection, gap: '16px', width: '100%'
         }}>
             <Avatar alt={user.name.toUpperCase()} src={user?.avatar?.url || "#"}
                 sx={{
@@ -38,32 +38,9 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                 variant={variant || 'square'} />
 
             <Box sx={{
-                // display: 'flex',
-                // justifyContent: 'center',
-                // alignItems: "center",
-                // flexDirection: "column",
                 width: '100%'
             }}>
 
-                {/* <Box minWidth={'100%'}>
-                    <Typography variant='h5' fontWeight="600" color={theme.palette.neutral[0]}>
-                        <span style={{ opacity: .4 }}>  {lang.NAME} </span> : {user.name}
-                    </Typography>
-                </Box>
-
-                <Box width={'100%'}>
-                    <Typography variant='h6' fontWeight="600" color={theme.palette.text.secondary}>
-                        <span style={{ opacity: .4 }}>  {lang.ROLE} </span> : {user.role}
-                    </Typography>
-                </Box>
-
-                {user.role === user_roles.ONLINE && (
-                    <Box width={'100%'}>
-                        <Typography variant='h6' fontWeight="600" color={theme.palette.text.secondary}>
-                            <span style={{ opacity: .4 }}>  {lang.WALLET} </span> : {user.wallet} {lang.POUND}
-                        </Typography>
-                    </Box>
-                )} */}
                 <Grid>
                     <DataWith3Items title={lang.NAME} icon={<MdOutlineDriveFileRenameOutline size={'2rem'} />} desc={user?.name} />
                     <DataWith3Items title={lang.GRADE} icon={<IoSchool size={'2rem'} />} desc={user?.role === user_roles.ADMIN || user?.role === user_roles.SUBADMIN ? user?.role : gradeConstants.filter(g => g.index === Number(user?.grade))[0]?.name} />

@@ -9,6 +9,13 @@ const filesApi = apiSlice.injectEndpoints({
                 body: data,
             })
         }),
+        deleteFile: builder.mutation({
+            query: data => ({
+                url: '/files',
+                method: 'DELETE',
+                body: data,
+            })
+        }),
     })
 })
-export const { useUploadFilesMutation } = filesApi
+export const { useUploadFilesMutation, useDeleteFileMutation } = filesApi

@@ -87,7 +87,9 @@ export const outLinedHoverBtnStyle = (theme, colorm) => {
             backgroundColor: colorm || theme.palette.primary.main,
             color: theme.palette.grey[0],
             border: `4px solid ${theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.grey[0]}`,
-
+        },
+        '&.Mui-disabled': {
+            color: theme.palette.grey[200],
         }
     }
 }

@@ -3,8 +3,8 @@ import VideoYoutube from './VideoYoutube'
 import YoutubePlyr from './YoutubePlyr'
 import ReactPlayer from 'react-player'
 import { useTheme } from '@mui/material'
-import videoPlayers from '../../settings/constants/videoPlayers'
 import VideoPlyr from './VideoPlyr'
+import filePlayers from '../../settings/constants/filePlayers'
 
 function VideoGenerate({ video }) {
 
@@ -12,13 +12,13 @@ function VideoGenerate({ video }) {
     const theme = useTheme()
     return (
         <>
-            {video.player === videoPlayers.YOUTUBE ? (
+            {video.player === filePlayers.YOUTUBE ? (
                 // <VideoYoutube url={video?.url} />
                 <YoutubePlyr url={video.url} />
-            ) : video.player === videoPlayers.BUNNY || video.player === videoPlayers.BUNNY_UPLOAD ? (
+            ) : video.player === filePlayers.BUNNY || video.player === filePlayers.BUNNY_UPLOAD ? (
                 <div style={{ margin: 'auto', paddingBottom: '56.25%', position: 'relative' }}>
                     <iframe
-                        src={video.url + '?autoplay=false&loop=false&muted=false&preload=true&responsive=true'}
+                        src={'https://iframe.mediadelivery.net/embed/329071/' + video.url + '?autoplay=false&loop=false&muted=false&preload=true&responsive=true'}
                         loading="lazy"
                         frameBorder={0}
                         style={{

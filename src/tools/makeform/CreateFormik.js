@@ -18,7 +18,11 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
     // arrange data of input with ===> name , validation, initial value
     inputs.forEach((input, i) => {
         if (input.name) {
-            data[input.name] = input.value || ""
+            if (input.value === 0) {
+                data[input.name] = 0
+            } else {
+                data[input.name] = input.value ?? ""
+            }
         }
 
         if (input.validation) {
@@ -38,7 +42,7 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
                             <Box display={"flex"} justifyContent={"space-between"} flexWrap={"wrap"} width={'100%'} >
                                 {inputs && inputs.map((input, i) => {
                                     return (
-                                        <Box key={i} sx={{ width: input.width || '100%', margin: '14px 0' }}>
+                                        <Box key={i} sx={{ width: input.width || '100%', margin: !input.hidden && '14px 0' }}>
                                             <MakeInput input={input} props={props} />
                                         </Box>
                                     )

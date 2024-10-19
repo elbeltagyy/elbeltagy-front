@@ -10,6 +10,7 @@ import { useCreateCodeMutation } from '../../toolkit/apis/codesApi'
 
 import usePostData from '../../hooks/usePostData'
 import { FaCopy } from "react-icons/fa";
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 function CreateCode({ setReset }) {
 
@@ -27,7 +28,7 @@ function CreateCode({ setReset }) {
             type: 'select',
             options: [codeConstants.ACTIVATE],
         }, {
-            name: 'uses',
+            name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1
@@ -40,7 +41,7 @@ function CreateCode({ setReset }) {
             type: 'select',
             options: [codeConstants.WALLET],
         }, {
-            name: 'uses',
+            name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1
@@ -57,15 +58,10 @@ function CreateCode({ setReset }) {
             type: 'select',
             options: [codeConstants.CENTER],
         }, {
-            name: 'uses',
+            name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1
-        }, {
-            name: 'grade',
-            label: 'السنه الدراسيه التي سينضم لها الطالب',
-            type: 'select',
-            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
         }
     ]
 
@@ -96,16 +92,18 @@ function CreateCode({ setReset }) {
 
             {status?.data && (
                 <Alert severity='success' variant='filled' >
-                    <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'grey.0' }} onClick={() => {
-                        navigator.clipboard.writeText(status.data.values.code).then(() => {
-                            alert("تم النسخ بنجاح");
-                        })
-                            .catch(err => {
-                                console.error("فشل النسخ: ", err);
-                            });
-                    }}>
-                        {status.data.values.code}
-                    </Button>
+                    <CopyToClipboard text={status.data.values.code} onCopy={() => alert("تم النسخ بنجاح")}>
+                        <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'grey.0' }} onClick={() => {
+                            navigator.clipboard.writeText(status.data.values.code).then(() => {
+                                alert("تم النسخ بنجاح");
+                            })
+                                .catch(err => {
+                                    console.error("فشل النسخ: ", err);
+                                });
+                        }}>
+                            {status.data.values.code}
+                        </Button>
+                    </CopyToClipboard>
                 </Alert>
             )}
         </Section>

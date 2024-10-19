@@ -3,6 +3,7 @@ import React from 'react'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import CardInfo from '../../style/mui/components/CardInfo'
 import Separator from './Separator'
+import Image from './Image'
 
 const iiinn = ["icon, caption, desc"]
 
@@ -50,12 +51,12 @@ function HeaderContent({ title, body, infos = [], img, children, height = '86vh'
                 maxWidth: '600px', minWidth: '250px', width: '100%', p: '16px', bgcolor: 'background.default'
             }}>
                 {img ?
-                    <img src={img} style={{ borderRadius: '16px', maxHeight: '500px' }} />
+                    <Image img={img} />
                     : children}
             </Box>
         </>
 
     )
 }
-
+{/* <img src={img} style={{ borderRadius: '16px', maxHeight: '500px' }} /> */}
 export default HeaderContent

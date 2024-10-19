@@ -21,8 +21,17 @@ const attemptsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getUserInfo: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/attempts/" + 'users/' + params.user,
+                    params
+                }
+            }
+        }),
     })
 })
 
 
-export const { useLazyGetAttemptsQuery, useLazyGetOneAttemptQuery } = attemptsApi
+export const { useLazyGetAttemptsQuery, useLazyGetOneAttemptQuery, useLazyGetUserInfoQuery } = attemptsApi

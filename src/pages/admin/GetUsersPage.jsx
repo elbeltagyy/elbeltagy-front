@@ -168,7 +168,7 @@ function GetUsersPage() {
             editable: false,
             filterable: false,
             renderCell: (params) => {
-                return <TabInfo count={params.row.devicesRegistered.length} i={3} />
+                return <TabInfo count={params.row.devicesRegistered?.length} i={3} />
             }
         }, {
             field: 'filterDevices',
@@ -177,7 +177,7 @@ function GetUsersPage() {
             filterable: false,
             disableExport: true,
             renderCell: (params) => {
-                return <Button disabled={params.row.devicesRegistered.length === 0} onClick={() => {
+                return <Button disabled={params.row?.devicesRegistered?.length === 0} onClick={() => {
                     setUserRegister(params.row)
                     setOpenRegisterModal(true)
                 }}>

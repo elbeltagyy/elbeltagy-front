@@ -22,17 +22,17 @@ function Hero() {
     return (
         <Section>
 
-            <FlexRow justifyContent={'center'} gap={'80px'} sx={{ minHeight: '88vh' }}>
+            <FlexRow justifyContent={'space-around'} >
 
                 {/* content */}
                 <FlexColumn
                     flex={1}
-                    minHeight={"300px"}
+                    minHeight={"88vh"}
                     maxWidth={"500px"}
                     gap={'.7rem'}
                     alignItems={'flex-start'}
                     sx={{
-                        animation: 'getIntoRt 1s ease', my: "50px"
+                        animation: 'getIntoRt 1s ease',
                     }} >
                     <Box sx={{ position: 'relative' }} >
 
@@ -48,7 +48,7 @@ function Hero() {
                     </Box>
 
                     <Separator sx={{ maxWidth: '300px' }} />
-                    <Box sx={{ position: 'relative', mt: '-16px', mb: '8px' }}>
+                    <Box sx={{ position: 'relative', mb: '8px' }}>
 
                         <Box sx={{
                             bgcolor: 'cyan',
@@ -97,8 +97,8 @@ function Hero() {
                 </FlexColumn>
 
                 {/* banner */}
-                <Box sx={{ maxWidth: '500px' }}>
-                    <Image img={'/assets/teacher-nobg.webp'} />
+                <Box >
+                    <Image maxWidth='500px' ratio={'auto'} img={'/assets/teacher-nobg.webp'} />
                 </Box>
 
 

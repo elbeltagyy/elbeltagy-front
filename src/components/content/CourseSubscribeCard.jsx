@@ -6,7 +6,7 @@ import Separator from '../ui/Separator'
 import TabInfo from '../ui/TabInfo'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 import WrapperHandler from '../../tools/WrapperHandler'
-import { Link } from '@mui/material'
+import { Chip, Link } from '@mui/material'
 import Loader from '../../style/mui/loaders/Loader'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +16,8 @@ import { getFullDate } from '../../settings/constants/dateConstants'
 import { useNavigate } from 'react-router-dom'
 import { lang } from '../../settings/constants/arlang'
 import { useSubscribeMutation } from '../../toolkit/apis/coursesApi'
+import { orange } from '@mui/material/colors'
+import { IoIosRadio } from 'react-icons/io'
 
 function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
 
@@ -33,7 +35,7 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
     const subscribe = async () => {
         setOpen(false)
         if (!user) {
-            return navigate('/login')
+            return navigate('/login', { state: true })
         }
         const res = await subscribeFc({ course: course._id })
         dispatch(setUser({ ...user, wallet: res.wallet }))
@@ -49,6 +51,9 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
         <CardCourse img={course?.thumbnail?.url} title={course?.name} borderColor="transparent">
             {isSubscribed ? <TabInfo count={getFullDate(course?.subscribedAt)} i={1} title={'اشتركت فى'} /> :
                 <>
+                    {course.price === 0 && (
+                        <Chip label="كورس مجانى" size='small' variant="contained" sx={{ bgcolor: orange[800], color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
+                    )}
                     <RowInfo title={'سعر الكورس'} desc={`${course.price} جنيها`} icon={<AiFillPoundCircle size={'1.25rem'} />} />
                     {course.preDiscount > course.price && (
                         <>

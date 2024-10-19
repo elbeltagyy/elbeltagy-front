@@ -22,7 +22,20 @@ import ShowVid from './components/ShowVid'
 import ShowPdf from './components/ShowPdf'
 import MakeField from './MakeField'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import ShowBunny from './components/ShowBunny'
 
+const getGoogleDrivePreviewLink = (originalLink) => {
+    const fileIdRegex = /\/d\/(.*?)\//;
+    const match = originalLink.match(fileIdRegex);
+
+    if (match && match[1]) {
+        const fileId = match[1];
+        return `https://drive.google.com/file/d/${fileId}/preview`;
+    } else {
+        console.error('Invalid Google Drive link');
+        return null;
+    }
+};
 
 const m = '6px 0'
 export default function MakeInput({ input, props, nestedInputName, style }) {
@@ -31,16 +44,26 @@ export default function MakeInput({ input, props, nestedInputName, style }) {
     const inputName = getInputName(nestedInputName, input)
     const value = getValues(inputName, props)
 
-    if (input.type === 'url') {
+    if (input.type === 'url' || input.type === 'iframe') {
         const file = { url: value }
 
+        if (input.player === 'google') {
+            file.url = getGoogleDrivePreviewLink(value)
+        }
+        
         return <FlexColumn gap={'22px'} sx={{ alignItems: "flex-start" }}>
             <MakeField input={input} inputName={inputName} props={props} />
-            {input.player === 'youtube' ? (
-                <ShowVid file={file} />
-            ) : input.player === 'image' ? (
-                <ShowImg file={file} />
-            ) : <ShowPdf file={file} />}
+            {value && (
+                <>
+                    {input.player === 'youtube' ? (
+                        <ShowVid file={file} />
+                    ) : input.player === 'image' ? (
+                        <ShowImg file={file} />) :
+                        input.player === 'bunny' ? (
+                            <ShowBunny file={file} />
+                        ) : <ShowPdf file={file} />}
+                </>
+            )}
         </FlexColumn>
     }
 

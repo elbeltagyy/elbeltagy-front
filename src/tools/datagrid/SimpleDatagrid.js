@@ -15,10 +15,10 @@ export default function SimpleDatagrid({ rows, columns, loading = false, editing
 
             pageSizeOptions={[5, 10, 50, 100]}
 
-            autoHeight={editing?.autoHeight || false}
+            autoHeight={editing?.autoHeight || true}
             sx={{
                 bgcolor: 'background.default',
-                height: '70vh',
+                // height: '70vh',
                 color: 'neutral.0',
                 borderRadius: '16px',
                 border: 'none',

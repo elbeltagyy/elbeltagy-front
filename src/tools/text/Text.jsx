@@ -259,6 +259,7 @@ export default function Text({ setText, defaultData }) {
                                             Array.from(editorToolbarRef.current.children).forEach(child => child.remove());
                                             Array.from(editorMenuBarRef.current.children).forEach(child => child.remove());
                                         }}
+                                        
                                         data={defaultData}
                                         editor={DecoupledEditor}
                                         config={editorConfig}

@@ -19,7 +19,6 @@ import { LoginIcon, SignupIcon } from './Icons';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import RowInfo from '../ui/RowInfo';
 import { user_roles } from '../../settings/constants/roles';
 
@@ -29,6 +28,7 @@ import { FaWallet } from "react-icons/fa";
 import TabInfo from '../ui/TabInfo';
 import InfoInCircle from '../ui/InfoInCircle';
 import { lang } from '../../settings/constants/arlang';
+import Notifications from './Notifications';
 
 
 function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
@@ -106,11 +106,7 @@ function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
                                 </Tooltip>
                             )}
 
-                            <IconButton >
-                                <NotificationsIcon sx={{
-                                    color: 'primary.main'
-                                }} />
-                            </IconButton>
+                            <Notifications user={user} />
 
                             <IconButton component={Link} to="/user/profile">
                                 <AccountCircle sx={{

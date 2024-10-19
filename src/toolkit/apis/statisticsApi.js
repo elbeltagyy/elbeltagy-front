@@ -45,19 +45,28 @@ const statisticsApi = apiSlice.injectEndpoints({
         getSubscriptionsCount: builder.query({
             query: (queries) => {
                 const params = queries
-                
+
                 return {
                     url: "/statistics/subscriptions",
                     params
                 }
             }
         }),
+        getUsersNotificationsCount: builder.query({
+            query: (queries) => {
+                const params = queries
 
+                return {
+                    url: "/statistics/notifications",
+                    params
+                }
+            }
+        }),
     })
 })
 
 
 
 export const { useLazyGetUsersCountQuery,
-    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery, useGetSubscriptionsCountQuery
+    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery, useGetSubscriptionsCountQuery, useGetUsersNotificationsCountQuery
 } = statisticsApi

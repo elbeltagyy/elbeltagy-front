@@ -10,8 +10,6 @@ import gradesRoutes from "./gradesRoutes";
 import { manageCoursesRoutes } from "./manageCoursesRoutes";
 import { codesRoutes } from "./codesRoutes";
 import { statisticsRoutes } from "./statisticsRoutes";
-// import ExamStartPage from "../../pages/user/ExamStartPage";
-// import AttemptPage from "../../pages/user/AttemptPage";
 
 const ErrorPage = lazy(() => import("../../pages/errors/ErrorPage"))
 const NotFoundPage = lazy(() => import("../../pages/errors/NotFoundPage"))
@@ -19,6 +17,7 @@ const HomePage = lazy(() => import("../../pages/HomePage"))
 
 const ExamStartPage = lazy(() => import("../../pages/user/ExamStartPage"))
 const AttemptPage = lazy(() => import("../../pages/user/AttemptPage"))
+const LectureCenterPage = lazy(() => import("../../pages/user/LectureCenterPage"))
 
 export const routes = [
     {
@@ -31,6 +30,8 @@ export const routes = [
                 path: '/user', children: userRoutes
             }, {
                 path: '/grades', children: gradesRoutes
+            }, {
+                path: '/lectures/:lectureId', element: <LectureCenterPage />
             }, {
                 path: '/exams/:examId', element: <ExamStartPage />
             }, {

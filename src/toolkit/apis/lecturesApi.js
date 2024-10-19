@@ -22,6 +22,15 @@ const lecturesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getLectureForCenter: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/content/lectures/center/" + params.id,
+                    params
+                }
+            }
+        }),
         createLecture: builder.mutation({
             query: data => ({
                 url: '/content/lectures',
@@ -34,6 +43,23 @@ const lecturesApi = apiSlice.injectEndpoints({
                 return ({
                     url: '/content/lectures/' + data.get("id"), //remove it 
                     method: 'PUT',
+                    body: data
+                })
+            }
+        }),
+        deleteLecture: builder.mutation({
+            query: data => {
+                return ({
+                    url: '/content/lectures/' + data.id, //remove it 
+                    method: 'DELETE',
+                })
+            }
+        }),
+        patchLecture: builder.mutation({
+            query: data => {
+                return ({
+                    url: '/content/lectures/' + data.get("id"),
+                    method: 'PATCH',
                     body: data
                 })
             }
@@ -52,9 +78,17 @@ const lecturesApi = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        updateExam: builder.mutation({
+            query: data => ({
+                url: '/content/lectures/exams/' + data.lecture,
+                method: 'PUT',
+                body: data
+            })
+        }),
 
     })
 })
-export const { useLazyGetLecturesQuery, useGetOneLectureQuery, useCreateLectureMutation, useUpdateLectureMutation, useGetSecureVideoMutation
-    , useCreateExamMutation
+export const { useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useGetLectureForCenterQuery, useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
+    useGetSecureVideoMutation
+    , useCreateExamMutation, useUpdateExamMutation, usePatchLectureMutation
 } = lecturesApi

@@ -104,7 +104,7 @@ function CoursePage() {
                     : <Loader />}
             </HeaderContent>
 
-            <Outlet context={[getLectureCurrentIndex(), setCurrentIndex, currentIndex]} />
+            <Outlet context={[getLectureCurrentIndex(), setCurrentIndex, currentIndex, courseDetails.course._id]} />
 
             <TitleSection title={'محتوى الكورس'} />
 
