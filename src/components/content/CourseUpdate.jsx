@@ -44,7 +44,6 @@ const PreDiscount = ({ props, value, input, inputName }) => {
 
 function CourseUpdate({ course, setCourse }) {
 
-    
     const [sendData, status] = useUpdateCourseMutation()
     const [updateCourse] = usePostData(sendData)
     const inputs = [
@@ -91,7 +90,7 @@ function CourseUpdate({ course, setCourse }) {
             name: 'isActive',
             label: lang.IS_ACTIVE,
             type: 'radio',
-            value: `${course.isActive}`,
+            value: course.isActive ?? false,
             options: [{ value: true, label: lang.ACTIVE }, { value: false, label: lang.NOT_ACTIVE }],
             icon: <VscSymbolBoolean />,
             width: "100%",
@@ -99,7 +98,7 @@ function CourseUpdate({ course, setCourse }) {
             name: 'isMust',
             label: 'تفعيل اكمال المحاضرات',
             type: 'switch',
-            value: course.isMust,
+            value: course.isMust ?? false,
             icon: <VscSymbolBoolean />,
             width: "100%",
         }, {
@@ -143,7 +142,6 @@ function CourseUpdate({ course, setCourse }) {
                     message: 'Please provide a supported image typed(jpg or png)',
                     test: (file, context) => {
                         if (file && !file.url) {
-                            console.log('file ==>', file)
                             if (file?.url) {
                                 file.type = file.resource_type + "/" + file.format
                             }

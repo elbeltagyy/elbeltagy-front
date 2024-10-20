@@ -21,9 +21,12 @@ export default function ShowImg({ file, removeFile }) {
                         R
                     </Avatar>
                 }
-                title={<Typography variant='body2' sx={{ maxWidth: '100px' }}>
-                    {file?.original_filename || file?.name || "لم يتم العثور عليه"}
-                </Typography>}
+                title={
+                    file?.original_filename || file?.name && (
+                        <Typography variant='body2' sx={{ maxWidth: '100px' }}>
+                            {file?.original_filename || file?.name}
+                        </Typography>
+                    )}
                 subheader={removeFile && file.size && `size: ${file.size / 1000000} mg`}
                 action={
                     <IconButton aria-label="settings" onClick={() => setOpen(true)}>

@@ -36,6 +36,13 @@ const coursesApi = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        deleteCourse: builder.mutation({
+            query: data => ({
+                url: '/content/courses/' + data.id,
+                method: 'DELETE',
+                body: data
+            })
+        }),
         getCourseLecturesAndCheckUser: builder.query({
             query: (queries) => {
                 const params = queries
@@ -108,7 +115,7 @@ const coursesApi = apiSlice.injectEndpoints({
 })
 
 export const {
-    useLazyGetCoursesQuery, useLazyGetOneCourseQuery, useGetOneCourseQuery, useCreateCourseMutation, useUpdateCourseMutation,
+    useLazyGetCoursesQuery, useLazyGetOneCourseQuery, useGetOneCourseQuery, useCreateCourseMutation, useUpdateCourseMutation, useDeleteCourseMutation,
     useSubscribeMutation, useLazyGetCourseLecturesAndCheckUserQuery, useGetLectureAndCheckQuery, usePassLectureMutation,
     useLazyGetExamQuery, useAddAttemptMutation, useLinkCourseMutation
 } = coursesApi

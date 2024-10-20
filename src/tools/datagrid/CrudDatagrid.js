@@ -23,7 +23,7 @@ import ExportAsPdf from './ExportAsPdf';
 
 
 
-function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loading, updateFc, deleteFc, apiRef }) {
+function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef }) {
 
     const [isOpen, setOpenModal] = useState(false)
     const [deleteId, setDeleteId] = useState("")
@@ -244,10 +244,12 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                             <GridToolbarExport />
                         </Grid>
                     }
-                    <Grid item>
-                        <ExportAsPdf columns={chosenColumns} rows={rows} />
-                        {/* <MakePdf /> */}
-                    </Grid>
+                    {editing?.isPdf && (
+                        <Grid item>
+                            <ExportAsPdf columns={chosenColumns} rows={rows} exportObj={exportObj} />
+                            {/* <MakePdf /> */}
+                        </Grid>
+                    )}
                 </Grid>
             </GridToolbarContainer>
         );
@@ -304,13 +306,12 @@ function CrudDatagrid({ filterParams = [], reset, columns, editing, fetchFc, loa
                     toolbar: CustomToolbar,
                 }}
 
-
                 // Hide columns status and traderName, the other columns will remain visible
                 // columnVisibilityModel={hideColumns || []}
                 autoHeight={editing?.autoHeight || false}
                 sx={{
                     bgcolor: 'background.default',
-                    height: '70vh',
+                    minHeight: '70vh',
                     color: 'neutral.0',
                     borderRadius: '16px',
                     border: 'none',

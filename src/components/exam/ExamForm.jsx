@@ -57,31 +57,69 @@ function ExamForm({ lecture, status, onSubmit }) {
             label: '',
             value: sectionConstants.EXAM,
             hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED),
         }, {
             name: 'grade',
             label: '',
             value: lecture?.grade,
             hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED),
         }, {
             name: 'course',
             label: '',
             value: lecture?.course,
             hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED),
         }, {
             name: 'name',
             label: lang.LECTURE_NAME,
-            value: lecture.name ?? ''
+            value: lecture.name ?? '',
+            validation: Yup.string()
+                .required(lang.REQUERIED),
         }, {
             name: 'description',
             label: lang.LECTURE_DESCRIPTION,
             rows: 11,
-            value: lecture.description ?? ''
+            value: lecture.description ?? '',
+            validation: Yup.string()
+                .required(lang.REQUERIED),
         }, {
             name: 'isActive',
             label: lang.IS_ACTIVE,
             type: 'switch',
             value: lecture.isActive ?? true,
-        }
+
+        },  {
+            name: "dateStart",
+            label: "تاريخ البدء",
+            type: 'fullDate',
+            value: lecture?.dateStart ? dayjs(lecture.dateStart) : null,
+        }, {
+            name: "dateEnd",
+            label: "تاريخ الغاء الاختبار",
+            type: 'fullDate',
+            value: lecture?.dateEnd ? dayjs(lecture.dateEnd) : null,
+            validation: Yup.mixed()
+                .nullable()
+                .when('dateStart', (dateStart, schema) =>
+                    dateStart
+                        ? schema.test(
+                            'is-after-start-date',
+                            'يجب ان يكون تاريخ النهايه بعد تاريخ البدايه',
+                            (dateEnd) => {
+                                if (dateEnd) {
+                                    return dayjs(dateEnd).isAfter(dayjs(dateStart))
+                                } else {
+                                    return true
+                                }
+                            }
+                        )
+                        : schema
+                ),
+        },
     ]
 
     //exam info => in update nested
@@ -91,18 +129,8 @@ function ExamForm({ lecture, status, onSubmit }) {
         label: "عدد المحاولات",
         type: 'number',
         value: lecture?.exam?.attemptsNums ?? 1,
-        validation: Yup.string()
+        validation: Yup.number()
             .required(lang.REQUERIED)
-    }, {
-        name: "dateStart",
-        label: "تاريخ البدء",
-        type: 'fullDate',
-        value: lecture?.exam?.dateStart ? dayjs(lecture.exam.dateStart) : null,
-    }, {
-        name: "dateEnd",
-        label: "تاريخ الغاء الاختبار",
-        type: 'fullDate',
-        value: lecture?.exam?.dateEnd ? dayjs(lecture.exam.dateEnd) : null,
     }, {
         name: "showAnswersDate",
         label: "تاريخ اظهار الايجابات",
@@ -186,14 +214,20 @@ function ExamForm({ lecture, status, onSubmit }) {
                     })
                 )
                 .required('يجب ان يكون هناك اسئله') // these constraints are shown if and only if inner constraints are satisfied
-                .min(2, 'سؤالين على الاقل')
+                .min(5, '5 على الاقل')
         ,
     }
     ]
 
     return (
-        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} />
+        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} enableReinitialize={true} />
     )
 }
 
 export default ExamForm
+// {
+//     name: 'isMust',
+//     label: 'بعد انتهاء تاريخ نهايه الاختبار سيتم اغلاقه',
+//     type: 'switch',
+//     value: lecture.isMust ?? false,
+// },

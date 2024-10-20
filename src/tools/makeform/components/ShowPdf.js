@@ -3,7 +3,7 @@ import React from 'react'
 import { MdCancel } from 'react-icons/md';
 
 function ShowPdf({ file, removeFile }) {
-    console.log(file)
+    // console.log(file)
     return (
         <div style={{ width: '100%', minHeight: '50vh' }}>
             <iframe
@@ -11,7 +11,9 @@ function ShowPdf({ file, removeFile }) {
                 style={{ width: '100%', height: '50vh', border: 'none' }}
                 title="iframe Viewer"
             />
-            <Button onClick={removeFile} sx={{m: "12px auto"}} color='error' variant='contained' endIcon={<MdCancel style={{ color: '#fff' }} />}>ازاله الملف</Button>
+            {removeFile && (
+                <Button onClick={removeFile} sx={{ m: "12px auto" }} color='error' variant='contained' endIcon={<MdCancel style={{ color: '#fff' }} />}>ازاله الملف</Button>
+            )}
         </div>
     );
 }

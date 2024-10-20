@@ -20,6 +20,8 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
         if (input.name) {
             if (input.value === 0) {
                 data[input.name] = 0
+            } else if ((typeof input.value === 'object' && Object.keys(input.value || {}).length === 0) && input?.value) {
+                data[input.name] = ''
             } else {
                 data[input.name] = input.value ?? ""
             }
@@ -56,7 +58,7 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
                                     width: btnWidth || '100%'
                                 }}
                             >
-                                {status?.isLoading ? <Loader color={'orange'} /> : SEND}
+                                {status?.isLoading ? <Loader color={'#fff'} /> : SEND}
                             </FilledHoverBtn>
                         </Form>
                     )}

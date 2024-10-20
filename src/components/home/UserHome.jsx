@@ -13,12 +13,11 @@ import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
 import Separator from '../../components/ui/Separator'
 import { lang } from '../../settings/constants/arlang'
 import CenterLectures from './CenterLectures'
+import { user_roles } from '../../settings/constants/roles'
 
 function UserHome() {
 
     const { user } = useSelector(s => s.global)
-
-    const [openCenterLectures, setOpenLectures] = useState(false)
 
     const [courses, setCourses] = useState([])
     const [openUserCourses, setOpenCourses] = useState(false)
@@ -60,7 +59,9 @@ function UserHome() {
                     />)}
                 </Grid>
             </AccordionStyled>
-            <CenterLectures user={user} />
+            {user.role === user_roles.STUDENT && (
+                <CenterLectures user={user} />
+            )}
         </Section>
     )
 }

@@ -22,18 +22,28 @@ const unitsApi = apiSlice.injectEndpoints({
         }),
         updateUnit: builder.mutation({
             query: (data) => {
-                console.log(data)
-                // return (
-                //     {
-                //         url: '/content/unit',
-                //         method: 'POST',
-                //         body: data
-                //     }
-                // )
+                return (
+                    {
+                        url: '/content/units/' + data.id,
+                        method: 'PUT',
+                        body: data
+                    }
+                )
+            }
+        }),
+        deleteUnit: builder.mutation({
+            query: (data) => {
+                return (
+                    {
+                        url: '/content/units/' + data.id,
+                        method: 'delete',
+                        body: data
+                    }
+                )
             }
         }),
     })
 })
 
 
-export const { useLazyGetUnitsQuery, useCreateUnitMutation, useUpdateUnitMutation } = unitsApi
+export const { useLazyGetUnitsQuery, useCreateUnitMutation, useUpdateUnitMutation, useDeleteUnitMutation } = unitsApi

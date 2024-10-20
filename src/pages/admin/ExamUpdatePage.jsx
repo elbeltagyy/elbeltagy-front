@@ -19,7 +19,7 @@ function ExamUpdatePage() {
     useEffect(() => {
         const trigger = async () => {
             const res = await getLecture({ id: lectureId, populate: 'exam' })
-            console.log('res ==>', res)
+            // console.log('res ==>', res)
             setLecture(res)
         }
         trigger()
@@ -53,15 +53,17 @@ function ExamUpdatePage() {
 
         //modify questions with images
         exam.questions.forEach((question, i) => {
-            if (question.image || Number(question.image) === 0) {
+            if (!isNaN(question.image) || Number(question.image) === 0) {
                 const imageIndex = Number(question.image)
                 question.image = savedFiles[imageIndex];
             }
         });
 
         const res = await updateExam({ ...exam, lecture: lecture._id })
-        props.resetForm({ values })
-        console.log('res ==>', res)
+        props.resetForm({ ...res.lecture, exam: res.updatedExam })
+        setLecture({
+            ...res.lecture, exam: res.updatedExam
+        })
     }
 
     if (!lecture) return <LoaderSkeleton />

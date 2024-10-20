@@ -14,10 +14,18 @@ const userCoursesApi = apiSlice.injectEndpoints({
         }),
         createSubscription: builder.mutation({
             query: (data) => {
-                console.log('data ==>', data)
                 return {
                     url: "/subscriptions/courses",
                     method: 'POST',
+                    body: data
+                }
+            }
+        }),
+        updateSubscription: builder.mutation({
+            query: (data) => {
+                return {
+                    url: "/subscriptions/courses/" + data.id,
+                    method: 'put',
                     body: data
                 }
             }
@@ -32,4 +40,4 @@ const userCoursesApi = apiSlice.injectEndpoints({
     })
 })
 
-export const { useLazyGetCourseSubscriptionsQuery, useCreateSubscriptionMutation, useDeleteSubscriptionMutation } = userCoursesApi
+export const { useLazyGetCourseSubscriptionsQuery, useCreateSubscriptionMutation, useUpdateSubscriptionMutation, useDeleteSubscriptionMutation } = userCoursesApi

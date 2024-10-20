@@ -16,6 +16,7 @@ import UserCodes from '../../components/users/UserCodes'
 import UserSubscriptions from '../../components/users/UserSubscriptions'
 import UserAttempts from '../../components/users/UserAttempts'
 import UserNotifications from '../../components/users/UserNotifications'
+import UserProfileUpdate from '../../components/users/UserProfileUpdate'
 
 function FindUserPage() {
     const [userName, setUserName] = useState()
@@ -30,9 +31,6 @@ function FindUserPage() {
         const res = await getByUserName(userName)
         setUser(res)
     }
-
-
-
 
     return (
         <Section>
@@ -49,7 +47,7 @@ function FindUserPage() {
                     />
 
                     <FlexColumn >
-                        <FilledHoverBtn disabled={!userName || status.isLoading} onClick={findUser}>
+                        <FilledHoverBtn disabled={!userName || status.isLoading || userName === searchedUserName} onClick={findUser}>
                             {status.isLoading ? <Loader /> : 'ابحث'}
                         </FilledHoverBtn>
                         <WrapperHandler status={status} />
@@ -68,18 +66,9 @@ function FindUserPage() {
                         <UserCodes user={user} />
                         <UserSubscriptions user={user} />
                         <UserAttempts user={user} />
+                        <UserProfileUpdate user={user} isAdmin={true} />
                     </FlexColumn>
                 )}
-                {/* {(!user && userName && isTouched) && <Alert severity='error'>{lang.users.noUserName} </Alert>} */}
-
-                {/* {user && <UserHeader user={user} />}
-                {user && <UserGroup group={user.group} />}
-
-                {user && <ManageUser user={user} setUser={setUser} />}
-
-
-                {(user) && <MakeTitle title={"payments"} />}
-                {(user) && <UserPayments user={user} isManage={true} />} */}
             </Box>
         </Section>
     )

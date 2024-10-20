@@ -17,10 +17,8 @@ function CenterLectures({ user }) {
 
     useEffect(() => {
         const trigger = async () => {
-            const res = await getCenterLectures({ grade: user.grade, isCenter: true, populate: 'video exam link' })
-            console.log(res)
+            const res = await getCenterLectures({ grade: user.grade, isActive: true, isCenter: true, populate: 'video exam link' })
             setLectures(res.lectures)
-
         }
         if (open) { // && lectures here
             trigger()

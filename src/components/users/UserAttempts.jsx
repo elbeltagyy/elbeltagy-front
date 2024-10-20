@@ -2,11 +2,37 @@ import React, { useEffect, useState } from 'react'
 import { useLazyGetUserInfoQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import TabInfo from '../ui/TabInfo'
-import { getFullDate } from '../../settings/constants/dateConstants'
+import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { Box } from '@mui/material'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import ms from 'ms'
 import TitleWithDividers from '../ui/TitleWithDividers'
+import { totalDegree } from '../../tools/fcs/GetExamTotal'
+
+
+const exportObj = {
+    status: (row) => {
+        if (row.status) {
+            return 'ادى الاختبار'
+        } else {
+            return 'لم يؤدى الاختبار'
+        }
+    },
+    mark: (row) => {
+        if (row.status) {
+            return row.mark + ' / ' + row.total
+        } else {
+            return 'لم يؤدى الاختبار'
+        }
+    },
+    createdAt: (row) => {
+        if (row.status) {
+            return getDateWithTime(row.createdAt)
+        }
+        return 'لم يؤدى الاختبار'
+    }
+}
+
 
 function UserAttempts({ user }) {
 
@@ -19,15 +45,17 @@ function UserAttempts({ user }) {
         const trigger = async () => {
             const res = await getUserInfo({ user: user._id })// attempts => (name, total,)mark, time, tokenTime, doneAt, lectureNotDone => name
             // let row = [{ name: '', createdAt: '', total: '', mark: '', time: '', tokenTime: '' }]
-            console.log('res ==>', res)
             const modifiedArray = []
+
             res.attempts?.forEach((attempt) => {
+                // const exam = attempt.exam
+                // let storedTotals = []
                 const myObj = {
                     _id: attempt._id,
                     name: attempt.exam?.name,
                     createdAt: attempt.createdAt,
                     mark: attempt.mark,
-                    total: 'change',
+                    total: totalDegree(attempt?.exam),
                     time: attempt.exam?.time,
                     tokenTime: attempt.tokenTime,
                     status: true
@@ -58,8 +86,6 @@ function UserAttempts({ user }) {
             field: "name",//of exam
             headerName: 'الاختبار',
             width: 300,
-            // disableExport: true,
-            // filterable: false,
         },
         {
             field: 'status',
@@ -97,8 +123,11 @@ function UserAttempts({ user }) {
             headerName: 'الدرجه',
             width: 200,
             renderCell: (params) => {
+                if (!params.row.total) {
+                    return <TabInfo count={'لم يؤدى الاختبار'} i={3} />
+                }
                 return (
-                    <TabInfo count={params.row.mark} i={1} />
+                    <TabInfo count={params.row.mark + '/' + (params.row.total ? params.row.total : "")} i={1} />
                 )
             }
         },
@@ -108,7 +137,14 @@ function UserAttempts({ user }) {
     return (
         <Box sx={{ width: '100%' }}>
             <TitleWithDividers title={'اختبارات الطالب'} />
-            <MeDatagrid type={'simple'} data={rows} columns={columns} />
+            <MeDatagrid
+                editing={
+                    {
+                        bgcolor: 'background.alt',
+                        showSlots: ["density", "filter", "columns", "export"],
+                        autoHeight: true, isPdf: true
+                    }
+                } exportObj={exportObj} type={'simple'} data={rows} columns={columns} />
         </Box>
     )
 }

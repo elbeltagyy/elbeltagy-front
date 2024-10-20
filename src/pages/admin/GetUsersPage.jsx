@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Typography } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { user_roles } from '../../settings/constants/roles'
 import gradeConstants from '../../settings/constants/gradeConstants'
@@ -25,7 +25,30 @@ import { useDeleteUserMutation, useLazyGetUsersQuery, useUpdateUserMutation } fr
 import Image from '../../components/ui/Image'
 import CreateUser from '../../components/users/CreateUser'
 import { useGridApiRef } from '@mui/x-data-grid'
-import { getFullDate } from '../../settings/constants/dateConstants'
+import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+
+
+
+
+const exportObj = {
+    grade: (row) => {
+        return gradeConstants.find(grade => grade.index === row.grade)?.name
+    },
+    isActive: (row) => {
+        if (row.isActive) {
+            return 'فعال'
+        } else {
+            return 'غير فعال'
+        }
+    },
+    wallet: (row) => {
+        return row.wallet + ' ' + 'جنيه'
+    },
+    createdAt: (row) => {
+        return getDateWithTime(row.createdAt)
+    }
+}
+
 
 
 function GetUsersPage() {
@@ -66,12 +89,16 @@ function GetUsersPage() {
     }, [])
 
 
+
+
+
     const columns = [
         {
             field: "avatar",
             headerName: lang.IMAGE,
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Button sx={{ width: '100%' }} onClick={() => {
@@ -94,11 +121,11 @@ function GetUsersPage() {
         {
             field: 'name',
             headerName: lang.NAME,
-            width: 200
+            width: 200,
         }, {
             field: 'email',
             headerName: lang.EMAIL,
-            width: 200
+            width: 200,
         }, {
             field: 'userName',
             headerName: lang.USERNAME,
@@ -154,10 +181,30 @@ function GetUsersPage() {
                 )
             }
         }, {
+            field: "isResetPassword",
+            headerName: 'اعاده ضبط كلمه السر',
+            width: 200,
+            disableExport: true,
+            filterable: false,
+            sortable: false,
+            renderCell: (params) => {
+                return (
+                    <Button disabled={params.row.isResetPassword} onClick={() => {
+                        setUserRegister(params.row)
+                        setOpenReset(true)
+                    }}>
+                        اعاده ضبط كلمه السر
+                    </Button>
+                )
+            }
+        }, {
             field: 'devicesAllowed',
             headerName: 'عدد الاجهزه المسموح بها',
             editable: true,
             width: 200,
+            disableExport: true,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return <TabInfo count={params.row.devicesAllowed} i={1} />
             }
@@ -165,8 +212,9 @@ function GetUsersPage() {
             field: 'devicesRegistered',
             headerName: 'عدد الاجهزه المسجله',
             width: 200,
-            editable: false,
+            disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return <TabInfo count={params.row.devicesRegistered?.length} i={3} />
             }
@@ -174,8 +222,9 @@ function GetUsersPage() {
             field: 'filterDevices',
             headerName: "مسح الاجهزه المسجله",
             width: 200,
-            filterable: false,
             disableExport: true,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return <Button disabled={params.row?.devicesRegistered?.length === 0} onClick={() => {
                     setUserRegister(params.row)
@@ -190,6 +239,7 @@ function GetUsersPage() {
             width: 200,
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Button sx={{ width: '100%' }} onClick={() => {
@@ -227,6 +277,8 @@ function GetUsersPage() {
         return user
     }
 
+
+
     const [deleteData, { isLoading: deleteLoader }] = useDeleteUserMutation()
     const [deleteUser] = usePostData(deleteData)
 
@@ -242,7 +294,17 @@ function GetUsersPage() {
     const resetDevicesReg = async () => {
         const user = await updateUser({ ...userToRegister, devicesRegistered: [] })
         apiRef.current.updateRows([{ ...user }])
+        setUserRegister()
     }
+
+    //reset Password
+    const [openReset, setOpenReset] = useState(false)
+    const resetPassword = async () => {
+        const user = await updateUser({ _id: userToRegister._id, password: 'reset' })
+        apiRef.current.updateRows([{ ...user }])
+        setUserRegister()
+    }
+
     return (
         <Section>
             <TitleSection title={lang.USERS_PAGE} />
@@ -255,13 +317,13 @@ function GetUsersPage() {
             <MeDatagrid
                 apiRef={apiRef}
                 filterParams={{ grade: grade || 'all' }}
-                type={'crud'}
+                type={'crud'} exportObj={exportObj}
                 columns={columns} fetchFc={fetchFc} loading={isLoading || updateLoader || deleteLoader} updateFc={updateFc} deleteFc={deleteFc}
                 editing={
                     {
                         bgcolor: 'background.alt',
                         showSlots: ["density", "filter", "columns", "export"],
-                        autoHeight: true
+                        autoHeight: true, isPdf: true
                     }
                 }
             />
@@ -275,6 +337,7 @@ function GetUsersPage() {
             </ModalStyled>
 
             <ModalStyled open={isOpenRegisterModal} setOpen={setOpenRegisterModal} title={'هل انت متاكد من مسح الاجهزه المسجله لهذا المستخدم ؟'} action={resetDevicesReg} />
+            <ModalStyled open={openReset} setOpen={setOpenReset} title={'هل انت متاكد من اعاده ضبط كلمه السر ؟'} action={resetPassword} />
         </Section>
     )
 }

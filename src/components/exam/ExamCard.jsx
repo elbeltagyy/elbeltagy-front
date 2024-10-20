@@ -9,9 +9,10 @@ import ModalStyled from '../../style/mui/styled/ModalStyled'
 import { useNavigate } from 'react-router-dom'
 import Grid from '../../style/vanilla/Grid'
 import DataWith3Items from '../ui/DataWith3Items'
-import { formatDuration, getFullDate } from '../../settings/constants/dateConstants'
+import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+import dayjs from 'dayjs'
 
-function ExamCard({ exam }) {
+function ExamCard({ exam, lecture }) {
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
 
@@ -54,8 +55,11 @@ function ExamCard({ exam }) {
 
                 </CardContent>
                 <CardActions>
-                    <Button disabled={exam.attemptsNums === exam.attempts.length} onClick={openExamModal} sx={{ width: '100%' }} startIcon={<FaArrowRight size={'1.5rem'} />}>
-                        {exam.attemptsNums === exam.attempts.length ? ' انتهت محاولاتك' : "ابدا الاختبار"}
+                    <Button disabled={exam.attemptsNums === exam.attempts.length || (dayjs().isAfter(dayjs(lecture.dateEnd))) || dayjs().isBefore(dayjs(lecture.dateStart))} onClick={openExamModal} sx={{ width: '100%' }} startIcon={<FaArrowRight size={'1.5rem'} />}>
+                        {exam.attemptsNums === exam.attempts.length ? ' انتهت محاولاتك'
+                            : dayjs().isBefore(dayjs(lecture.dateStart)) ? "هيبدا يوم" + " " + getDateWithTime(lecture.dateStart)
+                                : (dayjs().isAfter(dayjs(lecture.dateEnd))) ? 'انتهى الاختبار يوم ' + getDateWithTime(lecture.dateEnd)
+                                    : "ابدا الاختبار"}
                     </Button>
                 </CardActions>
                 <ModalStyled title={'هل انت متاكد من بدا الاختبار ؟'} desc={'بمجرد البدء لا يمكنك العوده !'} open={open} setOpen={setOpen} action={action} />
@@ -76,7 +80,9 @@ function ExamCard({ exam }) {
                                 <TabInfo count={formatDuration(attempt.tokenTime)} i={2} title={"الوقت الماخوذ"} />
                                 <TabInfo count={getFullDate(attempt.createdAt)} i={1} title={"تم فى"} />
                             </FlexRow>
-                            <Button to={'/attempts/' + attempt._id} onClick={() => navigate('/attempts/' + attempt._id, { state: { attempt, ...exam } })}>عرض الايجابات</Button>
+                            <Button to={'/attempts/' + attempt._id} disabled={dayjs().isBefore(dayjs(lecture.exam?.showAnswersDate)) || !lecture.exam.isShowAnswers} onClick={() => navigate('/attempts/' + attempt._id, { state: { attempt, ...exam } })}>
+                                {dayjs().isBefore(dayjs(lecture.exam.showAnswersDate)) ? "موعد عرض الايجابات فى " + getDateWithTime(lecture.exam.showAnswersDate) : 'عرض الايجابات'}
+                            </Button>
                         </FlexColumn>
                     })}
                 </Grid>

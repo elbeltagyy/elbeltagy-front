@@ -14,11 +14,12 @@ function MakeFile({ inputName, input, props, value }) {
     const [deleteFile] = usePostData(sendData)
 
     const removeFile = async () => {
-        if (value.url) {
+        if (value) {
             await deleteFile({ ...value })
         }
         props.setFieldValue(inputName, '')
     }
+
     return (
         <Box m={"6px 0"} width={'100%'}>
             <input
@@ -45,11 +46,9 @@ function MakeFile({ inputName, input, props, value }) {
                     <WrapperHandler status={status} />
                 </>
             )}
-
             {hasError(props, inputName) && (
                 <Alert sx={{ my: "5px" }} severity='error'>{props.errors[inputName]}</Alert>
             )}
-
         </Box>
     )
 }

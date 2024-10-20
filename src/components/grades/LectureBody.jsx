@@ -31,7 +31,7 @@ function LectureBody({ lecture }) {
                         <ScallyBtn component={Link} to={lecture.link.url} startIcon={<FaVideo size={'1.5rem'} />}> {lecture.name}</ScallyBtn>
                     ) : lecture.sectionType === sectionConstants.FILE ?
                         <ShowPdf file={lecture.file} />
-                        : <ExamCard exam={{ ...lecture.exam, name: lecture.name }} />}
+                        : <ExamCard lecture={lecture} exam={{ ...lecture.exam, name: lecture.name }} />}
                 </div>
             )}
 

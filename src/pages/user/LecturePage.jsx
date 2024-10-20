@@ -18,6 +18,7 @@ import DataWith3Items from '../../components/ui/DataWith3Items'
 import Grid from '../../style/vanilla/Grid'
 import TabInfo from '../../components/ui/TabInfo'
 import LectureBody from '../../components/grades/LectureBody'
+import dayjs from 'dayjs'
 
 function LecturePage() {
 
@@ -41,10 +42,10 @@ function LecturePage() {
 
     return (
         <FlexColumn sx={{ minHeight: '90vh', backgroundColor: 'background.alt', borderRadius: '16px', p: '12px' }}>
-            
+
             <LectureBody lecture={lecture} />
 
-            {(lecture.sectionType !== sectionConstants.EXAM || lecture.exam?.attempts.length !== 0) && (
+            {(lecture.sectionType !== sectionConstants.EXAM || lecture.exam?.attempts.length !== 0 || (dayjs().isAfter(dayjs(lecture.dateEnd)))) && (
                 <FilledHoverBtn onClick={() => passed()} disabled={status.isLoading || lectureIndex !== currentIndex || false} >تم الانتهاء ! </FilledHoverBtn>
             )}
             <WrapperHandler status={status} showSuccess={true} />

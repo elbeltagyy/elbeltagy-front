@@ -9,7 +9,7 @@ import { FaClock, FaVideo } from "react-icons/fa";
 import { FaFilePdf } from "react-icons/fa6";
 import { ExamIcon } from '../ui/svg/ContentSvgs'
 import { FaLink } from "react-icons/fa6";
-import { formatDuration, getFullDate } from '../../settings/constants/dateConstants'
+import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { MdDateRange } from 'react-icons/md'
 import { FaLock } from "react-icons/fa";
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
@@ -55,6 +55,9 @@ function LectureUserCard({ lecture, i, isSubscribed }) {
                             <TabInfo count={lecture.exam?.time} i={0} title={'الوقت'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
                             <TabInfo count={lecture.exam?.questions?.length || lecture.exam?.questionsLength} i={1} title={'عدد الاسئله'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
                             <TabInfo count={lecture.exam?.attemptsNums} i={3} title={'عدد المحاولات'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
+                            {lecture.dateStart && (
+                                <TabInfo count={getDateWithTime(lecture.dateStart)} i={0} title={'موعد البدايه'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
+                            )}
                         </>
                     )}
                 </FlexColumn>

@@ -85,7 +85,6 @@ function SignupForm() {
             options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
             icon: <IoSchool color='green' />,
             validation: Yup.string().required(lang.REQUERIED)
-
         }, {
             name: 'government',
             label: lang.GOVERNMENT,

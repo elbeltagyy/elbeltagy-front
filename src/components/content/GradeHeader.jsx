@@ -9,7 +9,7 @@ import { filterArrWithValue } from '../../tools/fcs/MakeArray'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { CoursesIcon, UnitsIcon, VidsIcon2 } from '../ui/svg/ContentSvgs'
 
-function GradeHeader({gradeId}) {
+function GradeHeader({ gradeId }) {
 
 
     const [unitsCount, setUnitsCount] = useState('يتم التحميل ...!')
@@ -30,8 +30,8 @@ function GradeHeader({gradeId}) {
     useEffect(() => {
         const trigger = async () => {
             const unitsCountRes = await getUnitsCount({ grade: gradeId })
-            const coursesCountRes = await getCoursesCount({ grade: gradeId })
-            const lecturesCountRes = await getLecturesCount({ grade: gradeId })
+            const coursesCountRes = await getCoursesCount({ grade: gradeId, isActive: true })
+            const lecturesCountRes = await getLecturesCount({ grade: gradeId, isActive: true })
 
             setUnitsCount(unitsCountRes.count || 0)
             setCoursesCount(coursesCountRes.count || 0)

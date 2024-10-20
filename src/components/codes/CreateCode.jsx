@@ -11,6 +11,8 @@ import { useCreateCodeMutation } from '../../toolkit/apis/codesApi'
 import usePostData from '../../hooks/usePostData'
 import { FaCopy } from "react-icons/fa";
 import CopyToClipboard from 'react-copy-to-clipboard'
+import * as Yup from 'yup'
+import { lang } from '../../settings/constants/arlang'
 
 function CreateCode({ setReset }) {
 
@@ -31,7 +33,8 @@ function CreateCode({ setReset }) {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
-            value: 1
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
         }
     ]
     const walletInputs = [

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDeleteSubscriptionMutation, useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
+import { useDeleteSubscriptionMutation, useLazyGetCourseSubscriptionsQuery, useUpdateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
 import { Avatar, Box, Button } from '@mui/material'
@@ -35,6 +35,14 @@ function GetSubscriptions() {
     const [deleteSubscription] = usePostData(sendData)
     const removeFc = async (id) => {
         await deleteSubscription({ _id: id })
+    }
+
+    const [sendUpdate, updateStatus] = useUpdateSubscriptionMutation()
+    const [updateSubscription] = usePostData(sendUpdate)
+
+    const updateFc = async (data) => {
+        await updateSubscription({ id: data._id, currentIndex: data.currentIndex })
+        return data
     }
 
     if (!courseId || isLoadingCourse) return <LoaderSkeleton />
@@ -86,6 +94,7 @@ function GetSubscriptions() {
         }, {
             field: 'currentIndex',
             headerName: 'اخر محاضره',
+            editable: true,
             renderCell: (params) => {
                 return (
                     <Box>
@@ -138,7 +147,7 @@ function GetSubscriptions() {
             <MeDatagrid
                 type={'crud'}
 
-                columns={columns} fetchFc={fetchFc} loading={status.isLoading || isLoading} deleteFc={removeFc}
+                columns={columns} fetchFc={fetchFc} updateFc={updateFc} loading={status.isLoading || updateStatus.isLoading || isLoading} deleteFc={removeFc}
                 editing={
                     {
                         bgcolor: 'background.alt',

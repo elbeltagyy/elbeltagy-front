@@ -4,16 +4,15 @@ import React, { memo, useMemo, useState } from 'react'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { amiriFont } from './Amiri-Regular-normal';
+import { makeArrWithValueAndLabel } from '../fcs/MakeArray';
+import gradeConstants from '../../settings/constants/gradeConstants';
 // import { amiriFont } from './AmiriQuran-Regular-normal';
 // import { myFont } from './Rubik-Regular-normal';
 // import { rubikRegular } from './Rubik-Regular-normal';
 
-function ExportAsPdf({ columns, rows }) {
+function ExportAsPdf({ columns, rows, exportObj = {} }) {
 
-    // console.log('our columns ==>', columns)
     const exportPDF = () => {
-
-
         const doc = new jsPDF({
             orientation: "landscape",
         });
@@ -31,21 +30,51 @@ function ExportAsPdf({ columns, rows }) {
         const selectedColumnsData = columns.filter(col => col.disableExport !== true && col.hidden !== true);
 
         // Prepare table data
-        const tableColumnTitles = selectedColumnsData.map(col => col.headerName);
 
-        const tableRows = rows.map(row =>
+        const tableColumnTitles = selectedColumnsData.map(col => col.headerName)
+        const columnsField = selectedColumnsData.map(col => col.field)
+
+        const exportFc = (rows) => {
+            const modify = rows.map(row => {
+                let clonedRow = JSON.parse(JSON.stringify(row));
+                columnsField.map(field => {
+                    if (exportObj[field]) {
+                        const fieldMethod = exportObj[field]
+                        clonedRow[field] = fieldMethod(row)
+                    }
+                })
+                return clonedRow
+            });
+            return modify
+        }
+
+        const modifiedRows = exportFc(rows)
+
+        const tableRows = modifiedRows.map(row =>
             selectedColumnsData.map(col => row[col.field])
-        );
+        )
+
+        // console.log('tableCOlumns data ==>', tableColumnTitles)
+        // console.log('table rows ==>', tableRows)
+
         // Generate PDF using autoTable
         doc.autoTable({
             head: [tableColumnTitles],
             body: tableRows,
             theme: 'striped',
-            headStyles: { font: 'Amiri' },
-            bodyStyles: { font: 'Amiri' },
             styles: {
-                halign: 'right', // Right-to-left alignment for Arabic
+                halign: 'left', // Right-to-left alignment for Arabic
             },
+            headStyles: {
+                halign: 'left',
+                font: 'Amiri' // Align the header text to the left
+            },
+            bodyStyles: {
+                halign: 'left',
+                font: 'Amiri' // Align the body text to the left
+            },
+            tableWidth: 'auto', // Ensures table width is automatically calculated
+            direction: 'rtl'
         });
 
         doc.save('table.pdf');

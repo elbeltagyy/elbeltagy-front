@@ -6,11 +6,11 @@ import TabInfo from '../ui/TabInfo'
 import Separator from '../ui/Separator'
 import CourseUpdate from './CourseUpdate'
 
-import { useLazyGetOneCourseQuery } from '../../toolkit/apis/coursesApi'
+import { useDeleteCourseMutation, useLazyGetOneCourseQuery } from '../../toolkit/apis/coursesApi'
 import useLazyGetData from "../../hooks/useLazyGetData"
 import Text from '../../tools/text/Text'
 import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
-import { Alert, Box } from '@mui/material'
+import { Alert, Box, Button } from '@mui/material'
 import { lang } from '../../settings/constants/arlang'
 
 import { FcStatistics } from "react-icons/fc";
@@ -19,9 +19,14 @@ import Image from '../ui/Image'
 import AdminLinkCourse from './AdminLinkCourse'
 import { useGetSubscriptionsCountQuery } from '../../toolkit/apis/statisticsApi'
 import { Link } from 'react-router-dom'
+import { MdRemoveCircleOutline } from 'react-icons/md'
+import usePostData from '../../hooks/usePostData'
+import ModalStyled from '../../style/mui/styled/ModalStyled'
+import Loader from '../../style/mui/loaders/Loader'
+import WrapperHandler from '../../tools/WrapperHandler'
 
 
-function AdminCourseDetails({ courseId }) {
+function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
 
 
     const [course, setCourse] = useState(null)
@@ -38,6 +43,20 @@ function AdminCourseDetails({ courseId }) {
         }
         trigger()
     }, [courseId])
+
+    const [open, setOpen] = useState(false)
+    const [sendDelete, statusDelete] = useDeleteCourseMutation()
+    const [deleteCourse] = usePostData(sendDelete)
+
+    const deleteFc = async () => {
+        await deleteCourse({ id: courseId })
+        setActiveCourse('')
+        setCourses(prev => {
+            let coursesIds = [...prev]
+            const filtered = coursesIds.filter(({ _id }) => _id === courseId)
+            return filtered
+        })
+    }
 
     if (status.isLoading) return <LoaderWithText />
 
@@ -63,6 +82,11 @@ function AdminCourseDetails({ courseId }) {
                         {course.dateEnd && (
                             <TabInfo count={getFullDate(course.dateEnd)} title={'تاريخ النهايه'} i={3} />
                         )}
+                        <Button color="error" disabled={statusDelete.isLoading} onClick={() => setOpen(true)} variant='contained' endIcon={<MdRemoveCircleOutline size={'1.5rem'}
+                        />}>
+                            {statusDelete.isLoading ? <Loader color="#fff" /> : ' حذف الكورس'}
+                        </Button>
+                        <WrapperHandler status={statusDelete} />
                     </FlexRow>
 
                     <Separator />
@@ -73,6 +97,13 @@ function AdminCourseDetails({ courseId }) {
 
                 </FlexColumn>
                 <AdminLinkCourse grade={course.grade} course={course} setCourse={setCourse} />
+                <ModalStyled
+                    title={'هل انت متاكد من حذف الكورس ؟'}
+                    desc={'يجب التاكد من حذف جميع الاشتراكات و المحاضرات الخاصه بالكورس !'}
+                    open={open}
+                    setOpen={setOpen}
+                    action={deleteFc}
+                />
             </>
         )
 }

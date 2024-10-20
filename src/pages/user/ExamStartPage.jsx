@@ -36,12 +36,15 @@ function ExamStartPage() {
         const res = await addAttempt(attempt)
         dispatch(setUser({ ...user, totalPoints: res }))
         navigate(-1)
+        
+        setTimeout(() => {
+            window.location.reload(); // Force reload the page
+        }, 400);
     }
 
     if (!state || !exam) return <LoaderSkeleton />
     exam.questions = shuffleArray(exam.questions)
     exam.questions.forEach(q => {
-        console.log('q ==>', q)
         q.options = shuffleArray(q.options)
     })
     return (

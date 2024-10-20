@@ -49,7 +49,7 @@ function CoursePage() {
         if (!courseDetails?.course) {
             trigger()
         }
-    }, [])
+    }, [params.courseId])
 
     //unlock lecture when user pass it
     useEffect(() => {

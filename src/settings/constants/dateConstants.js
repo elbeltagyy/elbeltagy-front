@@ -3,13 +3,26 @@ import ms from "ms"
 
 export const DAYES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 
-export const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', }
+export const dateOptions = {
+    year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timeZone: 'Africa/Cairo',
 
+}
+
+const dateWithTimeOptions = {
+    ...dateOptions,
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+}
 
 export const getFullDate = (date) => {
     return new Date(date).toLocaleDateString("ar-eg", dateOptions)
 }
 
+export const getDateWithTime = (date) => {
+    return new Date(date).toLocaleDateString("ar-eg", dateWithTimeOptions)
+}
 
 // Extend Day.js with the duration plugin
 

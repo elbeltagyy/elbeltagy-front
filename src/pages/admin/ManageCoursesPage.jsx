@@ -23,6 +23,8 @@ function ManageCoursesPage() {
     const [grade, setGrade] = useState(null)
     const [activeUnit, setActiveUnit] = useState(null) // unit_id
     const [activeCourse, setActiveCourse] = useState(null)
+    const [courses, setCourses] = useState([]) //just for delete in admin COurse details ___++___ select Courses
+
     const [counts, setCounts] = useState({})
 
     //lectures numbers in every grade
@@ -37,8 +39,7 @@ function ManageCoursesPage() {
             setCounts({ allGrades, grade1, grade2 })
         }
         trigger()
-    }, [grade, activeCourse])
-
+    }, [grade, activeCourse, activeUnit])
 
     return (
         <Section>
@@ -50,12 +51,12 @@ function ManageCoursesPage() {
                     <ManageUnits grade={grade} activeUnit={activeUnit} setActiveUnit={setActiveUnit} />
 
                     {(activeUnit) && (
-                        <ManageCourses grade={grade} activeUnit={activeUnit} activeCourse={activeCourse} setActiveCourse={setActiveCourse} />
+                        <ManageCourses courses={courses} setCourses={setCourses} grade={grade} activeUnit={activeUnit} activeCourse={activeCourse} setActiveCourse={setActiveCourse} />
                     )}
 
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>
-                            <AdminCourseDetails courseId={activeCourse} />
+                            <AdminCourseDetails setCourses={setCourses} setActiveCourse={setActiveCourse} courseId={activeCourse} />
                         </Box>
                     )}
 

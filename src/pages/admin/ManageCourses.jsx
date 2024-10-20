@@ -7,10 +7,9 @@ import ModalStyled from '../../style/mui/styled/ModalStyled'
 import CourseCreate from '../../components/content/CourseCreate'
 import { Alert } from '@mui/material'
 
-function ManageCourses({ grade, activeUnit, activeCourse, setActiveCourse }) {
+function ManageCourses({ grade, activeUnit, activeCourse, setActiveCourse, courses, setCourses }) {
 
     const [openCourseModal, setCourseModal] = useState(false)
-    const [courses, setCourses] = useState([])
 
     return (
         <>
