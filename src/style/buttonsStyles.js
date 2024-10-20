@@ -106,7 +106,7 @@ export const filledHoverBtnStyle = (theme, colorm) => {
         transition: '.5s ease',
         borderRadius: '1rem',
         "&:hover": {
-            backgroundColor: theme.palette.grey[0],
+            backgroundColor: 'transparent', //theme.palette.grey[0]
             color: colorm || theme.palette.primary?.main,
             border: `2px solid ${colorm || theme.palette.primary?.main}`,
 

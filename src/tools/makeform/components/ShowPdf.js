@@ -3,7 +3,6 @@ import React from 'react'
 import { MdCancel } from 'react-icons/md';
 
 function ShowPdf({ file, removeFile }) {
-    // console.log(file)
     return (
         <div style={{ width: '100%', minHeight: '50vh' }}>
             <iframe

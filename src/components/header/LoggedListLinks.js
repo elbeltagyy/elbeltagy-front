@@ -1,11 +1,9 @@
-import { Box, Button, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, useTheme } from '@mui/material'
+import { Box, Button, Divider, List, ListItem, ListItemButton, ListItemIcon, Typography, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { sidebarLinks } from '../../settings/sidebarLinks'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { RtArrow } from './Icons';
-import { FlexRow } from '../../style/mui/styled/Flexbox';
-import { transform } from 'framer-motion';
+
 
 function LoggedListLinks({ user, setSidebar }) {
     const { pathname } = useLocation()
@@ -16,12 +14,7 @@ function LoggedListLinks({ user, setSidebar }) {
 
     useEffect(() => {
         if (pathname) {
-            const link = pathname.split("/")
-            if (link[1] === "management") {
-                setActiveLink(`/${link[1]}/${link[2]}`)
-            } else {
-                setActiveLink(`/${link[1]}`)
-            }
+            setActiveLink(pathname)
         }
     }, [pathname])
 

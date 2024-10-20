@@ -3,7 +3,7 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import React, { useState } from 'react'
 import ExportAsPdf from './ExportAsPdf';
 
-export default function SimpleDatagrid({ rows, columns, loading = false, editing = [], exportObj = {} }) {
+export default function SimpleDatagrid({ rows, columns, loading = false, editing = [], exportObj = {}, exportTitle }) {
 
     const theme = useTheme()
     // slots
@@ -39,7 +39,7 @@ export default function SimpleDatagrid({ rows, columns, loading = false, editing
                     }
                     {editing?.isPdf && (
                         <Grid item>
-                            <ExportAsPdf columns={chosenColumns} rows={rows} exportObj={exportObj} />
+                            <ExportAsPdf columns={chosenColumns} rows={rows} exportObj={exportObj} exportTitle={exportTitle} />
                             {/* <MakePdf /> */}
                         </Grid>
                     )}
@@ -79,7 +79,7 @@ export default function SimpleDatagrid({ rows, columns, loading = false, editing
             autoHeight={editing?.autoHeight || true}
             sx={{
                 bgcolor: 'background.default',
-                // height: '70vh',
+                maxHeight: editing.maxHeight,
                 color: 'neutral.0',
                 borderRadius: '16px',
                 border: 'none',

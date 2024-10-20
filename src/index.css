@@ -21,11 +21,18 @@ img {
 }
 
 @keyframes move {
-  50%{
+  50% {
     transform: translateX(50px);
   }
+
   100% {
     transform: translateX(0);
 
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
   }
 }

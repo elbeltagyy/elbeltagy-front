@@ -27,7 +27,7 @@ function UserHome() {
     useEffect(() => {
         const trigger = async () => {
             const res = await getCourses({ user: user._id, populate: 'course' })
-            console.log('res ==>', res)
+          
             setCourses(res.subscriptions)
         }
         if (openUserCourses && courses.length === 0) {

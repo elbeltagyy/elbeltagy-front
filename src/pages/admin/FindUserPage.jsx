@@ -66,7 +66,7 @@ function FindUserPage() {
                         <UserCodes user={user} />
                         <UserSubscriptions user={user} />
                         <UserAttempts user={user} />
-                        <UserProfileUpdate user={user} isAdmin={true} />
+                        <UserProfileUpdate user={user} isAdmin={true} setUserAdmin={setUser} />
                     </FlexColumn>
                 )}
             </Box>

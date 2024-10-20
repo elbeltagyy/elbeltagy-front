@@ -46,7 +46,7 @@ function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
     }
 
     const user = useSelector(s => s.global.user)
-    
+
     return (
         <AppBar sx={{
             position: 'sticky', top: 0,
@@ -108,7 +108,7 @@ function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
 
                             <Notifications user={user} />
 
-                            <IconButton component={Link} to="/user/profile">
+                            <IconButton component={Link} to="/user/profile" >
                                 <AccountCircle sx={{
                                     color: 'primary.main'
                                 }} />

@@ -74,6 +74,7 @@ function GetSessionsPage() {
             headerName: lang.IMAGE,
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Button sx={{ width: '100%' }} onClick={() => {
@@ -95,7 +96,7 @@ function GetSessionsPage() {
         },
         {
             field: 'name',
-            headerName: lang.name,
+            headerName: lang.NAME,
             width: 200
         }, {
             field: 'userName',
@@ -103,15 +104,21 @@ function GetSessionsPage() {
             width: 150
         }, {
             field: 'loginDate',
-            headerName: 'login date',
+            headerName: 'تاريخ تسجيل الدخول',
             width: 200,
+            disableExport: true,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.loginDate)} i={1} />
             }
         }, {
             field: 'logoutDate',
-            headerName: 'logout date',
+            headerName: 'تاريخ تسجيل الخروج',
             width: 200,
+            disableExport: true,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 if (params.row.logoutDate) {
                     return <TabInfo count={getFullDate(params.row.logoutDate)} i={3} />
@@ -124,13 +131,20 @@ function GetSessionsPage() {
             }
         }, {
             field: 'isExpired',
-            headerName: 'isExpired',
+            headerName: 'هل انتهت الصلاحيه؟',
             width: 200,
             type: "boolean",
+            disableExport: true,
+            filterable: false,
+            sortable: false,
+            
         }, {
             field: 'expiresAt',
-            headerName: 'expiresAt',
+            headerName: 'تنتهى فى',
             width: 200,
+            disableExport: true,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 if (params.row.isExpired) {
                     return <TabInfo count={getFullDate(params.row.expiresAt)} i={3} />
@@ -140,19 +154,15 @@ function GetSessionsPage() {
             }
         }, {
             field: 'browserName',
-            headerName: 'browserName',
+            headerName: 'المتصفح',
             width: 200,
         }, {
             field: 'browserVersion',
-            headerName: 'browserVersion',
+            headerName: 'اصدار المتصفح',
             width: 200,
         }, {
             field: 'deviceType',
-            headerName: 'deviceType',
-            width: 200,
-        }, {
-            field: 'deviceName',
-            headerName: 'deviceName',
+            headerName: 'الجهاز',
             width: 200,
         },
     ]

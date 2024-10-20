@@ -26,9 +26,23 @@ function VideoPlyr({ url }) {
         // },
     }
 
+    useEffect(() => {
+        if (vid.current) {
+            // Initialize Plyr
+            const player = new Plyr(vid.current);
+
+            // Clean up the Plyr instance when the component is unmounted
+            return () => {
+                player.destroy();
+            };
+        }
+    }, [])
     return (
         <div style={{ boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
-            <Plyr ref={vid} source={source} options={options} />
+            {/* <Plyr ref={vid} source={source} options={options} /> */}
+            <video ref={vid} className="plyr" controls>
+                <source src={url} type="video/mp4" />
+            </video>
         </div>
     )
 }

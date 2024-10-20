@@ -10,9 +10,10 @@ import gradeConstants from '../../settings/constants/gradeConstants';
 // import { myFont } from './Rubik-Regular-normal';
 // import { rubikRegular } from './Rubik-Regular-normal';
 
-function ExportAsPdf({ columns, rows, exportObj = {} }) {
-
+function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا بكم في تقرير مستر البلتاجى' }) {
+    const [isLoading, setLoading] = useState(false)
     const exportPDF = () => {
+        setLoading(true)
         const doc = new jsPDF({
             orientation: "landscape",
         });
@@ -22,16 +23,16 @@ function ExportAsPdf({ columns, rows, exportObj = {} }) {
         doc.addFont('Amiri-Regular.ttf', 'Amiri', 'normal');
         doc.setFont('Amiri'); // Use Amiri font
 
-        doc.setFontSize(8);
+        doc.setFontSize(10);
 
-        const arabicText = 'مرحبا بكم في تقريرنا';
+        const arabicText = exportTitle;
 
-        doc.text(arabicText, 100, 10, { font: 'Rubik-Regular', halign: 'left' });
+        doc.text(arabicText, 100, 10, { font: 'Rubik-Regular', halign: 'right', });
         const selectedColumnsData = columns.filter(col => col.disableExport !== true && col.hidden !== true);
 
         // Prepare table data
 
-        const tableColumnTitles = selectedColumnsData.map(col => col.headerName)
+        const tableColumnTitles = selectedColumnsData.map(col => col.headerName).reverse()
         const columnsField = selectedColumnsData.map(col => col.field)
 
         const exportFc = (rows) => {
@@ -51,8 +52,9 @@ function ExportAsPdf({ columns, rows, exportObj = {} }) {
         const modifiedRows = exportFc(rows)
 
         const tableRows = modifiedRows.map(row =>
-            selectedColumnsData.map(col => row[col.field])
+            selectedColumnsData.map(col => row[col.field]).reverse()
         )
+        //
 
         // console.log('tableCOlumns data ==>', tableColumnTitles)
         // console.log('table rows ==>', tableRows)
@@ -63,25 +65,26 @@ function ExportAsPdf({ columns, rows, exportObj = {} }) {
             body: tableRows,
             theme: 'striped',
             styles: {
-                halign: 'left', // Right-to-left alignment for Arabic
+                halign: 'right', // Right-to-right alignment for Arabic
             },
             headStyles: {
-                halign: 'left',
-                font: 'Amiri' // Align the header text to the left
+                halign: 'right',
+                font: 'Amiri' // Align the header text to the right
             },
             bodyStyles: {
-                halign: 'left',
-                font: 'Amiri' // Align the body text to the left
+                halign: 'right',
+                font: 'Amiri' // Align the body text to the right
             },
             tableWidth: 'auto', // Ensures table width is automatically calculated
             direction: 'rtl'
         });
 
         doc.save('table.pdf');
+        setLoading(false)
     };
 
     return (
-        <Button onClick={() => exportPDF()}>تصدير ك PDF</Button>
+        <Button disabled={isLoading} onClick={() => exportPDF()}>تصدير ك PDF</Button>
     )
 }
 

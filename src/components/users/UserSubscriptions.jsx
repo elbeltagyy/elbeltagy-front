@@ -3,11 +3,21 @@ import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
 import { Avatar, Box, Button } from '@mui/material'
 import TabInfo from '../ui/TabInfo'
-import { getFullDate } from '../../settings/constants/dateConstants'
+import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import Section from '../../style/mui/styled/Section'
 import TitleWithDividers from '../ui/TitleWithDividers'
+
+
+const exportObj = {
+    createdAt: (row) => {
+        return getDateWithTime(row.createdAt)
+    },
+    updatedAt: (row) => {
+        return getDateWithTime(row.updatedAt)
+    },
+}
 
 function UserSubscriptions({ user }) {
 
@@ -19,7 +29,7 @@ function UserSubscriptions({ user }) {
 
     const fetchFc = async (params) => {
         const res = await getSubscriptions({ ...params, user: user._id, populate: 'course' }, false)
-        // console.log('res ==>', res)
+
         const modifiedRes = res.subscriptions.map((subscribe) => {
             return { ...subscribe.course, courseName: subscribe.course?.name, _id: subscribe._id, createdAt: subscribe.createdAt, currentIndex: subscribe.currentIndex, updatedAt: subscribe.updatedAt }
         })
@@ -39,6 +49,7 @@ function UserSubscriptions({ user }) {
             headerName: lang.IMAGE,
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.thumbnail?.url || "#"}
@@ -87,12 +98,14 @@ function UserSubscriptions({ user }) {
             <TitleWithDividers title={'الكورسات المشترك فيها '} />
             <MeDatagrid
                 type={'simple'}
+                exportObj={exportObj}
                 columns={columns} data={row} loading={status.isLoading}
                 editing={
                     {
                         bgcolor: 'background.alt',
                         showSlots: ["density", "filter", "columns", "export"],
-                        autoHeight: true
+                        autoHeight: true,
+                        isPdf: true, maxHeight: '100vh'
                     }
                 }
             />

@@ -12,7 +12,21 @@ import { useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
 import Separator from '../../components/ui/Separator'
 import { red } from '@mui/material/colors'
 
-function GetAttemptsNot({ grade, exam, course }) {
+
+
+const exportObj = {
+    isActive: (row) => {
+        if (row.isActive) {
+            return 'فعال'
+        } else {
+            return 'غير فعال'
+        }
+    }
+}
+
+
+
+function GetAttemptsNot({ grade, exam, course, lecture }) {
 
     const [fileConfirm, setFileConfirm] = useState()
     const [openFileModal, setOpenFileModal] = useState(false)
@@ -94,12 +108,13 @@ function GetAttemptsNot({ grade, exam, course }) {
             <Separator sx={{ width: '200px' }} color={red[500]} />
             <MeDatagrid
                 type={'crud'}
+                exportObj={exportObj} exportTitle={"الطلاب الذين لم يؤدوا " + ' ' + lecture.name}
                 columns={columns} fetchFc={fetchFc} loading={status.isLoading}
                 editing={
                     {
                         bgcolor: 'background.alt',
                         showSlots: ["density", "filter", "columns", "export"],
-                        autoHeight: true
+                        autoHeight: true, isPdf: true
                     }
                 }
             />

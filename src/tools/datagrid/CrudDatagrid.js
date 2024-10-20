@@ -6,9 +6,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { Box, Button, CircularProgress, Grid, styled, Typography, useTheme } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, IconButton, styled, Typography, useTheme } from '@mui/material';
 import ModalStyled from '../../style/mui/styled/ModalStyled';
 import ExportAsPdf from './ExportAsPdf';
+import { HiOutlineRefresh } from "react-icons/hi";
+
 // import MakePdf from './MakePdf';
 
 
@@ -23,12 +25,12 @@ import ExportAsPdf from './ExportAsPdf';
 
 
 
-function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef }) {
+function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef }) {
 
     const [isOpen, setOpenModal] = useState(false)
     const [deleteId, setDeleteId] = useState("")
 
-
+    const [isRefresh, setRefresh] = useState(false)
     const theme = useTheme()
     const [rows, setRows] = useState([])
 
@@ -163,7 +165,12 @@ function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = 
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(params.id)}
+                        onClick={() => {
+                            if (!updateFc) {
+                                return alert("لا يمكن التعديل !")
+                            }
+                            handleEditClick(params.id)
+                        }}
                         color="inherit"
                     />,
                     <GridActionsCellItem
@@ -171,6 +178,9 @@ function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = 
                         icon={<DeleteIcon />}
                         label="Delete"
                         onClick={() => {
+                            if (!deleteFc) {
+                                return alert("لا يمكن الحذف")
+                            }
                             setDeleteId(params.id)
                             setOpenModal(true)
                         }}
@@ -202,7 +212,7 @@ function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = 
 
         triggerFetch()
 
-    }, [paginationModel.page, paginationModel.pageSize, sort, filter, reset])
+    }, [paginationModel.page, paginationModel.pageSize, sort, filter, reset, isRefresh])
 
 
     // hide columns 
@@ -241,15 +251,26 @@ function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = 
                     {
                         editing?.showSlots?.includes("export") &&
                         <Grid item>
-                            <GridToolbarExport />
+                            <GridToolbarExport csvOptions={{
+                                utf8WithBom: true, // Include BOM for Arabic support
+                            }} />
                         </Grid>
                     }
                     {editing?.isPdf && (
                         <Grid item>
-                            <ExportAsPdf columns={chosenColumns} rows={rows} exportObj={exportObj} />
+                            <ExportAsPdf exportTitle={exportTitle} columns={chosenColumns} rows={rows} exportObj={exportObj} />
                             {/* <MakePdf /> */}
                         </Grid>
                     )}
+                    <Grid item>
+                        <IconButton disabled={pageState.isLoading || loading} onClick={() => {
+                            setFilter()
+                            setSort()
+                            setRefresh(!isRefresh)
+                        }}>
+                            <HiOutlineRefresh style={{ animation: (pageState.isLoading || loading) && 'rotate .5s linear 0s infinite' }} />
+                        </IconButton>
+                    </Grid>
                 </Grid>
             </GridToolbarContainer>
         );
@@ -308,10 +329,10 @@ function CrudDatagrid({ filterParams = [], exportObj, reset, columns, editing = 
 
                 // Hide columns status and traderName, the other columns will remain visible
                 // columnVisibilityModel={hideColumns || []}
-                autoHeight={editing?.autoHeight || false}
+                autoHeight={editing?.autoHeight || true}
                 sx={{
                     bgcolor: 'background.default',
-                    minHeight: '70vh',
+                    // height: '70vh',
                     color: 'neutral.0',
                     borderRadius: '16px',
                     border: 'none',

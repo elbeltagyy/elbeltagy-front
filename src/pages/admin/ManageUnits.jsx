@@ -12,6 +12,7 @@ import { MdDeleteForever, MdEdit } from 'react-icons/md'
 import UnitUpdate from '../../components/content/UnitUpdate'
 import { useDeleteUnitMutation } from '../../toolkit/apis/unitsApi'
 import usePostData from '../../hooks/usePostData'
+import Loader from '../../style/mui/loaders/Loader'
 
 function ManageUnits({ grade, activeUnit, setActiveUnit }) {
 
@@ -21,7 +22,7 @@ function ManageUnits({ grade, activeUnit, setActiveUnit }) {
     const [open, setOpen] = useState(false)
 
     const [openDelete, setOpenDelete] = useState(false)
-    const [sendDelete] = useDeleteUnitMutation()
+    const [sendDelete, deleteStatus] = useDeleteUnitMutation()
     const [deleteUnit] = usePostData(sendDelete)
 
     const deleteFc = async () => {
@@ -46,9 +47,11 @@ function ManageUnits({ grade, activeUnit, setActiveUnit }) {
                                 bgcolor: red[600]
                             }
                         }}
-                        disabled={!activeUnit}
+                        disabled={!activeUnit || deleteStatus.isLoading}
                         onClick={() => setOpenDelete(true)}>
-                        <MdDeleteForever color={'#fff'} opacity={!activeUnit ? .5 : 1} />
+                        {deleteStatus.isLoading ? <Loader /> :
+                            <MdDeleteForever color={'#fff'} opacity={!activeUnit ? .5 : 1} />
+                        }
                     </IconButton>
 
                     <IconButton

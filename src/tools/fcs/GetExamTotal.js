@@ -6,3 +6,12 @@ export const totalDegree = (exam) => {
 
     return total
 }
+
+
+export const getPercentage = (score, total) => {
+    const percentage = (score / total) * 100
+    const rating = percentage >= 85 ? "ممتاز" : percentage >= 75 ? "جيد" : percentage >= 65 ? "متوسط" : "سئ"
+    const ratingColor = percentage >= 85 ? 1 : percentage >= 75 ? 2 : percentage >= 65 ? 2 : 3
+
+    return { score, percentage, rating, total, ratingColor }
+}

@@ -11,6 +11,9 @@ import { SiGooglecampaignmanager360 } from "react-icons/si";
 import { FaSchool } from "react-icons/fa";
 import { LiaSchoolSolid } from "react-icons/lia";
 import { CiBarcode } from "react-icons/ci";
+import { MdOutlineSubscriptions } from "react-icons/md";
+import { GiSecretBook } from "react-icons/gi";
+import { SiHashicorp } from "react-icons/si";
 
 export const sidebarLinks = [
     {
@@ -38,13 +41,13 @@ export const sidebarLinks = [
     }, {
         name: "إدارة المحتوى", icon: <SiGooglecampaignmanager360 size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "عرض الكورسات", icon: <FaSchool size="22px" />, to: "/management/courses", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+        name: "إدارة الكورسات", icon: <FaSchool size="22px" />, to: "/management/courses", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "عرض الاشتراكات", icon: <SignupIcon size="22px" />, to: "/management/subscriptions", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+        name: "عرض الاشتراكات", icon: <MdOutlineSubscriptions size="22px" />, to: "/management/subscriptions", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], disabled: true
     }, {
-        name: "عرض الاكواد", icon: <SignupIcon size="22px" />, to: "/management/codes", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+        name: "عرض الاكواد", icon: <GiSecretBook size="22px" />, to: "/management/codes", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "انشاء كود", icon: <SignupIcon size="22px" />, to: "/management/codes/create", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+        name: "انشاء كود", icon: <SiHashicorp size="22px" />, to: "/management/codes/create", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }
 ]
 // }, {

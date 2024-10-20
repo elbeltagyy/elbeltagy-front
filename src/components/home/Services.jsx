@@ -31,7 +31,7 @@ function Services() {
                                 <div id='earth'></div>
                             </Box>
 
-                            <Typography variant='subtitle1' mt={'-10px'}>
+                            <Typography variant='subtitle1' mt={'-10px'} sx={{p: '0 6px', textAlign: 'center'}}>
                                 خبره <span style={{ color: 'orange' }}>20</span> سنه فى <span style={{ color: 'green' }}>الجيولوجيا</span>
                             </Typography>
                         </FlexColumn>
@@ -51,7 +51,7 @@ function Services() {
                                 <Image ratio={'auto'} img={'/assets/earth-service.png'} />
                             </Box>
 
-                            <Typography variant='subtitle1' mt={'-10px'}>
+                            <Typography variant='subtitle1' mt={'-10px'} sx={{ p: '0 6px', textAlign: 'center' }}>
                                 معانا دايما اوائل <span style={{ color: 'orangered' }}>الجمهوريه</span> على مدار <span style={{ color: 'green' }}>الدفعات</span> اللي فاتت
                             </Typography>
                         </FlexColumn>
@@ -71,7 +71,7 @@ function Services() {
                                 <Nucleus />
                             </Box>
 
-                            <Typography variant='subtitle1' mt={'-10px'}>
+                            <Typography variant='subtitle1' mt={'-10px'} sx={{ p: '0 6px', textAlign: 'center' }}>
                                 إن شاء الله <span style={{ color: 'red' }}>العلوم المتكامله</span> معانا غير اى حد
                             </Typography>
                         </FlexColumn>

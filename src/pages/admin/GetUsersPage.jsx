@@ -89,9 +89,6 @@ function GetUsersPage() {
     }, [])
 
 
-
-
-
     const columns = [
         {
             field: "avatar",
@@ -157,7 +154,8 @@ function GetUsersPage() {
         }, {
             field: 'wallet',
             headerName: lang.WALLET,
-            width: 200
+            width: 200,
+            type: 'number',
         }, {
             field: 'role',
             headerName: lang.ROLE,

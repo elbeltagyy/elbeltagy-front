@@ -18,7 +18,7 @@ import { setUser } from '../../toolkit/globalSlice';
 import { FaSquarePhoneFlip } from 'react-icons/fa6';
 import TitleWithDividers from '../ui/TitleWithDividers';
 
-function UserProfileUpdate({ user, isAdmin = false }) {
+function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
 
     const theme = useTheme()
     const dispatch = useDispatch()
@@ -28,8 +28,13 @@ function UserProfileUpdate({ user, isAdmin = false }) {
 
     const onSubmit = async (values) => {
         const res = await updateProfile(values, true)
-        dispatch(setUser({ ...user, ...res }))
+        if (isAdmin) {
+            setUserAdmin({ ...user, ...res })
+        } else {
+            dispatch(setUser({ ...user, ...res }))
+        }
     }
+
     const inputs = [
         {
             name: "id",
@@ -55,14 +60,15 @@ function UserProfileUpdate({ user, isAdmin = false }) {
             value: user.email,
             icon: <AttachEmailIcon sx={{ color: 'green' }} />,
             width: { xs: '100%', md: '49%' },
-            validation: Yup.string().required(lang.REQUERIED).email('يجب ادخال ايميل صالح')
+            validation: Yup.string().required(lang.REQUERIED).email('يجب ادخال ايميل صالح'),
         }, {
             name: "phone",
             label: lang.PHONE,
             value: user.phone,
             width: { xs: '100%', md: '49%' },
             icon: <FaSquarePhoneFlip color='green' />,
-            validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم")
+            validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم"),
+            disabled: true
         }, {
             name: "familyPhone",
             label: lang.FAMILY_PHONE,

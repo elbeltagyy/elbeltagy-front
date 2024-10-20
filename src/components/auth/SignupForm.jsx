@@ -104,12 +104,14 @@ function SignupForm() {
         }, {
             name: 'password',
             label: lang.PASSWORD,
+            type: 'password',
             icon: <TbPasswordUser color='green' />,
             validation: Yup.string().required("مطلوب").min(6, "يجب ان يكون اكثر من 6")
 
         }, {
             name: 'confirmPassword',
             label: lang.CONFIRM_PASSWORD,
+            type: 'password',
             icon: <TbPasswordUser color='green' />,
             validation: Yup.string().required("مطلوب")
                 .min(6, "يجب ان يكون اكثر من 6").oneOf([Yup.ref('password'), null], 'كلمة المرور غير متطابقه')

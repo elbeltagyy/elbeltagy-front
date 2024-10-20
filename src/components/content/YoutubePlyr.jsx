@@ -37,13 +37,9 @@ function YoutubePlyr({ url }) {
         sources: [
             {
                 src: url,
-                // type: 'video/mp4',
                 provider: 'youtube'
-            },
-        ],
-        // previewThumbnails: {
-        //     src: '/assets/3rd.jpg',
-        // },
+            }
+        ]
     }
 
     const options = {
@@ -51,9 +47,9 @@ function YoutubePlyr({ url }) {
         settings: ['captions', 'quality', 'speed', 'loop'],
 
     }
-   
+
     return <div style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
-        <Plyr ref={vid} source={source} options={options} onPause={(e) => console.log(e)} />
+        <Plyr ref={vid} source={source} />
     </div>
 }
 

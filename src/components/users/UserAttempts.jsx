@@ -3,11 +3,12 @@ import { useLazyGetUserInfoQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import TabInfo from '../ui/TabInfo'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import ms from 'ms'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import { totalDegree } from '../../tools/fcs/GetExamTotal'
+import { Link } from 'react-router-dom'
 
 
 const exportObj = {
@@ -28,6 +29,12 @@ const exportObj = {
     createdAt: (row) => {
         if (row.status) {
             return getDateWithTime(row.createdAt)
+        }
+        return 'لم يؤدى الاختبار'
+    },
+    tokenTime: (row) => {
+        if (row.status) {
+            return ms(row.tokenTime)
         }
         return 'لم يؤدى الاختبار'
     }
@@ -94,6 +101,34 @@ function UserAttempts({ user }) {
             width: 200,
         },
         {
+            field: 'mark',
+            headerName: 'الدرجه',
+            width: 200,
+            type: 'number',
+            renderCell: (params) => {
+                if (!params.row.total) {
+                    return <TabInfo count={'لم يؤدى الاختبار'} i={3} />
+                }
+                return (
+                    <TabInfo count={params.row.mark + '/' + (params.row.total ? params.row.total : "")} i={1} />
+                )
+            }
+        }, {
+            field: 'tokenTime',
+            headerName: 'الوقت الماخوذ',
+            width: 200,
+            renderCell: (params) => {
+                return (
+                    <TabInfo count={ms(params.row.tokenTime)} i={1} />
+                )
+            }
+        },
+        {
+            field: 'time',
+            headerName: 'وقت الاختبار الفعلى',
+            width: 200
+        },
+        {
             field: 'createdAt',
             headerName: 'تاريخ اداء الاختبار',
             width: 200,
@@ -104,33 +139,20 @@ function UserAttempts({ user }) {
                     return <TabInfo count={'لم يؤدى الاختبار'} i={3} />
                 }
             }
-        },
-        {
-            field: 'time',
-            headerName: 'الوقت',
-            width: 200
         }, {
-            field: 'tokenTime',
-            headerName: 'الوقت الماخوذ',
+            field: 'seeAttempt',
+            headerName: 'عرض حل الطالب',
             width: 200,
+            filterable: false,
+            disableExport: true,
+            sortable: false,
             renderCell: (params) => {
-                return (
-                    <TabInfo count={ms(params.row.tokenTime)} i={1} />
-                )
+                return <Button component={Link} to={'/attempts/' + params.row._id}>
+                    عرض الحل
+                </Button>
             }
-        }, {
-            field: 'mark',
-            headerName: 'الدرجه',
-            width: 200,
-            renderCell: (params) => {
-                if (!params.row.total) {
-                    return <TabInfo count={'لم يؤدى الاختبار'} i={3} />
-                }
-                return (
-                    <TabInfo count={params.row.mark + '/' + (params.row.total ? params.row.total : "")} i={1} />
-                )
-            }
-        },
+        }
+
     ]
 
 

@@ -8,7 +8,7 @@ import { Avatar, Box, Button } from '@mui/material'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import Image from '../../components/ui/Image'
 import TabInfo from '../../components/ui/TabInfo'
-import { formatDuration, getFullDate } from '../../settings/constants/dateConstants'
+import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { useLazyGetAttemptsQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import ms from 'ms'
@@ -19,6 +19,29 @@ import Separator from '../../components/ui/Separator'
 import GetAttemptsNot from './GetAttemptsNot'
 import ExamInfo from '../../components/exam/ExamInfo'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { getPercentage, totalDegree } from '../../tools/fcs/GetExamTotal'
+
+
+const exportObj = {
+    createdAt: (row) => {
+        return getDateWithTime(row.createdAt)
+    },
+    percentage: (row) => {
+        let { percentage, rating } = getPercentage(row.mark, row.total)
+        return percentage + '%' + '-' + rating
+    },
+    isActive: (row) => {
+        if (row.isActive) {
+            return 'فعال'
+        } else {
+            return 'غير فعال'
+        }
+    },
+    mark: (row) => {
+        return row.mark + ' / ' + row.total
+    }
+}
+
 
 function GetAttemptsPage() {
     const { lectureId } = useParams()
@@ -37,12 +60,13 @@ function GetAttemptsPage() {
     const fetchFc = async (params) => {
         const res = await getAttempts({ ...params, exam: lecture?.values?.exam?._id })
 
+        let total = totalDegree(lecture?.values?.exam)
         const modifiedRes = res.attempts.map((attempt) => {
             return {
                 ...attempt.user,
                 _id: attempt._id,
                 createdAt: attempt.createdAt,
-                mark: attempt.mark, tokenTime: ms(attempt.tokenTime)
+                mark: attempt.mark, tokenTime: ms(attempt.tokenTime), total
             }
         })
         setAttemptsNums(res.count)
@@ -58,6 +82,7 @@ function GetAttemptsPage() {
             headerName: lang.IMAGE,
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Button sx={{ width: '100%' }} onClick={() => {
@@ -93,6 +118,16 @@ function GetAttemptsPage() {
             type: 'number',
             renderCell: (params) => {
                 return <TabInfo count={(params.row.mark)} i={0} />
+            }
+        }, {
+            field: 'percentage',
+            headerName: 'النسبه',
+            width: 200,
+            filterable: false,
+            sortable: false,
+            renderCell: (params) => {
+                let { percentage, rating, ratingColor } = getPercentage(params.row.mark, params.row.total)
+                return <TabInfo count={(percentage + '%' + '-' + rating)} i={ratingColor} />
             }
         }, {
             field: 'tokenTime',
@@ -136,7 +171,7 @@ function GetAttemptsPage() {
             headerName: 'عرض حل الطالب',
             width: 200,
             filterable: false,
-            exportable: false,
+            disableExport: true,
             sortable: false,
             renderCell: (params) => {
                 return <Button component={Link} to={'/attempts/' + params.row._id}>
@@ -145,7 +180,6 @@ function GetAttemptsPage() {
             }
         }
     ]
-
     return (
         <Section>
             <TitleWithDividers title={'الاختبار : ' + lecture?.values?.name} />
@@ -158,18 +192,18 @@ function GetAttemptsPage() {
             </FlexColumn>
             <MeDatagrid
                 type={'crud'}
+                exportObj={exportObj}
                 columns={columns} fetchFc={fetchFc} loading={status.isLoading}
                 editing={
                     {
                         bgcolor: 'background.alt',
                         showSlots: ["density", "filter", "columns", "export"],
-                        autoHeight: true
+                        autoHeight: true, isPdf: true
                     }
                 }
             />
-
             <Separator color={red[500]} sx={{ width: '300px' }} />
-            <GetAttemptsNot grade={lecture?.values?.grade} course={lecture?.values?.course} exam={lecture?.values?.exam?._id} />
+            <GetAttemptsNot grade={lecture?.values?.grade} lecture={lecture?.values} course={lecture?.values?.course} exam={lecture?.values?.exam?._id} />
 
             <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
                 <Image img={fileConfirm} />

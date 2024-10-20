@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useGetLectureAndCheckQuery, usePassLectureMutation } from '../../toolkit/apis/coursesApi'
 import { Link, useOutletContext, useParams } from 'react-router-dom'
 import VideoGenerate from '../../components/content/VideoGenerate'
@@ -31,6 +31,9 @@ function LecturePage() {
     const [sendData, status] = usePassLectureMutation()
     const [passLecture] = usePostData(sendData)
 
+    useEffect(() => {
+        status.reset()
+    }, [lectureIndex])
 
     if (!lecture) return <LoaderSkeleton />
     // console.log(lecture)
@@ -39,6 +42,7 @@ function LecturePage() {
         const res = await passLecture({ courseId: course, lectureId: lecture._id, nextLectureIndex }) //linked to
         setCurrentIndex(nextLectureIndex)
     }
+
 
     return (
         <FlexColumn sx={{ minHeight: '90vh', backgroundColor: 'background.alt', borderRadius: '16px', p: '12px' }}>

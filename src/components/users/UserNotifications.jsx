@@ -34,16 +34,13 @@ function UserNotifications({ user }) {
         {
             field: "subject",
             headerName: 'عنوان الرساله',
-            disableExport: true,
-            filterable: false,
-            editable: true,
+            editable: true
+
         }, {
             field: "message",
             headerName: 'الرساله',
-            disableExport: true,
-            filterable: false,
-            editable: true,
-            width: 500
+            width: 500,
+            editable: true
         }, {
             field: 'createdAt',
             headerName: 'تاريخ الارسال',

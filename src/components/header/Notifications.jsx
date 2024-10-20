@@ -28,12 +28,20 @@ function Notifications({ user }) {
 
 
     const { data, isLoading, refetch } = useGetUsersNotificationsCountQuery({ user: user._id, isSeen: false })
+    const [notificationsNums, setNums] = useState(0)
 
     const [notifications, setNotifications] = useState([])
     const [getData, status] = useLazyGetNotificationsQuery()
     const [getNotifications] = useLazyGetData(getData)
 
     const [makeSeen] = useLazyMakeSeenQuery()
+
+    useEffect(() => {
+        if (data?.values) {
+            setNums(data?.values?.count)
+        }
+    }, [data])
+
     useEffect(() => {
         const trigger = async () => {
             const res = await getNotifications({ user: user._id })
@@ -46,7 +54,8 @@ function Notifications({ user }) {
     }, [open])
 
     const handleClose = async () => {
-        setAnchorEl(null);
+        setAnchorEl(null)
+        setNums(0)
         if (data?.values?.count !== 0) {
             await makeSeen({ user: user._id })
             await refetch()
@@ -55,14 +64,13 @@ function Notifications({ user }) {
 
     return (
         <div>
-
             <IconButton
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
             >
-                <StyledBadge badgeContent={data?.values?.count} color="error" max={999}>
+                <StyledBadge badgeContent={notificationsNums} color="error" max={999}>
                     {isLoading ? <Loader /> : <NotificationsIcon sx={{
                         color: 'primary.main'
                     }} />}
@@ -76,6 +84,9 @@ function Notifications({ user }) {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
+                sx={{
+                    maxHeight: '70vh'
+                }}
             >
                 {status.isLoading && (
                     <Loader />
@@ -88,7 +99,7 @@ function Notifications({ user }) {
                 {notifications.map((notification, i) => {
                     return <Box p={'12px'} key={i}>
                         <FlexColumn key={i} sx={{ alignItems: 'flex-start' }}>
-                            <Typography variant='subtitle1'>{notification.subject}</Typography>
+                            <Typography variant='subtitle1'>{notification.subject} </Typography>
                             <Typography variant='subtitle2'>{notification.message}</Typography>
                         </FlexColumn>
                     </Box>
