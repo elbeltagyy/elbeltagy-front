@@ -3,7 +3,7 @@ import Section from '../../style/mui/styled/Section'
 import TabInfo from '../../components/ui/TabInfo'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button } from '@mui/material'
+import { Avatar, Box, Button, Typography } from '@mui/material'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import Image from '../../components/ui/Image'
 import useLazyGetData from '../../hooks/useLazyGetData'
@@ -15,6 +15,24 @@ import { useCreateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi
 import usePostData from '../../hooks/usePostData'
 import { useGridApiRef } from '@mui/x-data-grid'
 import Loader from '../../style/mui/loaders/Loader'
+import gradeConstants from '../../settings/constants/gradeConstants'
+import { getDateWithTime } from '../../settings/constants/dateConstants'
+import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
+
+
+const exportObj = {
+    grade: (row) => {
+        return gradeConstants.find(grade => grade.index === row.grade)?.name
+    },
+    isActive: (row) => {
+        if (row.isActive) {
+            return 'فعال'
+        } else {
+            return 'غير فعال'
+        }
+    }
+}
+
 
 function GetSubscriptionsNot({ grade }) {
     const [fileConfirm, setFileConfirm] = useState()
@@ -52,6 +70,7 @@ function GetSubscriptionsNot({ grade }) {
             headerName: lang.IMAGE,
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Button sx={{ width: '100%' }} onClick={() => {
@@ -101,11 +120,28 @@ function GetSubscriptionsNot({ grade }) {
             field: 'familyPhone',
             headerName: lang.FAMILY_PHONE,
             width: 200
+        },
+        {
+            field: "grade",
+            headerName: lang.GRADE,
+            type: 'singleSelect',
+            width: 200,
+            filterable: false,
+            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            renderCell: (params) => {
+                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
+                return (
+                    <Typography>
+                        {grade.name}
+                    </Typography>
+                )
+            }
         }, {
             field: "addsubscribe",
             headerName: 'اضافه اشتراك',
             disableExport: true,
             filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Button sx={{ width: '100%' }} disabled={isLoading} onClick={() => {
@@ -127,12 +163,13 @@ function GetSubscriptionsNot({ grade }) {
             <MeDatagrid
                 type={'crud'}
                 apiRef={apiRef}
+                exportObj={exportObj} exportTitle={'الطلاب الغير مشتركين'}
                 columns={columns} fetchFc={fetchFc} loading={status.isLoading || isLoading}
                 editing={
                     {
                         bgcolor: 'background.alt',
                         showSlots: ["density", "filter", "columns", "export"],
-                        autoHeight: true
+                        autoHeight: true, isPdf: true
                     }
                 }
             />

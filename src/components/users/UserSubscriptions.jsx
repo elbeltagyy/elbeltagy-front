@@ -99,6 +99,8 @@ function UserSubscriptions({ user }) {
             <MeDatagrid
                 type={'simple'}
                 exportObj={exportObj}
+                exportTitle={'الكورسات المشترك فيها ' + ' ' + user.name + (` (${user.userName})`)}
+
                 columns={columns} data={row} loading={status.isLoading}
                 editing={
                     {

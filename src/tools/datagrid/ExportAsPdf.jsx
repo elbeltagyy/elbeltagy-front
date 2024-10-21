@@ -10,8 +10,9 @@ import gradeConstants from '../../settings/constants/gradeConstants';
 // import { myFont } from './Rubik-Regular-normal';
 // import { rubikRegular } from './Rubik-Regular-normal';
 
-function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا بكم في تقرير مستر البلتاجى' }) {
+function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا بكم في تقرير مستر البلتاجى', paginationModel = false }) {
     const [isLoading, setLoading] = useState(false)
+
     const exportPDF = () => {
         setLoading(true)
         const doc = new jsPDF({
@@ -25,9 +26,10 @@ function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا 
 
         doc.setFontSize(10);
 
-        const arabicText = exportTitle;
+        let arabicText = exportTitle;
 
-        doc.text(arabicText, 100, 10, { font: 'Rubik-Regular', halign: 'right', });
+
+
         const selectedColumnsData = columns.filter(col => col.disableExport !== true && col.hidden !== true);
 
         // Prepare table data
@@ -54,12 +56,18 @@ function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا 
         const tableRows = modifiedRows.map(row =>
             selectedColumnsData.map(col => row[col.field]).reverse()
         )
+
+        if (paginationModel) {
+            const pageText = "الصفحه " + (paginationModel.page + 1) + 'و العدد ' + tableRows.length + ' و اقصى عدد فى الملف ' + paginationModel.pageSize
+            arabicText = arabicText + ' ' + pageText
+        }
         //
 
         // console.log('tableCOlumns data ==>', tableColumnTitles)
         // console.log('table rows ==>', tableRows)
 
         // Generate PDF using autoTable
+        doc.text(arabicText, 100, 10, { font: 'Rubik-Regular', halign: 'right', });
         doc.autoTable({
             head: [tableColumnTitles],
             body: tableRows,
@@ -79,7 +87,7 @@ function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا 
             direction: 'rtl'
         });
 
-        doc.save('table.pdf');
+        doc.save(arabicText);
         setLoading(false)
     };
 

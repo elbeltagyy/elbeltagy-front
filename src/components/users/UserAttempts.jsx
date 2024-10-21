@@ -160,6 +160,7 @@ function UserAttempts({ user }) {
         <Box sx={{ width: '100%' }}>
             <TitleWithDividers title={'اختبارات الطالب'} />
             <MeDatagrid
+                exportTitle={'اختبارات الطالب' + ' ' + user.name + (` (${user.userName})`)}
                 editing={
                     {
                         bgcolor: 'background.alt',

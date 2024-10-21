@@ -315,7 +315,7 @@ function GetUsersPage() {
             <MeDatagrid
                 apiRef={apiRef}
                 filterParams={{ grade: grade || 'all' }}
-                type={'crud'} exportObj={exportObj}
+                type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
                 columns={columns} fetchFc={fetchFc} loading={isLoading || updateLoader || deleteLoader} updateFc={updateFc} deleteFc={deleteFc}
                 editing={
                     {

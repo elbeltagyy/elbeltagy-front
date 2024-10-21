@@ -192,7 +192,7 @@ function GetAttemptsPage() {
             </FlexColumn>
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj}
+                exportObj={exportObj} exportTitle={'عدد من ادو الاختبار'}
                 columns={columns} fetchFc={fetchFc} loading={status.isLoading}
                 editing={
                     {

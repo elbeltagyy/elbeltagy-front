@@ -43,7 +43,7 @@ export const sidebarLinks = [
     }, {
         name: "إدارة الكورسات", icon: <FaSchool size="22px" />, to: "/management/courses", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "عرض الاشتراكات", icon: <MdOutlineSubscriptions size="22px" />, to: "/management/subscriptions", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], disabled: true
+        name: "عرض الاشتراكات", icon: <MdOutlineSubscriptions size="22px" />, to: '/statistics/courses', allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
         name: "عرض الاكواد", icon: <GiSecretBook size="22px" />, to: "/management/codes", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {

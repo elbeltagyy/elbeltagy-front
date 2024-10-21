@@ -215,16 +215,15 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
     }, [paginationModel.page, paginationModel.pageSize, sort, filter, reset, isRefresh])
 
 
-    // hide columns 
-    const hideColumns = useMemo(() => {
-        const inVisibleModels = {}
-        editing?.hideColumns?.map(ele => inVisibleModels[ele] = false)
-        return inVisibleModels
+    // // hide columns 
+    // const hideColumns = useMemo(() => {
+    //     const inVisibleModels = {}
+    //     editing?.hideColumns?.map(ele => inVisibleModels[ele] = false)
+    //     return inVisibleModels
 
-    }, [editing?.hideColumns])
+    // }, [editing?.hideColumns])
 
     const [chosenColumns, setColumns] = useState(columns)
-
     // slots
     function CustomToolbar() {
         return (
@@ -258,7 +257,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                     }
                     {editing?.isPdf && (
                         <Grid item>
-                            <ExportAsPdf exportTitle={exportTitle} columns={chosenColumns} rows={rows} exportObj={exportObj} />
+                            <ExportAsPdf paginationModel={paginationModel} exportTitle={exportTitle} columns={chosenColumns} rows={rows} exportObj={exportObj} />
                             {/* <MakePdf /> */}
                         </Grid>
                     )}
