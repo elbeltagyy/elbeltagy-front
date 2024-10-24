@@ -4,8 +4,6 @@ import React, { memo, useMemo, useState } from 'react'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { amiriFont } from './Amiri-Regular-normal';
-import { makeArrWithValueAndLabel } from '../fcs/MakeArray';
-import gradeConstants from '../../settings/constants/gradeConstants';
 // import { amiriFont } from './AmiriQuran-Regular-normal';
 // import { myFont } from './Rubik-Regular-normal';
 // import { rubikRegular } from './Rubik-Regular-normal';
@@ -88,11 +86,15 @@ function ExportAsPdf({ columns, rows, exportObj = {}, exportTitle = 'مرحبا 
         });
 
         doc.save(arabicText);
-        setLoading(false)
+        setTimeout(() => {
+            setLoading(false)
+        }, 5000)
     };
 
     return (
-        <Button disabled={isLoading} onClick={() => exportPDF()}>تصدير ك PDF</Button>
+        <Button disabled={isLoading} onClick={() => exportPDF()}>
+            {isLoading ? 'يتم تصدير الملف ...' : 'تصدير ك PDF'}
+        </Button>
     )
 }
 
