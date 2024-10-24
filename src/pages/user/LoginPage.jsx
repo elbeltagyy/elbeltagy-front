@@ -24,7 +24,7 @@ function LoginPage() {
     const user = useSelector(s => s.global.user)
     const location = useLocation()
     const isPrev = location.state
-    
+
     useEffect(() => {
         if (user && isPrev) {
             navigate(-1)
@@ -41,7 +41,7 @@ function LoginPage() {
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
                 {/* banner */}
-                <BannerAuth title={lang.LOGIN_ENTRY} img={'assets/login.png'} />
+                <BannerAuth title={lang.LOGIN_ENTRY} img={'https://wallpaperaccess.com/full/17598.jpg'} />
 
                 {/* Login form */}
                 <Box sx={{

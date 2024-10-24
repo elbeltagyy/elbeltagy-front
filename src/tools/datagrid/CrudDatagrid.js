@@ -10,7 +10,7 @@ import { Box, Button, CircularProgress, Grid, IconButton, styled, Typography, us
 import ModalStyled from '../../style/mui/styled/ModalStyled';
 import ExportAsPdf from './ExportAsPdf';
 import { HiOutlineRefresh } from "react-icons/hi";
-
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 // import MakePdf from './MakePdf';
 
 
@@ -25,7 +25,7 @@ import { HiOutlineRefresh } from "react-icons/hi";
 
 
 
-function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef }) {
+function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc }) {
 
     const [isOpen, setOpenModal] = useState(false)
     const [deleteId, setDeleteId] = useState("")
@@ -132,7 +132,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
-            width: 100,
+            width: 150,
             cellClassName: 'actions',
             getActions: (params) => {
                 const isInEditMode = rowModesModel[params.id]?.mode === GridRowModes.Edit;
@@ -158,10 +158,25 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                         />,
                     ];
                 }
-
-                return [
-                    <GridActionsCellItem
+                const actionsArr = []
+                if (viewFc) {
+                    actionsArr.push(<GridActionsCellItem
                         key={1}
+                        icon={<RemoveRedEyeIcon />}
+                        label="View"
+                        className="textPrimary"
+                        onClick={() => {
+                            if (!viewFc) {
+                                return alert("لا يمكن عرض الصف !")
+                            }
+                            viewFc(params.row)
+                        }}
+                        color="inherit"
+                    />)
+                }
+                if (updateFc) {
+                    actionsArr.push(<GridActionsCellItem
+                        key={2}
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
@@ -172,9 +187,12 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                             handleEditClick(params.id)
                         }}
                         color="inherit"
-                    />,
-                    <GridActionsCellItem
-                        key={1}
+                    />)
+                }
+
+                if (deleteFc) {
+                    actionsArr.push(<GridActionsCellItem
+                        key={3}
                         icon={<DeleteIcon />}
                         label="Delete"
                         onClick={() => {
@@ -185,8 +203,9 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                             setOpenModal(true)
                         }}
                         color="inherit"
-                    />,
-                ];
+                    />)
+                }
+                return actionsArr;
             },
         }]
     }, [columns, rowModesModel])

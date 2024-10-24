@@ -3,7 +3,7 @@ import SimpleDatagrid from './SimpleDatagrid'
 import ServerSideDatagrid from './ServerSideDatagrid'
 import CrudDatagrid from './CrudDatagrid'
 
-export default function MeDatagrid({ type, data, exportObj, exportTitle, filterParams, reset, columns, editing, loading, fetchFc, updateFc, deleteFc, apiRef }) {
+export default function MeDatagrid({ type, data, exportObj, exportTitle, filterParams, reset, columns, editing, loading, viewFc, fetchFc, updateFc, deleteFc, apiRef }) {
 
     // simple data grid , server side , crud
     if (type === "server") return <ServerSideDatagrid editing={editing} rows={data} columns={columns} loading={loading} fetchFc={fetchFc} />
@@ -12,6 +12,7 @@ export default function MeDatagrid({ type, data, exportObj, exportTitle, filterP
         exportTitle={exportTitle}
         exportObj={exportObj}
         apiRef={apiRef}
+        viewFc={viewFc}
         editing={editing}
         filterParams={filterParams}
         columns={columns} reset={reset}

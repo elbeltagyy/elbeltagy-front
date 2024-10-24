@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { sidebarLinks } from '../../settings/sidebarLinks'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { RtArrow } from './Icons';
+import { user_roles } from '../../settings/constants/roles';
 
 
 function LoggedListLinks({ user, setSidebar }) {
@@ -32,7 +33,7 @@ function LoggedListLinks({ user, setSidebar }) {
                     )
                 }
 
-                if ((link.allowedTo?.includes(user?.role) && user) || (!user && !link.allowedTo)) { //?.allowedTo?.includes(user?.role)
+                if ((link.allowedTo?.includes(user?.role) && user) || !link.allowedTo || (link.allowedTo.includes(user_roles.NOT_USER) && !user)) { //?.allowedTo?.includes(user?.role)
 
                     return (
                         <ListItem key={i} sx={{ p: "0 10px" }}>
@@ -84,7 +85,7 @@ function LoggedListLinks({ user, setSidebar }) {
                         </ListItem>
                     )
                 }
-                return false
+                return
             })}
         </List>
     )

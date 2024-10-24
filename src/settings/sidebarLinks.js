@@ -14,12 +14,16 @@ import { CiBarcode } from "react-icons/ci";
 import { MdOutlineSubscriptions } from "react-icons/md";
 import { GiSecretBook } from "react-icons/gi";
 import { SiHashicorp } from "react-icons/si";
+import { FcPrivacy } from "react-icons/fc";
+import { RiEditCircleFill } from "react-icons/ri";
 
 export const sidebarLinks = [
     {
-        name: "تسجيل الدخول", icon: <LoginIcon size="22px" />, to: "/login",
+        name: "تسجيل الدخول", icon: <LoginIcon size="22px" />, to: "/login", allowedTo: [user_roles.NOT_USER]
     }, {
-        name: "انشاء حساب", icon: <SignupIcon size="22px" />, to: "/signup",
+        name: "انشاء حساب", icon: <SignupIcon size="22px" />, to: "/signup", allowedTo: [user_roles.NOT_USER]
+    }, {
+        name: "سياسات الموقع", icon: <FcPrivacy size="22px" />, to: "/privacy"
     }, {
         name: "الكورسات", icon: <LiaSchoolSolid size="22px" />, to: "/grades", allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
@@ -48,6 +52,8 @@ export const sidebarLinks = [
         name: "عرض الاكواد", icon: <GiSecretBook size="22px" />, to: "/management/codes", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
         name: "انشاء كود", icon: <SiHashicorp size="22px" />, to: "/management/codes/create", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+    }, {
+        name: "إدارة سياسات الموقع", icon: <RiEditCircleFill size="22px" />, to: "/management/privacy", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }
 ]
 // }, {

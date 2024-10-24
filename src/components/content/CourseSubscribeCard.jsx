@@ -64,7 +64,10 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
 
                     <FilledHoverBtn sx={{ mt: '16px', width: '100%' }} onClick={() => setOpen(true)} disabled={status.isLoading} > {status.isLoading ? <Loader color={'orange'} /> : "اشترك الان"} </FilledHoverBtn>
 
-                    <Link href="#" underline="hover" mr={'auto'}>
+                    <Link href="/privacy" underline="hover" mr={'auto'} onClick={(e) => {
+                        e.preventDefault()
+                        navigate("/privacy")
+                    }}>
                         سياسه شراء الكورسات
                     </Link>
 

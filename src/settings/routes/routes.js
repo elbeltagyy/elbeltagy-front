@@ -10,6 +10,8 @@ import gradesRoutes from "./gradesRoutes";
 import { manageCoursesRoutes } from "./manageCoursesRoutes";
 import { codesRoutes } from "./codesRoutes";
 import { statisticsRoutes } from "./statisticsRoutes";
+import PrivacyPage from "../../pages/user/PrivacyPage";
+import ManagePrivacyPage from "../../pages/admin/ManagePrivacyPage";
 
 const ErrorPage = lazy(() => import("../../pages/errors/ErrorPage"))
 const NotFoundPage = lazy(() => import("../../pages/errors/NotFoundPage"))
@@ -25,8 +27,11 @@ export const routes = [
         children: [
             {
                 index: true, element: <HomePage />
-            },
-            {
+            }, {
+                path: '/privacy', element: <PrivacyPage />
+            }, {
+                path: '/management/privacy', element: <ManagePrivacyPage />
+            }, {
                 path: '/user', children: userRoutes
             }, {
                 path: '/grades', children: gradesRoutes
