@@ -19,7 +19,7 @@ export default function CardCourse({ img, title, children, borderColor }) {
           filter: 'saturate(140%) !important', transform: 'scale(1.1)'
 
         },
-        '&:hover > div': {
+        '&:hover > div:nth-of-type(2)': {
           transform: 'scale(1.1)'
         },
       }}

@@ -73,7 +73,7 @@ export default function Sidebar({ isOpenedSideBar, setSideBar, isMobileScreen, s
                     <ErrorBtn sx={{ mx: "10px", width: '100%' }} disabled={isLoading} onClick={(() => {
                         setModal(true)
                     })} >
-                        {isLoading ? <Loader /> : lang.LOGOUT}
+                        {isLoading ? <Loader color={'grey.0'} /> : lang.LOGOUT}
                     </ErrorBtn>
                 </Box>}
 

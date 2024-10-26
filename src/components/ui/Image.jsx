@@ -1,9 +1,9 @@
-import { ImageListItem } from '@mui/material'
+import { Box, ImageListItem } from '@mui/material'
 import React from 'react'
 
 function Image({ img, title, maxWidth = '100vh', sx, ratio = 16 / 9 }) {
     return (
-        <ImageListItem sx={{
+        <Box sx={{
             overflow: 'hidden',
             borderRadius: '16px', aspectRatio: ratio, maxWidth: maxWidth, ...sx,
             transition: '.3s all ease',
@@ -19,7 +19,7 @@ function Image({ img, title, maxWidth = '100vh', sx, ratio = 16 / 9 }) {
                     transition: '.3s all ease',
                 }}
             />
-        </ImageListItem>
+        </Box>
     )
 }
 

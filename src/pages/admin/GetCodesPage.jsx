@@ -93,7 +93,6 @@ function GetCodesPage() {
             renderCell: (params) => {
                 return (
                     <Button onClick={() => {
-                        console.log(params.row.usedBy)
                         setUsedby(params.row.usedBy)
                         setOpenUsedBy(true)
                     }}>

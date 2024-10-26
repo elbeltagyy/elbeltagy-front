@@ -14,7 +14,7 @@ function MakeFile({ inputName, input, props, value }) {
     const [deleteFile] = usePostData(sendData)
 
     const removeFile = async () => {
-        if (value) {
+        if (value?.url) {
             await deleteFile({ ...value })
         }
         props.setFieldValue(inputName, '')

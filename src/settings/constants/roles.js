@@ -5,5 +5,4 @@ export const user_roles = {
     ONLINE: 'اونلاين',
     INREVIEW: "تحت المراجعه",
     NOT_USER: 'غير مسجل'
-
 }

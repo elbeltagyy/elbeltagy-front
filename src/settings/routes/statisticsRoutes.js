@@ -18,6 +18,8 @@ export const statisticsRoutes = [
         </ProtectedRoute>
     },
     {
-        path: '/statistics/exams/:lectureId', element: <GetAttemptsPage />
+        path: '/statistics/exams/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+            <GetAttemptsPage />
+        </ProtectedRoute>
     },
 ]

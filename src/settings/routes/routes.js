@@ -1,8 +1,10 @@
 import TestPage from "../../pages/test/TestPage";
 import Layout from "../../pages/Layout";
 import { lazy } from 'react'
+
 import LoginPage from "../../pages/user/LoginPage";
 import SignupPage from "../../pages/user/SignupPage";
+
 import { userRoutes } from "./userRoutes";
 import { manageUserRoutes } from "./manageUserRoutes";
 import { manageSessionRoutes } from "./manageSessionRoutes";
@@ -10,8 +12,8 @@ import gradesRoutes from "./gradesRoutes";
 import { manageCoursesRoutes } from "./manageCoursesRoutes";
 import { codesRoutes } from "./codesRoutes";
 import { statisticsRoutes } from "./statisticsRoutes";
-import PrivacyPage from "../../pages/user/PrivacyPage";
-import ManagePrivacyPage from "../../pages/admin/ManagePrivacyPage";
+import ProtectedRoute from "./ProtectedRoute";
+import { user_roles } from "../constants/roles";
 
 const ErrorPage = lazy(() => import("../../pages/errors/ErrorPage"))
 const NotFoundPage = lazy(() => import("../../pages/errors/NotFoundPage"))
@@ -20,6 +22,10 @@ const HomePage = lazy(() => import("../../pages/HomePage"))
 const ExamStartPage = lazy(() => import("../../pages/user/ExamStartPage"))
 const AttemptPage = lazy(() => import("../../pages/user/AttemptPage"))
 const LectureCenterPage = lazy(() => import("../../pages/user/LectureCenterPage"))
+
+const ManagePrivacyPage = lazy(() => import("../../pages/admin/ManagePrivacyPage"))
+const PrivacyPage = lazy(() => import("../../pages/user/PrivacyPage"))
+
 
 export const routes = [
     {
@@ -30,17 +36,25 @@ export const routes = [
             }, {
                 path: '/privacy', element: <PrivacyPage />
             }, {
-                path: '/management/privacy', element: <ManagePrivacyPage />
+                path: '/management/privacy', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+                    <ManagePrivacyPage />
+                </ProtectedRoute>
             }, {
                 path: '/user', children: userRoutes
             }, {
                 path: '/grades', children: gradesRoutes
             }, {
-                path: '/lectures/:lectureId', element: <LectureCenterPage />
+                path: '/lectures/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.STUDENT]}>
+                    <LectureCenterPage />
+                </ProtectedRoute>
             }, {
-                path: '/exams/:examId', element: <ExamStartPage />
+                path: '/exams/:examId', element: <ProtectedRoute allowedTo={[user_roles.ONLINE, user_roles.STUDENT]}>
+                    <ExamStartPage />
+                </ProtectedRoute>
             }, {
-                path: '/attempts/:attemptId', element: <AttemptPage />
+                path: '/attempts/:attemptId', element: <ProtectedRoute>
+                    <AttemptPage />
+                </ProtectedRoute>
             }, {
                 path: '/statistics', children: statisticsRoutes
             }, {
@@ -56,7 +70,9 @@ export const routes = [
             }, {
                 path: '/signup', element: <SignupPage />
             }, {
-                path: '/test', element: <TestPage />
+                path: '/test', element: <ProtectedRoute>
+                    <TestPage />
+                </ProtectedRoute>
             }, {
                 path: '/assets/*', element: <NotFoundPage />
             }, {

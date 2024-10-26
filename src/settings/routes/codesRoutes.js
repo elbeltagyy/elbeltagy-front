@@ -2,8 +2,6 @@ import { lazy } from "react";
 import { user_roles } from "../constants/roles";
 import ProtectedRoute from "./ProtectedRoute"
 
-// import CreateCodePage from "../../pages/codes/CreateCodePage";
-// import GetCodesPage from "../../pages/codes/GetCodesPage";
 const GetCodesPage = lazy(() => import("../../pages/admin/GetCodesPage"))
 const CreateCodePage = lazy(() => import("../../pages/admin/CreateCodePage"))
 

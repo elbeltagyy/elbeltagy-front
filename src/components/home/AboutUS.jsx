@@ -3,6 +3,7 @@ import React from 'react'
 
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import Image from '../ui/Image'
+import VideoYoutube from '../content/VideoYoutube'
 const SERVICES_HEADER1 = 'كيفية تحقيق اقصى'
 const ServicesHeader2 = 'استفاده من'
 const ServicesHeader3 = 'منصتنا'
@@ -19,16 +20,17 @@ function AboutUS() {
     return (
         <Box sx={{
             // minHeight: '100vh',
-            background: 'linear-gradient(to left, #fdc830, #f37335)',
+            // background: 'linear-gradient(to left, #fdc830, #f37335)',
+            background: '#ffd549',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            p: 1,
+            p: '26px 12px',
             width: '100%',
             position: 'relative'
         }}>
             <Box sx={{
-                // backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                 position: 'absolute', top: 0, left: '0',
                 width: '100%', height: '100%', zIndex: 1
             }} />
@@ -38,22 +40,23 @@ function AboutUS() {
                 <FlexColumn sx={{ position: 'relative' }}>
                     <Image ratio={'auto'} img={'/assets/quote.png'} sx={{ zIndex: 0, filter: 'drop-shadow(4px 5px 4px rgba(100,100,100,.1))' }} />
 
-                    <Typography variant='subBanner' component={'h5'} sx={{
-                        color: 'grey.1000',
-                        zIndex: 1, position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: { xs: '.9rem', sm: '1.5rem' }
+                    <Typography variant='h6' component={'h5'} sx={{
+                        color: '#16264c',
+                        fontFamily: 'Lemonada,sans-serif',
+                        zIndex: 1, position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: '1.8rem',//{ xs: '.9rem', sm: '1.5rem' }
                     }}>
                         شد حيلك يا بطل
-                        <span style={{ color: 'blue' }}> متضيعش وقت</span>
-                        <span style={{ color: 'red' }}> مستقبلك بين ايديك</span>
+                        <span style={{ color: '' }}> متضيعش وقت</span>
+                        <span style={{ color: '' }}> مستقبلك بين ايديك</span>
                     </Typography>
                 </FlexColumn>
 
 
-
                 <Box sx={{
-                    width: '100%', maxWidth: '800px', bgcolor: '#ddd', borderRadius: '16px', aspectRatio: '2/1', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: theme.shadows[8]
+                    width: '100%', maxWidth: '800px', bgcolor: '#ddd', borderRadius: '16px', boxShadow: theme.shadows[20], mt: '16px'
                 }}>
-                    <LogosYoutubeIcon size={'3rem'} />
+                    <VideoYoutube url={'https://youtu.be/ywGV4VT0gKU?si=0924vSlwBPf6-ILU'} />
+                    {/* <LogosYoutubeIcon size={'3rem'} />  aspectRatio: '2/1',*/}
                 </Box>
             </FlexColumn>
 

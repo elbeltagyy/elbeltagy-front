@@ -1,10 +1,9 @@
 import { lazy } from "react";
 import { user_roles } from "../constants/roles";
 import ProtectedRoute from "./ProtectedRoute";
-import GetSubscriptionsAll from "../../pages/admin/GetSubscriptionsAll";
-import GetSubscriptionsCourse from "../../pages/admin/GetSubscriptionsCourse";
 
-const GetSubscribedCourses = lazy(() => import("../../pages/subscribtions/GetSubscribedCourses"))
+const GetSubscriptionsAll = lazy(() => import("../../pages/admin/GetSubscriptionsAll"))
+const GetSubscriptionsCourse = lazy(() => import("../../pages/admin/GetSubscriptionsCourse"))
 
 export const subscriptions = [
     {

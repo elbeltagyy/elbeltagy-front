@@ -17,22 +17,8 @@ export const userRoutes = [
         </ProtectedRoute>
     },
     {
-        path: '/user/recharge_code', element: <RechargeCodePage />
+        path: '/user/recharge_code', element: <ProtectedRoute allowedTo={[user_roles.STUDENT, user_roles.ONLINE]}>
+            <RechargeCodePage />
+        </ProtectedRoute>
     },
-    // {
-    //     path: '/user/payments', element: <>profile is here</>
-    // },
-    // {
-    //     path: '/user/statistics', element: <ProtectedRoute allowedTo={[user_roles.ONLINE, user_roles.STUDENT]}>
-    //         statistics
-    //     </ProtectedRoute>
-    // }, {
-    //     path: '/user/recharge_code', element: <ProtectedRoute allowedTo={[user_roles.ONLINE, user_roles.STUDENT]}>
-    //         <RechargeCodePage />
-    //     </ProtectedRoute>
-    // }, {
-    //     path: '/user/payments', element: <ProtectedRoute allowedTo={[user_roles.ONLINE, user_roles.STUDENT]}>
-    //         <UserPayments />
-    //     </ProtectedRoute>
-    // }
 ]

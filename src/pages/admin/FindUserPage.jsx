@@ -1,25 +1,28 @@
-import React, { useState } from 'react'
-import Section from '../../style/mui/styled/Section'
-import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import { Alert, Box, Button, TextField } from '@mui/material'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import Separator from '../../components/ui/Separator'
-import { FilledHoverBtn } from '../../style/buttonsStyles'
-import { useLazyGetOneUserQuery } from '../../toolkit/apis/usersApi'
-import { useGetCodesQuery } from '../../toolkit/apis/codesApi'
-import useLazyGetData from '../../hooks/useLazyGetData'
-import WrapperHandler from '../../tools/WrapperHandler'
+import { useState } from 'react'
+import { Alert, Box, TextField } from '@mui/material'
+import { useSearchParams } from 'react-router-dom';
+
 import Loader from '../../style/mui/loaders/Loader'
+import Section from '../../style/mui/styled/Section'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FilledHoverBtn } from '../../style/buttonsStyles'
+
+import useLazyGetData from '../../hooks/useLazyGetData'
+import { useLazyGetOneUserQuery } from '../../toolkit/apis/usersApi'
+import WrapperHandler from '../../tools/WrapperHandler'
+
+import Separator from '../../components/ui/Separator'
+import TitleWithDividers from '../../components/ui/TitleWithDividers'
+import UserAttempts from '../../components/users/UserAttempts'
 import UserHeader from '../../components/ui/UserHeader'
-import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import UserCodes from '../../components/users/UserCodes'
 import UserSubscriptions from '../../components/users/UserSubscriptions'
-import UserAttempts from '../../components/users/UserAttempts'
 import UserNotifications from '../../components/users/UserNotifications'
 import UserProfileUpdate from '../../components/users/UserProfileUpdate'
 
 function FindUserPage() {
-    const [userName, setUserName] = useState()
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [userName, setUserName] = useState(searchParams.get('userName') || '')
     const [searchedUserName, setSearchedUserName] = useState()
 
     const [user, setUser] = useState()
@@ -27,9 +30,13 @@ function FindUserPage() {
     const [getByUserName] = useLazyGetData(getData)
 
     const findUser = async () => {
+        setUser()
         setSearchedUserName(userName)
         const res = await getByUserName(userName)
         setUser(res)
+        setSearchParams({
+            userName
+        });
     }
 
     return (
@@ -43,6 +50,7 @@ function FindUserPage() {
                         placeholder={'اسم المستخدم فقط'}
                         fullWidth
                         color='warning'
+                        value={userName}
                         onChange={(e) => { setUserName(e.target.value) }}
                     />
 

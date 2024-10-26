@@ -1,33 +1,32 @@
+import { useEffect, useState } from 'react'
 import { Avatar, Box, Button, Typography } from '@mui/material'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useGridApiRef } from '@mui/x-data-grid'
+import { useNavigate } from 'react-router-dom';
 
 import { user_roles } from '../../settings/constants/roles'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { lang } from '../../settings/constants/arlang'
+import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 
 import Section from "../../style/mui/styled/Section"
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 
+import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
+import MeDatagrid from '../../tools/datagrid/MeDatagrid'
+
+import { useLazyGetUsersCountQuery } from '../../toolkit/apis/statisticsApi'
+import { useDeleteUserMutation, useLazyGetUsersQuery, useUpdateUserMutation } from '../../toolkit/apis/usersApi'
+import usePostData from '../../hooks/usePostData'
+import useLazyGetData from '../../hooks/useLazyGetData'
+
+import CreateUser from '../../components/users/CreateUser'
 import TabInfo from '../../components/ui/TabInfo'
 import TitleSection from '../../components/ui/TitleSection'
 import GradesTabs from '../../components/grades/GradesTabs'
-// import CreateUser from '../../components/users/CreateUser'
-
-import { filterArrWithValue, makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
-import MeDatagrid from '../../tools/datagrid/MeDatagrid'
-
-import usePostData from '../../hooks/usePostData'
-import { useLazyGetUsersCountQuery } from '../../toolkit/apis/statisticsApi'
-import useLazyGetData from '../../hooks/useLazyGetData'
-import { useDeleteUserMutation, useLazyGetUsersQuery, useUpdateUserMutation } from '../../toolkit/apis/usersApi'
 import Image from '../../components/ui/Image'
-import CreateUser from '../../components/users/CreateUser'
-import { useGridApiRef } from '@mui/x-data-grid'
-import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
-
-
+// import CreateUser from '../../components/users/CreateUser'
 
 
 const exportObj = {
@@ -53,6 +52,8 @@ const exportObj = {
 
 function GetUsersPage() {
 
+    const navigate = useNavigate()
+
     const [fileConfirm, setFileConfirm] = useState()
     const [openFileModal, setOpenFileModal] = useState(false)
 
@@ -61,7 +62,7 @@ function GetUsersPage() {
     const [open, setOpen] = useState(false)
 
     //get users
-    const [getData, { isLoading, data }] = useLazyGetUsersQuery()
+    const [getData, { isLoading }] = useLazyGetUsersQuery()
     const [getUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
@@ -71,7 +72,7 @@ function GetUsersPage() {
     }
 
     //get users count
-    const [getStatistics, status] = useLazyGetUsersCountQuery()
+    const [getStatistics] = useLazyGetUsersCountQuery()
     const [getUsersCount] = useLazyGetData(getStatistics)
 
     useEffect(() => {
@@ -284,7 +285,10 @@ function GetUsersPage() {
         await deleteUser({ _id: id })
     }
 
-
+    const viewFc = (user) => {
+        navigate('/management/users/view?userName=' + user.userName)
+    }
+    
     // reset device registered
     const apiRef = useGridApiRef();
     const [userToRegister, setUserRegister] = useState()
@@ -316,7 +320,8 @@ function GetUsersPage() {
                 apiRef={apiRef}
                 filterParams={{ grade: grade || 'all' }}
                 type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
-                columns={columns} fetchFc={fetchFc} loading={isLoading || updateLoader || deleteLoader} updateFc={updateFc} deleteFc={deleteFc}
+                columns={columns}
+                viewFc={viewFc} fetchFc={fetchFc} loading={isLoading || updateLoader || deleteLoader} updateFc={updateFc} deleteFc={deleteFc}
                 editing={
                     {
                         bgcolor: 'background.alt',

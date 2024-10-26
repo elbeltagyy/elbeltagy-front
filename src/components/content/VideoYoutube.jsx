@@ -50,20 +50,6 @@ const VideoYoutube = ({ url }) => {
                     }}
                 />
             </div>
-
-            {/* Overlay to prevent redirection */}
-            {/* <div
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'transparent',
-                    // pointerEvents: 'none', // Prevent clicks on overlay but allows seeing the video
-                    zIndex: 5
-                }}
-            /> */}
         </div>
     );
 };
