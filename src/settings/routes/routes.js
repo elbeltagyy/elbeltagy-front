@@ -14,6 +14,7 @@ import { codesRoutes } from "./codesRoutes";
 import { statisticsRoutes } from "./statisticsRoutes";
 import ProtectedRoute from "./ProtectedRoute";
 import { user_roles } from "../constants/roles";
+import { couponsRoutes } from "./couponsRoutes";
 
 const ErrorPage = lazy(() => import("../../pages/errors/ErrorPage"))
 const NotFoundPage = lazy(() => import("../../pages/errors/NotFoundPage"))
@@ -59,6 +60,8 @@ export const routes = [
                 path: '/statistics', children: statisticsRoutes
             }, {
                 path: '/management/codes', children: codesRoutes,
+            }, {
+                path: '/management/coupons', children: couponsRoutes,
             }, {
                 path: '/management/users', children: manageUserRoutes
             }, {

@@ -1,6 +1,5 @@
-import { Alert, Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { Form, Formik } from 'formik';
-import React from 'react'
 
 import * as Yup from "yup"
 import MakeInput from './MakeInput';
@@ -9,7 +8,7 @@ import { FilledHoverBtn } from '../../style/buttonsStyles';
 
 const SEND = 'إرسال'
 
-export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true }) {
+export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {} }) {
 
 
     let data = {}
@@ -39,7 +38,7 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
             <Box width={"100%"}>
                 <Formik enableReinitialize={enableReinitialize} initialValues={data} onSubmit={onSubmit} validationSchema={validationSchema} validateOnChange={false}>
                     {(props) => (
-                        <Form onChange={() => props.validateForm()} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                        <Form onChange={() => props.validateForm()} style={{ display: 'flex', alignItems: 'center', flexDirection: formDirection }}>
 
                             <Box display={"flex"} justifyContent={"space-between"} flexWrap={"wrap"} width={'100%'} >
                                 {inputs && inputs.map((input, i) => {
@@ -55,7 +54,7 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
                                 type='submit'
                                 disabled={status?.isLoading || !props.dirty ? true : false}
                                 sx={{
-                                    width: btnWidth || '100%'
+                                    width: btnWidth || '100%', py: '10px', ...btnStyle
                                 }}
                             >
                                 {status?.isLoading ? <Loader color={'#fff'} /> : SEND}

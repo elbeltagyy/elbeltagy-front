@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import CreateFormik from './CreateFormik'
 import WrapperHandler from '../WrapperHandler'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 
-export default function MakeForm({ inputs, status, onSubmit, btnWidth, enableReinitialize , modalInfo }) {
+export default function MakeForm({ inputs, status, onSubmit, btnWidth, enableReinitialize, modalInfo, formDirection, btnStyle }) {
 
     const [open, setOpen] = useState(false);
     const [values, setValues] = useState(null)
@@ -22,7 +22,12 @@ export default function MakeForm({ inputs, status, onSubmit, btnWidth, enableRei
 
     return (
         <>
-            <CreateFormik inputs={inputs} onSubmit={openModal} status={status} btnWidth={btnWidth} enableReinitialize={enableReinitialize} />
+            <CreateFormik
+                inputs={inputs}
+                onSubmit={openModal}
+                status={status} btnWidth={btnWidth} enableReinitialize={enableReinitialize}
+                formDirection={formDirection} btnStyle={btnStyle}
+            />
             <WrapperHandler status={status} showSuccess={true} />
             <ModalStyled open={open} setOpen={setOpen} title={modalInfo?.title || ""} desc={modalInfo?.desc || ''} action={handleSubmit} />
         </>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import TitleWithDividers from '../ui/TitleWithDividers'
-import { FlexBetween, FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
+import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import { OutLinedHoverBtn } from '../../style/buttonsStyles'
 import TabInfo from '../ui/TabInfo'
 import Separator from '../ui/Separator'
@@ -8,9 +8,8 @@ import CourseUpdate from './CourseUpdate'
 
 import { useDeleteCourseMutation, useLazyGetOneCourseQuery } from '../../toolkit/apis/coursesApi'
 import useLazyGetData from "../../hooks/useLazyGetData"
-import Text from '../../tools/text/Text'
 import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
-import { Alert, Box, Button } from '@mui/material'
+import { Alert, Button } from '@mui/material'
 import { lang } from '../../settings/constants/arlang'
 
 import { FcStatistics } from "react-icons/fc";
@@ -24,6 +23,7 @@ import usePostData from '../../hooks/usePostData'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import Loader from '../../style/mui/loaders/Loader'
 import WrapperHandler from '../../tools/WrapperHandler'
+// import {   MingcuteCouponFill } from '../icons/Icons'
 
 
 function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
@@ -76,12 +76,26 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
                         <TabInfo count={course?.isActive ? lang.ACTIVE : lang.NOT_ACTIVE} title={lang.IS_ACTIVE} i={course?.isActive ? 1 : 3} />
                         <TabInfo count={course.price + " " + lang.POUND} title={lang.PRICE} i={0} />
                         <TabInfo count={getFullDate(course.createdAt)} title={'تاريخ الانشاء'} i={1} />
+
                         {course.dateStart && (
                             <TabInfo count={getFullDate(course.dateStart)} title={'تاريخ البدايه'} i={1} />
                         )}
                         {course.dateEnd && (
                             <TabInfo count={getFullDate(course.dateEnd)} title={'تاريخ النهايه'} i={3} />
                         )}
+                        <Button
+                            component={Link}
+                            to={'/management/courses/' + course._id + '/coupons'}
+                            color="success"
+                            sx={{
+                                color: 'grey.0'
+                            }}
+                            // endIcon={<MingcuteCouponFill size={'1.5rem'}
+                            // />}
+                            disabled={statusDelete.isLoading} variant='contained' >
+                            عرض الكوبونات
+                        </Button>
+
                         <Button color="error" disabled={statusDelete.isLoading} onClick={() => setOpen(true)} variant='contained' endIcon={<MdRemoveCircleOutline size={'1.5rem'}
                         />}>
                             {statusDelete.isLoading ? <Loader color="#fff" /> : ' حذف الكورس'}

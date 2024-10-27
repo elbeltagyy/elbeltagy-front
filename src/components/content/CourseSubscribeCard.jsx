@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { Chip, Link } from '@mui/material'
+import { orange } from '@mui/material/colors'
+
 import CardCourse from '../ui/CardCourse'
 import RowInfo from '../ui/RowInfo'
-import { AiFillPoundCircle } from 'react-icons/ai'
 import Separator from '../ui/Separator'
 import TabInfo from '../ui/TabInfo'
+
 import { FilledHoverBtn } from '../../style/buttonsStyles'
-import WrapperHandler from '../../tools/WrapperHandler'
-import { Chip, Link } from '@mui/material'
 import Loader from '../../style/mui/loaders/Loader'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
-import { useDispatch, useSelector } from 'react-redux'
+
+import { getFullDate } from '../../settings/constants/dateConstants'
+import { lang } from '../../settings/constants/arlang'
+
 import usePostData from '../../hooks/usePostData'
 import { setUser } from '../../toolkit/globalSlice'
-import { getFullDate } from '../../settings/constants/dateConstants'
-import { useNavigate } from 'react-router-dom'
-import { lang } from '../../settings/constants/arlang'
+import WrapperHandler from '../../tools/WrapperHandler'
 import { useSubscribeMutation } from '../../toolkit/apis/coursesApi'
-import { orange } from '@mui/material/colors'
+
+import { AiFillPoundCircle } from 'react-icons/ai'
 import { IoIosRadio } from 'react-icons/io'
+import CourseCoupon from './CourseCoupon'
 
 function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
 
@@ -32,12 +39,20 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
     const [sendData, status] = useSubscribeMutation()
     const [subscribeFc] = usePostData(sendData)
 
+    const [openCoupen, setOpenCoupen] = useState(false)
+    const toggleCoupon = () => {
+        setOpenCoupen(!openCoupen)
+    }
     const subscribe = async () => {
         setOpen(false)
         if (!user) {
             return navigate('/login', { state: true })
         }
-        const res = await subscribeFc({ course: course._id })
+        const subObj = { course: course._id }
+        if (course.coupon) {
+            subObj.coupon = course.coupon
+        }
+        const res = await subscribeFc(subObj)
         dispatch(setUser({ ...user, wallet: res.wallet }))
         setCourseDetails((pre) => {
             return {
@@ -64,11 +79,21 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
 
                     <FilledHoverBtn sx={{ mt: '16px', width: '100%' }} onClick={() => setOpen(true)} disabled={status.isLoading} > {status.isLoading ? <Loader color={'orange'} /> : "اشترك الان"} </FilledHoverBtn>
 
-                    <Link href="/privacy" underline="hover" mr={'auto'} onClick={(e) => {
+                    <Link href="/" underline="hover" mr={'auto'} onClick={(e) => {
+                        e.preventDefault()
+                        toggleCoupon()
+                    }}>
+                        لديك كوبون ؟
+                    </Link>
+                    {openCoupen && (
+                        <CourseCoupon course={course} setCourseDetails={setCourseDetails} />
+                    )}
+
+                    <Link href="/privacy" underline="always" mr={'auto'} onClick={(e) => {
                         e.preventDefault()
                         navigate("/privacy")
                     }}>
-                        سياسه شراء الكورسات
+                        سياسه شراء الكورسات !
                     </Link>
 
                     <WrapperHandler status={status} showSuccess={true} />

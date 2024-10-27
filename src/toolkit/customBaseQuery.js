@@ -39,7 +39,6 @@ const customFetchBase = async (args, api, extraOptions) => {
         } else {
             api.dispatch(logout());
         }
-        result = await baseQuery(args, api, extraOptions);
     }
 
     return result;

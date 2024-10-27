@@ -13,6 +13,7 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'no-async-promise-executor': 'off',
+"react/prop-types": "off", // *prevent prototype error
     'react/jsx-no-target-blank': 'off',
     'react-refresh/only-export-components': [
       'warn',
@@ -21,5 +22,4 @@ module.exports = {
   },
 }
 
-// "react/prop-types": "off", // *prevent prototype error
 // 'no-unused-vars': 'off', // *prevent unused element err

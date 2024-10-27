@@ -180,12 +180,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={() => {
-                            if (!updateFc) {
-                                return alert("لا يمكن التعديل !")
-                            }
-                            handleEditClick(params.id)
-                        }}
+                        onClick={handleEditClick(params.id)}
                         color="inherit"
                     />)
                 }

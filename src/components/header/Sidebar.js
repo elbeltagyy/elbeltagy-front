@@ -1,27 +1,20 @@
+import { useState } from 'react';
+import {  useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux"
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import { Button, Divider, useTheme } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import { Link, useNavigate } from 'react-router-dom';
-
-import React, { useState } from 'react';
-import LoginIcon from '@mui/icons-material/Login';
-import MeToggler from '../ui/meToggler/MeToggler';
-import { sidebarLinks } from '../../settings/sidebarLinks';
-import ListLinks from './ListLinks';
+import {  Divider, useTheme } from '@mui/material';
 
 import LoggedListLinks from './LoggedListLinks';
-import { useDispatch, useSelector } from "react-redux"
+import { lang } from '../../settings/constants/arlang';
+import { logout } from "../../toolkit/globalSlice"
+
 import { ErrorBtn } from '../../style/buttonsStyles';
 import ModalStyled from '../../style/mui/styled/ModalStyled';
-import { setUser } from '../../toolkit/globalSlice';
-import { lang } from '../../settings/constants/arlang';
 import { useLazyLogoutQuery } from '../../toolkit/apis/usersApi';
 import Loader from '../../style/mui/loaders/Loader';
 
-import { logout } from "../../toolkit/globalSlice"
 
 export default function Sidebar({ isOpenedSideBar, setSideBar, isMobileScreen, sideBarWidth }) {
 

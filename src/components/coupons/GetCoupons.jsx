@@ -1,26 +1,19 @@
-import { useState } from 'react'
-import { Alert, Button } from '@mui/material'
-import MeDatagrid from '../../tools/datagrid/MeDatagrid'
+import { Alert, Box, Button, Grid } from "@mui/material"
+import { useDeleteCouponMutation, useLazyGetCouponsQuery, useUpdateCouponMutation } from "../../toolkit/apis/couponsApi"
+import useLazyGetData from "../../hooks/useLazyGetData"
+import usePostData from "../../hooks/usePostData"
+import { useState } from "react"
+import MeDatagrid from "../../tools/datagrid/MeDatagrid"
+import ModalStyled from "../../style/mui/styled/ModalStyled"
+import Section from "../../style/mui/styled/Section"
+import TabInfo from "../ui/TabInfo"
+import Separator from "../ui/Separator"
+import TitleWithDividers from "../ui/TitleWithDividers"
+import DataWith3Items from "../ui/DataWith3Items"
+import CopyToClipboard from "react-copy-to-clipboard"
+import { FaCopy } from "react-icons/fa"
+import { getFullDate } from "../../settings/constants/dateConstants"
 
-import { useDeleteCodeMutation, useLazyGetCodesQuery, useUpdateCodeMutation } from '../../toolkit/apis/codesApi'
-import useLazyGetData from '../../hooks/useLazyGetData'
-import usePostData from '../../hooks/usePostData'
-
-import Section from '../../style/mui/styled/Section'
-import { FilledHoverBtn } from '../../style/buttonsStyles'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
-import Grid from '../../style/vanilla/Grid'
-
-import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import CreateCode from '../../components/codes/CreateCode'
-import DataWith3Items from '../../components/ui/DataWith3Items'
-import TabInfo from '../../components/ui/TabInfo'
-import Separator from '../../components/ui/Separator'
-
-import { FaCopy } from 'react-icons/fa'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { getFullDate } from '../../settings/constants/dateConstants'
 
 
 
@@ -35,40 +28,40 @@ const exportObj = {
     createdAt: (row) => {
         return getFullDate(row.createdAt)
     },
-    price: (row)=> {
-        return row.price + ' جنيه'
+    name: (row) => {
+        return row.course.name
+    },
+    discount: (row)=> {
+        return row.discount + ' %'
     }
 }
 
+function GetCoupons({ course, reset }) {
 
-function GetCodesPage() {
-
-    const [reset, setReset] = useState(false)
-
-    const [getData, {isLoading: getLoading}] = useLazyGetCodesQuery()
-    const [getCodes] = useLazyGetData(getData)
+    const [getData, { isLoading: getLoading }] = useLazyGetCouponsQuery()
+    const [getCouponsFc] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getCodes(params, false)
-        const codes = { values: res.codes, count: res.count }
-        return codes
+        const res = await getCouponsFc({ ...params, course, populate: 'usedBy course' }, false) //edit it
+        const coupons = { values: res.coupons, count: res.count }
+        return coupons
     }
 
     //update
-    const [updateData, {isLoading: updateLoading}] = useUpdateCodeMutation()
-    const [updateCode] = usePostData(updateData)
+    const [updateData, { isLoading: updateLoading }] = useUpdateCouponMutation()
+    const [updateCoupon] = usePostData(updateData)
 
     const updateFc = async (values) => {
-        const res = await updateCode(values)
+        const res = await updateCoupon(values)
         return res
     }
 
     //delete
-    const [deleteData, {isLoading: deleteLoading}] = useDeleteCodeMutation()
-    const [deleteCode] = usePostData(deleteData)
+    const [deleteData, { isLoading: deleteLoading }] = useDeleteCouponMutation()
+    const [deleteCoupon] = usePostData(deleteData)
 
     const deleteFc = async (id) => {
-        await deleteCode({ _id: id })
+        await deleteCoupon({ _id: id })
     }
 
     const [usedBy, setUsedby] = useState([])
@@ -80,35 +73,25 @@ function GetCodesPage() {
             width: 170,
             type: 'boolean',
             editable: true
-        },
-        {
-            field: 'code',
-            headerName: "الكود",
-            width: 200,
-            renderCell: (params) => {
-                return <CopyToClipboard text={params.row.code} onCopy={() => alert("تم النسخ بنجاح")}>
-                    <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'neutral.0' }} onClick={() => {
-                    }}>
-                        {params.row.code}
-                    </Button >
-                </CopyToClipboard>
-
-            }
         }, {
-            field: 'price',
-            headerName: "السعر",
+            field: 'name',
+            headerName: "اسم الكورس",
+            width: 300,
+            valueGetter: (params) => params.row.course?.name,
+
+        }, {
+            field: 'coupon',
+            headerName: "الكوبون",
+            width: 200,
+        }, {
+            field: 'discount',
+            headerName: "نسبه الخصم",
             width: 170,
             type: 'number',
             editable: true
         }, {
-            field: 'type',
-            headerName: 'نوع الكود',
-            type: 'singleSelect',
-            width: 170
-        }
-        , {
             field: 'usedBy',
-            headerName: "المستخدمين",
+            headerName: "عرض المستخدمين",
             width: 170,
             disableExport: true,
             sortable: false,
@@ -136,22 +119,23 @@ function GetCodesPage() {
             width: 170,
             type: 'number',
             editable: true
+        }, {
+            field: 'createdAt',
+            headerName: 'تم انشاءه فى',
+            width: 170,
+            type: 'number',
+            editable: true,
+            renderCell: (params) => {
+                return <TabInfo count={getFullDate(params.row.createdAt)} i={0} />
+            }
         },
     ]
 
-
-    const [open, setOpen] = useState(false)
     return (
-        <Section>
-            <TitleWithDividers title={'صفحه الاكواد'} />
-
-            <FlexColumn>
-                <FilledHoverBtn onClick={() => setOpen(true)}>انشاء كود</FilledHoverBtn>
-            </FlexColumn>
-
+        <Box>
             <MeDatagrid
                 type={'crud'} columns={columns} reset={reset}
-                exportTitle={'اكواد'} exportObj={exportObj}
+                exportTitle={'كوبونات'} exportObj={exportObj}
                 fetchFc={fetchFc} updateFc={updateFc} deleteFc={deleteFc}
                 loading={getLoading || updateLoading || deleteLoading}
                 editing={
@@ -162,10 +146,6 @@ function GetCodesPage() {
                     }
                 }
             />
-
-            <ModalStyled open={open} setOpen={setOpen} >
-                <CreateCode setReset={setReset} />
-            </ModalStyled>
 
             <ModalStyled open={openUsedBy} setOpen={setOpenUsedBy}>
                 <Section>
@@ -183,8 +163,8 @@ function GetCodesPage() {
                     )}
                 </Section>
             </ModalStyled>
-        </Section>
+        </Box>
     )
 }
 
-export default GetCodesPage
+export default GetCoupons
