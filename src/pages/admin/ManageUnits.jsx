@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FlexBetween, FlexRow } from '../../style/mui/styled/Flexbox'
 import { StyledBtn } from '../../style/buttonsStyles'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
@@ -78,6 +78,7 @@ function ManageUnits({ grade, activeUnit, setActiveUnit }) {
             <ModalStyled open={open} setOpen={setOpen}>
                 <UnitUpdate units={units} activeUnit={activeUnit} setUnits={setUnits} />
             </ModalStyled>
+
             <ModalStyled open={openDelete} setOpen={setOpenDelete} action={deleteFc}
                 title={'هل انت متاكد من حذف الوحده ؟'} desc={'يجب ان يكون كل الكورسات محذوفه !'} />
         </>

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import {  Divider, useTheme } from '@mui/material';
+import { alpha, Divider, useTheme } from '@mui/material';
 
 import LoggedListLinks from './LoggedListLinks';
 import { lang } from '../../settings/constants/arlang';
@@ -55,7 +55,12 @@ export default function Sidebar({ isOpenedSideBar, setSideBar, isMobileScreen, s
                     },
                 }}
             >
-                <Box width="100%" mt={"70px"}>
+                <Box width="100%">
+                    <Box sx={{
+                        width: '100%', height: '70px', position: 'sticky', top: 0,
+                        bgcolor: alpha(theme.palette.background.default, .6), backdropFilter: 'blur(10px)',
+                        zIndex: 5
+                    }}></Box>
                     {/* drawer items */}
                     <Divider />
                     <LoggedListLinks user={user} setSidebar={setSideBar} />
@@ -69,7 +74,7 @@ export default function Sidebar({ isOpenedSideBar, setSideBar, isMobileScreen, s
                         {isLoading ? <Loader color={'grey.0'} /> : lang.LOGOUT}
                     </ErrorBtn>
                 </Box>}
-
+                
             </Drawer >
             <ModalStyled
                 open={openModal}

@@ -79,12 +79,15 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
 
                     <FilledHoverBtn sx={{ mt: '16px', width: '100%' }} onClick={() => setOpen(true)} disabled={status.isLoading} > {status.isLoading ? <Loader color={'orange'} /> : "اشترك الان"} </FilledHoverBtn>
 
-                    <Link href="/" underline="hover" mr={'auto'} onClick={(e) => {
-                        e.preventDefault()
-                        toggleCoupon()
-                    }}>
-                        لديك كوبون ؟
-                    </Link>
+                    {user && (
+                        <Link Link href="/" underline="hover" mr={'auto'} onClick={(e) => {
+                            e.preventDefault()
+                            toggleCoupon()
+                        }}>
+                            لديك كوبون ؟
+                        </Link>
+                    )}
+                    
                     {openCoupen && (
                         <CourseCoupon course={course} setCourseDetails={setCourseDetails} />
                     )}
@@ -99,7 +102,7 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
                     <WrapperHandler status={status} showSuccess={true} />
                 </>}
             <ModalStyled action={subscribe} open={open} setOpen={setOpen} title={user ? 'هل انت متاكد من الاشتراك بهذا الكورس ؟' : 'تسجيل الدخول اولا ؟'} desc={user ? `سيتم خصم ${course.price} من محفظتك` : 'الذهاب إلي صفحة تسجيل الدخول !'} />
-        </CardCourse>
+        </CardCourse >
     )
 }
 

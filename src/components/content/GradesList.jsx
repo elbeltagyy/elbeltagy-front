@@ -1,4 +1,3 @@
-import React from 'react'
 import Grades from '../home/Grades'
 
 function GradesList() {

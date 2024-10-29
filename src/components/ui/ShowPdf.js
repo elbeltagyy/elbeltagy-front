@@ -1,6 +1,5 @@
-import React from 'react'
-
 function ShowPdf({ file }) {
+    
     return (
         <div style={{ width: '100%', height: '50vh' }}>
             <iframe

@@ -1,32 +1,20 @@
 import { alpha, AppBar, Avatar, Badge, Box, Button, IconButton, Toolbar, Tooltip, Typography, useTheme } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import { Link, } from 'react-router-dom'
 
-import MenuIcon from '@mui/icons-material/Menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMode } from '../../toolkit/globalSlice';
 import MeToggler from '../ui/meToggler/MeToggler';
-import { FlexBetween, FlexRow } from '../../style/mui/styled/Flexbox';
+import {  FlexRow } from '../../style/mui/styled/Flexbox';
 
 
-import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
-import { FaXTwitter } from "react-icons/fa6";
-
-import { IoLogoInstagram } from "react-icons/io5";
 import ModeToggler from './ModeToggler';
 import { StyledBtn } from '../../style/buttonsStyles';
 import { LoginIcon, SignupIcon } from './Icons';
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import RowInfo from '../ui/RowInfo';
 import { user_roles } from '../../settings/constants/roles';
 
 import { GiWallet } from "react-icons/gi";
-
-import { FaWallet } from "react-icons/fa";
-import TabInfo from '../ui/TabInfo';
-import InfoInCircle from '../ui/InfoInCircle';
 import { lang } from '../../settings/constants/arlang';
 import Notifications from './Notifications';
 
@@ -34,7 +22,6 @@ import Notifications from './Notifications';
 function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const theme = useTheme()
 
     const toggleMode = () => {

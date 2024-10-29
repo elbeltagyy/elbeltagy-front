@@ -15,7 +15,7 @@ import { FaLock } from "react-icons/fa";
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import { useNavigate } from 'react-router-dom'
 
-function LectureUserCard({ lecture, i, isSubscribed }) {
+function LectureUserCard({ lecture, i, isSubscribed, currentIndex, lectureIndex }) {
     const navigate = useNavigate()
     // console.log('lecture ==>', lecture)
     return (
@@ -64,10 +64,11 @@ function LectureUserCard({ lecture, i, isSubscribed }) {
 
             </CardContent>
             <CardActions disableSpacing>
-                <FilledHoverBtn sx={{ width: '100%' }} disabled={!isSubscribed || lecture?.isLocked || false} onClick={() => {
-                    navigate("lectures/" + lecture._id)
-                }}>
-                    ابدا الان
+                <FilledHoverBtn sx={{ width: '100%', bgcolor: lecture.index === lectureIndex ? 'orange' : 'primary.main' }}
+                    disabled={!isSubscribed || lecture?.isLocked || lecture.index === lectureIndex || false} onClick={() => {
+                        navigate("lectures/" + lecture._id)
+                    }}>
+                    {lecture.index === lectureIndex ? "المحاضره الحاليه" : "ابدا الان"}
                 </FilledHoverBtn>
             </CardActions>
             {/* (!isSubscribed || lecture?.isLocked) */}

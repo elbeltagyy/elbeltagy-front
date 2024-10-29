@@ -1,13 +1,13 @@
-import React, { lazy, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Box, Paper, } from '@mui/material'
+
 import Section from "../../style/mui/styled/Section"
-import { FlexBetween, FlexColumn, FlexRow } from "../../style/mui/styled/Flexbox"
-import BannerIcon from '../../components/ui/BannerIcon'
-import MakeSelect from '../../style/mui/styled/MakeSelect'
-import { Box, Button, Paper, Typography } from '@mui/material'
-import TabsStyled from '../../style/mui/styled/TabsStyled'
-import GradesTabs from '../../components/grades/GradesTabs'
+import { FlexColumn } from "../../style/mui/styled/Flexbox"
+
 import { useLazyGetCoursesCountQuery } from '../../toolkit/apis/statisticsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
+
+import GradesTabs from '../../components/grades/GradesTabs'
 import AdminLectures from '../../components/content/AdminLectures'
 import Separator from '../../components/ui/Separator'
 import AdminCourseDetails from '../../components/content/AdminCourseDetails'
@@ -60,9 +60,7 @@ function ManageCoursesPage() {
                         </Box>
                     )}
 
-
                     <Separator sx={{ width: '100%' }} />
-
 
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>

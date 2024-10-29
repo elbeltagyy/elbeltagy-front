@@ -1,24 +1,31 @@
 import { Avatar, Box, Typography } from '@mui/material'
-import React from 'react'
-import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
+import { Link } from 'react-router-dom'
+
 import { FaVideo } from 'react-icons/fa'
+
+import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import { ScallyBtn } from '../../style/buttonsStyles'
 import sectionConstants from '../../settings/constants/sectionConstants'
 import VideoGenerate from '../content/VideoGenerate'
-import { Link } from 'react-router-dom'
 import ShowPdf from '../ui/ShowPdf'
 import ExamCard from '../exam/ExamCard'
 import Separator from '../ui/Separator'
+import SectionIcon from '../content/SectionIcon'
 
-function LectureBody({ lecture }) {
+function LectureBody({ lecture, lectureIndex }) {
     return (
         <Box sx={{ width: '100%', maxWidth: '800px' }}>
 
             <FlexRow sx={{ mb: '16px', width: '100%', position: 'relative', bgcolor: "neutral.1000", p: '12px 20px', borderRadius: '16px' }} >
                 <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', right: -4 }}>
-                    <FaVideo size={'1.5rem'} />
+                    <SectionIcon lecture={lecture} color='white' />
                 </Avatar>
                 <Typography variant='subtitle1' sx={{ textAlign: 'center', width: '100%', color: 'neutral.0', mr: '40px' }}>{lecture.name}</Typography>
+                {lectureIndex && (
+                    <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', left: -4 }}>
+                        {lectureIndex}
+                    </Avatar>
+                )}
             </FlexRow>
 
             {lecture.video?.isButton ? (

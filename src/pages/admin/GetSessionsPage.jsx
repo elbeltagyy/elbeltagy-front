@@ -1,23 +1,26 @@
+import { useState } from 'react'
+
+import { Avatar, Button } from '@mui/material'
+import { useGridApiRef } from '@mui/x-data-grid'
+
 import { useLazyGetSessionsQuery, useSessionLogoutMutation } from '../../toolkit/apis/sessionsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
+import usePostData from '../../hooks/usePostData'
+
+import { lang } from '../../settings/constants/arlang'
+import { getFullDate } from '../../settings/constants/dateConstants'
+
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import Section from '../../style/mui/styled/Section'
-import { lang } from '../../settings/constants/arlang'
-import TabInfo from '../../components/ui/TabInfo'
-import { getFullDate } from '../../settings/constants/dateConstants'
-import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import { ErrorBtn } from '../../style/buttonsStyles'
-import { Avatar, Button } from '@mui/material'
-import { useState } from 'react'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
+import TitleWithDividers from '../../components/ui/TitleWithDividers'
 import Image from '../../components/ui/Image'
-import usePostData from '../../hooks/usePostData'
-import { useGridApiRef } from '@mui/x-data-grid'
+import TabInfo from '../../components/ui/TabInfo'
+
 import dayjs from 'dayjs'
 
 function GetSessionsPage() {
 
-    const [rows, setRows] = useState([])
     const [fileConfirm, setFileConfirm] = useState()
     const [openFileModal, setOpenFileModal] = useState(false)
 
@@ -64,7 +67,7 @@ function GetSessionsPage() {
     const [triggerLogout] = usePostData(sendData, setIsLogoutLoading)
 
     const sessionLogout = async () => {
-        const res = await triggerLogout(sessionToLogout)
+        await triggerLogout(sessionToLogout)
         apiRef.current.updateRows([{ ...sessionToLogout, logoutDate: new Date() }])
     }
 
@@ -137,7 +140,7 @@ function GetSessionsPage() {
             disableExport: true,
             filterable: false,
             sortable: false,
-            
+
         }, {
             field: 'expiresAt',
             headerName: 'تنتهى فى',
@@ -169,7 +172,7 @@ function GetSessionsPage() {
 
     return (
         <Section>
-            <TitleWithDividers title={'tokens page'} />
+            <TitleWithDividers title={'صفحه التسجيلات'} />
 
             <MeDatagrid
                 apiRef={apiRef}

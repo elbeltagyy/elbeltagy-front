@@ -31,7 +31,7 @@ const exportObj = {
     name: (row) => {
         return row.course.name
     },
-    discount: (row)=> {
+    discount: (row) => {
         return row.discount + ' %'
     }
 }
@@ -124,7 +124,6 @@ function GetCoupons({ course, reset }) {
             headerName: 'تم انشاءه فى',
             width: 170,
             type: 'number',
-            editable: true,
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={0} />
             }

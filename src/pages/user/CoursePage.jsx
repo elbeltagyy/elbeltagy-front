@@ -114,7 +114,8 @@ function CoursePage() {
                 )}
                 <Grid>
                     {courseDetails.lectures.map((lecture, i) => {
-                        return <LectureUserCard key={i} lecture={lecture} i={i} isSubscribed={courseDetails?.course?.isSubscribed} />
+                        return <LectureUserCard
+                            key={i} lecture={lecture} currentIndex={currentIndex} lectureIndex={getLectureCurrentIndex()} i={i} isSubscribed={courseDetails?.course?.isSubscribed} />
                     })}
                 </Grid>
             </Box>

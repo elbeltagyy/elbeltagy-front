@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Box, Button, Chip, Typography } from '@mui/material'
 import { RtArrow } from '../header/Icons'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { CoursesIcon, ExamIcon, FilesIcon, VidsIcon2 } from '../ui/svg/ContentSvgs'
 import { FaArrowRight } from "react-icons/fa";
@@ -15,23 +15,19 @@ import Separator from '../ui/Separator'
 import CardStyled from '../../style/mui/styled/CardStyled'
 import TabInfo from '../ui/TabInfo'
 import RowInfo from '../ui/RowInfo'
-import { dateOptions, getFullDate } from '../../settings/constants/dateConstants'
+import { getFullDate } from '../../settings/constants/dateConstants'
 import { useLazyGetLecturesCountQuery } from '../../toolkit/apis/statisticsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
-import { FilledHoverBtn, OutLinedHoverBtn } from '../../style/buttonsStyles'
+import { FilledHoverBtn } from '../../style/buttonsStyles'
 import { lang } from '../../settings/constants/arlang'
 import sectionConstants from '../../settings/constants/sectionConstants'
 
 import { RiFolderUnknowFill } from "react-icons/ri";
 import { IoIosRadio } from "react-icons/io";
-import { deepOrange, orange, pink } from '@mui/material/colors'
+import { orange } from '@mui/material/colors'
 import dayjs from 'dayjs'
 
 function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, currentIndex = false }) {
-    const navigate = useNavigate()
-    // const { user } = useSelector(s => s.global)
-
-
     const [getData] = useLazyGetLecturesCountQuery()
     const [getLecturesCount] = useLazyGetData(getData)
 
@@ -103,8 +99,9 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                         <TabInfo count={getFullDate(course.dateEnd)} i={2} title={"موعد نهايه الكورس"} icon={<RiFolderUnknowFill size='1.3rem' />} isBold={false} />
                     )}
                     {course.price === 0 && (
-                        <Chip label="كورس مجانى" size='small' variant="contained" sx={{ bgcolor: orange[800], color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
+                        <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ bgcolor: orange[800], backgroundImage: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
                     )}
+
                 </FlexBetween>
                 {!subscribedAt && (
                     <Box flex={1}>
@@ -114,7 +111,7 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                         {(course.preDiscount !== 0 && course.preDiscount > course.price) && (
                             <>
                                 <Separator sx={{ width: '100px', borderWidth: '2px', mr: 'auto' }} />
-                                <TabInfo title={lang.PRE_DISCOUNT} count={course.preDiscount + ' $'} icon={<AiFillPoundCircle size={'1.5rem'} />} i={0} sx={{ mr: 'auto' }} />
+                                <TabInfo title={lang.PRE_DISCOUNT} count={course.preDiscount + " جنيه" + ' - ' + ((course.preDiscount - course.price) / course.preDiscount) * 100 + "%"} icon={<AiFillPoundCircle size={'1.5rem'} />} i={0} sx={{ mr: 'auto' }} />
                             </>
                         )}
                     </Box>

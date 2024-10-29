@@ -1,4 +1,3 @@
-import React from 'react'
 import Section from '../../style/mui/styled/Section'
 import { TextBorderWithIcons } from '../ui/TextBorderAround'
 import { Box, useTheme } from '@mui/material'

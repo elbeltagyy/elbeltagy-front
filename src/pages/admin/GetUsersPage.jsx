@@ -180,6 +180,11 @@ function GetUsersPage() {
                 )
             }
         }, {
+            field: 'totalPoints',
+            headerName: 'نقاط الطالب',
+            width: 200,
+            type: 'number',
+        }, {
             field: "isResetPassword",
             headerName: 'اعاده ضبط كلمه السر',
             width: 200,
@@ -288,7 +293,7 @@ function GetUsersPage() {
     const viewFc = (user) => {
         navigate('/management/users/view?userName=' + user.userName)
     }
-    
+
     // reset device registered
     const apiRef = useGridApiRef();
     const [userToRegister, setUserRegister] = useState()

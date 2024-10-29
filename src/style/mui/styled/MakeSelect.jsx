@@ -1,5 +1,5 @@
+import { memo, useEffect } from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import React, { memo, useEffect } from 'react'
 
 function MakeSelect({ title, value, setValue, options, reset = [], disabled = false }) {
 
