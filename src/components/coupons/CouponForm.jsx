@@ -1,11 +1,12 @@
+import { codeConstants } from "../../settings/constants/codeConstants"
 import MakeForm from "../../tools/makeform/MakeForm"
 import * as Yup from 'yup'
 
-function CouponForm({ course, onSubmit, status }) {
+function CouponForm({ course, onSubmit, status, coupon = { type: codeConstants.PRIVATE } }) {
     const inputs = [
         {
             name: 'course',
-            value: course._id,
+            value: course?._id,
             disabled: true,
             hidden: true
         }, {
@@ -15,6 +16,13 @@ function CouponForm({ course, onSubmit, status }) {
                 .min(6, '6 احرف على الاقل ')
                 .matches(/^[a-z0-9]+$/, 'Must be all lowercase letters') // Ensures all characters are lowercase letters
                 .required("مطلوب"),
+        }, {
+            name: 'type',
+            label: 'نوع الكوبون',
+            type: 'select',
+            options: [codeConstants.GLOBAL, codeConstants.PRIVATE],
+            value: coupon?.type,
+            disabled: true
         }, {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',

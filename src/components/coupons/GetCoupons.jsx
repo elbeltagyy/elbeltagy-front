@@ -1,18 +1,22 @@
+import { useState } from "react"
+
 import { Alert, Box, Button, Grid } from "@mui/material"
+
 import { useDeleteCouponMutation, useLazyGetCouponsQuery, useUpdateCouponMutation } from "../../toolkit/apis/couponsApi"
 import useLazyGetData from "../../hooks/useLazyGetData"
 import usePostData from "../../hooks/usePostData"
-import { useState } from "react"
 import MeDatagrid from "../../tools/datagrid/MeDatagrid"
+
 import ModalStyled from "../../style/mui/styled/ModalStyled"
 import Section from "../../style/mui/styled/Section"
+
 import TabInfo from "../ui/TabInfo"
 import Separator from "../ui/Separator"
 import TitleWithDividers from "../ui/TitleWithDividers"
 import DataWith3Items from "../ui/DataWith3Items"
-import CopyToClipboard from "react-copy-to-clipboard"
-import { FaCopy } from "react-icons/fa"
+
 import { getFullDate } from "../../settings/constants/dateConstants"
+import { codeConstants } from "../../settings/constants/codeConstants"
 
 
 
@@ -77,11 +81,15 @@ function GetCoupons({ course, reset }) {
             field: 'name',
             headerName: "اسم الكورس",
             width: 300,
-            valueGetter: (params) => params.row.course?.name,
+            valueGetter: (params) => params.row.course?.name || codeConstants.GLOBAL,
 
         }, {
             field: 'coupon',
             headerName: "الكوبون",
+            width: 200,
+        }, {
+            field: 'type',
+            headerName: "نوع الكوبون",
             width: 200,
         }, {
             field: 'discount',

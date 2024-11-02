@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import UserHeader from '../ui/UserHeader'
 import { useSelector } from 'react-redux'
-import { Alert, Divider, Typography } from '@mui/material'
+import { Alert, Typography } from '@mui/material'
 import { useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import TitleSection from '../../components/ui/TitleSection'
@@ -27,7 +27,7 @@ function UserHome() {
     useEffect(() => {
         const trigger = async () => {
             const res = await getCourses({ user: user._id, populate: 'course' })
-          
+
             setCourses(res.subscriptions)
         }
         if (openUserCourses && courses.length === 0) {
@@ -42,23 +42,27 @@ function UserHome() {
             </Typography>
             <Separator />
             <UserHeader user={user} flexDirection={'row'} variant={'circle'} />
-            <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
-            <AccordionStyled title={lang.COURSES} bgcolor="background.alt" expanded={openUserCourses} setExpanded={setOpenCourses}>
-                {status.isLoading && (
-                    <LoaderWithText />
-                )}
-                {courses?.length === 0 && status.isSuccess && (
-                    <Alert variant='filled' severity='warning'> انت لم تشترك فى اى كورس بعد...!</Alert>
-                )}
-                <Grid>
-                    {courses && courses?.map(({ course, createdAt, updatedAt, currentIndex }, i) => <UnitCourseDetails key={i}
-                        course={course}
-                        subscribedAt={createdAt}
-                        lastLectureAt={updatedAt}
-                        currentIndex={currentIndex}
-                    />)}
-                </Grid>
-            </AccordionStyled>
+            {(user.role !== user_roles.ADMIN || user.role !== user_roles.SUBADMIN) && (
+                <>
+                    <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
+                    <AccordionStyled title={lang.COURSES} bgcolor="background.alt" expanded={openUserCourses} setExpanded={setOpenCourses}>
+                        {status.isLoading && (
+                            <LoaderWithText />
+                        )}
+                        {courses?.length === 0 && status.isSuccess && (
+                            <Alert variant='filled' severity='warning'> انت لم تشترك فى اى كورس بعد...!</Alert>
+                        )}
+                        <Grid>
+                            {courses && courses?.map(({ course, createdAt, updatedAt, currentIndex }, i) => <UnitCourseDetails key={i}
+                                course={course}
+                                subscribedAt={createdAt}
+                                lastLectureAt={updatedAt}
+                                currentIndex={currentIndex}
+                            />)}
+                        </Grid>
+                    </AccordionStyled>
+                </>
+            )}
             {user.role === user_roles.STUDENT && (
                 <CenterLectures user={user} />
             )}

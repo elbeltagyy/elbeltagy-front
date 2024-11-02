@@ -271,7 +271,9 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                     }
                     {editing?.isPdf && (
                         <Grid item>
-                            <ExportAsPdf paginationModel={paginationModel} exportTitle={exportTitle} columns={chosenColumns} rows={rows} exportObj={exportObj} />
+                            <ExportAsPdf
+                                fetchFc={fetchFc} sort={sort} filter={filter}
+                                paginationModel={paginationModel} exportTitle={exportTitle} columns={chosenColumns} rows={rows} exportObj={exportObj} />
                             {/* <MakePdf /> */}
                         </Grid>
                     )}
@@ -281,7 +283,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                             setSort()
                             setRefresh(!isRefresh)
                         }}>
-                            <HiOutlineRefresh style={{ animation: (pageState.isLoading || loading) && 'rotate .5s linear 0s infinite' }} />
+                            <HiOutlineRefresh style={{ animation: (pageState.isLoading || loading) && 'rotate .5s linear 0s infinite', color: theme.palette.primary.main }} />
                         </IconButton>
                     </Grid>
                 </Grid>

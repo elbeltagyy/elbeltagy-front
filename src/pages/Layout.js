@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from '@mui/material'
-import React, { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import Navbar from '../components/header/Navbar'
@@ -7,8 +7,6 @@ import Sidebar from '../components/header/Sidebar'
 import GlobalMsg from '../components/ui/GlobalMsg'
 
 import LoaderSkeleton from "../style/mui/loaders/LoaderSkeleton"
-import makeRandom from '../tools/fcs/makeRandom'
-import { getCookie } from '../hooks/cookies'
 
 
 function Layout() {
@@ -36,8 +34,11 @@ function Layout() {
                     <Outlet />
                 </Box>
             </Suspense>
+            {/* <Box sx={{ minHeight: "100vh", bgcolor: 'red' }}>
+
+            </Box> */}
             <GlobalMsg />
-        </Box>
+        </Box >
     )
 }
 

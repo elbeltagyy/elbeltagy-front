@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import VideoYoutube from './VideoYoutube'
 import YoutubePlyr from './YoutubePlyr'
-import ReactPlayer from 'react-player'
 import { useTheme } from '@mui/material'
-import VideoPlyr from './VideoPlyr'
+// import VideoPlyr from './VideoPlyr'
 import filePlayers from '../../settings/constants/filePlayers'
+// import YouTubePlayer from './YoutubeQuality'
+
+
 
 function VideoGenerate({ video }) {
 
@@ -14,6 +16,7 @@ function VideoGenerate({ video }) {
         <>
             {video.player === filePlayers.YOUTUBE ? (
                 // <VideoYoutube url={video?.url} />
+                // <YouTubePlayer  />
                 <YoutubePlyr url={video.url} />
             ) : video.player === filePlayers.BUNNY || video.player === filePlayers.BUNNY_UPLOAD ? (
                 <div style={{ margin: 'auto', paddingBottom: '56.25%', position: 'relative' }}>
@@ -28,7 +31,7 @@ function VideoGenerate({ video }) {
                     </iframe>
                 </div >
             ) : (
-                <VideoPlyr url={video.url} />
+                <YoutubePlyr url={video.url} />
             )}
         </>
     )

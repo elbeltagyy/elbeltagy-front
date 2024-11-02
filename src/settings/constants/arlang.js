@@ -5,7 +5,7 @@ export const lang = {
     LOGOUT: 'تسجيل الخروج',
     GRADES: "السنوات الدراسيه",
     COURSES: 'الكورسات',
-    LOGIN_ENTRY: 'تسجيل الدخول',
+    LOGIN_ENTRY: 'تسجيل دخول',
     LOGIN : 'تسجيل',
     ENTRY : "الدخول",
 

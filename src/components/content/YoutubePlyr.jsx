@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Plyr, { usePlyr } from "plyr-react";
+import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
 import { useTheme } from '@mui/material';
 
@@ -47,8 +47,16 @@ function YoutubePlyr({ url }) {
         settings: ['captions', 'quality', 'speed', 'loop'],
 
     }
-    
 
+    const plyrOptions = {
+        settings: ["quality"], // Adds a quality setting
+        quality: {
+            default: 720, // Default quality level
+            options: [1080, 720, 480, 360], // Available quality levels
+            forced: true, // Forces manual quality setting
+            onChange: (quality) => console.log(`Quality changed to: ${quality}`),
+        },
+    };
 
     return <div style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} />

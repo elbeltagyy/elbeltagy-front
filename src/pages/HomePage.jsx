@@ -1,11 +1,10 @@
-import React from 'react'
-import Section from '../style/mui/styled/Section'
+import { useSelector } from 'react-redux'
+
 import Hero from '../components/home/Hero'
 import HeroScience from '../components/home/HeroScience'
 import Services from '../components/home/Services'
 import AboutUS from '../components/home/AboutUS'
 import Grades from '../components/home/Grades'
-import { useSelector } from 'react-redux'
 import UserHome from '../components/home/UserHome'
 
 function HomePage() {

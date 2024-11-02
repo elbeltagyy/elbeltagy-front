@@ -1,5 +1,5 @@
 import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from '@mui/material'
-import React, { memo, useState } from 'react'
+import { memo } from 'react'
 import { hasError } from '../constants/hasError'
 import { ErrorMessage, Field, } from 'formik'
 
@@ -13,7 +13,7 @@ function MakeSelect({ props, inputName, input, value }) {
     }
 
     return (
-        <FormControl fullWidth error={hasError(props, inputName) ? true : false} color='warning'>
+        <FormControl disabled={input.disabled || false} fullWidth error={hasError(props, inputName) ? true : false} color='warning'>
             <InputLabel id="demo-simple-select-label">
                 <Box display={"flex"} alignItems={"center"} gap={".5rem"} sx={{
                     direction: 'ltr'

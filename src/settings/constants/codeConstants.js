@@ -1,5 +1,7 @@
 export const codeConstants = {
     WALLET: 'محفظه', // ==> price
     CENTER: 'سنتر', // ==> grade
-    ACTIVATE: 'تفعيل' 
+    ACTIVATE: 'تفعيل',
+    GLOBAL: 'عام',
+    PRIVATE: "خاص"
 }

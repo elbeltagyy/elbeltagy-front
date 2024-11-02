@@ -157,7 +157,7 @@ function GetSubscriptions({ courseId = '' }) {
                 const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
                 return (
                     <Typography>
-                        {grade.name}
+                        {grade?.name}
                     </Typography>
                 )
             }
