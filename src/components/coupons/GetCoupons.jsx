@@ -29,6 +29,13 @@ const exportObj = {
             return 'غير فعال'
         }
     },
+    isChecked: (row) => {
+        if (row.isActive) {
+            return 'تم تعليمه'
+        } else {
+            return 'لم يتم تعليمه'
+        }
+    },
     createdAt: (row) => {
         return getFullDate(row.createdAt)
     },
@@ -73,7 +80,7 @@ function GetCoupons({ course, reset }) {
     const columns = [
         {
             field: 'isChecked',
-            headerName: "تم استعماله",
+            headerName: "تعليم كتم استعماله",
             width: 170,
             type: 'boolean',
             editable: true

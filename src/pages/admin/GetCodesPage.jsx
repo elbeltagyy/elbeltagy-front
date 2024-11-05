@@ -32,12 +32,19 @@ const exportObj = {
             return 'غير فعال'
         }
     },
+    isChecked: (row) => {
+        if (row.isActive) {
+            return 'تم تعليمه'
+        } else {
+            return 'لم يتم تعليمه'
+        }
+    },
     createdAt: (row) => {
         return getFullDate(row.createdAt)
     },
-    price: (row)=> {
+    price: (row) => {
         return row.price + ' جنيه'
-    }
+    },
 }
 
 
@@ -45,7 +52,7 @@ function GetCodesPage() {
 
     const [reset, setReset] = useState(false)
 
-    const [getData, {isLoading: getLoading}] = useLazyGetCodesQuery()
+    const [getData, { isLoading: getLoading }] = useLazyGetCodesQuery()
     const [getCodes] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
@@ -55,7 +62,7 @@ function GetCodesPage() {
     }
 
     //update
-    const [updateData, {isLoading: updateLoading}] = useUpdateCodeMutation()
+    const [updateData, { isLoading: updateLoading }] = useUpdateCodeMutation()
     const [updateCode] = usePostData(updateData)
 
     const updateFc = async (values) => {
@@ -64,7 +71,7 @@ function GetCodesPage() {
     }
 
     //delete
-    const [deleteData, {isLoading: deleteLoading}] = useDeleteCodeMutation()
+    const [deleteData, { isLoading: deleteLoading }] = useDeleteCodeMutation()
     const [deleteCode] = usePostData(deleteData)
 
     const deleteFc = async (id) => {
@@ -76,7 +83,7 @@ function GetCodesPage() {
     const columns = [
         {
             field: 'isChecked',
-            headerName: "تم استعماله",
+            headerName: "تعليم كتم استعماله",
             width: 170,
             type: 'boolean',
             editable: true
@@ -136,6 +143,14 @@ function GetCodesPage() {
             width: 170,
             type: 'number',
             editable: true
+        }, {
+            field: 'createdAt',
+            headerName: 'تم انشاءه فى',
+            width: 170,
+            type: 'number',
+            renderCell: (params) => {
+                return <TabInfo count={getFullDate(params.row.createdAt)} i={0} />
+            }
         },
     ]
 
