@@ -33,7 +33,7 @@ const exportObj = {
         return getFullDate(row.createdAt)
     },
     name: (row) => {
-        return row.course.name
+        return row.course?.name || codeConstants.GLOBAL
     },
     discount: (row) => {
         return row.discount + ' %'

@@ -28,7 +28,7 @@ function ExportAsPdf({
     const exportPDF = async (isAll = false) => {
         try {
             setLoading(true)
-            console.log('hello')
+            // console.log('hello')
             const doc = new jsPDF({
                 orientation: "landscape",
             });
