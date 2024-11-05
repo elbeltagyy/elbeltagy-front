@@ -26,7 +26,11 @@ function CouponForm({ course, onSubmit, status, coupon = { type: codeConstants.P
         }, {
             name: 'copies',
             label: 'عدد النسخ',
-            value: 1
+            value: 1,
+            validation: Yup.number()
+                .min(1, '1 اقل قيمه')
+                .max(500, 'اقصى قيمه هى 500')
+                .required("مطلوب"),
         }, {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
