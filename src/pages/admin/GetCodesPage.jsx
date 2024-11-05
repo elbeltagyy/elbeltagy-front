@@ -33,7 +33,7 @@ const exportObj = {
         }
     },
     isChecked: (row) => {
-        if (row.isActive) {
+        if (row.isChecked) {
             return 'تم تعليمه'
         } else {
             return 'لم يتم تعليمه'
