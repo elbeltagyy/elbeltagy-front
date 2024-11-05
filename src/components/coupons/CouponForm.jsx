@@ -24,6 +24,10 @@ function CouponForm({ course, onSubmit, status, coupon = { type: codeConstants.P
             value: coupon?.type,
             disabled: true
         }, {
+            name: 'copies',
+            label: 'عدد النسخ',
+            value: 1
+        }, {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',

@@ -17,7 +17,7 @@ function CreateCoupon({ course, setReset, coupon }) {
         }
         await createCoupon(values)
         if (setReset) {
-            setReset()
+            setReset(pre => !pre)
         }
         props.resetForm()
     }

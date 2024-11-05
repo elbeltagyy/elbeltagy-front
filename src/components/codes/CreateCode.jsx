@@ -29,6 +29,14 @@ function CreateCode({ setReset }) {
             label: 'نوع الكود',
             type: 'select',
             options: [codeConstants.ACTIVATE],
+            validation: Yup.string().required(lang.REQUERIED)
+        }, {
+            name: 'copies',
+            label: 'عدد النسخ',
+            type: 'number',
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(500, 'اقصى عدد هو 500')
+
         }, {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
@@ -43,15 +51,25 @@ function CreateCode({ setReset }) {
             label: 'نوع الكود',
             type: 'select',
             options: [codeConstants.WALLET],
+            validation: Yup.string().required(lang.REQUERIED)
+
+        }, {
+            name: 'copies',
+            label: 'عدد النسخ',
+            type: 'number',
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(500, 'اقصى عدد هو 500')
         }, {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
-            value: 1
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
         }, {
             name: 'price',
             label: 'سعر الكود',
-            type: 'number'
+            type: 'number',
+            validation: Yup.number().required(lang.REQUERIED).max(2000, "اقصى مبلغ هو 2000 جنيه")
         }
     ]
     const centerInputs = [
@@ -60,16 +78,25 @@ function CreateCode({ setReset }) {
             label: 'نوع الكود',
             type: 'select',
             options: [codeConstants.CENTER],
+            validation: Yup.string().required(lang.REQUERIED)
+
+        }, {
+            name: 'copies',
+            label: 'عدد النسخ',
+            type: 'number',
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(500, 'اقصى عدد هو 500')
         }, {
             name: 'numbers',
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
-            value: 1
-        }
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
+        },
     ]
 
     const onSubmit = async (values, props) => {
-        const res = await createCode(values)
+        await createCode(values)
         if (setReset) {
             setReset(pre => !pre)
         }
@@ -93,20 +120,15 @@ function CreateCode({ setReset }) {
                     <MakeForm status={status}
                         onSubmit={onSubmit} inputs={walletInputs} />}
 
-            {status?.data && (
+            {status?.data?.values && (
                 <Alert severity='success' variant='filled' >
+
                     <CopyToClipboard text={status.data.values.code} onCopy={() => alert("تم النسخ بنجاح")}>
-                        <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'grey.0' }} onClick={() => {
-                            navigator.clipboard.writeText(status.data.values.code).then(() => {
-                                alert("تم النسخ بنجاح");
-                            })
-                                .catch(err => {
-                                    console.error("فشل النسخ: ", err);
-                                });
-                        }}>
+                        <Button startIcon={<FaCopy size={'1.5rem'} />} sx={{ color: 'grey.0' }} >
                             {status.data.values.code}
                         </Button>
                     </CopyToClipboard>
+
                 </Alert>
             )}
         </Section>
