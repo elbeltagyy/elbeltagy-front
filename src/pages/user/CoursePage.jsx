@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
+import { Outlet, useParams } from 'react-router-dom'
+import { Alert, Box, } from '@mui/material'
+
 import HeaderContent from '../../components/ui/HeaderContent'
-import Section from '../../style/mui/styled/Section'
-import { ExamIcon, FilesIcon, FilesIconWithLamp, VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
-import { Alert, Avatar, Box, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Link, Typography } from '@mui/material'
-
+import { ExamIcon, FilesIcon,  VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
 import TitleSection from '../../components/ui/TitleSection'
-import AccordionStyled from '../../style/mui/styled/AccordionStyled'
-import CardHover from '../../components/ui/CardHover'
-import Grid from '../../style/vanilla/Grid'
-
-import useLazyGetData from '../../hooks/useLazyGetData'
-import { Outlet, useLocation, useParams } from 'react-router-dom'
-import { useLazyGetLecturesCountQuery } from '../../toolkit/apis/statisticsApi'
-import TabInfo from '../../components/ui/TabInfo'
-import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import { useLazyGetLecturesQuery } from '../../toolkit/apis/lecturesApi'
-import Loader from '../../style/mui/loaders/Loader'
-import CourseSubscribeCard from '../../components/content/CourseSubscribeCard'
-import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
-import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
-import { lang } from '../../settings/constants/arlang'
-import { useLazyGetCourseLecturesAndCheckUserQuery } from '../../toolkit/apis/coursesApi'
-import sectionConstants from '../../settings/constants/sectionConstants'
-import { orange, red } from '@mui/material/colors'
-import { FilledHoverBtn } from '../../style/buttonsStyles'
 import LectureUserCard from '../../components/content/LectureUserCard'
+import CourseSubscribeCard from '../../components/content/CourseSubscribeCard'
+
+import Section from '../../style/mui/styled/Section'
+import Grid from '../../style/vanilla/Grid'
+import Loader from '../../style/mui/loaders/Loader'
+import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
+
+import { lang } from '../../settings/constants/arlang'
+import sectionConstants from '../../settings/constants/sectionConstants'
+
+import { useLazyGetCourseLecturesAndCheckUserQuery } from '../../toolkit/apis/coursesApi'
+import useLazyGetData from '../../hooks/useLazyGetData'
 
 function CoursePage() {
-    const params = useParams()
-
+    const params = useParams() // {lectureId, courseId = index, gradeId}
+   
     const [getData, status] = useLazyGetCourseLecturesAndCheckUserQuery()
     const [getCourseAndLectures] = useLazyGetData(getData)
+
     const [courseDetails, setCourseDetails] = useState({})// Not Sub or Not Reg => {lectures=[], counts} || subscribed => {}
     const [currentIndex, setCurrentIndex] = useState(0)
 

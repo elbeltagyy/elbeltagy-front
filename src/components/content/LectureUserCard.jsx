@@ -1,40 +1,42 @@
-import { alpha, Avatar, Box, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material'
-import { orange, red } from '@mui/material/colors'
-import React from 'react'
+import { alpha, Avatar, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material'
+import { red } from '@mui/material/colors'
+
 import TabInfo from '../ui/TabInfo'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 
-import sectionConstants from '../../settings/constants/sectionConstants'
-import { FaClock, FaVideo } from "react-icons/fa";
-import { FaFilePdf } from "react-icons/fa6";
-import { ExamIcon } from '../ui/svg/ContentSvgs'
-import { FaLink } from "react-icons/fa6";
-import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+import { FaClock } from "react-icons/fa";
 import { MdDateRange } from 'react-icons/md'
 import { FaLock } from "react-icons/fa";
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import { useNavigate } from 'react-router-dom'
+import { IoMdDoneAll } from "react-icons/io";
 
-function LectureUserCard({ lecture, i, isSubscribed, currentIndex, lectureIndex }) {
+import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
+
+import { useNavigate } from 'react-router-dom'
+import SectionIcon from './SectionIcon'
+
+function LectureUserCard({ lecture, isSubscribed, currentIndex, lectureIndex }) {
     const navigate = useNavigate()
-    // console.log('lecture ==>', lecture)
     return (
         <Card sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column', position: 'relative' }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500], transition: '.3s all ease', color: '#fff', "&:hover": { bgcolor: '#fff', color: red[500] } }} aria-label="recipe" >
-                        {lecture.sectionType === sectionConstants.VIDEO ? <FaVideo size='1.5rem' /> :
-                            lecture.sectionType === sectionConstants.FILE ? <FaFilePdf size='1.5rem' /> :
-                                lecture.sectionType === sectionConstants.EXAM ? <ExamIcon size='1.5rem' /> :
-                                    lecture.sectionType === sectionConstants.LINK && <FaLink size='1.5rem' />}                        </Avatar>
+                        <SectionIcon lecture={lecture} color='inherit' />
+                    </Avatar>
                 }
                 action={
-                    <Avatar aria-label="settings" sx={{ bgcolor: 'primary.main', mx: '6px' }} >
-                        {i + 1}
+                    <Avatar aria-label="settings" sx={{ bgcolor: 'primary.main', mx: '6px', color: 'grey.0' }} >
+                        {lecture.index}
                     </Avatar>
                 }
                 title={<Typography variant='subtitle1'>{lecture.name}</Typography>}
-                subheader={<TabInfo i={1} count={getFullDate(lecture.createdAt)} icon={<MdDateRange size='1rem' />} />}
+                subheader={<Box>
+                    <TabInfo i={2} count={getFullDate(lecture.createdAt)} icon={<MdDateRange size='1rem' />} />
+                    {lecture.index < currentIndex && (
+                        <TabInfo i={1} count={'تم الانتهاء'} icon={<IoMdDoneAll size='1.5rem' />} />
+                    )}
+                </Box>}
             />
             <CardMedia
                 component="img"
@@ -64,12 +66,15 @@ function LectureUserCard({ lecture, i, isSubscribed, currentIndex, lectureIndex 
 
             </CardContent>
             <CardActions disableSpacing>
-                <FilledHoverBtn sx={{ width: '100%', bgcolor: lecture.index === lectureIndex ? 'orange' : 'primary.main' }}
+
+                <FilledHoverBtn sx={{ width: '100%', bgcolor: (lecture.index === lectureIndex || lecture.index === currentIndex) ? 'orange' : 'primary.main' }}
+                    endIcon={<SectionIcon lecture={lecture} color='inherit' />}
                     disabled={!isSubscribed || lecture?.isLocked || lecture.index === lectureIndex || false} onClick={() => {
                         navigate("lectures/" + lecture._id)
                     }}>
-                    {lecture.index === lectureIndex ? "المحاضره الحاليه" : "ابدا الان"}
+                    {(lecture.index === lectureIndex || lecture.index === currentIndex) ? "المحاضره الحاليه" : lecture.index < currentIndex ? 'تم الانتهاء' : "ابدا الان"}
                 </FilledHoverBtn>
+
             </CardActions>
             {/* (!isSubscribed || lecture?.isLocked) */}
             {(!isSubscribed || lecture?.locked) && (

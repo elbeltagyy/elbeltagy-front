@@ -1,35 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useRef, } from 'react'
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
 import { useTheme } from '@mui/material';
-
-const videoSrc = {
-    type: "video",
-    title: 'Example title',
-    sources: [
-        {
-            src: 'https://www.youtube.com/watch?v=r6HJyqxZ_qM',
-            provider: 'youtube'
-        },
-    ],
-};
-
-
-const plyrProps = {
-    sources: [
-        {
-            src: 'https://www.youtube.com/watch?v=r6HJyqxZ_qM',
-            provider: 'youtube'
-        },
-    ], // https://github.com/sampotts/plyr#the-source-setter
-    options: undefined, // https://github.com/sampotts/plyr#options
-    // Direct props for inner video tag (mdn.io/video)
-}
 
 function YoutubePlyr({ url }) {
 
     const theme = useTheme()
     const vid = useRef(null)
+    const plyrContainer = useRef()
 
     const source = {
         type: "video",
@@ -58,7 +36,41 @@ function YoutubePlyr({ url }) {
         },
     };
 
-    return <div style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         if (vid.current?.plyr?.embed) {
+    //             const ytPlayer = vid.current.plyr.embed;
+    //             if (ytPlayer && ytPlayer.setPlaybackQuality) {
+    //                 ytPlayer.setPlaybackQuality("large"); // "large" corresponds to 480p
+    //                 clearInterval(interval); // Stop checking after setting quality
+    //             }
+    //         }
+    //     }, 500);
+
+    //     return () => clearInterval(interval); // Clear interval on component unmount
+    // }, []);
+
+    // const skipForward = () => {
+    //     const player = vid.current.plyr;
+    //     player.currentTime = Math.min(player.duration, player.currentTime + 10);
+    // };
+
+    // Function to skip backward 10 seconds
+    // const skipBackward = () => {
+    //     const player = vid.current.plyr;
+    //     player.currentTime = Math.max(0, player.currentTime - 10);
+    // };
+    // const seek = (e) => {
+    //     const rect = plyrContainer.current.getBoundingClientRect();
+    //     const mouseOnDiv = e.clientX - rect.x;
+    //     if (mouseOnDiv >= rect.width / 2) {
+    //         vid.current.plyr.forward();
+    //     } else {
+    //         vid.current.plyr.rewind();
+    //     }
+    // };
+
+    return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} />
     </div>
 }

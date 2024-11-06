@@ -25,6 +25,7 @@ function TabInfo({ count, i, title, icon, isBold = true, sx }) {
                 alignItems: "center",
                 flexDirection: 'row',
                 flexWrap: 'nowrap',
+                my: '2px',
                 gap: '8px',
                 ...sx
             }} >

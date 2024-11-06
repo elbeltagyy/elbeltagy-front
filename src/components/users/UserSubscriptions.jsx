@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button } from '@mui/material'
+import { Avatar, Box } from '@mui/material'
 import TabInfo from '../ui/TabInfo'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
-import Section from '../../style/mui/styled/Section'
 import TitleWithDividers from '../ui/TitleWithDividers'
 
 
@@ -96,6 +95,7 @@ function UserSubscriptions({ user }) {
     return (
         <Box width={'100%'}>
             <TitleWithDividers title={'الكورسات المشترك فيها '} />
+            <TabInfo count={subscriptionsCount} title={'عدد الاشتراكات'} i={1} />
             <MeDatagrid
                 type={'simple'}
                 exportObj={exportObj}

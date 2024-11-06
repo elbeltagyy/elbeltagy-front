@@ -15,18 +15,22 @@ import SectionIcon from '../content/SectionIcon'
 function LectureBody({ lecture, lectureIndex }) {
     return (
         <Box sx={{ width: '100%', maxWidth: '800px' }}>
+            <FlexColumn gap={'16px'}>
 
-            <FlexRow sx={{ mb: '16px', width: '100%', position: 'relative', bgcolor: "neutral.1000", p: '12px 20px', borderRadius: '16px' }} >
-                <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', right: -4 }}>
+                <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px' }}>
                     <SectionIcon lecture={lecture} color='white' />
                 </Avatar>
-                <Typography variant='subtitle1' sx={{ textAlign: 'center', width: '100%', color: 'neutral.0', mr: '40px' }}>{lecture.name}</Typography>
-                {lectureIndex && (
-                    <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', left: -4 }}>
-                        {lectureIndex}
-                    </Avatar>
-                )}
-            </FlexRow>
+
+                <FlexRow sx={{ mb: '16px', width: '100%', position: 'relative', bgcolor: "neutral.1000", p: '12px 20px', borderRadius: '16px', border: '2px solid transparent' }} >
+
+                    <Typography variant='subtitle1' sx={{ textAlign: 'center', width: '100%', color: 'neutral.0', mr: '40px', textDecoration: 'underline' }}>{lecture.name}</Typography>
+                    {lectureIndex && (
+                        <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', left: -4 }}>
+                            {lectureIndex}
+                        </Avatar>
+                    )}
+                </FlexRow>
+            </FlexColumn>
 
             {lecture.video?.isButton ? (
                 <ScallyBtn startIcon={<FaVideo size={'1.5rem'} />}>الانتقال الي يوتيوب</ScallyBtn>
@@ -35,7 +39,9 @@ function LectureBody({ lecture, lectureIndex }) {
                     {lecture.sectionType === sectionConstants.VIDEO ? (
                         <VideoGenerate video={lecture.video} />
                     ) : lecture.sectionType === sectionConstants.LINK ? (
-                        <ScallyBtn component={Link} to={lecture.link.url} startIcon={<FaVideo size={'1.5rem'} />}> {lecture.name}</ScallyBtn>
+                        <FlexColumn>
+                            <ScallyBtn component={Link} to={lecture.link.url} startIcon={<SectionIcon lecture={lecture} color='white' />}> {lecture.name}</ScallyBtn>
+                        </FlexColumn>
                     ) : lecture.sectionType === sectionConstants.FILE ?
                         <ShowPdf file={lecture.file} />
                         : <ExamCard lecture={lecture} exam={{ ...lecture.exam, name: lecture.name }} />}
