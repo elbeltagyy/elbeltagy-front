@@ -147,7 +147,7 @@ function UserAttempts({ user }) {
             disableExport: true,
             sortable: false,
             renderCell: (params) => {
-                return <Button component={Link} to={'/attempts/' + params.row._id}>
+                return <Button disabled={!params.row.status} component={Link} to={'/attempts/' + params.row._id}>
                     عرض الحل
                 </Button>
             }

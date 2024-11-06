@@ -128,12 +128,14 @@ function ExportAsPdf({
             <Button disabled={isLoading} onClick={() => exportPDF()}>
                 {isLoading ? 'يتم تصدير الملف ...' : 'تصدير ك PDF'}
             </Button>
+            {fetchFc && (
 
-            <Button disabled={isLoading} onClick={() => {
-                exportPDF(true)
-            }}>
-                {isLoading ? 'يتم تصدير الملف ...' : 'تصدير الكل'}
-            </Button>
+                <Button disabled={isLoading} onClick={() => {
+                    exportPDF(true)
+                }}>
+                    {isLoading ? 'يتم تصدير الملف ...' : 'تصدير الكل'}
+                </Button>
+            )}
         </Box>
     )
 }
