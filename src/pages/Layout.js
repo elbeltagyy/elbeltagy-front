@@ -34,9 +34,6 @@ function Layout() {
                     <Outlet />
                 </Box>
             </Suspense>
-            {/* <Box sx={{ minHeight: "100vh", bgcolor: 'red' }}>
-
-            </Box> */}
             <GlobalMsg />
         </Box >
     )

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDeleteSubscriptionMutation, useLazyGetCourseSubscriptionsQuery, useUpdateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
@@ -12,8 +12,7 @@ import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import usePostData from '../../hooks/usePostData'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
-import { user_roles } from '../../settings/constants/roles'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const exportObj = {
     grade: (row) => {
@@ -31,7 +30,13 @@ const exportObj = {
     },
     updatedAt: (row) => {
         return getDateWithTime(row.updatedAt)
-    }
+    },
+    payment: (row) => {
+        return row.payment + ' جنيه'
+    },
+    price: (row) => {
+        return row.price + ' جنيه'
+    },
 }
 
 
@@ -64,7 +69,12 @@ function GetSubscriptions({ courseId = '' }) {
     const fetchFc = async (params) => {
         const res = await getSubscriptions({ ...params, course: courseId, populate: 'user course' }, false)
         const modifiedRes = res.subscriptions.map((subscribe) => {
-            return { ...subscribe.user, courseId: subscribe.course._id, courseName: subscribe.course.name, _id: subscribe._id, createdAt: subscribe.createdAt, currentIndex: subscribe.currentIndex, updatedAt: subscribe.updatedAt }
+            return {
+                ...subscribe.user,
+                courseId: subscribe.course._id,
+                courseName: subscribe.course.name, price: subscribe.course.price,
+                _id: subscribe._id, createdAt: subscribe.createdAt, currentIndex: subscribe.currentIndex, updatedAt: subscribe.updatedAt, payment: subscribe.payment
+            }
         })
         setSubscriptionsCount(res.count)
         const data = { values: modifiedRes, count: res.count }
@@ -160,6 +170,22 @@ function GetSubscriptions({ courseId = '' }) {
                         {grade?.name}
                     </Typography>
                 )
+            }
+        }, {
+            field: 'payment',
+            headerName: 'المبلغ المدفوع',
+            width: 200,
+            renderCell: (params) => {
+                return <TabInfo count={(params.row.payment)} i={0} />
+            }
+        }, {
+            field: 'price',
+            headerName: 'سعر الكورس الحالى',
+            filterable: false,
+            sortable: false,
+            width: 200,
+            renderCell: (params) => {
+                return <TabInfo count={(params.row.price) + ' جنيه'} i={0} />
             }
         }, {
             field: 'createdAt',

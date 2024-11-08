@@ -1,5 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { getCookie } from '../hooks/cookies'
+import { createApi } from '@reduxjs/toolkit/query/react'
 import customFetchBase from './customBaseQuery'
 // git push -u origin main   
 

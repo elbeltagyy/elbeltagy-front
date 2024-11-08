@@ -1,12 +1,9 @@
 import {
     fetchBaseQuery,
 } from '@reduxjs/toolkit/query';
-import { Mutex } from 'async-mutex';
 import { logout, setUser } from './globalSlice';
 
-
 // Create a new mutex
-const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
     baseUrl: import.meta.env.VITE_DB_URI + '/api',

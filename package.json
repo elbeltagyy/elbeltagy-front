@@ -21,6 +21,8 @@
     "@mui/x-tree-view": "^6.17.0",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^1.9.3",
+    "@sentry/react": "^8.37.1",
+    "@sentry/vite-plugin": "^2.22.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
