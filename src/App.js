@@ -22,7 +22,12 @@ function App() {
 
   const routesObj = createBrowserRouter(routes, {
     future: {
-      v7_partialHydration: true
+      v7_partialHydration: true,
+      v7_startTransition: true, // Enable the startTransition flag
+      v7_skipActionErrorRevalidation: true, // Opt-in to skip revalidation on 4xx/5xx action errors
+      v7_relativeSplatPath: true, // Opt into the new relative path resolution in splat routes
+      v7_fetcherPersist: true, // Opt-in to the new fetcher persistence behavior
+      v7_normalizeFormMethod: true, // Opt-in to normalize form method to uppercase
     }
   })
   const cacheRtl = createCache({
