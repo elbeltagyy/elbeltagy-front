@@ -32,7 +32,7 @@ function AboutUS() {
             <FlexColumn sx={{ zIndex: 2, width: '100%' }}>
 
                 <FlexColumn sx={{ position: 'relative' }}>
-                    <Image ratio={'auto'} img={'/assets/quote.png'} sx={{ zIndex: 0, filter: 'drop-shadow(4px 5px 4px rgba(100,100,100,.1))' }} />
+                    <Image ratio={'auto'} img={'/assets/quote.webp'} sx={{ zIndex: 0, filter: 'drop-shadow(4px 5px 4px rgba(100,100,100,.1))' }} />
 
                     <Typography variant='h6' component={'h5'} sx={{
                         color: '#16264c',

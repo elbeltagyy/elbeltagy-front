@@ -19,7 +19,7 @@ function FooterPage() {
         <Section sx={{ minHeight: '60vh', bgcolor: "rgb(18, 20, 27)" }}>
             <FlexColumn gap={'12px'}>
 
-                <Image img={'/assets/logo.png'} maxWidth='160px' ratio={'auto'} />
+                <Image img={'/assets/logo.webp'} maxWidth='160px' ratio={'auto'} />
                 <Typography variant='h5' sx={{ color: 'grey.0', fontFamily: '"Changa", sans-serif' }}>
                     {lang.LOGO}
                 </Typography>
@@ -28,7 +28,7 @@ function FooterPage() {
 
                 <FlexRow justifyContent={'center'} >
                     <IconButton component={Link} to={'https://www.facebook.com/Elbeltagy.Geo?mibextid'}>
-                        <Image img={'/assets/facebook.png'} maxWidth='50px' ratio={'auto'} />
+                        <Image img={'/assets/facebook.webp'} maxWidth='50px' ratio={'auto'} />
                     </IconButton>
                     <IconButton component={Link} to={'https://youtube.com/@mohammedelbltagy?si=iGiK5HHUyvo8Uyye'}>
                         <Image img={'/assets/youtube.png'} maxWidth='50px' ratio={'auto'} />
@@ -60,7 +60,7 @@ function FooterPage() {
                 <Typography component={Link} to={"https://api.whatsapp.com/send?phone=2001001902943&text=" + 'from Elbeltagy Platform'} variant='body2' sx={{ color: "grey.0", textDecoration: 'none' }} noWrap>
                     تم التطوير بواسطه <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>ME Group Innovations</span>
                 </Typography>
-                <Image sx={{ borderRadius: 0, my: '12px' }} img={'/assets/megroup-footer.png'} maxWidth="120px" ratio={'auto'} />
+                <Image sx={{ borderRadius: 0, my: '12px' }} img={'/assets/megroup-footer.webp'} maxWidth="120px" ratio={'auto'} />
             </FlexColumn>
         </Section>
     )

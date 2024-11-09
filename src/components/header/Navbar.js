@@ -54,8 +54,8 @@ function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
 
                 <FlexRow flexGrow={1}>
                     <Button component={Link} to={'/'}>
-                        <Image img={'/assets/logo.png'} maxWidth='60px' ratio={'auto'} />
-                        {/* <Avatar src='/assets/logo.png' sx={{ bgcolor: "primary.main", mr: 1, color: 'grey.0' }}>M</Avatar> */}
+                        <Image img={'/assets/logo.webp'} maxWidth='60px' ratio={'auto'} />
+                        {/* <Avatar src='/assets/logo.webp' sx={{ bgcolor: "primary.main", mr: 1, color: 'grey.0' }}>M</Avatar> */}
                         {((!isMobileScreen || !user) && !isOpenedSidebar) && (
                             <Typography mx={'12px'} variant="subtitle1" component="h6"  >
                                 {lang.LOGO}
