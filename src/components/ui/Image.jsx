@@ -1,5 +1,4 @@
-import { Box, ImageListItem } from '@mui/material'
-import React from 'react'
+import { Box } from '@mui/material'
 
 function Image({ img, title, maxWidth = '100vh', sx, ratio = 16 / 9 }) {
     return (
@@ -14,7 +13,7 @@ function Image({ img, title, maxWidth = '100vh', sx, ratio = 16 / 9 }) {
                 alt={title || '#'}
                 loading="lazy"
                 style={{
-                    borderRadius: '16px',
+                    // borderRadius: '16px',
                     filter: 'saturate(70%)',
                     transition: '.3s all ease',
                 }}

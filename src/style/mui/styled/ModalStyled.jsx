@@ -6,7 +6,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { useTheme } from '@mui/material';
 import { ErrorBtn, FilledHoverBtn } from '../../buttonsStyles';
 import { lang } from '../../../settings/constants/arlang';
 
@@ -15,8 +14,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function ModalStyled({ open, setOpen, title, desc, children, action }) {
-    const theme = useTheme()
+export default function ModalStyled({ open, setOpen, title, desc, children, action, agree }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -56,7 +54,7 @@ export default function ModalStyled({ open, setOpen, title, desc, children, acti
                     {!children && (
                         <FilledHoverBtn sx={{
                             minWidth: '100px'
-                        }} onClick={onAction}>{lang.AGREE}</FilledHoverBtn>
+                        }} onClick={onAction}>{agree ? agree : lang.AGREE}</FilledHoverBtn>
                     )}
                 </DialogActions>
             </Dialog>

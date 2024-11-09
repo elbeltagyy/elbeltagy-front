@@ -1,19 +1,18 @@
-import React from 'react'
 import './home.css'
 import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 import Section from '../../style/mui/styled/Section'
-import { FlexBetween, FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
+import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import Separator from '../ui/Separator'
 import Image from '../ui/Image'
-import { FilledHoverBtn, ScallyBtn } from '../../style/buttonsStyles'
+import { ScallyBtn } from '../../style/buttonsStyles'
 
 import { FaFacebook } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import TextTyping from '../animations/Text.typing'
 import { Link } from 'react-router-dom'
+import { PiTelegramLogoFill } from "react-icons/pi";
 
 function Hero() {
     const theme = useTheme()
@@ -69,26 +68,26 @@ function Hero() {
                     <ScallyBtn component={Link} to={'/grades/2'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الچيولوچيا</ScallyBtn>
 
                     <Box display={'flex'} justifyContent={'space-around'} flexDirection={'row'} sx={{ minWidth: '250px' }}>
-                        <IconButton>
+                        <IconButton component={Link} to={'https://www.facebook.com/Elbeltagy.Geo?mibextid'}>
                             <FaFacebook style={{
                                 color: theme.palette.neutral[0],
                             }} />
                         </IconButton>
 
-                        <IconButton>
+                        <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=empty&text="}>
                             <FaWhatsapp style={{
                                 color: theme.palette.neutral[0],
                             }} />
                         </IconButton>
 
-                        <IconButton>
+                        <IconButton component={Link} to={'https://youtube.com/@mohammedelbltagy?si=iGiK5HHUyvo8Uyye'}>
                             <FaYoutube style={{
                                 color: theme.palette.neutral[0],
                             }} />
                         </IconButton>
 
-                        <IconButton>
-                            <FaXTwitter style={{
+                        <IconButton component={Link} to={'https://t.me/mrmoelbeltagy'}>
+                            <PiTelegramLogoFill style={{
                                 color: theme.palette.neutral[0],
                             }} />
                         </IconButton>

@@ -5,6 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './toolkit/store';
 
+// ## Sentry Tracking ##
 import * as Sentry from "@sentry/react";
  
 import.meta.env.VITE_NODE_ENV === 'production' &&

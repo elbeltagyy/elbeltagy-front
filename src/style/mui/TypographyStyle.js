@@ -16,8 +16,8 @@ export const typographies = {
         fontSize: '0.75rem',
         fontWeight: 500,
         letterSpacing: '0.5px',
-        lineHeight: 2.5,
-        textTransform: 'uppercase',
+        // lineHeight: 2.5,
+        // textTransform: 'uppercase',
     },
     banner: {
 

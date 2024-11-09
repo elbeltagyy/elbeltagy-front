@@ -4,7 +4,7 @@ import { Link, } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { setMode } from '../../toolkit/globalSlice';
 import MeToggler from '../ui/meToggler/MeToggler';
-import {  FlexRow } from '../../style/mui/styled/Flexbox';
+import { FlexRow } from '../../style/mui/styled/Flexbox';
 
 
 import ModeToggler from './ModeToggler';
@@ -17,6 +17,7 @@ import { user_roles } from '../../settings/constants/roles';
 import { GiWallet } from "react-icons/gi";
 import { lang } from '../../settings/constants/arlang';
 import Notifications from './Notifications';
+import Image from '../ui/Image';
 
 
 function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
@@ -53,9 +54,10 @@ function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
 
                 <FlexRow flexGrow={1}>
                     <Button component={Link} to={'/'}>
-                        <Avatar sx={{ bgcolor: "primary.main", mr: 1, color: 'grey.0' }}>M</Avatar>
-                        {(!isMobileScreen || !user) && (
-                            <Typography variant="subtitle1" component="h6"  >
+                        <Image img={'/assets/logo.png'} maxWidth='60px' ratio={'auto'} />
+                        {/* <Avatar src='/assets/logo.png' sx={{ bgcolor: "primary.main", mr: 1, color: 'grey.0' }}>M</Avatar> */}
+                        {((!isMobileScreen || !user) && !isOpenedSidebar) && (
+                            <Typography mx={'12px'} variant="subtitle1" component="h6"  >
                                 {lang.LOGO}
                             </Typography>
                         )}

@@ -5,7 +5,6 @@ import { BrowserRouter, Route, RouterProvider, Routes, createBrowserRouter, } fr
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { routes } from './settings/routes/routes';
-import gradeConstants from './settings/constants/gradeConstants';
 
 import rtlPlugin from 'stylis-plugin-rtl';
 import { prefixer } from 'stylis';
@@ -21,7 +20,11 @@ function App() {
   const theme = useMemo(() => createTheme(themeSettings(mode), locales["arSD"], arSD), [mode]) // he used useMemo ???
 
 
-  const routesObj = createBrowserRouter(routes)
+  const routesObj = createBrowserRouter(routes, {
+    future: {
+      v7_partialHydration: true
+    }
+  })
   const cacheRtl = createCache({
     key: 'muirtl',
     stylisPlugins: [prefixer, rtlPlugin],
@@ -36,7 +39,7 @@ function App() {
           <CssBaseline />
           <RouterProvider router={routesObj}></RouterProvider>
         </ThemeProvider>
-        
+
       </CacheProvider>
 
     </div>

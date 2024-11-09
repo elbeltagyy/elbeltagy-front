@@ -57,7 +57,7 @@ export default function Sidebar({ isOpenedSideBar, setSideBar, isMobileScreen, s
             >
                 <Box width="100%">
                     <Box sx={{
-                        width: '100%', height: '70px', position: 'sticky', top: 0,
+                        width: '100%', height: '90px', position: 'sticky', top: 0,
                         bgcolor: alpha(theme.palette.background.default, .6), backdropFilter: 'blur(10px)',
                         zIndex: 5
                     }}></Box>

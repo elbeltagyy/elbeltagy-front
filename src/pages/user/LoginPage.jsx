@@ -1,21 +1,17 @@
-import React, { useEffect } from 'react'
-import HeaderContent from '../../components/ui/HeaderContent'
+import { useEffect, useState } from 'react'
 
 import Section from "../../style/mui/styled/Section"
-import TitleSection from '../../components/ui/TitleSection'
 import { LoginAnimatedIcon, ReactLoginIcon } from '../../components/ui/svg/Registers'
 import LoginForm from '../../components/auth/LoginForm'
 import { Box, Typography, useTheme, Link as MuiLink } from '@mui/material'
-import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import DnaAnimation from '../../components/animations/dna/DnaAnimation'
-import { RtArrow } from '../../components/header/Icons'
+import { FlexRow } from '../../style/mui/styled/Flexbox'
+
 import BannerAuth from '../../components/ui/BannerAuth'
 import TextBorderAround from '../../components/ui/TextBorderAround'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { lang } from '../../settings/constants/arlang'
-
-
+import ModalStyled from '../../style/mui/styled/ModalStyled'
 
 function LoginPage() {
 
@@ -33,7 +29,7 @@ function LoginPage() {
             navigate('/')
         }
     }, [user, navigate])
-
+    const [open, setOpen] = useState(false)
 
     return (
         <Section sx={{ minHeight: '86vh' }}>
@@ -73,12 +69,26 @@ function LoginPage() {
                             </Typography>
                             <MuiLink component={Link} to="/signup" underline='hover' sx={{ cursor: 'pointer' }}>انشئ حساب الان !</MuiLink>
                         </FlexRow>
+                        <MuiLink component={Link} to="/signup" onClick={(e) => {
+                            e.preventDefault()
+                            setOpen(true)
+                        }} underline='always' sx={{ cursor: 'pointer', mt: '4px' }}> هل نسيت كلمه السر ؟</MuiLink>
                     </Box>
 
                 </Box>
             </FlexRow>
 
             {/* form */}
+            <ModalStyled
+                title={'هل نسيت كلمه السر ؟'}
+                desc={'إذا كنت قد نسيت كلمه السر, او تواجه مشكله فى تسجيل الدخول تواصل مع الدعم من الرقم المسجل به لاعاده ضبط الحساب'}
+                open={open}
+                setOpen={setOpen}
+                agree='التوصل مع الدعم'
+                action={() => {
+                    window.location.href = "https://api.whatsapp.com/send?phone=" + 'empty' + "&text=" + 'لقد نسيت كلمه السر';
+                }}
+            />
         </Section >
     )
 }

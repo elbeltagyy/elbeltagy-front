@@ -7,6 +7,7 @@ import Sidebar from '../components/header/Sidebar'
 import GlobalMsg from '../components/ui/GlobalMsg'
 
 import LoaderSkeleton from "../style/mui/loaders/LoaderSkeleton"
+import FooterPage from '../components/footer/FooterPage'
 
 
 function Layout() {
@@ -34,6 +35,7 @@ function Layout() {
                     <Outlet />
                 </Box>
             </Suspense>
+            <FooterPage />
             <GlobalMsg />
         </Box >
     )

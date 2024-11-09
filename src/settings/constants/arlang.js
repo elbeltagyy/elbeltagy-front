@@ -1,5 +1,5 @@
 export const lang = {
-    LOGO: 'منصة/ البلتاجى',
+    LOGO: 'منصة البلتاجى',
     Platform_name: '',
 
     LOGOUT: 'تسجيل الخروج',
