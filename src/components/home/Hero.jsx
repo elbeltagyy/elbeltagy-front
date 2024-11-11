@@ -74,7 +74,7 @@ function Hero() {
                             }} />
                         </IconButton>
 
-                        <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=empty&text="}>
+                        <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=2001553251467&text="}>
                             <FaWhatsapp style={{
                                 color: theme.palette.neutral[0],
                             }} />
