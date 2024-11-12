@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom'
 import NotFoundPage from '../../pages/errors/NotFoundPage'
 
 function ProtectedRoute({ children, allowedTo = [] }) {
