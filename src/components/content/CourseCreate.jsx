@@ -62,11 +62,14 @@ function CourseCreate({ unit, grade, setCourses }) {
         {
             name: 'name',
             label: lang.COURSE_NAME,
-            icon: <MdOutlineDriveFileRenameOutline />
+            icon: <MdOutlineDriveFileRenameOutline />,
+            validation: Yup.string().required(lang.REQUERIED)
         }, {
             name: 'description',
             label: "Course description",
-            type: 'editor'
+            type: 'editor',
+            validation: Yup.string().required(lang.REQUERIED)
+
         }, {
             name: 'isActive',
             label: lang.IS_ACTIVE,
@@ -152,10 +155,10 @@ function CourseCreate({ unit, grade, setCourses }) {
                     }
                 })
                 .test({
-                    message: `يجب ان يكون حجم الملف اقل من 15 ميغا فى وضع المشاهد`,
+                    message: `يجب ان يكون حجم الملف اقل من ${(import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN || 15)} MB `,
                     test: (file) => {
                         if (file) {
-                            const isValid = file?.size < 15 * 1000000;
+                            const isValid = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN || 15) * 1024 * 1024; // 15MB
                             return isValid;
                         } else {
                             return true

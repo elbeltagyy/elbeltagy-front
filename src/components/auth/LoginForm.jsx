@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import usePostData from '../../hooks/usePostData'
 
@@ -18,14 +18,21 @@ function LoginForm() {
             name: 'userName',
             icon: <FaSquarePhoneFlip />,
             placeholder: lang.USERNAME + '/' + lang.CODE + '/' + lang.PHONE,
-            validation: Yup.string().required(lang.REQUERIED).min(6, 'يجب ان يكون على الاقل 6 حروف'),
+            validation: Yup.string()
+                .required(lang.REQUERIED)
+                .matches(/^[a-z0-9@.]+$/, "Only lowercase letters, numbers, '@', and '.' are allowed")
+                .min(6, 'يجب ان يكون على الاقل 6 حروف')
+                .max(100, 'يجب ان يكون اقل من 100 حرف'),
         }, {
             label: lang.PASSWORD,
             name: 'password',
             direction: 'rtl',
             icon: <TbPasswordUser />,
             type: 'password',
-            validation: Yup.string().required("مطلوب").min(6, "يجب ان يكون على الاقل 6 حروف")
+            validation: Yup.string().required("مطلوب")
+                .min(6, "يجب ان يكون على الاقل 6 حروف")
+                .max(100, 'يجب ان يكون اقل من 100 حرف'),
+
         }
     ]
 
@@ -38,7 +45,7 @@ function LoginForm() {
         dispatch(setUser(res))
     }
 
-    const modalInfo = useMemo(()=> {
+    const modalInfo = useMemo(() => {
         return {
             title: 'هل انت متاكد من تسجيل الدخول ؟',
             desc: 'اقصى عدد للاجهزه المسموح بها هو 3, عشان كدا لو ده اول مره تسجل علي الجهاز ده هتتحسب 1'

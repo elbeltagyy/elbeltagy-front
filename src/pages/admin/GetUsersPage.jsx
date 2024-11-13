@@ -62,6 +62,7 @@ function GetUsersPage() {
     const [open, setOpen] = useState(false)
 
     //get users
+    const [reset, setReset] = useState(false)
     const [getData, { isLoading }] = useLazyGetUsersQuery()
     const [getUsers] = useLazyGetData(getData)
 
@@ -323,6 +324,7 @@ function GetUsersPage() {
 
             <MeDatagrid
                 apiRef={apiRef}
+                reset={reset}
                 filterParams={{ grade: grade || 'all' }}
                 type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
                 columns={columns}
@@ -337,7 +339,7 @@ function GetUsersPage() {
             />
 
             <ModalStyled open={open} setOpen={setOpen} >
-                <CreateUser />
+                <CreateUser setReset={setReset} />
             </ModalStyled>
 
             <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >

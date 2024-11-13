@@ -57,7 +57,9 @@ function CourseUpdate({ course, setCourse }) {
             name: 'name',
             label: lang.COURSE_NAME,
             value: course.name,
-            icon: <MdOutlineDriveFileRenameOutline />
+            icon: <MdOutlineDriveFileRenameOutline />,
+            validation: Yup.string().required(lang.REQUERIED)
+
         }, {
             name: 'description',
             label: lang.COURSE_DESCRIPTION,
@@ -154,10 +156,10 @@ function CourseUpdate({ course, setCourse }) {
                     }
                 })
                 .test({
-                    message: `يجب ان يكون حجم الملف اقل من ${Number(import.meta.env.MAX_FILE_SIZE) || 10} ميغا فى وضع المشاهد`,
+                    message: `يجب ان يكون حجم الملف اقل من ${Number(import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN) || 15} MB `,
                     test: (file) => {
                         if (file && file.size) {
-                            const isValid = file?.size < (Number(import.meta.env.MAX_FILE_SIZE) || 10) * 1000000;
+                            const isValid = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN || 15) * 1024 * 1024; // 15MB
                             return isValid;
                         } else {
                             return true

@@ -32,7 +32,6 @@ const getGoogleDrivePreviewLink = (originalLink) => {
         const fileId = match[1];
         return `https://drive.google.com/file/d/${fileId}/preview`;
     } else {
-        console.error('Invalid Google Drive link');
         return null;
     }
 };

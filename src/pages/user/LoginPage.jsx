@@ -37,7 +37,7 @@ function LoginPage() {
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
                 {/* banner */}
-                <BannerAuth title={lang.LOGIN_ENTRY} img={'https://wallpaperaccess.com/full/17598.jpg'} />
+                <BannerAuth title={lang.LOGIN_ENTRY} img={'/assets/login.jpg'} />
 
                 {/* Login form */}
                 <Box sx={{
@@ -86,7 +86,7 @@ function LoginPage() {
                 setOpen={setOpen}
                 agree='التوصل مع الدعم'
                 action={() => {
-                    window.location.href = "https://api.whatsapp.com/send?phone=" + 'empty' + "&text=" + 'لقد نسيت كلمه السر';
+                    window.location.href = "https://api.whatsapp.com/send?phone=" + '2001553251467' + "&text=" + 'لقد نسيت كلمه السر';
                 }}
             />
         </Section >

@@ -278,10 +278,10 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
                     return fileType === 'application/pdf'; // Check if it's a PDF
                 })
                 .test({
-                    message: `يجب ان يكون حجم الملف اقل من 100 ميغا فى وضع المشاهد`,
+                    message: `يجب ان يكون حجم الملف اقل من ${import.meta.env.VITE_MAX_PDF_SIZE || 100} MB `,
                     test: (file) => {
                         if (file && file.size) {
-                            const isValid = file?.size < 100 * 1024 * 1024;
+                            const isValid = file?.size <= (import.meta.env.VITE_MAX_PDF_SIZE || 100) * 1024 * 1024; // 3MB
                             return isValid;
                         } else {
                             return true
@@ -320,7 +320,9 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
 
                 {/* Video setup */}
                 {sectionType === sectionConstants.VIDEO && (
-                    <MakeSelect disabled={location === 'update' ? true : false} title={'نوع مشغل الفيديو'} value={videoPlayer} setValue={setVideoPlayer}
+                    <MakeSelect disabled={location === 'update' ? true : false}
+                        disableValue={['bunny']}
+                        title={'نوع مشغل الفيديو'} value={videoPlayer} setValue={setVideoPlayer}
                         options={[filePlayers.YOUTUBE, filePlayers.BUNNY]} /> //, filePlayers.BUNNY_UPLOAD, filePlayers.SERVER
                 )}
 
@@ -341,7 +343,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
 
                 {/* file Section */}
                 {sectionType === sectionConstants.FILE && (
-                    <MakeSelect title={'نوع مشغل PDF'} value={activeFilePlayer} setValue={setActiveFilePlayer}
+                    <MakeSelect disabled={location === 'update' ? true : false} title={'نوع مشغل PDF'} value={activeFilePlayer} setValue={setActiveFilePlayer}
                         options={[filePlayers.GOOGLE_DRIVE, filePlayers.SERVER]} />
                 )}
 

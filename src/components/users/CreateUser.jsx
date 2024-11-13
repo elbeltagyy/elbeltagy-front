@@ -6,13 +6,13 @@ import { IoIosCreate } from "react-icons/io";
 import { lang } from '../../settings/constants/arlang';
 
 
-function CreateUser() {
+function CreateUser({setReset}) {
   return (
     <div>
       <BannerIcon title={lang.CREATE_USER} icon={<IoIosCreate style={{
         width: '3rem', height: '3rem', color: '#fff'
       }} />} />
-      <CreateUserForm />
+      <CreateUserForm setReset={setReset} />
     </div>
   )
 }

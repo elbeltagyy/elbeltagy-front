@@ -1,5 +1,3 @@
-import React from 'react'
-
 import MakeForm from '../../tools/makeform/MakeForm'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import governments from '../../settings/constants/governments'
@@ -11,13 +9,10 @@ import { FaSquarePhoneFlip } from "react-icons/fa6";
 import { PiPhoneDisconnectFill } from "react-icons/pi";
 import { IoSchool } from "react-icons/io5";
 import { RiGovernmentFill } from "react-icons/ri";
-import { CiBarcode } from "react-icons/ci";
 import { TbPasswordUser } from "react-icons/tb";
 
 import { lang } from '../../settings/constants/arlang';
-import { Box } from '@mui/material';
 import Section from '../../style/mui/styled/Section';
-import BannerIcon from '../ui/BannerIcon';
 import { useCreateUserMutation } from '../../toolkit/apis/usersApi';
 
 import usePostData from '../../hooks/usePostData'
@@ -26,7 +21,7 @@ import { user_roles } from '../../settings/constants/roles';
 
 import * as Yup from "yup"
 
-function CreateUserForm() {
+function CreateUserForm({ setReset }) {
 
   const [sendData, status] = useCreateUserMutation()
   const [createUser] = usePostData(sendData)
@@ -45,7 +40,11 @@ function CreateUserForm() {
       label: lang.USERNAME,
       width: { xs: '100%', md: '49%' },
       icon: <MdOutlineDriveFileRenameOutline color='green' />,
-      validation: Yup.string().required(lang.REQUERIED).min(6, "يجب ان يكون 6 حروف على الاقل ")
+      validation: Yup.string()
+      .required(lang.REQUERIED)
+      .matches(/^[a-z0-9@.]+$/, "Only lowercase letters, numbers, '@', and '.' are allowed")
+      .min(6, 'يجب ان يكون على الاقل 6 حروف')
+      .max(100, 'يجب ان يكون اقل من 100 حرف'),
     }, {
       name: 'email',
       label: lang.EMAIL,
@@ -108,6 +107,10 @@ function CreateUserForm() {
 
   const onSubmit = async (values, props) => {
     await createUser(values)
+    if (setReset) {
+      setReset(pre => !pre)
+    }
+    props.resetForm()
   }
   return (
     <Section>

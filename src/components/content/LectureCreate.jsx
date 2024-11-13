@@ -1,4 +1,3 @@
-import React from 'react'
 import { useCreateLectureMutation } from '../../toolkit/apis/lecturesApi'
 import usePostData from '../../hooks/usePostData'
 import LectureForm from './LectureForm'

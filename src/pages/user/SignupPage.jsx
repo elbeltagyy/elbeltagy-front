@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme, Link as MuiLink } from '@mui/material'
-import React, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import Section from '../../style/mui/styled/Section'
 import BannerAuth from '../../components/ui/BannerAuth'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
@@ -34,7 +34,7 @@ function SignupPage() {
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
                 {/* banner */}
-                <BannerAuth img={'https://wallpaperaccess.com/full/824561.jpg'} title={BUILD + ' ' + ACCOUNT} />
+                <BannerAuth img={'/assets/signup.webp'} title={BUILD + ' ' + ACCOUNT} />
 
                 {/* signup form */}
                 <Box sx={{

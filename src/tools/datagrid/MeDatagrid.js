@@ -1,4 +1,3 @@
-import React from 'react'
 import SimpleDatagrid from './SimpleDatagrid'
 import ServerSideDatagrid from './ServerSideDatagrid'
 import CrudDatagrid from './CrudDatagrid'

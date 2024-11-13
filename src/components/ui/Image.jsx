@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 
 function Image({ img, title, maxWidth = '100vh', sx, ratio = 16 / 9 }) {
+    
     return (
         <Box sx={{
             overflow: 'hidden',

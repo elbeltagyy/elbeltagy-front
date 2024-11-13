@@ -1,4 +1,3 @@
-import React from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import governments from '../../settings/constants/governments'
@@ -24,29 +23,6 @@ import { useSignupMutation } from '../../toolkit/apis/usersApi';
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray';
 // validation: Yup.string().required("مطلوب").min(6, "يجب ان يكون اكثر من 6")
 
-const gradeOptions = () => {
-    let options = []
-    gradeConstants.map(grade => {
-        options.push({
-            label: grade.name, value: grade.index
-        },
-        )
-    })
-
-    return options
-}
-
-const governmentsOptions = () => {
-    let options = []
-    governments.map(governorate => {
-        options.push({
-            label: governorate.governorate_name_ar, value: governorate.id
-        },
-        )
-    })
-
-    return options
-}
 
 function SignupForm() {
 
@@ -118,7 +94,7 @@ function SignupForm() {
         }, {
             name: 'fileConfirm',
             type: 'file',
-            label: 'file confirm',
+            label: 'صوره تاكيد للهويه',
             icon: <TbPasswordUser color='green' />,
             validation: Yup.mixed().test('fileRequired', 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم', function (file) {
                 const { code } = this.parent; // Access the `code` field from the parent object
@@ -137,10 +113,10 @@ function SignupForm() {
                         });
                     }
                     // File size validation (must be less than 3MB)
-                    const isValidSize = file?.size <= 3 * 1024 * 1024; // 3MB
+                    const isValidSize = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) * 1024 * 1024; // 3MB
                     if (!isValidSize) {
                         return this.createError({
-                            message: 'File must be less than 3MB',
+                            message: 'File must be less than ' + (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) + 'MB',
                         });
                     }
                 }
