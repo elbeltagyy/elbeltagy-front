@@ -18,17 +18,17 @@ function LectureBody({ lecture, lectureIndex }) {
             <FlexColumn gap={'16px'}>
 
                 <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px' }}>
-                    <SectionIcon lecture={lecture} color='white' />
+                    {lectureIndex}
                 </Avatar>
 
                 <FlexRow sx={{ mb: '16px', width: '100%', position: 'relative', bgcolor: "neutral.1000", p: '12px 20px', borderRadius: '16px', border: '2px solid transparent' }} >
-
-                    <Typography variant='subtitle1' sx={{ textAlign: 'center', width: '100%', color: 'neutral.0', mr: '40px', textDecoration: 'underline' }}>{lecture.name}</Typography>
                     {lectureIndex && (
-                        <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', left: -4 }}>
-                            {lectureIndex}
+                        <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0', width: '55px', height: '55px', position: 'absolute', right: -4 }}>
+                            <SectionIcon lecture={lecture} color='white' />
                         </Avatar>
                     )}
+                    <Typography variant='subtitle1' sx={{ textAlign: 'center', width: '100%', color: 'neutral.0', mr: '40px', textDecoration: 'underline' }}>{lecture.name}</Typography>
+
                 </FlexRow>
             </FlexColumn>
 

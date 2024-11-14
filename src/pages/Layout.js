@@ -31,7 +31,7 @@ function Layout() {
             <Navbar isOpenedSidebar={isOpenedSidebar} setSidebar={setSidebar} isMobileScreen={isMobileScreen} />
             <Sidebar isOpenedSideBar={isOpenedSidebar} setSideBar={setSidebar} />
             <Suspense fallback={<LoaderSkeleton />}>
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{ width: '100%', minHeight: '80vh' }}>
                     <Outlet />
                 </Box>
             </Suspense>

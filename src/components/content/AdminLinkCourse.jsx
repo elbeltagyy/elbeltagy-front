@@ -23,10 +23,8 @@ function AdminLinkCourse({ grade, course, setCourse }) { //fetching Fc, setChose
     const [addLinkers] = usePostData(sendData)
 
     const onSubmit = async () => {
-        console.log('chosen options ==>', chosenOptions)
         const linkers = chosenOptions.map(opt => opt?._id || opt)
         const res = await addLinkers({ course: course._id, linkers })
-        console.log('res =>', res)
         setCourse(pre => {
             return {
                 ...pre, ...res

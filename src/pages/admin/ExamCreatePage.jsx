@@ -14,6 +14,7 @@ import usePostData from '../../hooks/usePostData'
 import { useCreateExamMutation } from '../../toolkit/apis/lecturesApi'
 import { useUploadFilesMutation } from '../../toolkit/apis/filesApi'
 import ExamForm from '../../components/exam/ExamForm'
+import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 
 
 function ExamUpdatePage() {
@@ -73,7 +74,7 @@ function ExamUpdatePage() {
         navigate(-1, { replace: true })
     }
 
-    if (!course) return <Loader />
+    if (!course) return <LoaderSkeleton />
 
     return (
         <Section>

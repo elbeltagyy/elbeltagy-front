@@ -92,7 +92,7 @@ function ExamForm({ lecture, status, onSubmit }) {
             type: 'switch',
             value: lecture.isActive ?? true,
 
-        },  {
+        }, {
             name: "dateStart",
             label: "تاريخ البدء",
             type: 'fullDate',
@@ -206,6 +206,33 @@ function ExamForm({ lecture, status, onSubmit }) {
                     Yup.object().shape({
                         title: Yup.string().required(lang.REQUERIED),
                         rtOptionId: Yup.string().required('اختر الايجابه الصحيحه'),
+                        image: Yup.mixed()
+                            .test({
+                                message: 'Please provide a supported image typed(jpg or png)',
+                                test: (file, context) => {
+                                    if (file && !file.url) {
+                                        if (file?.url) {
+                                            file.type = file.resource_type + "/" + file.format
+                                        }
+                                        const isValid = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
+                                        if (!isValid) context?.createError();
+                                        return isValid;
+                                    } else {
+                                        return true
+                                    }
+                                }
+                            })
+                            .test({
+                                message: `يجب ان يكون حجم الملف اقل من ${Number(import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN) || 15} MB `,
+                                test: (file) => {
+                                    if (file && file.size) {
+                                        const isValid = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN || 15) * 1024 * 1024; // 15MB
+                                        return isValid;
+                                    } else {
+                                        return true
+                                    }
+                                }
+                            }),
                         options: Yup.array().of(
                             Yup.object().shape({
                                 title: Yup.string().required(lang.REQUERIED),
@@ -214,7 +241,7 @@ function ExamForm({ lecture, status, onSubmit }) {
                     })
                 )
                 .required('يجب ان يكون هناك اسئله') // these constraints are shown if and only if inner constraints are satisfied
-                .min(5, '5 على الاقل')
+                .min(1, '5 على الاقل')
         ,
     }
     ]

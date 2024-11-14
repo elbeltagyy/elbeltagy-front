@@ -51,13 +51,13 @@ export default function MakeChunk({ props, input, inputName, values }) {
 
                                 <CardActions sx={{ width: '100%', justifyContent: 'space-evenly' }}>
                                     <FilledHoverBtn colorm={'orange'} disabled={disabledPre} onClick={() => setCurrentValueIndex(currentValueIndex - 1)}>
-                                        previous question
+                                        السؤال السابق
                                     </FilledHoverBtn>
 
                                     <FilledHoverBtn
                                         disabled={disabledNext}
                                         onClick={() => setCurrentValueIndex(currentValueIndex + 1)}>
-                                        next question
+                                        السؤال التالى
                                     </FilledHoverBtn>
                                 </CardActions>
 

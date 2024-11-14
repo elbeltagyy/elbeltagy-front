@@ -111,7 +111,7 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                         {(course.preDiscount !== 0 && course.preDiscount > course.price) && (
                             <>
                                 <Separator sx={{ width: '100px', borderWidth: '2px', mr: 'auto' }} />
-                                <TabInfo title={lang.PRE_DISCOUNT} count={course.preDiscount + " جنيه" + ' - ' + ((course.preDiscount - course.price) / course.preDiscount) * 100 + "%"} icon={<AiFillPoundCircle size={'1.5rem'} />} i={0} sx={{ mr: 'auto' }} />
+                                <TabInfo title={lang.PRE_DISCOUNT} count={course.preDiscount + " جنيه" + ' - ' + ((course.preDiscount - course.price) / course.preDiscount).toFixed(2) * 100 + "%"} icon={<AiFillPoundCircle size={'1.5rem'} />} i={0} sx={{ mr: 'auto' }} />
                             </>
                         )}
                     </Box>
