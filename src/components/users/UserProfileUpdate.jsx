@@ -95,7 +95,7 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
             icon: <PasswordIcon sx={{ color: 'green' }} />
         }, {
             name: "avatar",
-            label: "image",
+            label: "ارفاق صوره شخصيه",
             type: "file",
             value: user.avatar || '',
             validation: Yup.mixed()
@@ -115,10 +115,11 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
                     }
                 })
                 .test({
-                    message: `يجب ان يكون حجم الملف اقل من 3 ميغا`,
+                    message: `يجب ان يكون حجم الملف اقل من ${(import.meta.env.VITE_MAX_IMAGE_SIZE || 3)} ميغا`,
                     test: (file) => {
                         if (file && file.size) {
-                            const isValid = file?.size < 3 * 1024 * 1024;
+                            const isValid = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) * 1024 * 1024; // 3MB
+                            // const isValid = file?.size < 3 * 1024 * 1024;
                             return isValid;
                         } else {
                             return true

@@ -279,7 +279,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                     )}
                     <Grid item>
                         <IconButton disabled={pageState.isLoading || loading} onClick={() => {
-                            setFilter()
+                            // setFilter()
                             setSort()
                             setRefresh(!isRefresh)
                         }}>

@@ -21,7 +21,19 @@ function YoutubePlyr({ url }) {
     }
 
     const options = {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+        controls: [
+            'rewind',     // Adds a back 10 seconds button
+            'play-large',
+            'play',
+            'fast-forward', // Adds a forward 10 seconds button
+            'progress',
+            'current-time',
+            'mute',
+            'volume',
+            'settings',
+            'fullscreen'
+          ],
+        // controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
         settings: ['captions', 'quality', 'speed', 'loop'],
 
     }
@@ -71,7 +83,7 @@ function YoutubePlyr({ url }) {
     // };
 
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
-        <Plyr ref={vid} source={source} />
+        <Plyr ref={vid} source={source} options={options} />
     </div>
 }
 

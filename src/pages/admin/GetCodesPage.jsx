@@ -147,7 +147,7 @@ function GetCodesPage() {
             field: 'createdAt',
             headerName: 'تم انشاءه فى',
             width: 170,
-            type: 'number',
+            // type: 'number',
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={0} />
             }
