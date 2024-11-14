@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme, Link as MuiLink } from '@mui/material'
-import  { useEffect } from 'react'
+import { useEffect } from 'react'
 import Section from '../../style/mui/styled/Section'
 import BannerAuth from '../../components/ui/BannerAuth'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
@@ -9,6 +9,7 @@ import { FaFileSignature } from "react-icons/fa6";
 import SignupForm from '../../components/auth/SignupForm'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 
 const BUILD = "انشاء"
@@ -30,6 +31,17 @@ function SignupPage() {
 
     return (
         <Section sx={{ minHeight: '86vh' }}>
+
+            <Helmet>
+                <title>Sign up - انشئ حسابك الان على منصه البلتاجى</title>
+                <meta name="description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
+                <meta property="og:title" content="انشئ حسابك الان على منصه البلتاجى" />
+                <meta property="og:description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
+                <meta property="og:url" content="https://www.mrelbeltagy.com/signup" />
+                <meta property="og:image" content="/assets/logo.webp" />
+                <meta property="og:site_name" content="Elbeltagy Platform" />
+            </Helmet>
+
 
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 

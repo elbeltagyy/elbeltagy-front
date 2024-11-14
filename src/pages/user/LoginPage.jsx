@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet';
 
 import Section from "../../style/mui/styled/Section"
 import { LoginAnimatedIcon, ReactLoginIcon } from '../../components/ui/svg/Registers'
@@ -33,6 +34,17 @@ function LoginPage() {
 
     return (
         <Section sx={{ minHeight: '86vh' }}>
+
+            <Helmet>
+                <title>Login - تسجيل الدخول لمنصه البلتاجى</title>
+                <meta name="description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
+                <meta property="og:title" content="تسجيل الدخول لمنصه البلتاجى" />
+                <meta property="og:description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
+                <meta property="og:url" content="https://www.mrelbeltagy.com/login" />
+                <meta property="og:image" content="/assets/logo.webp" />
+                <meta property="og:site_name" content="Elbeltagy Platform" />
+            </Helmet>
+
 
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
