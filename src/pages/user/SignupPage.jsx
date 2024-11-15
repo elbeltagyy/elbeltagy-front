@@ -37,7 +37,7 @@ function SignupPage() {
                 <meta name="description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
                 <meta property="og:title" content="انشئ حسابك الان على منصه البلتاجى" />
                 <meta property="og:description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
-                <meta property="og:url" content="https://www.mrelbeltagy.com/signup" />
+                <meta property="og:url" content="https://mrelbeltagy.com/signup" />
                 <meta property="og:image" content="/assets/logo.webp" />
                 <meta property="og:site_name" content="Elbeltagy Platform" />
             </Helmet>

@@ -19,7 +19,7 @@ function LoginForm() {
             icon: <FaSquarePhoneFlip />,
             placeholder: lang.USERNAME + '/' + lang.CODE + '/' + lang.PHONE,
             validation: Yup.string()
-                .required(lang.REQUERIED)
+                .trim() // Removes leading and trailing spaces
                 .matches(/^[a-z0-9@.]+$/, "Only lowercase letters, numbers, '@', and '.' are allowed")
                 .min(6, 'يجب ان يكون على الاقل 6 حروف')
                 .max(100, 'يجب ان يكون اقل من 100 حرف'),

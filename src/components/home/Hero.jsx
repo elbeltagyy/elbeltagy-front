@@ -96,10 +96,7 @@ function Hero() {
                 </FlexColumn>
 
                 {/* banner */}
-                <Box >
-                    <Image maxWidth='500px' ratio={'auto'} img={'/assets/teacher-nobg.webp'} />
-                </Box>
-
+                <Image maxWidth='500px' ratio={'auto'} img={'/assets/hero-geo.png'} />
 
             </FlexRow>
 

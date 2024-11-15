@@ -36,7 +36,7 @@ function HeroScience() {
                 <Box sx={{
                     maxWidth: '500px'
                 }}>
-                    <Image ratio={'auto'} img={'/assets/teacher-nobg.webp'} />
+                    <Image ratio={'auto'} img={'/assets/hero-science.png'} />
                 </Box>
 
                 {/* content */}

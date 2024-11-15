@@ -241,7 +241,7 @@ function ExamForm({ lecture, status, onSubmit }) {
                     })
                 )
                 .required('يجب ان يكون هناك اسئله') // these constraints are shown if and only if inner constraints are satisfied
-                .min(1, '5 على الاقل')
+                .min(5, '5 على الاقل')
         ,
     }
     ]

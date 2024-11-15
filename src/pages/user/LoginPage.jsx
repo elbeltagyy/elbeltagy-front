@@ -40,7 +40,7 @@ function LoginPage() {
                 <meta name="description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
                 <meta property="og:title" content="تسجيل الدخول لمنصه البلتاجى" />
                 <meta property="og:description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
-                <meta property="og:url" content="https://www.mrelbeltagy.com/login" />
+                <meta property="og:url" content="https://mrelbeltagy.com/login" />
                 <meta property="og:image" content="/assets/logo.webp" />
                 <meta property="og:site_name" content="Elbeltagy Platform" />
             </Helmet>

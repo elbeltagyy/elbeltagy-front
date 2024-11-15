@@ -82,13 +82,6 @@ function GetCodesPage() {
     const [openUsedBy, setOpenUsedBy] = useState(false)
     const columns = [
         {
-            field: 'isChecked',
-            headerName: "تعليم كتم استعماله",
-            width: 170,
-            type: 'boolean',
-            editable: true
-        },
-        {
             field: 'code',
             headerName: "الكود",
             width: 200,
@@ -101,6 +94,13 @@ function GetCodesPage() {
                 </CopyToClipboard>
 
             }
+        },
+        {
+            field: 'isChecked',
+            headerName: "تعليم كتم استعماله",
+            width: 170,
+            type: 'boolean',
+            editable: true
         }, {
             field: 'price',
             headerName: "السعر",

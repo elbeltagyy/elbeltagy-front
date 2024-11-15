@@ -79,6 +79,11 @@ function GetCoupons({ course, reset }) {
     const [openUsedBy, setOpenUsedBy] = useState(false)
     const columns = [
         {
+            field: 'coupon',
+            headerName: "الكوبون",
+            width: 200,
+        },
+        {
             field: 'isChecked',
             headerName: "تعليم كتم استعماله",
             width: 170,
@@ -89,11 +94,6 @@ function GetCoupons({ course, reset }) {
             headerName: "اسم الكورس",
             width: 300,
             valueGetter: (params) => params.row.course?.name || codeConstants.GLOBAL,
-
-        }, {
-            field: 'coupon',
-            headerName: "الكوبون",
-            width: 200,
         }, {
             field: 'type',
             headerName: "نوع الكوبون",

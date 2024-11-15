@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderContent from '../../components/ui/HeaderContent'
 import Section from '../../style/mui/styled/Section'
-import { Box, useTheme } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import Image from '../../components/ui/Image'
 import { OutLinedHoverBtn } from '../../style/buttonsStyles'
 import { RtArrow } from '../../components/icons/Icons'
@@ -17,7 +17,7 @@ function NotFoundPage() {
         navigate('/', { replace: true })
     }
 
-    
+
     return (
         <Section>
             <Box sx={{
@@ -34,7 +34,9 @@ function NotFoundPage() {
                     background: `linear-gradient(to left, ${theme.palette.primary.light} 80%, ${theme.palette.primary.dark} 80%)`, opacity: .9 //linear-gradient(to left, ${theme.palette.primary.light} 30%, ${theme.palette.primary.dark} 75%) `linear-gradient(45deg,transparent 42%,#9400ff 42%)`
                 }} />
 
-                <Image img={'https://www.artzstudio.com/content/images/wordpress/2020/05/404-error-not-found-page-lost.png'} width={"100%"} sx={{ maxWidth: "500px" }} />
+                <Image img={'/assets/logo.webp'} ratio={'auto'} sx={{ maxWidth: "250px" }} />
+
+                <Typography variant='h5' sx={{ color: '#fff' }}>404 - Not Found</Typography>
                 <OutLinedHoverBtn onClick={onCLick} component={Link} to="/" startIcon={<RtArrow size='1.5rem' />}>go to main page</OutLinedHoverBtn>
             </Box>
         </Section>
