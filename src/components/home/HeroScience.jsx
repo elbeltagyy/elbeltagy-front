@@ -5,6 +5,7 @@ import Image from '../ui/Image'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 import { Link } from 'react-router-dom'
 
+
 function HeroScience() {
     const isMobileScreen = useMediaQuery('(max-width:600px)');
 
@@ -17,7 +18,6 @@ function HeroScience() {
         }}>
             {/* Hero Title */}
             <FlexColumn>
-
                 <Box sx={{
                     bgcolor: 'orange',
                     width: '300px',
@@ -30,14 +30,16 @@ function HeroScience() {
                 <Typography variant='h2' textAlign={'center'} sx={{ zIndex: 1, color: 'grey.0', fontSize: { xs: '1.5rem', sm: '2.5rem' } }}>أنت فاكرنا هنسيبك ولا إي</Typography>
             </FlexColumn>
 
-            <FlexRow justifyContent={'center'} gap={'40px'} sx={{ minHeight: '88vh', flexDirection: { xs: 'column-reverse', lg: 'row' } }} >
+            <FlexColumn gap={'40px'} sx={{ minHeight: '88vh', flexDirection: { xs: 'column-reverse', md: 'row' }, }} >
 
                 {/* banner */}
-                <Box sx={{
+                <img style={{ maxWidth: '600px', marginTop: '-50px', minWidth: '450px' }} src="/assets/hero-science.png" />
+
+                {/* <Box sx={{
                     maxWidth: '500px'
                 }}>
                     <Image ratio={'auto'} img={'/assets/hero-science.png'} />
-                </Box>
+                </Box> */}
 
                 {/* content */}
                 <FlexColumn sx={{
@@ -52,11 +54,11 @@ function HeroScience() {
                     <Typography variant='subBanner' color={'grey.0'}>منصتك فى العلوم المتكامله</Typography>
                     {/* <Typography variant='subBanner' color={'grey.0'}> شرفتنا</Typography> */}
                     <FlexRow sx={{ width: '100%', justifyContent: 'center', mt: '16px' }}>
-                        <FilledHoverBtn component={Link} to={'/grades/1'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم المتكامله</FilledHoverBtn>
+                        <FilledHoverBtn startIcon={<img style={{width: '30px'}} src='/assets/cell-icon.svg' />} component={Link} to={'/grades/1'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم المتكامله</FilledHoverBtn>
                     </FlexRow>
 
                 </FlexColumn>
-            </FlexRow>
+            </FlexColumn>
 
         </Section >
     )
