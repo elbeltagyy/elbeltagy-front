@@ -20,11 +20,11 @@ function Layout() {
         window.scrollTo(0, 0)
     }, [location])
 
-    useEffect(() => {
-        if (localStorage.getItem('deviceId')) {
-            localStorage.removeItem("deviceId")
-        }
-    }, [location])
+    // useEffect(() => {
+    //     if (localStorage.getItem('deviceId')) {
+    //         localStorage.removeItem("deviceId")
+    //     }
+    // }, [location])
 
     return (
         <Box>
