@@ -162,6 +162,7 @@ function GetUsersPage() {
             field: 'role',
             headerName: lang.ROLE,
             type: 'singleSelect',
+            width: 200,
             valueOptions: [user_roles.INREVIEW, user_roles.ONLINE, user_roles.STUDENT, user_roles.ADMIN, user_roles.SUBADMIN,],
             editable: true
         }, {
