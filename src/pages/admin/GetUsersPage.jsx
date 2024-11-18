@@ -309,7 +309,7 @@ function GetUsersPage() {
     //reset Password
     const [openReset, setOpenReset] = useState(false)
     const resetPassword = async () => {
-        const user = await updateUser({ _id: userToRegister._id, password: 'reset', isActive: userToRegister.isActive })
+        const user = await updateUser({ _id: userToRegister._id, password: 'reset' })
         apiRef.current.updateRows([{ ...user }])
         setUserRegister()
     }
