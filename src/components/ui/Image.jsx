@@ -6,7 +6,7 @@ function Image({ img, title, maxWidth = '100vh', sx, ratio = 'auto', saturate = 
         <Box sx={{
             overflow: 'hidden',
             borderRadius: '16px', aspectRatio: ratio, maxWidth: maxWidth, ...sx,
-            transition: '.3s all ease',maxHeight: '450px'
+            transition: '.3s all ease',
         }}>
             <img
                 // srcSet={`${img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -14,7 +14,7 @@ function Image({ img, title, maxWidth = '100vh', sx, ratio = 'auto', saturate = 
                 alt={title || '#'}
                 loading="lazy"
                 style={{
-                    // borderRadius: '16px',
+                    borderRadius: '16px',
                     filter: saturate && 'saturate(80%)',
                     transition: '.3s all ease',
                     // pointerEvents: 'none'
