@@ -31,13 +31,14 @@ function NotFoundPage() {
             }}>
                 <Box sx={{
                     position: 'absolute', borderRadius: '16px', top: '0', right: '0', width: '100%', height: '100%',
-                    background: `linear-gradient(to left, ${theme.palette.primary.light} 80%, ${theme.palette.primary.dark} 80%)`, opacity: .9 //linear-gradient(to left, ${theme.palette.primary.light} 30%, ${theme.palette.primary.dark} 75%) `linear-gradient(45deg,transparent 42%,#9400ff 42%)`
+                    background: `linear-gradient(to left, ${theme.palette.primary.light} 80%, ${theme.palette.primary.dark} 80%)`, zIndex: -1,
+                    opacity: .9 //linear-gradient(to left, ${theme.palette.primary.light} 30%, ${theme.palette.primary.dark} 75%) `linear-gradient(45deg,transparent 42%,#9400ff 42%)`
                 }} />
 
                 <Image img={'/assets/logo.webp'} ratio={'auto'} sx={{ maxWidth: "250px" }} />
 
-                <Typography variant='h5' sx={{ color: '#fff' }}>404 - Not Found</Typography>
-                <OutLinedHoverBtn onClick={onCLick} component={Link} to="/" startIcon={<RtArrow size='1.5rem' />}>go to main page</OutLinedHoverBtn>
+                <Typography variant='h5' sx={{ color: '#fff', my: '16px' }}>404 - هذه الصفحه غير موجوده</Typography>
+                <OutLinedHoverBtn onClick={onCLick} component={Link} to="/" startIcon={<RtArrow size='1.5rem' />}>الذهاب الي الصفحه الرئيسيه</OutLinedHoverBtn>
             </Box>
         </Section>
 

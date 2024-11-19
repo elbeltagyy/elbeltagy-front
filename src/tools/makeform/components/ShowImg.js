@@ -11,7 +11,7 @@ export default function ShowImg({ file, removeFile }) {
         <Card sx={{ maxWidth: 345, backgroundColor: theme.palette.background.alt }}>
             <CardMedia
                 component={"img"}
-                sx={{ height: 140 }}
+                sx={{ maxHeight: '400px', minHeight: '140px' }}
                 image={file?.url}
                 title="Image"
             />

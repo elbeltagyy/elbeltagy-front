@@ -46,9 +46,9 @@ function HeaderContent({ title, body, infos = [], img, children, height = '86vh'
             </Box>
             <Box sx={{
                 zIndex: 5, position: 'relative',
-                border: '4px solid transparent', borderRadius: '16px', mt: '-150px',
+                border: '0px solid transparent', borderRadius: '16px', mt: '-150px',
                 mx: 'auto',// boxShadow: img ? theme.shadows[24] : 'none',
-                maxWidth: '600px', minWidth: '250px', width: '100%', p: '16px', bgcolor: 'background.default'
+                maxWidth: '100vh', minWidth: '250px', width: '100%', p: '16px', bgcolor: 'background.default'
             }}>
                 {img ?
                     <Image img={img} />
@@ -58,5 +58,5 @@ function HeaderContent({ title, body, infos = [], img, children, height = '86vh'
 
     )
 }
-{/* <img src={img} style={{ borderRadius: '16px', maxHeight: '500px' }} /> */}
+{/* <img src={img} style={{ borderRadius: '16px', maxHeight: '500px' }} /> */ }
 export default HeaderContent

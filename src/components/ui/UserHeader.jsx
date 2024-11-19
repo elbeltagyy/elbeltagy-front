@@ -31,11 +31,11 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
             <Avatar alt={user.name.toUpperCase()} src={user?.avatar?.url || "#"}
                 sx={{
                     m: '6px',
-                    height: "120px",
-                    width: "120px",
+                    height: "200px",
+                    width: "200px",
                     bgcolor: theme.palette.primary[400],
                     fontWeight: 800,
-                    fontSize: '25px',
+                    fontSize: '50px',
                     color: theme.palette.grey[0],
                 }}
                 variant={variant || 'square'} />
