@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom'
 import { useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
 import Separator from '../../components/ui/Separator'
 import { red } from '@mui/material/colors'
+import { user_roles } from '../../settings/constants/roles'
 
 
 
@@ -26,7 +27,7 @@ const exportObj = {
 
 
 
-function GetAttemptsNot({ grade, exam, course, lecture }) {
+function GetAttemptsNot({ grade, exam, course, lecture, courseType = '' }) {
 
     const [fileConfirm, setFileConfirm] = useState()
     const [openFileModal, setOpenFileModal] = useState(false)
@@ -36,7 +37,12 @@ function GetAttemptsNot({ grade, exam, course, lecture }) {
     const [getNotDoExam] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getNotDoExam({ ...params, exams: `!=_split_${exam}`, grade, courses: course }, false)
+        let res = []
+        if (courseType === user_roles.STUDENT) {
+            res = await getNotDoExam({ ...params, exams: `!=_split_${exam}`, grade, role: user_roles.STUDENT }, false)
+        } else {
+            res = await getNotDoExam({ ...params, exams: `!=_split_${exam}`, grade, courses: course }, false)
+        }
 
         const data = { values: res.users, count: res.count }
         setNotDoExamCounts(res.count)
@@ -97,6 +103,10 @@ function GetAttemptsNot({ grade, exam, course, lecture }) {
         }, {
             field: 'familyPhone',
             headerName: lang.FAMILY_PHONE,
+            width: 200
+        }, {
+            field: 'role',
+            headerName: lang.ROLE,
             width: 200
         },
     ]

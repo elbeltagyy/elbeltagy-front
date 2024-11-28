@@ -1,5 +1,5 @@
 import { FormControlLabel, Switch } from '@mui/material'
-import React from 'react'
+
 import Loader from '../loaders/Loader'
 
 function SwitchStyled({ label, checked, onChange, isLoading }) {

@@ -12,6 +12,15 @@ const lecturesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getAllLectures: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/content/lectures/all",
+                    params
+                }
+            }
+        }),
         getOneLecture: builder.query({
             query: (queries) => {
                 const params = queries
@@ -88,7 +97,8 @@ const lecturesApi = apiSlice.injectEndpoints({
 
     })
 })
-export const { useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useGetLectureForCenterQuery, useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
+export const { useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useGetLectureForCenterQuery, useLazyGetAllLecturesQuery,
+    useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
     useGetSecureVideoMutation
     , useCreateExamMutation, useUpdateExamMutation, usePatchLectureMutation
 } = lecturesApi

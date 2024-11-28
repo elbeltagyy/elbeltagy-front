@@ -1,28 +1,24 @@
-import React, { memo, useEffect, useState } from 'react'
-import CardStyled from '../../style/mui/styled/CardStyled'
+import { memo, useEffect, useState } from 'react'
 import Grid from '../../style/vanilla/Grid'
-import TitleSection from '../ui/TitleSection'
-import { Alert, Box, Divider, Typography } from '@mui/material'
+import { Alert, } from '@mui/material'
 import TitleWithDividers from '../ui/TitleWithDividers'
 
-import { useLazyGetLecturesQuery } from '../../toolkit/apis/lecturesApi'
+import { useLazyGetAllLecturesQuery } from '../../toolkit/apis/lecturesApi'
 import useLazyGetData from "../../hooks/useLazyGetData"
 import AdminCardLecture from './AdminCardLecture'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import Separator from '../ui/Separator'
+
 import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
 import { lang } from '../../settings/constants/arlang'
 import { OutLinedHoverBtn } from '../../style/buttonsStyles'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import LectureCreate from './LectureCreate'
-import AdminLinkCourse from './AdminLinkCourse'
 
-function AdminLectures({ course, unit, grade }) {
+function AdminLectures({ course, unit, grade, refetchLectures }) {
 
   const [open, setOpen] = useState(false)
   const [lectures, setLectures] = useState([])
 
-  const [getData, status] = useLazyGetLecturesQuery()
+  const [getData, status] = useLazyGetAllLecturesQuery()
   const [getLectures] = useLazyGetData(getData)
 
   useEffect(() => {
@@ -31,7 +27,7 @@ function AdminLectures({ course, unit, grade }) {
       setLectures(res.lectures)
     }
     trigger()
-  }, [course])
+  }, [course, refetchLectures])
 
 
   if (status.isLoading) return <LoaderWithText />
@@ -49,7 +45,7 @@ function AdminLectures({ course, unit, grade }) {
 
       <Grid gap='10px'>
         {lectures?.map((lecture, i) => {
-          return <AdminCardLecture key={i} i={i} lecture={lecture} setLectures={setLectures} />
+          return <AdminCardLecture key={i} i={i} courseId={course} lecture={lecture} setLectures={setLectures} />
         })}
       </Grid>
 

@@ -19,7 +19,7 @@ import ModalStyled from '../../style/mui/styled/ModalStyled'
 import LectureCreate from './LectureCreate'
 import { FcStatistics } from 'react-icons/fc'
 import { MdDelete } from "react-icons/md";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SwitchStyled from '../../style/mui/styled/SwitchStyled'
 import { useDeleteLectureMutation, useUpdateLectureMutation } from '../../toolkit/apis/lecturesApi'
 import usePostData from '../../hooks/usePostData'
@@ -27,9 +27,11 @@ import Separator from '../ui/Separator'
 import SectionIcon from './SectionIcon'
 import { red } from '@mui/material/colors'
 import Loader from '../../style/mui/loaders/Loader'
+import { Link as LinkMui } from '@mui/material'
+import { user_roles } from '../../settings/constants/roles'
 
 
-function AdminCardLecture({ lecture, i, setLectures }) {
+function AdminCardLecture({ lecture, i, setLectures, courseId }) {
   const [open, setOpen] = useState(false)
 
   const [isCenter, setCenter] = useState(lecture.isCenter)
@@ -37,6 +39,7 @@ function AdminCardLecture({ lecture, i, setLectures }) {
   const [sendData, { isLoading }] = useUpdateLectureMutation()
   const [updateLecture] = usePostData(sendData)
 
+  const navigate = useNavigate()
   const changeIsCenter = async (value) => {
     const res = await updateLecture({ id: lecture._id, isCenter: value }, true)
     setCenter(res.isCenter)
@@ -76,7 +79,7 @@ function AdminCardLecture({ lecture, i, setLectures }) {
 
   return (
 
-    <Card sx={{ minWidth: '250px', width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column' }}>
+    <Card elevation={4} sx={{ minWidth: '250px', width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column' }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0' }} aria-label="recipe">
@@ -92,39 +95,64 @@ function AdminCardLecture({ lecture, i, setLectures }) {
         subheader={<TabInfo count={getFullDate(lecture.createdAt)} i={2} />}
       />
       <CardContent sx={{ flex: 1 }}>
+        {lecture?.course?._id !== courseId && (
+          <div>
+            <TabInfo count={lecture.course.name} title={'مربوط بكورس : '} isBold={false} i={1} />
+          </div>
+        )}
+
         <TabInfo count={lecture.isActive ? lang.ACTIVE : lang.NOT_ACTIVE} i={lecture.isActive ? 1 : 3} />
 
-        <Box>
-          <SwitchStyled label={"الحاله"} checked={isActive} onChange={changeActivity} isLoading={isLoading} />
-        </Box>
+        {(lecture?.course?._id === courseId) && (
+          <>
 
-        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-          {lecture.description}
-        </Typography>
+            <Box>
+              <SwitchStyled label={"الحاله"} checked={isActive} onChange={changeActivity} isLoading={isLoading} />
+            </Box>
 
-        <Separator />
-        <Typography sx={{ width: '100%', textAlign: 'center', textDecoration: 'underline' }} variant='subtitle2'>خاص بطلاب السنتر</Typography>
-        <SwitchStyled label={"تفعيله لطلاب السنتر"} checked={isCenter} onChange={changeIsCenter} isLoading={isLoading} />
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              {lecture.description}
+            </Typography>
 
+            <Separator />
+            <Typography sx={{ width: '100%', textAlign: 'center', textDecoration: 'underline' }} variant='subtitle2'>خاص بطلاب السنتر</Typography>
+            <SwitchStyled label={"تفعيله لطلاب السنتر"} checked={isCenter} onChange={changeIsCenter} isLoading={isLoading} />
+
+            {lecture.sectionType === sectionConstants.EXAM && (
+              <div>
+                <LinkMui href={'/statistics/courses/' + user_roles.STUDENT + '/exams/' + lecture._id} underline="hover" mr={'auto'} onClick={(e) => {
+                  e.preventDefault()
+                  navigate('/statistics/courses/' + user_roles.STUDENT + '/exams/' + lecture._id)
+                }}>
+                  احصائيات طلاب السنتر
+                </LinkMui>
+              </div>
+            )}
+          </>
+        )}
       </CardContent>
 
       <CardActions sx={{ width: '100%' }} >
         <FlexBetween sx={{ width: '100%' }}>
           <FlexRow>
 
-            <FilledHoverBtn endIcon={<BiSolidShow />} disabled={status.isLoading || isLoading} onClick={() => setOpen(true)} >
-              عرض التفاصيل
-            </FilledHoverBtn>
+            {(lecture?.course?._id === courseId) && (
+              <FilledHoverBtn endIcon={<BiSolidShow />} disabled={status.isLoading || isLoading} onClick={() => setOpen(true)} >
+                عرض التفاصيل
+              </FilledHoverBtn>
+            )}
 
             <OutLinedHoverBtn
               colorm='orange'
               disabled={lecture.sectionType !== sectionConstants.EXAM}
-              component={Link} to={'/statistics/exams/' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
+              component={Link} to={'/statistics/courses/' + courseId + '/exams/' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
           </FlexRow>
 
-          <IconButton disabled={status.isLoading || isLoading} onClick={() => setOpenDelete(true)} sx={{ bgcolor: 'red', '&:hover': { bgcolor: red[500], opacity: .8 } }}>
-            {status.isLoading ? <Loader /> : <MdDelete color='#fff' />}
-          </IconButton>
+          {(lecture?.course?._id === courseId) && (
+            <IconButton disabled={status.isLoading || isLoading} onClick={() => setOpenDelete(true)} sx={{ bgcolor: 'red', '&:hover': { bgcolor: red[500], opacity: .8 } }}>
+              {status.isLoading ? <Loader /> : <MdDelete color='#fff' />}
+            </IconButton>
+          )}
 
         </FlexBetween>
       </CardActions>

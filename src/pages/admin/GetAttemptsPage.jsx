@@ -20,6 +20,8 @@ import GetAttemptsNot from './GetAttemptsNot'
 import ExamInfo from '../../components/exam/ExamInfo'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import { getPercentage, totalDegree } from '../../tools/fcs/GetExamTotal'
+import SwitchStyled from '../../style/mui/styled/SwitchStyled'
+import { user_roles } from '../../settings/constants/roles'
 
 
 const exportObj = {
@@ -44,7 +46,7 @@ const exportObj = {
 
 
 function GetAttemptsPage() {
-    const { lectureId } = useParams()
+    const { lectureId, courseId } = useParams()
 
     const { data: lecture, isLoading } = useGetOneLectureQuery({ id: lectureId, populate: 'exam' })
 
@@ -52,13 +54,21 @@ function GetAttemptsPage() {
     const [openFileModal, setOpenFileModal] = useState(false)
     const [attemptsNums, setAttemptsNums] = useState('loading ...')
 
-    const [getData] = useLazyGetAttemptsQuery()
+    const [getData, status] = useLazyGetAttemptsQuery()
     const [getAttempts] = useLazyGetData(getData)
+
+    const [courseType, setCourseType] = useState(courseId)
 
     if (isLoading || !lectureId || !lecture) return <LoaderSkeleton />
 
     const fetchFc = async (params) => {
-        const res = await getAttempts({ ...params, exam: lecture?.values?.exam?._id })
+        const res = await getAttempts(
+            {
+                ...params,
+                exam: lecture?.values?.exam?._id,
+                course: courseType !== user_roles.STUDENT ? courseType : 'all',
+                attemptRole: courseId === user_roles.STUDENT ? user_roles.STUDENT : 'all'
+            })
 
         let total = totalDegree(lecture?.values?.exam)
         const modifiedRes = res.attempts.map((attempt) => {
@@ -180,9 +190,22 @@ function GetAttemptsPage() {
             }
         }
     ]
+
     return (
         <Section>
             <TitleWithDividers title={'الاختبار : ' + lecture?.values?.name} />
+
+            {courseType !== user_roles.STUDENT && (
+                <SwitchStyled isLoading={status.isLoading} label={'عرض المحاولات الخاصه بالكورس فقط'} checked={courseType === courseId ? true : false}
+                    onChange={() => {
+                        if (courseType === courseId) {
+                            setCourseType('all')
+                        } else {
+                            setCourseType(courseId)
+                        }
+                    }} />
+            )}
+
             <FlexColumn gap={'16px'} sx={{ alignItems: 'flex-start' }}>
                 <TabInfo count={attemptsNums} title={'عدد من ادو الاختبار'} i={1} />
 
@@ -193,7 +216,7 @@ function GetAttemptsPage() {
             <MeDatagrid
                 type={'crud'}
                 exportObj={exportObj} exportTitle={'عدد من ادو الاختبار'}
-                columns={columns} fetchFc={fetchFc} loading={status.isLoading}
+                columns={columns} fetchFc={fetchFc} loading={status.isLoading} reset={courseType}
                 editing={
                     {
                         bgcolor: 'background.alt',
@@ -203,7 +226,7 @@ function GetAttemptsPage() {
                 }
             />
             <Separator color={red[500]} sx={{ width: '300px' }} />
-            <GetAttemptsNot grade={lecture?.values?.grade} lecture={lecture?.values} course={lecture?.values?.course} exam={lecture?.values?.exam?._id} />
+            <GetAttemptsNot grade={lecture?.values?.grade} lecture={lecture?.values} course={courseId} courseType={courseType} exam={lecture?.values?.exam?._id} />
 
             <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
                 <Image img={fileConfirm} />

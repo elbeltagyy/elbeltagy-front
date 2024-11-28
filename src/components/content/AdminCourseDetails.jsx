@@ -26,8 +26,7 @@ import WrapperHandler from '../../tools/WrapperHandler'
 // import {   MingcuteCouponFill } from '../icons/Icons'
 
 
-function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
-
+function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchLectures }) {
 
     const [course, setCourse] = useState(null)
     const [getData, status] = useLazyGetOneCourseQuery()
@@ -111,7 +110,8 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
                     </FlexColumn>
 
                 </FlexColumn>
-                <AdminLinkCourse grade={course.grade} course={course} setCourse={setCourse} />
+                <AdminLinkCourse grade={course.grade} course={course} setCourse={setCourse} setRefetchLectures={setRefetchLectures} />
+
                 <ModalStyled
                     title={'هل انت متاكد من حذف الكورس ؟'}
                     desc={'يجب التاكد من حذف جميع الاشتراكات و المحاضرات الخاصه بالكورس !'}

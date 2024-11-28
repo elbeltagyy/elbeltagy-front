@@ -80,14 +80,14 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
                     <FilledHoverBtn sx={{ mt: '16px', width: '100%' }} onClick={() => setOpen(true)} disabled={status.isLoading} > {status.isLoading ? <Loader color={'orange'} /> : "اشترك الان"} </FilledHoverBtn>
 
                     {user && (
-                        <Link Link href="/" underline="hover" mr={'auto'} onClick={(e) => {
+                        <Link href="/" underline="hover" mr={'auto'} onClick={(e) => {
                             e.preventDefault()
                             toggleCoupon()
                         }}>
                             لديك كوبون ؟
                         </Link>
                     )}
-                    
+
                     {openCoupen && (
                         <CourseCoupon course={course} setCourseDetails={setCourseDetails} />
                     )}

@@ -12,7 +12,7 @@ import ExamCard from '../exam/ExamCard'
 import Separator from '../ui/Separator'
 import SectionIcon from '../content/SectionIcon'
 
-function LectureBody({ lecture, lectureIndex }) {
+function LectureBody({ lecture, lectureIndex, courseId }) {
     return (
         <Box sx={{ width: '100%', maxWidth: '800px' }}>
             <FlexColumn gap={'16px'}>
@@ -44,7 +44,7 @@ function LectureBody({ lecture, lectureIndex }) {
                         </FlexColumn>
                     ) : lecture.sectionType === sectionConstants.FILE ?
                         <ShowPdf file={lecture.file} />
-                        : <ExamCard lecture={lecture} exam={{ ...lecture.exam, name: lecture.name }} />}
+                        : <ExamCard lecture={lecture} exam={{ ...lecture.exam, name: lecture.name, courseId: courseId ? courseId : null }} />}
                 </div>
             )}
 

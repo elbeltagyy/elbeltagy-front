@@ -7,7 +7,7 @@ import usePostData from '../../hooks/usePostData';
 import TitleWithDividers from '../ui/TitleWithDividers';
 import Loader from '../../style/mui/loaders/Loader';
 
-function AdminLinkCourse({ grade, course, setCourse }) { //fetching Fc, setChosenOptions
+function AdminLinkCourse({ grade, course, setCourse, setRefetchLectures }) { //fetching Fc, setChosenOptions
     const [chosenOptions, setChosenOptions] = useState()
 
     const [getData, status] = useLazyGetCoursesQuery()
@@ -30,6 +30,10 @@ function AdminLinkCourse({ grade, course, setCourse }) { //fetching Fc, setChose
                 ...pre, ...res
             }
         })
+
+        if (setRefetchLectures) {
+            setRefetchLectures(pre => !pre)
+        }
     }
 
     useEffect(() => {

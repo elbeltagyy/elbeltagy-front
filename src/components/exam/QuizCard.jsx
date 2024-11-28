@@ -9,6 +9,7 @@ import QuizHeader from "./QuizHeader";
 import ModalStyled from "../../style/mui/styled/ModalStyled";
 import Loader from "../../style/mui/loaders/Loader";
 import { convertToMs } from "../../settings/constants/dateConstants";
+import { user_roles } from "../../settings/constants/roles";
 
 export default function QuizCard({ exam, submit, isLoading }) {
     const theme = useTheme()
@@ -54,6 +55,15 @@ export default function QuizCard({ exam, submit, isLoading }) {
             tokenTime: convertToMs(exam.time) - time,
             chosenOptions
         }
+
+        if (exam?.courseId) {
+            attempt.course = exam.courseId
+        }
+
+        if (user.role === user_roles.STUDENT) {
+            attempt.role = user_roles.STUDENT
+        }
+        
         submit(attempt)
     }
     // chosen option => questionId: _id, chosenOptionId

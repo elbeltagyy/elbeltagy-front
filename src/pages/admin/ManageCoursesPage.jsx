@@ -26,6 +26,7 @@ function ManageCoursesPage() {
     const [courses, setCourses] = useState([]) //just for delete in admin COurse details ___++___ select Courses
 
     const [counts, setCounts] = useState({})
+    const [refetchLectures, setRefetchLectures] = useState(false)
 
     //lectures numbers in every grade
     const [getCoursesCountFc] = useLazyGetCoursesCountQuery()
@@ -56,7 +57,7 @@ function ManageCoursesPage() {
 
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>
-                            <AdminCourseDetails setCourses={setCourses} setActiveCourse={setActiveCourse} courseId={activeCourse} />
+                            <AdminCourseDetails setCourses={setCourses} setActiveCourse={setActiveCourse} courseId={activeCourse} setRefetchLectures={setRefetchLectures} />
                         </Box>
                     )}
 
@@ -64,7 +65,7 @@ function ManageCoursesPage() {
 
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>
-                            <AdminLectures course={activeCourse} unit={activeUnit} grade={grade} />
+                            <AdminLectures course={activeCourse} unit={activeUnit} grade={grade} refetchLectures={refetchLectures} />
                         </Box>
                     )}
 
