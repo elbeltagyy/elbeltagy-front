@@ -1,4 +1,4 @@
-import { Avatar, Box, useMediaQuery, useTheme } from '@mui/material'
+import { Avatar, Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 import { user_roles } from '../../settings/constants/roles'
 import { lang } from '../../settings/constants/arlang'
@@ -15,12 +15,14 @@ import { MdVerifiedUser } from "react-icons/md";
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import RowInfo from './RowInfo'
 import { FaWallet } from 'react-icons/fa'
+import { HashLink } from 'react-router-hash-link';
 
 // eslint-disable-next-line react/prop-types
 export default function UserHeader({ children, user, flexDirection = 'row', variant, isAll = false }) {
 
     const theme = useTheme()
     const isMobileScreen = useMediaQuery('(max-width:600px)');
+
     return (
         <Box sx={{
             display: 'flex',
@@ -28,18 +30,26 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
             justifyContent: 'flex-start',
             flexDirection: isMobileScreen ? "column" : flexDirection, gap: '16px', width: '100%'
         }}>
-            <Avatar alt={user.name.toUpperCase()} src={user?.avatar?.url || "#"}
-                sx={{
-                    m: '6px',
-                    height: "200px",
-                    width: "200px",
-                    bgcolor: theme.palette.primary[400],
-                    fontWeight: 800,
-                    fontSize: '50px',
-                    color: theme.palette.grey[0],
-                }}
-                variant={variant || 'square'} />
+            <FlexColumn>
 
+                <Avatar alt={user.name.toUpperCase()} src={user?.avatar?.url || "#"}
+                    sx={{
+                        m: '6px',
+                        height: "200px",
+                        width: "200px",
+                        bgcolor: theme.palette.primary[400],
+                        fontWeight: 800,
+                        fontSize: '50px',
+                        color: theme.palette.grey[0],
+                    }}
+                    variant={variant || 'square'} />
+                {/* {(!user?.avatar?.url && !isAll) && (
+                    <HashLink to={'/user/profile#edit'} smooth>
+                        <Typography color={'primary.main'} sx={{ cursor: 'pointer' }}>هل تريد ايضافه صوره شخصيه ؟</Typography>
+                    </HashLink>
+                )} */}
+
+            </FlexColumn>
             <Box sx={{
                 width: '100%'
             }}>
@@ -54,6 +64,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                             <DataWith3Items title={lang.EMAIL} icon={<MdMarkEmailRead size={'2rem'} />} desc={user?.email} />
                             <DataWith3Items title={lang.PHONE} icon={<FaSquarePhoneFlip size={'2rem'} />} desc={user?.phone} />
                             <DataWith3Items title={lang.FAMILY_PHONE} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.familyPhone} />
+                            <DataWith3Items title={'عدد الاجهزه المسجله'} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.devicesRegistered.length} />
                             {(user.role === user_roles.STUDENT || user.role === user_roles.ONLINE) && (
                                 <FlexColumn sx={{ width: '100%' }}>
                                     <RowInfo icon={<FaWallet size={'1.5rem'} />} title={'رصيد محفظتك '} fromStart={false} desc={user.wallet + ' جنيها'} />
@@ -63,9 +74,11 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                     )}
                 </Grid>
             </Box>
-            <Box sx={{ flex: 1, textAlign: "center" }}>
-                {children}
-            </Box>
+            <div id='edit'>
+                <Box sx={{ flex: 1, textAlign: "center" }}>
+                    {children}
+                </Box>
+            </div>
         </Box>
     )
 }

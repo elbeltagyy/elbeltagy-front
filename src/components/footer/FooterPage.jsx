@@ -60,7 +60,8 @@ function FooterPage() {
                 <Typography component={Link} to={"https://api.whatsapp.com/send?phone=2001001902943&text=" + 'from Elbeltagy Platform'} variant='body2' sx={{ color: "grey.0", textDecoration: 'none' }} noWrap>
                     تم التطوير بواسطه <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>ME Group Innovations</span>
                 </Typography>
-                <Image sx={{ borderRadius: 0, my: '12px' }} img={'/assets/megroup-footer.webp'} maxWidth="120px" ratio={'auto'} />
+                {/* <img src='/assets/megroup-footer.webp' style={{ borderRadius: 0, my: '12px', maxWidth: '120px' }} /> */}
+                <Image borderRadius={0} sx={{ my: '12px' }} img={'/assets/megroup-footer.webp'} maxWidth="120px" ratio={'auto'} />
             </FlexColumn>
         </Section>
     )

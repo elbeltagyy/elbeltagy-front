@@ -1,11 +1,11 @@
 import { Box } from '@mui/material'
 
-function Image({ img, title, maxWidth = '100vh', sx, ratio = 'auto', saturate = false }) {
+function Image({ img, title, maxWidth = '100vh', sx, ratio = 'auto', saturate = false, borderRadius = '16px' }) {
 
     return (
         <Box sx={{
             overflow: 'hidden',
-            borderRadius: '16px', aspectRatio: ratio, maxWidth: maxWidth, ...sx,
+            borderRadius: borderRadius, aspectRatio: ratio, maxWidth: maxWidth, ...sx,
             transition: '.3s all ease',
         }}>
             <img
@@ -14,7 +14,7 @@ function Image({ img, title, maxWidth = '100vh', sx, ratio = 'auto', saturate = 
                 alt={title || '#'}
                 loading="lazy"
                 style={{
-                    borderRadius: '16px',
+                    borderRadius: borderRadius,
                     filter: saturate && 'saturate(80%)',
                     transition: '.3s all ease',
                     // pointerEvents: 'none'

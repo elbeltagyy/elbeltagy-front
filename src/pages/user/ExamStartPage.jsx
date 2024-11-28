@@ -39,7 +39,7 @@ function ExamStartPage() {
         
         setTimeout(() => {
             window.location.reload(); // Force reload the page
-        }, 400);
+        }, 200);
     }
 
     if (!state || !exam) return <LoaderSkeleton />

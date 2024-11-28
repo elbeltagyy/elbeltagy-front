@@ -11,17 +11,29 @@ import Grid from '../../style/vanilla/Grid'
 import DataWith3Items from '../ui/DataWith3Items'
 import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import dayjs from 'dayjs'
+import { useLazyGetUserExamAttemptsCountQuery } from '../../toolkit/apis/statisticsApi'
+import { useSelector } from 'react-redux'
 
 function ExamCard({ exam, lecture }) {
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
+    const user = useSelector(s => s.global.user)
+
+    const [attemptsCount] = useLazyGetUserExamAttemptsCountQuery()
 
     const openExamModal = () => {
         setOpen(true)
     }
 
-    const action = () => {
-        navigate('/exams/' + exam._id, { state: { ...exam } })
+    const action = async () => {
+        const userAttempts = await attemptsCount({ user: user?._id, exam: exam._id })
+
+        if (userAttempts?.data?.values?.count >= exam.attemptsNums) {
+            alert('لقد انتهت جميع محاولاتك, اعد تحميل الصفحه !')
+            window.location.reload()
+        } else {
+            navigate('/exams/' + exam._id, { state: { ...exam } })
+        }
     }
 
     const examPoints = useMemo(() => {
@@ -55,7 +67,8 @@ function ExamCard({ exam, lecture }) {
 
                 </CardContent>
                 <CardActions>
-                    <Button disabled={exam.attemptsNums === exam.attempts.length || (dayjs().isAfter(dayjs(lecture.dateEnd))) || dayjs().isBefore(dayjs(lecture.dateStart))} onClick={openExamModal} sx={{ width: '100%' }} startIcon={<FaArrowRight size={'1.5rem'} />}>
+                    <Button disabled={exam.attemptsNums === exam.attempts.length || (dayjs().isAfter(dayjs(lecture.dateEnd))) || dayjs().isBefore(dayjs(lecture.dateStart))}
+                        onClick={openExamModal} sx={{ width: '100%' }} startIcon={<FaArrowRight size={'1.5rem'} />}>
                         {exam.attemptsNums === exam.attempts.length ? ' انتهت محاولاتك'
                             : dayjs().isBefore(dayjs(lecture.dateStart)) ? "هيبدا يوم" + " " + getDateWithTime(lecture.dateStart)
                                 : (dayjs().isAfter(dayjs(lecture.dateEnd))) ? 'انتهى الاختبار يوم ' + getDateWithTime(lecture.dateEnd)

@@ -6,8 +6,8 @@ function MakeChoosed({ props, inputName, input, fromValue, targetInputName }) {
 
 
     const setValue = (e) => {
-        console.log(fromValue)
-        console.log(targetValue)
+        // console.log(fromValue)
+        // console.log(targetValue)
         props.setFieldValue(targetInputName, fromValue)
     }
 

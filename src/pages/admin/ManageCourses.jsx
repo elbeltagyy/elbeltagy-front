@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FlexBetween } from '../../style/mui/styled/Flexbox'
 import { StyledBtn } from '../../style/buttonsStyles'
 import SelectCourse from '../../components/content/SelectCourse'

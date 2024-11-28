@@ -42,7 +42,7 @@ const PreDiscount = ({ props, value, input, inputName }) => {
 }
 
 
-function CourseUpdate({ course, setCourse }) {
+function CourseUpdate({ course, setCourse, setCourses }) {
 
     const [sendData, status] = useUpdateCourseMutation()
     const [updateCourse] = usePostData(sendData)
@@ -173,6 +173,19 @@ function CourseUpdate({ course, setCourse }) {
         const res = await updateCourse(values, true)
         if (setCourse) {
             setCourse(res)
+        }
+        if (setCourses) {
+            setCourses(prev => {
+                let courses = [...prev]
+                courses.map(course => {
+                    if (course._id === res._id) {
+                        return res
+                    } else {
+                        return course
+                    }
+                })
+                return courses
+            })
         }
     }
 

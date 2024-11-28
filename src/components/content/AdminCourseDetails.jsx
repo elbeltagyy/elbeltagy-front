@@ -38,6 +38,7 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
     useEffect(() => {
 
         const trigger = async () => {
+            setCourse({ isLoading: true })
             const res = await getOneCourse({ _id: courseId }, false)
             setCourse(res)
         }
@@ -58,7 +59,7 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
         })
     }
 
-    if (status.isLoading) return <LoaderWithText />
+    if (status.isLoading || course?.isLoading) return <LoaderWithText />
 
     if (status.isSuccess && !course) return <Alert variant="filled" severity="warning" sx={{ justifyContent: 'center' }}>
         {lang.NO_COURSES_IN_THIS_UNIT}
@@ -106,7 +107,7 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses }) {
                     <Separator />
                     <FlexColumn>
                         <Image img={course.thumbnail?.url} />
-                        <CourseUpdate course={course} setCourse={setCourse} />
+                        <CourseUpdate course={course} setCourse={setCourse} setCourses={setCourses} />
                     </FlexColumn>
 
                 </FlexColumn>

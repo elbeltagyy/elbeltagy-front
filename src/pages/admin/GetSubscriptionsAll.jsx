@@ -1,4 +1,3 @@
-import React from 'react'
 import Section from '../../style/mui/styled/Section'
 import GetSubscriptions from '../../components/subscriptions/GetSubscriptions'
 import TitleWithDividers from '../../components/ui/TitleWithDividers'
