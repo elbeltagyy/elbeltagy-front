@@ -45,14 +45,14 @@ function SignupForm() {
             label: lang.PHONE,
             width: { xs: '100%', md: '49%' },
             icon: <FaSquarePhoneFlip color='green' />,
-            validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم")
+            validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم").trim()
 
         }, {
             name: 'familyPhone',
             label: lang.FAMILY_PHONE,
             width: { xs: '100%', md: '49%' },
             icon: <PiPhoneDisconnectFill color='green' />,
-            validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم")
+            validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم").trim()
                 .notOneOf([Yup.ref('phone'), null], 'مينفعش هاتف ولى الامر يبقا رقمك'),
         }, {
             name: 'grade',
@@ -73,7 +73,7 @@ function SignupForm() {
             name: 'code',
             label: lang.CODE_optional,
             icon: <CiBarcode color='green' />,
-            validation: Yup.string().matches(/^(act|wal|cen)\d{1}-\d{4}-\d{4}-\d{4}$/, {
+            validation: Yup.string().trim().matches(/^(act|wal|cen)\d{1}-\d{4}-\d{4}-\d{4}$/, {
                 message: 'Code must start with "act", "wal", or "cen", followed by a number, and be in the format wal0-0000-0000-0000',
                 excludeEmptyString: true,
             })
