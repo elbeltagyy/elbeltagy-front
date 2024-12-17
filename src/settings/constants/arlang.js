@@ -17,7 +17,7 @@ export const lang = {
     PHONE: 'رقم الهاتف',
     FAMILY_PHONE: 'هاتف ولى الامر',
     GRADE: 'السنه الدراسيه',
-    CODE_optional: 'كود التفعبل (اختيارى)',
+    CODE_optional: 'كود التفعيل (اختيارى)',
     GOVERNMENT: 'المحافظه',
     PASSWORD: 'كلمة السر',
     CONFIRM_PASSWORD: 'اعد كتابه كلمة السر',

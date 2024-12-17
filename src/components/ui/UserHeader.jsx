@@ -43,11 +43,11 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                         color: theme.palette.grey[0],
                     }}
                     variant={variant || 'square'} />
-                {/* {(!user?.avatar?.url && !isAll) && (
-                    <HashLink to={'/user/profile#edit'} smooth>
+                {(!user?.avatar?.url && !isAll) && (
+                    <HashLink to={'/user/profile#edit'} smooth style={{color: theme.palette.primary.main}}>
                         <Typography color={'primary.main'} sx={{ cursor: 'pointer' }}>هل تريد ايضافه صوره شخصيه ؟</Typography>
                     </HashLink>
-                )} */}
+                )}
 
             </FlexColumn>
             <Box sx={{

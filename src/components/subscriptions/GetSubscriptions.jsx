@@ -199,7 +199,7 @@ function GetSubscriptions({ courseId = '' }) {
             headerName: 'تاريخ اخر محاضره تم انهائها',
             width: 200,
             renderCell: (params) => {
-                return <TabInfo count={getFullDate(params.row.createdAt)} i={2} />
+                return <TabInfo count={getFullDate(params.row.updatedAt)} i={2} />
             }
         }, {
             field: 'gotoCourse',
