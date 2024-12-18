@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Helmet } from 'react-helmet'
+
 import Section from '../../style/mui/styled/Section'
 import { Alert, Box, useTheme } from '@mui/material'
 import TitleSection from '../../components/ui/TitleSection'
@@ -13,6 +15,7 @@ import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 
 import UnitCourses from '../../components/content/UnitCourses'
 import { useSelector } from 'react-redux'
+import gradeConstants from '../../settings/constants/gradeConstants'
 
 
 function UnitsPage() {
@@ -40,11 +43,30 @@ function UnitsPage() {
     }
   }, [gradeId, user])
 
-  if (gradeId === "undefined" || gradeId === undefined) {
+  if (!gradeConstants.find(g => g.index === Number(gradeId))) {
     return
   }
+
+  if (gradeId === "undefined" || gradeId === undefined || typeof Number(gradeId) !== 'number') {
+    return
+  }
+
+  const getGradeName = () => {
+    const grade = gradeConstants.find(g => g.index === Number(gradeId))
+    if (grade) {
+      return grade?.name
+    } else {
+      return 'Not Found'
+    }
+  }
+
+
   return (
     <Section>
+
+      <Helmet>
+        <title>{getGradeName()}</title>
+      </Helmet>
 
       <GradeHeader gradeId={gradeId} />
 

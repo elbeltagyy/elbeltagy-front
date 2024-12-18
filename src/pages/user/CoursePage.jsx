@@ -1,9 +1,10 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet';
 import { Alert, Box, } from '@mui/material'
 
 import HeaderContent from '../../components/ui/HeaderContent'
-import { ExamIcon, FilesIcon,  VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
+import { ExamIcon, FilesIcon, VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
 import TitleSection from '../../components/ui/TitleSection'
 import LectureUserCard from '../../components/content/LectureUserCard'
 import CourseSubscribeCard from '../../components/content/CourseSubscribeCard'
@@ -21,7 +22,7 @@ import useLazyGetData from '../../hooks/useLazyGetData'
 
 function CoursePage() {
     const params = useParams() // {lectureId, courseId = index, gradeId}
-   
+
     const [getData, status] = useLazyGetCourseLecturesAndCheckUserQuery()
     const [getCourseAndLectures] = useLazyGetData(getData)
 
@@ -82,6 +83,11 @@ function CoursePage() {
 
     return (
         <Section>
+            <Helmet>
+                <title>{courseDetails?.course?.name}</title>
+            </Helmet>
+
+
             <HeaderContent title={courseDetails?.course?.name} body={<span dangerouslySetInnerHTML={{ __html: courseDetails?.course?.description }} />}
                 infos={[
                     {

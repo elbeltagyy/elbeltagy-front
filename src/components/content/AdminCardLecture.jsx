@@ -1,22 +1,15 @@
-import React, { useState } from 'react'
-import CardStyled from '../../style/mui/styled/CardStyled'
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, IconButton, Typography } from '@mui/material'
-import { FlexBetween, FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import Image from '../ui/Image'
+import { Avatar, Box, Card, CardActions, CardContent, CardHeader, IconButton, Typography } from '@mui/material'
+import { FlexBetween, FlexRow } from '../../style/mui/styled/Flexbox'
 import LectureUpdate from './LectureUpdate'
 import { FilledHoverBtn, OutLinedHoverBtn } from '../../style/buttonsStyles'
 import { lang } from '../../settings/constants/arlang'
 import TabInfo from '../ui/TabInfo'
 
 import sectionConstants from '../../settings/constants/sectionConstants'
-import { FaVideo } from "react-icons/fa";
-import { FaFilePdf } from "react-icons/fa6";
-import { ExamIcon } from '../ui/svg/ContentSvgs'
-import { FaLink } from "react-icons/fa6";
 import { getFullDate } from '../../settings/constants/dateConstants'
 import { BiSolidShow } from "react-icons/bi";
 import ModalStyled from '../../style/mui/styled/ModalStyled'
-import LectureCreate from './LectureCreate'
+
 import { FcStatistics } from 'react-icons/fc'
 import { MdDelete } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom'
@@ -29,6 +22,7 @@ import { red } from '@mui/material/colors'
 import Loader from '../../style/mui/loaders/Loader'
 import { Link as LinkMui } from '@mui/material'
 import { user_roles } from '../../settings/constants/roles'
+import { useState } from 'react'
 
 
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
@@ -52,7 +46,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
       const modified = pre.map(storedLec => {
         if (storedLec._id === res._id) {
-          storedLec = res
+          storedLec = { ...storedLec, isActive: res.isActive }
         }
         return storedLec
       })

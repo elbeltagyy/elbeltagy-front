@@ -37,6 +37,7 @@ function LoginPage() {
 
             <Helmet>
                 <title>Login - تسجيل الدخول لمنصه البلتاجى</title>
+                <link rel="canonical" href="https://mrelbeltagy.com/login" />
                 <meta name="description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
                 <meta property="og:title" content="تسجيل الدخول لمنصه البلتاجى" />
                 <meta property="og:description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
