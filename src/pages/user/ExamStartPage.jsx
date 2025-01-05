@@ -44,9 +44,11 @@ function ExamStartPage() {
 
     if (!state || !exam) return <LoaderSkeleton />
     exam.questions = shuffleArray(exam.questions)
-    exam.questions.forEach(q => {
-        q.options = shuffleArray(q.options)
-    })
+
+    // for changing options indexes
+    // exam.questions.forEach(q => {
+    //     q.options = shuffleArray(q.options)
+    // })
     return (
         <Section>
             <QuizCard exam={exam} submit={submit} isLoading={isLoading} />
