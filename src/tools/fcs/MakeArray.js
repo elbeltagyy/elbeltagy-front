@@ -1,10 +1,14 @@
-export const makeArrWithValueAndLabel = (arr, { value, label }) => {
+export const makeArrWithValueAndLabel = (arr, { value, label, isNumber = false }) => {
     let options = []
     const myArr = [...arr]
 
     if (myArr.length === 0) return []
     myArr.map(ele => {
-        options.push({ value: ele[value], label: ele[label] })
+        if (isNumber) {
+            options.push({ value: Number(ele[value]), label: ele[label] })
+        } else {
+            options.push({ value: ele[value], label: ele[label] })
+        }
     })
     return options
 }

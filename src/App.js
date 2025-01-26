@@ -1,7 +1,7 @@
 import './App.css';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { themeSettings } from './style/theme';
-import { BrowserRouter, Route, RouterProvider, Routes, createBrowserRouter, } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { routes } from './settings/routes/routes';
@@ -46,7 +46,6 @@ function App() {
         </ThemeProvider>
 
       </CacheProvider>
-
     </div>
   );
 }

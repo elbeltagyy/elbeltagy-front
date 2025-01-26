@@ -9,7 +9,7 @@ import { FaFileSignature } from "react-icons/fa6";
 import SignupForm from '../../components/auth/SignupForm'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Helmet } from 'react-helmet'
+import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
 
 
 const BUILD = "انشاء"
@@ -32,7 +32,14 @@ function SignupPage() {
     return (
         <Section sx={{ minHeight: '86vh' }}>
 
-            <Helmet>
+            <SEOHelmetAsync
+                title={'انشاء حساب - انشئ حسابك الان على منصه البلتاجى'}
+                desc={"انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى"}
+                url={"https://mrelbeltagy.com/signup"}
+                isSiteLink={true}
+            />
+
+            {/* <Helmet>
                 <title>Sign up - انشئ حسابك الان على منصه البلتاجى</title>
                 <meta name="description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
                 <meta property="og:title" content="انشئ حسابك الان على منصه البلتاجى" />
@@ -40,7 +47,7 @@ function SignupPage() {
                 <meta property="og:url" content="https://mrelbeltagy.com/signup" />
                 <meta property="og:image" content="/assets/logo.webp" />
                 <meta property="og:site_name" content="Elbeltagy Platform" />
-            </Helmet>
+            </Helmet> */}
 
 
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>

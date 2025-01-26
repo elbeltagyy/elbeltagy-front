@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet';
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Box, Typography, useTheme, Link as MuiLink } from '@mui/material'
 
-import Section from "../../style/mui/styled/Section"
 import { LoginAnimatedIcon, ReactLoginIcon } from '../../components/ui/svg/Registers'
 import LoginForm from '../../components/auth/LoginForm'
-import { Box, Typography, useTheme, Link as MuiLink } from '@mui/material'
+import Section from "../../style/mui/styled/Section"
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 
 import BannerAuth from '../../components/ui/BannerAuth'
 import TextBorderAround from '../../components/ui/TextBorderAround'
-import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { lang } from '../../settings/constants/arlang'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
+
+import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
 
 function LoginPage() {
 
@@ -35,16 +36,24 @@ function LoginPage() {
     return (
         <Section sx={{ minHeight: '86vh' }}>
 
-            <Helmet>
+            <SEOHelmetAsync
+                title={'تسجيل الدخول - تسجيل الدخول لمنصه البلتاجى'}
+                desc={"سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى"}
+                url={"https://mrelbeltagy.com/login"}
+                isSiteLink={true}
+            />
+
+            {/* <Helmet>
                 <title>Login - تسجيل الدخول لمنصه البلتاجى</title>
-                <link rel="canonical" href="https://mrelbeltagy.com/login" />
                 <meta name="description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
+
+                <link rel="canonical" href="https://mrelbeltagy.com/login" />
                 <meta property="og:title" content="تسجيل الدخول لمنصه البلتاجى" />
                 <meta property="og:description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
                 <meta property="og:url" content="https://mrelbeltagy.com/login" />
                 <meta property="og:image" content="/assets/logo.webp" />
                 <meta property="og:site_name" content="Elbeltagy Platform" />
-            </Helmet>
+            </Helmet> */}
 
 
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>

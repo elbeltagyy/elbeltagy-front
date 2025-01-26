@@ -1,7 +1,6 @@
 import Section from '../../style/mui/styled/Section'
 import { Box, Typography, useMediaQuery } from '@mui/material'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import Image from '../ui/Image'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 import { Link } from 'react-router-dom'
 
@@ -33,7 +32,7 @@ function HeroScience() {
             <FlexColumn gap={'40px'} sx={{ minHeight: '88vh', flexDirection: { xs: 'column-reverse', md: 'row' }, }} >
 
                 {/* banner */}
-                <img style={{ maxWidth: '600px', marginTop: '-50px', minWidth: '450px' }} src="/assets/hero-science.png" />
+                <img style={{ maxWidth: '600px', marginTop: '-50px', minWidth: '450px' }} alt='Science' src="/assets/hero-science.png" />
 
                 {/* <Box sx={{
                     maxWidth: '500px'
@@ -54,7 +53,7 @@ function HeroScience() {
                     <Typography variant='subBanner' color={'grey.0'}>منصتك فى العلوم المتكامله</Typography>
                     {/* <Typography variant='subBanner' color={'grey.0'}> شرفتنا</Typography> */}
                     <FlexRow sx={{ width: '100%', justifyContent: 'center', mt: '16px' }}>
-                        <FilledHoverBtn startIcon={<img style={{width: '30px'}} src='/assets/cell-icon.svg' />} component={Link} to={'/grades/1'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم المتكامله</FilledHoverBtn>
+                        <FilledHoverBtn startIcon={<img style={{ width: '30px' }} alt='Science Courses' src='/assets/cell-icon.svg' />} component={Link} to={'/grades/1'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 0 }}>كورسات العلوم المتكامله</FilledHoverBtn>
                     </FlexRow>
 
                 </FlexColumn>

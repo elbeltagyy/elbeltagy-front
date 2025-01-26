@@ -65,7 +65,7 @@ function Hero() {
                     </Box>
 
                     {/* <Typography variant='h6'>إحنا نغيب  غبتنا و نرجع بهيبتنا</Typography> */}
-                    <ScallyBtn endIcon={<img style={{ width: '30px' }} src='/assets/earth-icon.svg' />} component={Link} to={'/grades/2'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الچيولوچيا</ScallyBtn>
+                    <ScallyBtn endIcon={<img style={{ width: '30px' }} alt='كورسات الچيولوچيا' src='/assets/earth-icon.svg' />} component={Link} to={'/grades/2'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الچيولوچيا</ScallyBtn>
 
                     <Box display={'flex'} justifyContent={'space-around'} flexDirection={'row'} sx={{ minWidth: '250px' }}>
                         <IconButton component={Link} to={'https://www.facebook.com/Elbeltagy.Geo?mibextid'}>
@@ -97,7 +97,7 @@ function Hero() {
 
                 {/* banner */}
                 <FlexColumn>
-                    <img style={{ maxWidth: '600px', marginTop: '-50px', minWidth: '450px' }} src="/assets/hero-geo.png" />
+                    <img style={{ maxWidth: '600px', marginTop: '-50px', minWidth: '450px' }} alt='logo' src="/assets/hero-geo.png" />
                 </FlexColumn>
                 {/* <Image maxWidth='500px' ratio={'auto'} img={'/assets/hero-geo.png'} /> */}
 

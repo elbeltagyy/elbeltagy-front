@@ -1,25 +1,31 @@
-import React from 'react'
 import Section from '../../style/mui/styled/Section'
 import BannerIcon from '../../components/ui/BannerIcon'
 import { IoIosCreate } from 'react-icons/io'
 import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import { useGetPrivaciesQuery } from '../../toolkit/apis/privacyApi'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import { Helmet } from 'react-helmet';
+import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
 
 
 function PrivacyPage() {
 
-    const { data, isLoading, isSuccess } = useGetPrivaciesQuery({ isActive: true })
+    const { data, isLoading } = useGetPrivaciesQuery({ isActive: true })
 
     if (isLoading || !data) return <LoaderSkeleton />
 
     return (
         <Section>
 
-            <Helmet>
+            <SEOHelmetAsync
+                title={'Privacy - السياسات الخاصه بمنصه البلتاجى'}
+                desc={"كل التفاصيل الخاصه بمنصه البلتاجى , بطل تضيع وقت وابدا يلا "}
+                url={"https://mrelbeltagy.com/privacy"}
+                isSiteLink={true}
+            />
+
+            {/* <Helmet>
                 <title>Privacy - السياسات الخاصه بمنصه البلتاجى</title>
                 <meta name="description" content="كل التفاصيل الخاصه بمنصه البلتاجى , بطل تضيع وقت وابدا يلا " />
                 <meta property="og:title" content=" السياسات الخاصه بمنصه البلتاجى" />
@@ -27,7 +33,7 @@ function PrivacyPage() {
                 <meta property="og:url" content="https://mrelbeltagy.com/privacy" />
                 <meta property="og:image" content="/assets/logo.webp" />
                 <meta property="og:site_name" content="Elbeltagy Platform" />
-            </Helmet>
+            </Helmet> */}
 
 
             <BannerIcon title={'سياسات المنصه'} bgcolor='primary.main' icon={<IoIosCreate style={{

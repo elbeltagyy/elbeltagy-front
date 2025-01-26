@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet';
 import { Alert, Box, } from '@mui/material'
 
 import HeaderContent from '../../components/ui/HeaderContent'
@@ -19,6 +18,7 @@ import sectionConstants from '../../settings/constants/sectionConstants'
 
 import { useLazyGetCourseLecturesAndCheckUserQuery } from '../../toolkit/apis/coursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
+import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
 
 function CoursePage() {
     const params = useParams() // {lectureId, courseId = index, gradeId}
@@ -80,12 +80,14 @@ function CoursePage() {
         }
         return index
     }
-
+  
     return (
         <Section>
-            <Helmet>
-                <title>{courseDetails?.course?.name}</title>
-            </Helmet>
+            <SEOHelmetAsync
+                title={'صفحه الكورسات - ' + courseDetails?.course?.name}
+                desc="افضل كورسات مستر البلتاجى, الدرجات النهائيه مضمونه"
+                url={window.location.href}
+            />
 
 
             <HeaderContent title={courseDetails?.course?.name} body={<span dangerouslySetInnerHTML={{ __html: courseDetails?.course?.description }} />}

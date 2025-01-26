@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Helmet } from 'react-helmet'
+
 
 import Section from '../../style/mui/styled/Section'
-import { Alert, Box, useTheme } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import TitleSection from '../../components/ui/TitleSection'
 
 import { useNavigate, useParams } from 'react-router-dom'
@@ -16,6 +16,7 @@ import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 import UnitCourses from '../../components/content/UnitCourses'
 import { useSelector } from 'react-redux'
 import gradeConstants from '../../settings/constants/gradeConstants'
+import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
 
 
 function UnitsPage() {
@@ -60,13 +61,24 @@ function UnitsPage() {
     }
   }
 
+  const getGradeDesc = () => {
+    const grade = gradeConstants.find(g => g.index === Number(gradeId))
+    if (grade) {
+      return grade?.description
+    } else {
+      return 'Not Found'
+    }
+  }
 
   return (
     <Section>
 
-      <Helmet>
-        <title>{getGradeName()}</title>
-      </Helmet>
+      <SEOHelmetAsync
+        title={"السنه الدراسيه - " + getGradeName()}
+        desc={getGradeDesc()}
+        url={window.location.href}
+        isSiteLink={true}
+      />
 
       <GradeHeader gradeId={gradeId} />
 
