@@ -16,6 +16,7 @@ import { FilledHoverBtn } from '../../style/buttonsStyles';
 import * as Yup from "yup"
 import { FaSquarePhoneFlip } from 'react-icons/fa6';
 import { TbPasswordUser } from 'react-icons/tb';
+import Section from '../../style/mui/styled/Section';
 
 export default function ForgetPassword() {
     const [chosenMethod, setChosenMethod] = useState(senderConstants.EMAIL);
@@ -93,42 +94,45 @@ export default function ForgetPassword() {
         props.resetFields()
     }
     return (
-        <FlexColumn width={'100%'}>
-            <Box>
-                <TitleWithDividers title={'هل نسيت كلمه السر ؟'} />
+        <Section>
 
-                {(!status.isSuccess && (
-                    <>
-                        <Box minWidth={'300px'} sx={{ width: '100%' }}>
-                            <ListMethods setMethod={setChosenMethod} methods={methods} activeMethod={chosenMethod} />
-                            {/* disabled={[senderConstants.WHATSAPP]} */}
-                        </Box>
-                        {chosenMethod !== senderConstants.CONTACT && (
-                            <>
-                                <Typography variant='body1'> * من فضلك ادخل اسم المستخدم الخاص بحسابك !</Typography>
-                                <Typography variant='body2'>سيتم ارسال رمز التحقق بواسطه {chosenMethod}</Typography>
-                                <MakeForm inputs={forgetInputs} status={status} onSubmit={triggerForgetPassword} />
-                            </>
-                        )}
-                    </>
-                ))}
+            <FlexColumn width={'100%'}>
+                <Box>
+                    <TitleWithDividers title={'هل نسيت كلمه السر ؟'} />
 
-                {/* {(chosenMethod === senderConstants.WHATSAPP && !status.isSuccess) && <> whatsApp </>} */}
-                {(chosenMethod !== senderConstants.CONTACT && status.isSuccess) && <Box sx={{ maxWidth: '500px' }}>
-                    <MakeForm inputs={verifyInputs} status={verifyStatus} onSubmit={triggerChangePassword} />
-                </Box>}
+                    {(!status.isSuccess && (
+                        <>
+                            <Box minWidth={'300px'} sx={{ width: '100%' }}>
+                                <ListMethods setMethod={setChosenMethod} methods={methods} activeMethod={chosenMethod} />
+                                {/* disabled={[senderConstants.WHATSAPP]} */}
+                            </Box>
+                            {chosenMethod !== senderConstants.CONTACT && (
+                                <>
+                                    <Typography variant='body1'> * من فضلك ادخل اسم المستخدم الخاص بحسابك !</Typography>
+                                    <Typography variant='body2'>سيتم ارسال رمز التحقق بواسطه {chosenMethod}</Typography>
+                                    <MakeForm inputs={forgetInputs} status={status} onSubmit={triggerForgetPassword} />
+                                </>
+                            )}
+                        </>
+                    ))}
 
-                {(chosenMethod === senderConstants.CONTACT && !status.isSuccess) && <FlexColumn>
-                    <Typography sx={{ maxWidth: '250px' }}> إذا كنت قد نسيت كلمه السر, او تواجه مشكله فى تسجيل الدخول تواصل مع الدعم من الرقم المسجل به لاعاده ضبط الحساب
-                    </Typography>
-                    <FilledHoverBtn endIcon={<FcContacts />} onClick={() => {
-                        window.location.href = "https://api.whatsapp.com/send?phone=" + '2001553251467' + "&text=" + 'لقد نسيت كلمه السر';
-                    }}>
-                        التوصل مع الدعم
-                    </FilledHoverBtn>
-                </FlexColumn>}
+                    {/* {(chosenMethod === senderConstants.WHATSAPP && !status.isSuccess) && <> whatsApp </>} */}
+                    {(chosenMethod !== senderConstants.CONTACT && status.isSuccess) && <Box sx={{ maxWidth: '500px' }}>
+                        <MakeForm inputs={verifyInputs} status={verifyStatus} onSubmit={triggerChangePassword} />
+                    </Box>}
 
-            </Box>
-        </FlexColumn>
+                    {(chosenMethod === senderConstants.CONTACT && !status.isSuccess) && <FlexColumn>
+                        <Typography sx={{ maxWidth: '250px' }}> إذا كنت قد نسيت كلمه السر, او تواجه مشكله فى تسجيل الدخول تواصل مع الدعم من الرقم المسجل به لاعاده ضبط الحساب
+                        </Typography>
+                        <FilledHoverBtn endIcon={<FcContacts />} onClick={() => {
+                            window.location.href = "https://api.whatsapp.com/send?phone=" + '2001553251467' + "&text=" + 'لقد نسيت كلمه السر';
+                        }}>
+                            التوصل مع الدعم
+                        </FilledHoverBtn>
+                    </FlexColumn>}
+
+                </Box>
+            </FlexColumn>
+        </Section>
     );
 }
