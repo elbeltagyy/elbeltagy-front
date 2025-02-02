@@ -1,9 +1,61 @@
-import { useRef, } from 'react'
+import { memo, useEffect, useRef, } from 'react'
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
 import { useTheme } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
-function YoutubePlyr({ url }) {
+const options = {
+    controls: [
+        'rewind',     // Adds a back 10 seconds button
+        'play-large',
+        'play',
+        'fast-forward', // Adds a forward 10 seconds button
+        'progress',
+        'current-time',
+        'mute',
+        'volume',
+        'settings',
+        'fullscreen'
+    ],
+    // controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+    settings: ['captions', 'quality', 'speed', 'loop'],
+    tooltips: { controls: true },
+
+}
+const createElement = (user = null) => {
+    // Select target element
+    const target = document.querySelector('.plyr');
+
+
+    // Create a floating "after" element
+
+    const afterElement = document.createElement('div');
+
+    // Set properties to mimic ::after
+    afterElement.style.position = 'absolute';
+    afterElement.style.top = '50px';
+    // afterElement.style.left = '10px';
+    afterElement.style.color = 'red';
+    afterElement.style.pointerEvents = 'none';
+    afterElement.style.backgroundColor = 'transparent';
+
+    // Add custom animation or styling as needed
+    afterElement.style.animation = 'floatUpDown 60s linear infinite';
+
+    // Append the element inside the target container
+    target.style.position = 'relative'; // Ensure parent has relative positioning
+
+    if (user) {
+        let value = ''
+        value = '"' + user.userName + '"'
+        document.documentElement.style.setProperty('--main-userName', `${value}`)
+        afterElement.innerText = user.userName;
+
+        target.appendChild(afterElement);
+    }
+}
+
+function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
 
     const theme = useTheme()
     const vid = useRef(null)
@@ -20,73 +72,75 @@ function YoutubePlyr({ url }) {
         ]
     }
 
-    const options = {
-        controls: [
-            'rewind',     // Adds a back 10 seconds button
-            'play-large',
-            'play',
-            'fast-forward', // Adds a forward 10 seconds button
-            'progress',
-            'current-time',
-            'mute',
-            'volume',
-            'settings',
-            'fullscreen'
-          ],
-        // controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-        settings: ['captions', 'quality', 'speed', 'loop'],
+    // [s1-10:20, s2-50-80]
+    useEffect(() => {
+        let totalTime = 0;
+        let watchedTime = 0;
+        let currentTime = 0;
 
-    }
+        let speed = 0
+        let secondsInStock = 0
 
-    const plyrOptions = {
-        settings: ["quality"], // Adds a quality setting
-        quality: {
-            default: 720, // Default quality level
-            options: [1080, 720, 480, 360], // Available quality levels
-            forced: true, // Forces manual quality setting
-            onChange: (quality) => console.log(`Quality changed to: ${quality}`),
-        },
-    };
+        let events = [] //forward, rewind || speed || jump
+        let newMainEvent = {
+            date: new Date(),
+            name: 'Es',
+            speed: speed,
+            startTime: 0,
+        }
+        const statisticsId = sessionStorage.getItem(videoId) || sessionStorage.setItem(videoId, uuidv4())
+        //each event => name, date
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         if (vid.current?.plyr?.embed) {
-    //             const ytPlayer = vid.current.plyr.embed;
-    //             if (ytPlayer && ytPlayer.setPlaybackQuality) {
-    //                 ytPlayer.setPlaybackQuality("large"); // "large" corresponds to 480p
-    //                 clearInterval(interval); // Stop checking after setting quality
-    //             }
-    //         }
-    //     }, 500);
+        // let StartEventTime = 0
+        const timeIntervals = setInterval(() => {
+            // console.log(getDateWithTime(vid.current.plyr.lastSeekTime))
+            totalTime++;
+            currentTime = Math.round(vid.current.plyr.currentTime);
 
-    //     return () => clearInterval(interval); // Clear interval on component unmount
-    // }, []);
+            if ((watchedTime) === 25) {
+                sendStatistics({
+                    totalTime, watchedTime, secondsInStock, currentTime, speed, newMainEvent,
+                    video: videoId, course, statisticsId, lecture
+                })
 
-    // const skipForward = () => {
-    //     const player = vid.current.plyr;
-    //     player.currentTime = Math.min(player.duration, player.currentTime + 10);
-    // };
+                totalTime = 0
+                watchedTime = 0
+                secondsInStock = 0
+                events = []
+                newMainEvent = null
+                //End Sending ==> 
+            }
 
-    // Function to skip backward 10 seconds
-    // const skipBackward = () => {
-    //     const player = vid.current.plyr;
-    //     player.currentTime = Math.max(0, player.currentTime - 10);
-    // };
-    // const seek = (e) => {
-    //     const rect = plyrContainer.current.getBoundingClientRect();
-    //     const mouseOnDiv = e.clientX - rect.x;
-    //     if (mouseOnDiv >= rect.width / 2) {
-    //         vid.current.plyr.forward();
-    //     } else {
-    //         vid.current.plyr.rewind();
-    //     }
-    // };
+            if (vid.current.plyr.playing) {
+                watchedTime++;
+            }
+
+            if (vid.current.plyr.speed !== speed) { // check not alot
+                // in backend if speed !== currentSpeed = add new array 
+
+                speed = vid.current.plyr.speed
+                secondsInStock += watchedTime
+                watchedTime = 0
+
+                newMainEvent = {
+                    date: new Date(),
+                    name: 'Es',
+                    speed: vid.current.plyr.speed,
+                    startTime: currentTime || 0,
+                }
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(timeIntervals);
+        };
+    }, [])
 
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
     </div>
 }
 
-export default YoutubePlyr
+export default memo(YoutubePlyr)
 
 // /https://www.youtube.com/watch?v=r6HJyqxZ_qM

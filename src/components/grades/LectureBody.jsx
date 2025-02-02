@@ -11,8 +11,16 @@ import ShowPdf from '../ui/ShowPdf'
 import ExamCard from '../exam/ExamCard'
 import Separator from '../ui/Separator'
 import SectionIcon from '../content/SectionIcon'
+import { useSelector } from 'react-redux'
 
 function LectureBody({ lecture, lectureIndex, courseId }) {
+    const user = useSelector(s => s.global.user)
+
+    if (user) {
+        let value = '"' + user.userName + '"'
+        document.documentElement.style.setProperty('--main-userName', `${value}`)
+    }
+    
     return (
         <Box sx={{ width: '100%', maxWidth: '800px' }}>
             <FlexColumn gap={'16px'}>
@@ -37,7 +45,7 @@ function LectureBody({ lecture, lectureIndex, courseId }) {
             ) : (
                 <div style={{ maxWidth: '100vh', margin: 'auto' }}>
                     {lecture.sectionType === sectionConstants.VIDEO ? (
-                        <VideoGenerate video={lecture.video} />
+                        <VideoGenerate video={lecture.video} lecture={lecture} course={courseId} />
                     ) : lecture.sectionType === sectionConstants.LINK ? (
                         <FlexColumn>
                             <ScallyBtn component={Link} to={lecture.link.url} startIcon={<SectionIcon lecture={lecture} color='white' />}> {lecture.name}</ScallyBtn>

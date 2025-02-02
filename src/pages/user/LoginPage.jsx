@@ -14,6 +14,7 @@ import { lang } from '../../settings/constants/arlang'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 
 import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
+import ForgetPassword from '../../components/auth/ForgetPassword'
 
 function LoginPage() {
 
@@ -42,19 +43,6 @@ function LoginPage() {
                 url={"https://mrelbeltagy.com/login"}
                 isSiteLink={true}
             />
-
-            {/* <Helmet>
-                <title>Login - تسجيل الدخول لمنصه البلتاجى</title>
-                <meta name="description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
-
-                <link rel="canonical" href="https://mrelbeltagy.com/login" />
-                <meta property="og:title" content="تسجيل الدخول لمنصه البلتاجى" />
-                <meta property="og:description" content="سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى" />
-                <meta property="og:url" content="https://mrelbeltagy.com/login" />
-                <meta property="og:image" content="/assets/logo.webp" />
-                <meta property="og:site_name" content="Elbeltagy Platform" />
-            </Helmet> */}
-
 
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
@@ -101,7 +89,7 @@ function LoginPage() {
             </FlexRow>
 
             {/* form */}
-            <ModalStyled
+            {/* <ModalStyled
                 title={'هل نسيت كلمه السر ؟'}
                 desc={'إذا كنت قد نسيت كلمه السر, او تواجه مشكله فى تسجيل الدخول تواصل مع الدعم من الرقم المسجل به لاعاده ضبط الحساب'}
                 open={open}
@@ -110,7 +98,10 @@ function LoginPage() {
                 action={() => {
                     window.location.href = "https://api.whatsapp.com/send?phone=" + '2001553251467' + "&text=" + 'لقد نسيت كلمه السر';
                 }}
-            />
+            /> */}
+            <ModalStyled open={open} setOpen={setOpen} fullWidth={true} >
+                <ForgetPassword />
+            </ModalStyled>
         </Section >
     )
 }

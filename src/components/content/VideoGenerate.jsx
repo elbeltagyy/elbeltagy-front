@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react'
-import VideoYoutube from './VideoYoutube'
+import React, { useCallback, useEffect } from 'react'
 import YoutubePlyr from './YoutubePlyr'
 import { useTheme } from '@mui/material'
 // import VideoPlyr from './VideoPlyr'
 import filePlayers from '../../settings/constants/filePlayers'
+import { useVideoOnMutation } from '../../toolkit/apis/videosStatisticsApi'
+import usePostData from '../../hooks/usePostData'
 // import YouTubePlayer from './YoutubeQuality'
 
 
 
-function VideoGenerate({ video }) {
-
+function VideoGenerate({ video, lecture, course }) {
     //youtube => button , iframe || bunny => iframe || server => iframe
     const theme = useTheme()
+    // timer if playing, send request when 30s
+    // play/pause - speed 
+    const [sendData, status] = useVideoOnMutation()
+    const [sendStatistics] = usePostData(sendData)
+
+    const trigger = useCallback(async (values) => {
+        const cloned = { ...values }
+        console.log('cloned ==>', cloned)
+        await sendStatistics(cloned)
+    }, []);
+
     return (
         <>
             {video.player === filePlayers.YOUTUBE ? (
-                // <VideoYoutube url={video?.url} />
-                // <YouTubePlayer  />
-                <YoutubePlyr url={video.url} />
+                <YoutubePlyr url={video.url} videoId={video._id} course={course} lecture={lecture._id} sendStatistics={trigger} />
             ) : video.player === filePlayers.BUNNY || video.player === filePlayers.BUNNY_UPLOAD ? (
                 <div style={{ margin: 'auto', paddingBottom: '56.25%', position: 'relative' }}>
                     <iframe

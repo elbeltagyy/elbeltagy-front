@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import UserHeader from '../ui/UserHeader'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Typography } from '@mui/material'
 import { useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
@@ -14,6 +14,8 @@ import Separator from '../../components/ui/Separator'
 import { lang } from '../../settings/constants/arlang'
 import CenterLectures from './CenterLectures'
 import { user_roles } from '../../settings/constants/roles'
+import { useLazyIsLoggedQuery } from '../../toolkit/apis/usersApi'
+import { setUser } from '../../toolkit/globalSlice'
 
 function UserHome() {
 
@@ -34,6 +36,23 @@ function UserHome() {
             trigger()
         }
     }, [openUserCourses])
+
+    const dispatch = useDispatch()
+    const [getUserData] = useLazyIsLoggedQuery()
+
+    useEffect(() => {
+        const checkIslogged = async () => {
+            const isWorked = JSON.parse(sessionStorage.getItem('user'))
+            if (isWorked?.name) {
+                return
+            }
+            const { data } = await getUserData()
+            const userData = data?.values
+            
+            dispatch(setUser({ ...user, ...userData }))
+        }
+        checkIslogged()
+    }, [])
 
     return (
         <Section sx={{ minHeight: '86vh' }}>

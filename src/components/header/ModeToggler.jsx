@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, useTheme } from '@mui/material'
 import { motion } from 'framer-motion';
-import React from 'react'
+import React, { memo } from 'react'
 
 
 import { MdLightMode } from "react-icons/md";
@@ -27,7 +27,7 @@ function ModeToggler({ toggleMode }) {
 
     const theme = useTheme()
     return (
-        <IconButton  onClick={toggleMode} sx={{ boxShadow: theme.shadows[1], m: '0 8px' }}>
+        <IconButton onClick={toggleMode} sx={{ boxShadow: theme.shadows[1], m: '0 8px' }}>
             {theme.palette.mode === 'dark' ?
                 <BoxFm sx={{ p: 0, m: 0, display: 'flex' }} variants={iconVar} initial='hidden' whileTap='hidden' animate='visible'>
                     <MdOutlineNightlightRound color={theme.palette.primary.main} />
@@ -41,4 +41,4 @@ function ModeToggler({ toggleMode }) {
     )
 }
 
-export default ModeToggler
+export default memo(ModeToggler)

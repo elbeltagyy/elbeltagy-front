@@ -26,7 +26,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 
 function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc }) {
-
+    reset = Array.isArray(reset) ? reset : [reset]
+    
     const [isOpen, setOpenModal] = useState(false)
     const [deleteId, setDeleteId] = useState("")
 
@@ -226,7 +227,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
 
         triggerFetch()
 
-    }, [paginationModel.page, paginationModel.pageSize, sort, filter, reset, isRefresh])
+    }, [paginationModel.page, paginationModel.pageSize, sort, filter, ...reset, isRefresh])
 
 
     // // hide columns 

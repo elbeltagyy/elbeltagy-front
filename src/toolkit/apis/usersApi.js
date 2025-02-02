@@ -67,6 +67,27 @@ const usersApi = apiSlice.injectEndpoints({
                 }
             },
         }),
+        isLogged: builder.query({
+            query: () => {
+                return {
+                    url: "/auth/is_logged",
+                }
+            },
+        }),
+        forget_password: builder.mutation({
+            query: data => ({
+                url: '/auth/forget_password',
+                method: 'POST',
+                body: data
+            }),
+        }),
+        verify_password: builder.mutation({
+            query: data => ({
+                url: '/auth/verify_password',
+                method: 'POST',
+                body: data
+            }),
+        }),
     }),
     overrideExisting: false,
 })
@@ -84,5 +105,9 @@ export const {
     // for auth
     useLoginMutation,
     useSignupMutation,
-    useLazyLogoutQuery
+    useLazyLogoutQuery,
+    useLazyIsLoggedQuery,
+
+    useForget_passwordMutation,
+    useVerify_passwordMutation
 } = usersApi

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,7 +13,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function ModalStyled({ open, setOpen, title, desc, children, action, agree }) {
+export default function ModalStyled({ open, setOpen, title, desc, children, action, agree, fullWidth = false }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -34,7 +33,7 @@ export default function ModalStyled({ open, setOpen, title, desc, children, acti
                 aria-describedby="alert-dialog-slide-description"
                 sx={{
                     '& .MuiPaper-root': {
-                        minWidth: '250px', border: '1px solid rgba(255 255 255, .1)', outline: '1px solid #fff'
+                        minWidth: '250px', border: '1px solid rgba(255 255 255, .1)', outline: '1px solid #fff', width: fullWidth ? '100%' : 'auto'
                     }
                 }}
             >

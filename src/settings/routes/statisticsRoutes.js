@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
 import { user_roles } from "../constants/roles";
+import GetViewsPage from "../../pages/admin/GetViewsPage";
 
 const GetSubscriptionsAll = lazy(() => import("../../pages/admin/GetSubscriptionsAll"))
 const GetSubscriptionsCourse = lazy(() => import("../../pages/admin/GetSubscriptionsCourse"))
@@ -20,6 +21,14 @@ export const statisticsRoutes = [
     {
         path: '/statistics/courses/:courseId/exams/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
             <GetAttemptsPage />
+        </ProtectedRoute>
+    }, {
+        path: '/statistics/courses/:courseId/views/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+            <GetViewsPage />
+        </ProtectedRoute>
+    }, {
+        path: '/statistics/views', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+            <GetViewsPage />
         </ProtectedRoute>
     },
 ]

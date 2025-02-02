@@ -1,3 +1,7 @@
+:root {
+    --main-userName: '';
+}
+
 .test {
     animation: name duration timing-function delay iteration-count direction fill-mode;
 }
@@ -33,4 +37,67 @@
 
 ::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
+}
+
+.plyr__video-wrapper {
+    pointer-events: none !important;
+}
+
+.plyr {
+    position: relative;
+}
+
+.plyr::after {
+    content: var(--main-userName);
+    position: absolute;
+    pointer-events: none;
+    background-color: transparent;
+    color: red;
+    animation: floatUpDown 60s alternate-reverse infinite;
+    /* animation-delay: 60s; */
+    top: 50px;
+    opacity: .4;
+}
+
+@keyframes floatUpDown {
+    0% {
+        right: 0;
+    }
+
+    25% {
+        top: 50%;
+        right: 25%;
+        /* Adjust for more movement */
+    }
+
+
+    40% {
+        top: 50%;
+        right: 25%;
+        /* Adjust for more movement */
+    }
+
+    50% {
+        top: 50%;
+        right: 50%;
+        /* Adjust for more movement */
+    }
+
+    80% {
+        top: 50%;
+        right: 50%;
+        /* Adjust for more movement */
+    }
+
+    90% {
+        top: 85%;
+        right: 85%;
+        /* Adjust for more movement */
+    }
+
+    100% {
+        top: 85%;
+        right: 85%;
+        /* Adjust for more movement */
+    }
 }

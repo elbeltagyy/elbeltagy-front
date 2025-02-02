@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { logout, setGlobalMsg, setUser } from '../toolkit/globalSlice'
+import { useNavigate } from 'react-router-dom'
 
 // 1- on sending => if cahced, params query
 // 2- on recieve => chache, error, loading, return on success
@@ -7,6 +8,9 @@ import { logout, setGlobalMsg, setUser } from '../toolkit/globalSlice'
 
 export default function useLazyGetData(getData) {
     // getData(query, prefereCahed)
+    const navigate = useNavigate()
+
+
     const paramsSchema = {
         limit: '', page: '',
         property: 'value', // for research
@@ -26,6 +30,7 @@ export default function useLazyGetData(getData) {
                     if (result.error?.data?.isKick === true) {
                         dispatch(logout())
                         dispatch(setGlobalMsg({ message: result.error?.data?.message || "sorry!, you have to log in", severity: "error" }))
+                        navigate('/')
                         return;
                     }
 

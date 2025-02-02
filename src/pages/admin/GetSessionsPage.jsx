@@ -35,6 +35,7 @@ function GetSessionsPage() {
         res?.sessions?.map((session) => {
 
             const item = {
+                ...session,
                 _id: session._id,
                 avatar: session.user?.avatar?.url,
                 session: session.refreshToken,
@@ -133,6 +134,13 @@ function GetSessionsPage() {
                 }
             }
         }, {
+            field: 'isLoggedOutAutomatic',
+            headerName: 'هل كان تسجيل الدخول تلقائي ؟',
+            width: 200,
+            type: "boolean",
+            disableExport: true,
+            sortable: false,
+        }, {
             field: 'isExpired',
             headerName: 'هل انتهت الصلاحيه؟',
             width: 200,
@@ -140,7 +148,6 @@ function GetSessionsPage() {
             disableExport: true,
             filterable: false,
             sortable: false,
-
         }, {
             field: 'expiresAt',
             headerName: 'تنتهى فى',

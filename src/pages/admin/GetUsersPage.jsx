@@ -4,6 +4,7 @@ import { useGridApiRef } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom';
 
 import { user_roles } from '../../settings/constants/roles'
+import governments from '../../settings/constants/governments'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { lang } from '../../settings/constants/arlang'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
@@ -178,6 +179,22 @@ function GetUsersPage() {
                     <Typography>
                         {params.row.role === user_roles.ADMIN ? user_roles.ADMIN
                             : grade?.name}
+                    </Typography>
+                )
+            }
+        }, {
+            field: "government",
+            headerName: 'المحافظه',
+            type: 'singleSelect',
+            width: 200,
+            editable: true,
+            valueOptions: makeArrWithValueAndLabel(governments, { value: 'id', label: 'governorate_name_ar', isNumber: true }),
+            renderCell: (params) => {
+                const government = governments.filter(({ id }) => Number(id) === Number(params.row.government))[0]
+                return (
+                    <Typography>
+                        {params.row.role === user_roles.ADMIN ? user_roles.ADMIN
+                            : government?.governorate_name_ar}
                     </Typography>
                 )
             }

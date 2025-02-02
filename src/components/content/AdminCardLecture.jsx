@@ -99,7 +99,6 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
         {(lecture?.course?._id === courseId) && (
           <>
-
             <Box>
               <SwitchStyled label={"الحاله"} checked={isActive} onChange={changeActivity} isLoading={isLoading} />
             </Box>
@@ -122,8 +121,20 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
                 </LinkMui>
               </div>
             )}
+
+            {lecture.sectionType === sectionConstants.VIDEO && (
+              <div>
+                <LinkMui href={'/statistics/courses/' + courseId + '/views/' + lecture._id + '?' + 'role=' + user_roles.STUDENT} underline="hover" mr={'auto'} onClick={(e) => {
+                  e.preventDefault()
+                  navigate('/statistics/courses/' + courseId + '/views/' + lecture._id + '?' + 'role=' + user_roles.STUDENT)
+                }}>
+                  احصائيات طلاب السنتر
+                </LinkMui>
+              </div>
+            )}
           </>
         )}
+
       </CardContent>
 
       <CardActions sx={{ width: '100%' }} >
@@ -136,10 +147,17 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
               </FilledHoverBtn>
             )}
 
-            <OutLinedHoverBtn
-              colorm='orange'
-              disabled={lecture.sectionType !== sectionConstants.EXAM}
-              component={Link} to={'/statistics/courses/' + courseId + '/exams/' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
+            {lecture.sectionType === sectionConstants.EXAM && (
+              <OutLinedHoverBtn
+                colorm='orange'
+                component={Link} to={'/statistics/courses/' + courseId + '/exams/' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
+            )}
+
+            {lecture.sectionType === sectionConstants.VIDEO && (
+              <OutLinedHoverBtn
+                colorm='orange'
+                component={Link} to={'/statistics/courses/' + courseId + '/views/' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
+            )}
           </FlexRow>
 
           {(lecture?.course?._id === courseId) && (

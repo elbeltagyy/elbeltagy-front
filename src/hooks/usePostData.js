@@ -1,8 +1,10 @@
 import { useDispatch } from 'react-redux'
 import { logout, setGlobalMsg, setUser } from '../toolkit/globalSlice'
+import { useNavigate } from 'react-router-dom'
 
 export default function usePostData(sendData, setLoading) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   let data
 
   const trigger = (values, isMultiPart, params) => {
@@ -51,6 +53,7 @@ export default function usePostData(sendData, setLoading) {
             }
             dispatch(logout())
             dispatch(setGlobalMsg({ message: res.error?.data?.message || "sorry!, you have to log in", severity: "error" }))
+            navigate('/')
             return;
           }
 
