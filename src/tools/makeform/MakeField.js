@@ -1,5 +1,5 @@
 import { Box, InputAdornment, TextField, Typography } from '@mui/material'
-import { ErrorMessage, Field } from 'formik'
+import { ErrorMessage, Field, FastField } from 'formik'
 import React from 'react'
 import { hasError } from './constants/hasError'
 

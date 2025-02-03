@@ -1,15 +1,11 @@
-import React from 'react'
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import PasswordIcon from '@mui/icons-material/Password';
 import AttachEmailIcon from '@mui/icons-material/AttachEmail';
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import HouseIcon from '@mui/icons-material/House';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { lang } from '../../settings/constants/arlang';
 
 import * as Yup from "yup"
-import { useTheme } from '@mui/material';
 import MakeForm from '../../tools/makeform/MakeForm';
 import { useUpdateUserProfileMutation } from '../../toolkit/apis/usersApi';
 import usePostData from '../../hooks/usePostData';
@@ -17,10 +13,12 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../toolkit/globalSlice';
 import { FaSquarePhoneFlip } from 'react-icons/fa6';
 import TitleWithDividers from '../ui/TitleWithDividers';
+import { green } from '@mui/material/colors';
+import UserChangePassword from './UserChangePassword';
+
 
 function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
 
-    const theme = useTheme()
     const dispatch = useDispatch()
 
     const [sendData, status] = useUpdateUserProfileMutation()
@@ -35,7 +33,7 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
         }
     }
 
-    const inputs = [
+    let inputs = [
         {
             name: "id",
             value: user._id,
@@ -46,19 +44,19 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
             label: lang.USERNAME,
             value: user.userName,
             disabled: true,
-            icon: <VerifiedUserIcon sx={{ color: 'green' }} />
+            icon: <VerifiedUserIcon sx={{ color: green[500] }} />
         }, {
             name: "name",
             label: lang.NAME,
             value: user.name,
-            icon: <AccountCircle sx={{ color: 'green' }} />,
+            icon: <AccountCircle sx={{ color: green[500] }} />,
             width: { xs: '100%', md: '49%' },
             validation: Yup.string().required(lang.REQUERIED).matches(/^\s*(\S+\s+){2}\S+\s*$/, "يجب ان يكون 3 كلمات")
         }, {
             name: "email",
             label: lang.EMAIL,
             value: user.email,
-            icon: <AttachEmailIcon sx={{ color: 'green' }} />,
+            icon: <AttachEmailIcon sx={{ color: green[500] }} />,
             width: { xs: '100%', md: '49%' },
             validation: Yup.string().required(lang.REQUERIED).email('يجب ادخال ايميل صالح'),
         }, {
@@ -66,33 +64,18 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
             label: lang.PHONE,
             value: user.phone,
             width: { xs: '100%', md: '49%' },
-            icon: <FaSquarePhoneFlip color='green' />,
+            icon: <FaSquarePhoneFlip color={green[500]} />,
             validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم"),
             disabled: true
         }, {
             name: "familyPhone",
             label: lang.FAMILY_PHONE,
             value: user.familyPhone,
-            icon: <HouseIcon sx={{ color: 'green' }} />,
+            icon: <HouseIcon sx={{ color: green[500] }} />,
             width: { xs: '100%', md: '49%' },
             validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم")
                 .notOneOf([Yup.ref('phone'), null], 'مينفعش هاتف ولى الامر يبقا رقمك'),
-
-        }, {
-            name: "password",
-            label: lang.PASSWORD,
-            type: "password",
-            placeholder: "new password",
-            icon: <PasswordIcon sx={{ color: 'green' }} />,
-            validation: Yup.string().min(6, "يجب ان يكون اكثر من 6")
-
-        }, {
-            name: 'confirmPassword',
-            label: lang.CONFIRM_PASSWORD,
-            type: "password",
-            placeholder: "new password",
-            validation: Yup.string().min(6, "should be at least 6 characters"),
-            icon: <PasswordIcon sx={{ color: 'green' }} />
+            disabled: !isAdmin && true
         }, {
             name: "avatar",
             label: "ارفاق صوره شخصيه",
@@ -128,10 +111,12 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
                 })
         },]
 
+
     return (
         <div>
             <TitleWithDividers title={'تحديث البيانات'} />
             <MakeForm inputs={inputs} status={status} onSubmit={onSubmit} />
+            <UserChangePassword user={user} />
         </div>
     )
 }

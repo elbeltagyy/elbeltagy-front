@@ -4,12 +4,13 @@ import { sidebarLinks } from '../../settings/sidebarLinks'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { RtArrow } from './Icons';
 import { user_roles } from '../../settings/constants/roles';
+import TabInfo from '../ui/TabInfo';
 
 
 function LoggedListLinks({ user, setSidebar }) {
     const { pathname } = useLocation()
     const theme = useTheme()
-    const [activeLink, setActiveLink] = useState('/test')
+    const [activeLink, setActiveLink] = useState('')
     const navigate = useNavigate()
 
 
@@ -75,12 +76,19 @@ function LoggedListLinks({ user, setSidebar }) {
                                     {link.name}
                                 </Typography>
 
-                                <RtArrow size='22px' style={{
-                                    marginRight: "auto",
-                                    color: theme.palette.primary.main,
-                                    display: activeLink === link.to ? "block" : "none",
-                                    transform: 'rotate(180deg)'
-                                }} />
+                                {activeLink === link.to && (
+                                    <RtArrow size='22px' style={{
+                                        marginRight: "auto",
+                                        color: theme.palette.primary.main,
+                                        display: activeLink === link.to ? "block" : "none",
+                                        transform: 'rotate(180deg)'
+                                    }} />
+                                )}
+
+                                {(link.isNew && activeLink !== link.to) && <TabInfo sx={{
+                                    m: 'auto'
+                                }} count={'new'} i={3} />}
+
                             </ListItemButton>
                         </ListItem>
                     )

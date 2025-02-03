@@ -94,16 +94,16 @@ export default function ForgetPassword() {
         props.resetFields()
     }
     return (
-        <Section>
 
-            <FlexColumn width={'100%'}>
+        <FlexColumn width={'100%'}>
+            <Section>
                 <Box>
                     <TitleWithDividers title={'هل نسيت كلمه السر ؟'} />
 
                     {(!status.isSuccess && (
                         <>
-                            <Box minWidth={'300px'} sx={{ width: '100%' }}>
-                                <ListMethods setMethod={setChosenMethod} methods={methods} activeMethod={chosenMethod} />
+                            <Box  sx={{ width: '100%' }}>
+                                <ListMethods setMethod={setChosenMethod} methods={methods} activeMethod={chosenMethod} disabled={[senderConstants.WHATSAPP]} />
                                 {/* disabled={[senderConstants.WHATSAPP]} */}
                             </Box>
                             {chosenMethod !== senderConstants.CONTACT && (
@@ -132,7 +132,7 @@ export default function ForgetPassword() {
                     </FlexColumn>}
 
                 </Box>
-            </FlexColumn>
-        </Section>
+            </Section>
+        </FlexColumn>
     );
 }

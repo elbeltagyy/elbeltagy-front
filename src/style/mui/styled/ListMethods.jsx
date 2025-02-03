@@ -5,7 +5,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import { Radio } from '@mui/material';
-import { useEffect } from 'react';
 
 function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) { //{ id, icon, label, desc }
 
