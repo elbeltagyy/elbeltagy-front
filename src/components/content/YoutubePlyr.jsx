@@ -89,6 +89,7 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
             startTime: 0,
         }
         const statisticsId = sessionStorage.getItem(videoId) || sessionStorage.setItem(videoId, uuidv4())
+        console.log(statisticsId)
         //each event => name, date
 
         // let StartEventTime = 0
