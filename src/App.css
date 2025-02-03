@@ -7,13 +7,12 @@
 }
 
 @media (max-width: 600px) {
-    .css-3krtj3-MuiPaper-root-MuiDataGrid-paper {
-        min-width: 100% !important;
-        max-width: 100% !important;
+    .MuiDataGrid-filterForm {
+        flex-direction: column !important;
     }
 
-    .css-1t5wrdm-MuiDataGrid-filterForm {
-        flex-direction: column;
+    .MuiFormControl-root {
+        width: 100% !important;
     }
 }
 
