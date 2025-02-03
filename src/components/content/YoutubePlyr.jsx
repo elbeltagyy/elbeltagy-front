@@ -144,7 +144,7 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
         return () => {
             clearInterval(timeIntervals);
         };
-    }, [])
+    }, [lecture])
 
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
