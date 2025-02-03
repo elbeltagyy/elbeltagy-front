@@ -76,7 +76,7 @@ function CoursePage() {
         let index = false
         if (params.lectureId) {
             let currentLecture = courseDetails.lectures?.find(item => item._id === params.lectureId)
-            index = currentLecture.index
+            index = currentLecture?.index
         }
         return index
     }
