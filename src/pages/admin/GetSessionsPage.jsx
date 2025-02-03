@@ -149,6 +149,11 @@ function GetSessionsPage() {
             filterable: false,
             sortable: false,
         }, {
+            field: 'ip',
+            headerName: 'User IP',
+            width: 200,
+            disableExport: true,
+        }, {
             field: 'expiresAt',
             headerName: 'تنتهى فى',
             width: 200,
