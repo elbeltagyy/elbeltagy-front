@@ -19,7 +19,7 @@ function VideoGenerate({ video, lecture, course }) {
 
     const trigger = useCallback(async (values) => {
         const cloned = { ...values }
-        console.log('cloned ==>', cloned)
+        // console.log('cloned ==>', cloned)
         await sendStatistics(cloned)
     }, []);
 

@@ -88,8 +88,17 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
             speed: speed,
             startTime: 0,
         }
-        const statisticsId = sessionStorage.getItem(videoId) || sessionStorage.setItem(videoId, uuidv4())
-        console.log(statisticsId)
+        const statisticsId = () => {
+            let sessionId = sessionStorage.getItem(videoId)
+            if (sessionId) {
+                return sessionId
+            } else {
+                sessionId = uuidv4()
+                sessionStorage.setItem(videoId, sessionId)
+                return sessionId
+            }
+        }
+        console.log(statisticsId())
         //each event => name, date
 
         // let StartEventTime = 0
@@ -101,7 +110,7 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
             if ((watchedTime) === 25) {
                 sendStatistics({
                     totalTime, watchedTime, secondsInStock, currentTime, speed, newMainEvent,
-                    video: videoId, course, statisticsId, lecture
+                    video: videoId, course, statisticsId: statisticsId(), lecture
                 })
 
                 totalTime = 0

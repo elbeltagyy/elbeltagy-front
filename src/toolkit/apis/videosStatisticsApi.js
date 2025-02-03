@@ -27,7 +27,7 @@ const videosStatisticsApi = apiSlice.injectEndpoints({
         }),
         deleteView: builder.mutation({
             query: (data) => ({
-                url: `/video_statistics` + data.id,
+                url: `/video_statistics/` + data._id,
                 method: 'DELETE',
                 body: data
             })
