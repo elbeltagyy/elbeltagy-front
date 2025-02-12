@@ -13,6 +13,7 @@ function AdminLinkCourse({ grade, course, setCourse, setRefetchLectures }) { //f
     const [getData, status] = useLazyGetCoursesQuery()
     const [getCourses] = useLazyGetData(getData)
 
+
     const trigger = async (filter) => {
         const res = await getCourses({ grade, name: filter })
         const filtered = res.courses.filter(searchedCourse => searchedCourse._id !== course._id)
@@ -40,6 +41,14 @@ function AdminLinkCourse({ grade, course, setCourse, setRefetchLectures }) { //f
         setChosenOptions(course.linkedTo)
     }, [course._id])
 
+    // const set1 = new Set(course.linkedTo);
+    // const set2 = new Set(chosenOptions)
+    // const hasChanged = course.linkedTo.length !== chosenOptions?.length ||
+    //     !course.linkedTo.every((item) => set2.has(item)) ||
+    //     !chosenOptions.every((item) => set1.has(item));
+
+    // console.log(course.linkedTo)
+    // console.log(chosenOptions)
     return (
         <Box sx={{ my: '16px' }}>
             <TitleWithDividers title={'ربط الكورس بكورس اخر'} />

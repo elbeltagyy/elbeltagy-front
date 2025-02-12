@@ -15,6 +15,8 @@ import { statisticsRoutes } from "./statisticsRoutes";
 import ProtectedRoute from "./ProtectedRoute";
 import { user_roles } from "../constants/roles";
 import { couponsRoutes } from "./couponsRoutes";
+import ReportsPage from "../../pages/admin/ReportsPage";
+import { groupsRoutes } from "./groupsRoutes";
 
 const ErrorPage = lazy(() => import("../../pages/errors/ErrorPage"))
 const NotFoundPage = lazy(() => import("../../pages/errors/NotFoundPage"))
@@ -68,6 +70,12 @@ export const routes = [
                 path: '/management/sessions', children: manageSessionRoutes
             }, {
                 path: '/management/courses', children: manageCoursesRoutes
+            }, {
+                path: '/management/reports', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+                    <ReportsPage />
+                </ProtectedRoute>
+            },{
+                path: '/management/groups', children: groupsRoutes,
             }, {
                 path: '/login', element: <LoginPage />
             }, {

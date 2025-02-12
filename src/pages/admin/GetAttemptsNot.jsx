@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import Section from '../../style/mui/styled/Section'
+import { useState } from 'react'
+
 import TabInfo from '../../components/ui/TabInfo'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button } from '@mui/material'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
-import Image from '../../components/ui/Image'
+import { Box, } from '@mui/material'
+
 import useLazyGetData from '../../hooks/useLazyGetData'
-import { useParams } from 'react-router-dom'
+
 import { useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
 import Separator from '../../components/ui/Separator'
 import { red } from '@mui/material/colors'
 import { user_roles } from '../../settings/constants/roles'
+import UserAvatar from '../../components/users/UserAvatar'
 
 
 
@@ -29,8 +29,6 @@ const exportObj = {
 
 function GetAttemptsNot({ grade, exam, course, lecture, courseType = '' }) {
 
-    const [fileConfirm, setFileConfirm] = useState()
-    const [openFileModal, setOpenFileModal] = useState(false)
     const [notDoExamCounts, setNotDoExamCounts] = useState('loading ...')
 
     const [getData, status] = useLazyGetUsersQuery()
@@ -56,22 +54,7 @@ function GetAttemptsNot({ grade, exam, course, lecture, courseType = '' }) {
             disableExport: true,
             filterable: false,
             renderCell: (params) => {
-                return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.avatar?.url) {
-                            setFileConfirm(params.row?.avatar?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.avatar?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
-                )
+                return <UserAvatar user={params.row} />
             }
         },
         {
@@ -128,10 +111,6 @@ function GetAttemptsNot({ grade, exam, course, lecture, courseType = '' }) {
                     }
                 }
             />
-
-            <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
-                <Image img={fileConfirm} />
-            </ModalStyled>
         </>
     )
 }

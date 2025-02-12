@@ -1,12 +1,12 @@
-import React from 'react'
 import { Alert, Box } from '@mui/material'
+import { FlexColumn } from '../style/mui/styled/Flexbox'
 
-function WrapperHandler({ children, status, showSuccess = false }) {
+function WrapperHandler({ children, status, showSuccess = false, width = '100%' }) {
   // console.log('err =>', status?.error)
   return (
-    <>
+    <FlexColumn>
       {children}
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width }}>
         <Box m={'8px 0'}>
 
           {status?.isLoading && <Alert sx={{ maxWidth: '100%', m: '0 auto' }} variant="filled" severity="warning">
@@ -26,7 +26,7 @@ function WrapperHandler({ children, status, showSuccess = false }) {
         </Box>
 
       </Box>
-    </>
+    </FlexColumn>
   )
 }
 

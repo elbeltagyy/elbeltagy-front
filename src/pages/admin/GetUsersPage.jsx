@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Avatar, Box, Button, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useGridApiRef } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { user_roles } from '../../settings/constants/roles'
 import governments from '../../settings/constants/governments'
@@ -26,7 +26,7 @@ import CreateUser from '../../components/users/CreateUser'
 import TabInfo from '../../components/ui/TabInfo'
 import TitleSection from '../../components/ui/TitleSection'
 import GradesTabs from '../../components/grades/GradesTabs'
-import Image from '../../components/ui/Image'
+import UserAvatar from '../../components/users/UserAvatar';
 // import CreateUser from '../../components/users/CreateUser'
 
 
@@ -51,16 +51,22 @@ const exportObj = {
 
 
 
-function GetUsersPage() {
+function GetUsersPage({ setExcludedUsers, isShowTitle = true }) {
 
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [fileConfirm, setFileConfirm] = useState()
-    const [openFileModal, setOpenFileModal] = useState(false)
 
     const [gradesCounts, setGradeCounts] = useState({})
-    const [grade, setGrade] = useState(null)
+    const [grade, setGrade] = useState(Number(searchParams.get('grade')) || 0)
     const [open, setOpen] = useState(false)
+
+    const changeGrade = (newVal) => {
+        setSearchParams({
+            grade: newVal
+        })
+        setGrade(newVal)
+    }
 
     //get users
     const [reset, setReset] = useState(false)
@@ -68,7 +74,7 @@ function GetUsersPage() {
     const [getUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getUsers(params, false)
+        const res = await getUsers({ ...params, grade: grade || 'all' }, false)
         const data = { values: res.users, count: res.count }
         return data
     }
@@ -101,20 +107,7 @@ function GetUsersPage() {
             sortable: false,
             renderCell: (params) => {
                 return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.avatar?.url) {
-                            setFileConfirm(params.row?.avatar?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.avatar?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
+                    <UserAvatar user={params.row} />
                 )
             }
         },
@@ -264,27 +257,14 @@ function GetUsersPage() {
             filterable: false,
             sortable: false,
             renderCell: (params) => {
-                return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.fileConfirm?.url) {
-                            setFileConfirm(params.row?.fileConfirm?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase()} src={params.row?.fileConfirm?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
-                )
+                return <UserAvatar user={params.row} url={params.row?.fileConfirm?.url} />
             }
         }, {
             field: 'createdAt',
             headerName: 'تاريخ الانشاء',
             width: 200,
+            type: 'date',
+            valueGetter: (params) => new Date(params.row.createdAt),
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={1} />
             }
@@ -333,20 +313,25 @@ function GetUsersPage() {
 
     return (
         <Section>
-            <TitleSection title={lang.USERS_PAGE} />
-            <FlexColumn sx={{ width: '100%' }}>
-                <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>
-            </FlexColumn>
+            {isShowTitle && (
+                <>
+                    <TitleSection title={lang.USERS_PAGE} />
+                    <FlexColumn sx={{ width: '100%' }}>
+                        <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>
+                    </FlexColumn>
+                </>
+            )}
 
-            <GradesTabs setGrade={setGrade} counts={gradesCounts} />
+            <GradesTabs grade={grade} setGrade={changeGrade} counts={gradesCounts} />
 
             <MeDatagrid
                 apiRef={apiRef}
-                reset={reset}
-                filterParams={{ grade: grade || 'all' }}
+                reset={[reset, grade]}
+                setSelection={setExcludedUsers}
                 type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
                 columns={columns}
-                viewFc={viewFc} fetchFc={fetchFc} loading={isLoading || updateLoader || deleteLoader} updateFc={updateFc} deleteFc={deleteFc}
+                viewFc={viewFc} fetchFc={fetchFc} updateFc={updateFc} deleteFc={deleteFc}
+                loading={isLoading || updateLoader || deleteLoader}
                 editing={
                     {
                         bgcolor: 'background.alt',
@@ -360,9 +345,7 @@ function GetUsersPage() {
                 <CreateUser setReset={setReset} />
             </ModalStyled>
 
-            <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
-                <Image img={fileConfirm} />
-            </ModalStyled>
+
 
             <ModalStyled open={isOpenRegisterModal} setOpen={setOpenRegisterModal} title={'هل انت متاكد من مسح الاجهزه المسجله لهذا المستخدم ؟'} action={resetDevicesReg} />
             <ModalStyled open={openReset} setOpen={setOpenReset} title={'هل انت متاكد من اعاده ضبط كلمه السر ؟'} action={resetPassword} />

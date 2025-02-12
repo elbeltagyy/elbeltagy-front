@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { useDeleteSubscriptionMutation, useLazyGetCourseSubscriptionsQuery, useUpdateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button, Typography } from '@mui/material'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
-import Image from '../../components/ui/Image'
+import { Box, Button, Typography } from '@mui/material'
+
 import TabInfo from '../../components/ui/TabInfo'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
@@ -13,6 +12,7 @@ import usePostData from '../../hooks/usePostData'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { Link } from 'react-router-dom'
+import UserAvatar from '../users/UserAvatar'
 
 const exportObj = {
     grade: (row) => {
@@ -44,9 +44,6 @@ function GetSubscriptions({ courseId = '' }) {
 
     // const { courseId } = useParams()
     const [subscriptionsCount, setSubscriptionsCount] = useState('loading ...')
-
-    const [fileConfirm, setFileConfirm] = useState()
-    const [openFileModal, setOpenFileModal] = useState(false)
 
     const [getData, status] = useLazyGetCourseSubscriptionsQuery()
     const [getSubscriptions] = useLazyGetData(getData)
@@ -89,22 +86,7 @@ function GetSubscriptions({ courseId = '' }) {
             filterable: false,
             sortable: false,
             renderCell: (params) => {
-                return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.avatar?.url) {
-                            setFileConfirm(params.row?.avatar?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.avatar?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
-                )
+                return <UserAvatar user={params.row} />
             }
         },
         {
@@ -232,9 +214,6 @@ function GetSubscriptions({ courseId = '' }) {
                 }
             />
 
-            <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
-                <Image img={fileConfirm} />
-            </ModalStyled>
         </Section>
     )
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import CreateUserForm from './CreateUserForm'
 import BannerIcon from '../ui/BannerIcon'
 

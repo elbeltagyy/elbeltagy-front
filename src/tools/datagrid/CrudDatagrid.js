@@ -25,9 +25,9 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 
 
-function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc }) {
+function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc, setSelection = false }) {
     reset = Array.isArray(reset) ? reset : [reset]
-    
+
     const [isOpen, setOpenModal] = useState(false)
     const [deleteId, setDeleteId] = useState("")
 
@@ -129,6 +129,10 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
     };
 
     const modifiedColumns = useMemo(() => {
+        const isShowActions = viewFc || updateFc || deleteFc || false
+        if (!isShowActions) {
+            return [...columns]
+        }
         return [...columns, {
             field: 'actions',
             type: 'actions',
@@ -337,6 +341,17 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                         return updatedCols
                     })
                 }}
+
+                checkboxSelection
+                keepNonExistentRowsSelected
+
+                onRowSelectionModelChange={(newRowSelectionModel) => {
+                    console.log(newRowSelectionModel);
+                    if (setSelection) {
+                        setSelection(newRowSelectionModel)
+                    }
+                }}
+                // rowSelectionModel={rowSelectionModel}
 
                 //slots
                 slots={{

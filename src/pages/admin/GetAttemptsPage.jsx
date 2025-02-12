@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import { useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import { Link, useParams } from 'react-router-dom'
 import TitleWithDividers from '../../components/ui/TitleWithDividers'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button } from '@mui/material'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
-import Image from '../../components/ui/Image'
+import { Box, Button } from '@mui/material'
+
 import TabInfo from '../../components/ui/TabInfo'
-import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { useLazyGetAttemptsQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import ms from 'ms'
@@ -22,6 +21,7 @@ import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import { getPercentage, totalDegree } from '../../tools/fcs/GetExamTotal'
 import SwitchStyled from '../../style/mui/styled/SwitchStyled'
 import { user_roles } from '../../settings/constants/roles'
+import UserAvatar from '../../components/users/UserAvatar'
 
 
 const exportObj = {
@@ -50,8 +50,7 @@ function GetAttemptsPage() {
 
     const { data: lecture, isLoading } = useGetOneLectureQuery({ id: lectureId, populate: 'exam' })
 
-    const [fileConfirm, setFileConfirm] = useState()
-    const [openFileModal, setOpenFileModal] = useState(false)
+
     const [attemptsNums, setAttemptsNums] = useState('loading ...')
 
     const [getData, status] = useLazyGetAttemptsQuery()
@@ -94,22 +93,7 @@ function GetAttemptsPage() {
             filterable: false,
             sortable: false,
             renderCell: (params) => {
-                return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.avatar?.url) {
-                            setFileConfirm(params.row?.avatar?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.avatar?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
-                )
+                return <UserAvatar user={params.row} />
             }
         },
         {
@@ -227,10 +211,6 @@ function GetAttemptsPage() {
             />
             <Separator color={red[500]} sx={{ width: '300px' }} />
             <GetAttemptsNot grade={lecture?.values?.grade} lecture={lecture?.values} course={courseId} courseType={courseType} exam={lecture?.values?.exam?._id} />
-
-            <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
-                <Image img={fileConfirm} />
-            </ModalStyled>
             {/* {examId} */}
         </Section>
     )

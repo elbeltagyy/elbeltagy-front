@@ -8,7 +8,16 @@ import { Radio } from '@mui/material';
 
 function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) { //{ id, icon, label, desc }
 
-    const isDisabled = (value) => disabled.includes(value) ? true : false
+    const isDisabled = (method) => {
+        if (method.isValid) return false
+
+        if (disabled.includes(method?.value)) {
+            return true
+        } else {
+            return false
+        }
+
+    }
 
     return (
         <List sx={{ width: '100%', maxWidth: 360 }}>
@@ -19,7 +28,7 @@ function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) {
                     <ListItem
                         key={method.value}
                         secondaryAction={
-                            <IconButton edge="end" aria-label="comments" disabled={isDisabled(method?.value)}>
+                            <IconButton edge="end" aria-label="comments" disabled={isDisabled(method)}>
                                 {method.icon}
                             </IconButton>
                         }
@@ -30,7 +39,7 @@ function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) {
                         }}
                         disablePadding
                     >
-                        <ListItemButton disabled={isDisabled(method?.value)} role={undefined} onClick={() => setMethod(method.value)} dense>
+                        <ListItemButton disabled={isDisabled(method)} role={undefined} onClick={() => setMethod(method.value)} dense>
                             <ListItemIcon>
                                 <Radio
                                     checked={activeMethod === method.value}

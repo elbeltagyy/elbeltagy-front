@@ -28,6 +28,7 @@ import { useState } from 'react'
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
   const [open, setOpen] = useState(false)
 
+  const isLectureLinked = lecture?.course?._id !== courseId
   const [isCenter, setCenter] = useState(lecture.isCenter)
 
   const [sendData, { isLoading }] = useUpdateLectureMutation()
@@ -40,6 +41,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
   }
 
   const [isActive, setIsActive] = useState(lecture.isActive)
+
   const changeActivity = async (value) => {
     const res = await updateLecture({ id: lecture._id, isActive: value }, true)
     setLectures((pre) => {

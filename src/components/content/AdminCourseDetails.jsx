@@ -23,8 +23,11 @@ import usePostData from '../../hooks/usePostData'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import Loader from '../../style/mui/loaders/Loader'
 import WrapperHandler from '../../tools/WrapperHandler'
+import MakeForm from '../../tools/makeform/MakeForm'
 // import {   MingcuteCouponFill } from '../icons/Icons'
 
+import * as Yup from "yup"
+import Section from '../../style/mui/styled/Section'
 
 function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchLectures }) {
 
@@ -58,13 +61,24 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
         })
     }
 
+
     if (status.isLoading || course?.isLoading) return <LoaderWithText />
 
     if (status.isSuccess && !course) return <Alert variant="filled" severity="warning" sx={{ justifyContent: 'center' }}>
         {lang.NO_COURSES_IN_THIS_UNIT}
     </Alert>
-    // console.log(course)
-    if (course)
+
+    if (course) {
+        const deleteInputs = [
+            {
+                name: 'name',
+                label: 'اسم الكورس للتاكيد',
+                validation: Yup.string().trim()
+                    .oneOf([course.name?.trim()], `يجب ان تساوى  ${course.name}`)
+                    .required('مطلوب')
+            }
+        ]
+
         return (
             <>
                 <TitleWithDividers title={lang.COURSE_DETAILS + " : " + course.name} />
@@ -117,10 +131,15 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
                     desc={'يجب التاكد من حذف جميع الاشتراكات و المحاضرات الخاصه بالكورس !'}
                     open={open}
                     setOpen={setOpen}
-                    action={deleteFc}
-                />
+                >
+                    <Section>
+                        <TitleWithDividers title={'ازاله الكورس ' + course.name} desc='سيتم ازاله جميع الاشتراكات فى الكورس ولن يتم استرجعها باى طريقه !' />
+                        <MakeForm inputs={deleteInputs} status={statusDelete} onSubmit={deleteFc} modalInfo={{ desc: 'سيتم ازاله جميع الاشتراكات فى الكورس ولن يتم استرجعها باى طريقه !' }} />
+                    </Section>
+                </ModalStyled>
             </>
         )
+    }
 }
 
 export default AdminCourseDetails

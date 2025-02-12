@@ -9,11 +9,15 @@ import TabInfo from '../../../components/ui/TabInfo';
 
 
 
-export default function TabsStyled({ tabs, setValue, value }) {
+export default function TabsStyled({ tabs, setValue, value, defaultValue = '' }) {
 
     const handleChange = (e, newValue) => {
         setValue(newValue);
     };
+
+    // Validate the `value` value
+    const isValid = tabs.some(option => option.value === value);
+    const safeValue = isValid ? value : (tabs[0]?.value); // Fallback to 0 if the grade is invalid
 
 
     return (
@@ -25,7 +29,7 @@ export default function TabsStyled({ tabs, setValue, value }) {
             }}
         >
             <Tabs
-                value={value}
+                value={safeValue}
                 onChange={handleChange}
                 variant="scrollable"
                 scrollButtons

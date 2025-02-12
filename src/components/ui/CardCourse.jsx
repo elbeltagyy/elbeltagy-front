@@ -25,7 +25,7 @@ export default function CardCourse({ img, title, children, borderColor }) {
       }}
       display={'flex'} flexDirection={'column'}>
 
-      <Image img={img} saturate={true} />
+      <Image img={img} saturate={true} sx={{minHeight: '100px'}} />
 
       <Box sx={{
         transition: '.3s all ease',

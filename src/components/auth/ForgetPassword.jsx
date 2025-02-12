@@ -17,6 +17,8 @@ import * as Yup from "yup"
 import { FaSquarePhoneFlip } from 'react-icons/fa6';
 import { TbPasswordUser } from 'react-icons/tb';
 import Section from '../../style/mui/styled/Section';
+import { useGetWhatsappStatusQuery } from '../../toolkit/apis/whatsappApi';
+import TabInfo from '../ui/TabInfo';
 
 export default function ForgetPassword() {
     const [chosenMethod, setChosenMethod] = useState(senderConstants.EMAIL);
@@ -28,11 +30,20 @@ export default function ForgetPassword() {
     const [ForgetPassword] = usePostData(sendForget)
     const [verifyResetPassword] = usePostData(sendVerify)
 
+    const { data, isLoading, isSuccess } = useGetWhatsappStatusQuery()
 
     const methods = [
-        { value: senderConstants.EMAIL, label: senderConstants.EMAIL, icon: <MdMarkEmailUnread /> },
-        { value: senderConstants.WHATSAPP, label: senderConstants.WHATSAPP, icon: <FaWhatsapp /> },
-        { value: senderConstants.CONTACT, label: senderConstants.CONTACT, icon: <FcContacts /> },
+        { value: senderConstants.EMAIL, label: senderConstants.EMAIL, icon: <MdMarkEmailUnread />, isValid: true },
+        {
+            value: senderConstants.WHATSAPP,
+            label: senderConstants.WHATSAPP,
+            icon: <FaWhatsapp />,
+            isValid: true,
+            description: isLoading ? <TabInfo count={'loading...'} i={0} /> :
+                (isSuccess && data?.values?.isValid) ? <TabInfo count={'active'} i={1} /> :
+                    <TabInfo count={'Not active'} i={3} sx={{ fontSize: '8px' }} />
+        },
+        { value: senderConstants.CONTACT, label: senderConstants.CONTACT, icon: <FcContacts />, isValid: true },
     ]
 
     const triggerForgetPassword = async (values) => {
@@ -102,9 +113,11 @@ export default function ForgetPassword() {
 
                     {(!status.isSuccess && (
                         <>
-                            <Box  sx={{ width: '100%' }}>
-                                <ListMethods setMethod={setChosenMethod} methods={methods} activeMethod={chosenMethod} disabled={[senderConstants.WHATSAPP]} />
-                                {/* disabled={[senderConstants.WHATSAPP]} */}
+                            <Box sx={{ width: '100%' }}>
+                                <ListMethods
+                                    setMethod={setChosenMethod}
+                                    methods={methods} activeMethod={chosenMethod}
+                                    disabled={[senderConstants.WHATSAPP]} />
                             </Box>
                             {chosenMethod !== senderConstants.CONTACT && (
                                 <>

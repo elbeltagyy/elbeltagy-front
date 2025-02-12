@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react'
-
 import { Box, Button, Chip, Typography } from '@mui/material'
 import { RtArrow } from '../header/Icons'
 import { Link } from 'react-router-dom'
 
-import { CoursesIcon, ExamIcon, FilesIcon, VidsIcon2 } from '../ui/svg/ContentSvgs'
+import { CoursesIcon, } from '../ui/svg/ContentSvgs'
 import { FaArrowRight } from "react-icons/fa";
 import { AiFillPoundCircle } from "react-icons/ai";
 import { MdDateRange } from "react-icons/md";
@@ -16,11 +14,9 @@ import CardStyled from '../../style/mui/styled/CardStyled'
 import TabInfo from '../ui/TabInfo'
 import RowInfo from '../ui/RowInfo'
 import { getFullDate } from '../../settings/constants/dateConstants'
-import { useLazyGetLecturesCountQuery } from '../../toolkit/apis/statisticsApi'
-import useLazyGetData from '../../hooks/useLazyGetData'
+
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 import { lang } from '../../settings/constants/arlang'
-import sectionConstants from '../../settings/constants/sectionConstants'
 
 import { RiFolderUnknowFill } from "react-icons/ri";
 import { IoIosRadio } from "react-icons/io";
@@ -28,27 +24,6 @@ import { orange } from '@mui/material/colors'
 import dayjs from 'dayjs'
 
 function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, currentIndex = false }) {
-    const [getData] = useLazyGetLecturesCountQuery()
-    const [getLecturesCount] = useLazyGetData(getData)
-
-    const [lecturesCounts, setLecturesCounts] = useState('loading ..')//{videos, files, quizes}
-    useEffect(() => {
-
-        const trigger = async () => {
-            // const { count } = await getLecturesCount({ course: course._id })
-            const [{ count: videos }, { count: files }, { count: exams }] = await Promise.all([
-                await getLecturesCount({ course: course._id, sectionType: sectionConstants.VIDEO }),
-                await getLecturesCount({ course: course._id, sectionType: sectionConstants.FILE }),
-                await getLecturesCount({ course: course._id, sectionType: sectionConstants.EXAM })
-            ])
-            setLecturesCounts({ videos, files, exams })
-        }
-
-        if (course) {
-            trigger()
-        }
-    }, [course])
-
 
     if (!course) return <>loading ...!</>
     const isCourseDisabled = () => {
@@ -78,10 +53,20 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
 
             <FlexColumn sx={{ flex: 1, gap: '16px' }}>
 
-                <FlexBetween gap={'12px'} mt={'16px'} flex={'1'}>
-                    <TabInfo count={lecturesCounts?.videos} i={'1'} title={lang.LECTURES} icon={<VidsIcon2 size='1.5rem' />} />
+                <FlexBetween gap={'12px'} flex={'1'}>
+                    <Box sx={{
+                        '> *': {
+                            color: 'neutral.0'
+                        },
+                        width: '100%'
+                    }}>
+                        <div dangerouslySetInnerHTML={{ __html: course?.description }} />
+                    </Box>
+
+                    {/* <TabInfo count={lecturesCounts?.videos} i={'1'} title={lang.LECTURES} icon={<VidsIcon2 size='1.5rem' />} />
                     <TabInfo count={lecturesCounts.files} i={'2'} title={lang.FILES} icon={<FilesIcon size={'1.5rem'} />} />
-                    <TabInfo count={lecturesCounts.exams} i={'3'} title={lang.EXAMS} icon={<ExamIcon size='1.5rem' />} />
+                    <TabInfo count={lecturesCounts.exams} i={'3'} title={lang.EXAMS} icon={<ExamIcon size='1.5rem' />} /> */}
+
                     <TabInfo count={getFullDate(course.createdAt)} i={'1'} title={'تاريخ انشاء الكورس'} icon={<MdDateRange size='1.3rem' />} isBold={false} />
                     {subscribedAt && (
                         <TabInfo count={getFullDate(subscribedAt)} i={'2'} title={'تاريخ الاشتراك بالكورس'} icon={<MdDateRange size='1.3rem' />} isBold={false} />
@@ -99,10 +84,12 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                         <TabInfo count={getFullDate(course.dateEnd)} i={2} title={"موعد نهايه الكورس"} icon={<RiFolderUnknowFill size='1.3rem' />} isBold={false} />
                     )}
                     {course.price === 0 && (
-                        <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ bgcolor: orange[800], backgroundImage: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
+                        <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ bgcolor: orange[800], backgroundImage: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white', m: 'auto' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
                     )}
 
                 </FlexBetween>
+
+
                 {!subscribedAt && (
                     <Box flex={1}>
 

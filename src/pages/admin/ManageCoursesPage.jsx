@@ -14,15 +14,17 @@ import AdminCourseDetails from '../../components/content/AdminCourseDetails'
 
 import ManageUnits from './ManageUnits'
 import ManageCourses from './ManageCourses'
+import { useSearchParams } from 'react-router-dom'
 
 
 function ManageCoursesPage() {
 
     //modals params
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [grade, setGrade] = useState(null)
-    const [activeUnit, setActiveUnit] = useState(null) // unit_id
-    const [activeCourse, setActiveCourse] = useState(null)
+    const [grade, setGrade] = useState(Number(searchParams.get('grade')) || 0)
+    const [activeUnit, setActiveUnit] = useState(searchParams.get('unit') || null) // unit_id
+    const [activeCourse, setActiveCourse] = useState(searchParams.get('course') || null)
     const [courses, setCourses] = useState([]) //just for delete in admin COurse details ___++___ select Courses
 
     const [counts, setCounts] = useState({})
@@ -42,17 +44,41 @@ function ManageCoursesPage() {
         trigger()
     }, [grade, activeCourse, activeUnit])
 
+    const changeGrade = (index) => {
+        setGrade(index)
+        setSearchParams({
+            grade: index
+        })
+        setActiveUnit('')
+        setActiveCourse('')
+    }
+
+    const changeUnit = (unit) => {
+        setActiveUnit(unit)
+        setSearchParams({
+            grade, unit
+        })
+        setActiveCourse(null)
+    }
+
+    const changeCourse = (course) => {
+        setActiveCourse(course)
+        setSearchParams({
+            grade, unit: activeUnit, course
+        })
+    }
+
     return (
         <Section>
             <Paper sx={{ p: '40px' }}>
 
-                <GradesTabs setGrade={setGrade} counts={counts} />
+                <GradesTabs setGrade={changeGrade} counts={counts} grade={grade} />
                 <FlexColumn>
                     {/* <BannerIcon title="manage Courses" icon="icon " /> */}
-                    <ManageUnits grade={grade} activeUnit={activeUnit} setActiveUnit={setActiveUnit} />
+                    <ManageUnits grade={grade} activeUnit={activeUnit} setActiveUnit={changeUnit} />
 
                     {(activeUnit) && (
-                        <ManageCourses courses={courses} setCourses={setCourses} grade={grade} activeUnit={activeUnit} activeCourse={activeCourse} setActiveCourse={setActiveCourse} />
+                        <ManageCourses courses={courses} setCourses={setCourses} grade={grade} activeUnit={activeUnit} activeCourse={activeCourse} setActiveCourse={changeCourse} />
                     )}
 
                     {(activeCourse && activeUnit) && (

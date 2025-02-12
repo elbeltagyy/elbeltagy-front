@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import { Alert, Avatar, Box, Button, Grid, Typography } from '@mui/material'
+import { Alert, Box, Button, Typography } from '@mui/material'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
-import Image from '../../components/ui/Image'
 import TabInfo from '../../components/ui/TabInfo'
-import { convertToMs, formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import usePostData from '../../hooks/usePostData'
@@ -16,7 +15,7 @@ import Separator from '../ui/Separator'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import DataWith3Items from '../ui/DataWith3Items'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import { user_roles } from '../../settings/constants/roles'
+import UserAvatar from '../users/UserAvatar'
 
 const exportObj = {
     grade: (row) => {
@@ -53,8 +52,7 @@ const exportObj = {
 function GetViewsCompo({ lectureId, courseId, role }) {
 
 
-    const [fileConfirm, setFileConfirm] = useState()
-    const [openFileModal, setOpenFileModal] = useState(false)
+
     const [viewsCount, setViewsCount] = useState('')
 
     const [getData, status] = useLazyGetViewsQuery()
@@ -68,7 +66,7 @@ function GetViewsCompo({ lectureId, courseId, role }) {
     }
 
     const [sendUpdate, updateStatus] = useUpdateViewMutation()
-    const [updateView] = usePostData(sendUpdate)
+    // const [updateView] = usePostData(sendUpdate)
 
     // const updateFc = async (data) => {
     //     await updateView({ id: data._id, currentIndex: data.currentIndex })
@@ -104,22 +102,7 @@ function GetViewsCompo({ lectureId, courseId, role }) {
             filterable: false,
             sortable: false,
             renderCell: (params) => {
-                return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.avatar?.url) {
-                            setFileConfirm(params.row?.avatar?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.avatar?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
-                )
+                return <UserAvatar user={params.row} />
             }
         },
         {
@@ -277,10 +260,6 @@ function GetViewsCompo({ lectureId, courseId, role }) {
                     }
                 }
             />
-            <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
-                <Image img={fileConfirm} />
-            </ModalStyled>
-
             <ModalStyled open={isShowEvents} setOpen={setShowEvents} >
                 <Section>
                     <TabInfo count={'عدد الاحداث ' + " " + events.length + " " + "حدث"} i={1} />

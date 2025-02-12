@@ -68,7 +68,8 @@ function ManageUnits({ grade, activeUnit, setActiveUnit }) {
                 </FlexRow>
 
                 <StyledBtn onClick={() => setUnitModal(true)} disabled={!grade}> {lang.CREATE_UNIT} </StyledBtn>
-                <SelectUnit grade={grade} activeUnit={activeUnit} setActiveUnit={setActiveUnit} reset={[grade]} units={units} setUnits={setUnits} />
+                <SelectUnit grade={grade} activeUnit={activeUnit} setActiveUnit={setActiveUnit} units={units} setUnits={setUnits} />
+                {/* reset={[grade]} */}
             </FlexBetween>
 
             <ModalStyled open={openUnitModal} setOpen={setUnitModal} >

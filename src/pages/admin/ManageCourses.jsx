@@ -15,7 +15,8 @@ function ManageCourses({ grade, activeUnit, activeCourse, setActiveCourse, cours
         <>
             <FlexBetween gap={'10px'} m={'20px 0'} >
                 <StyledBtn disabled={!activeUnit || !grade} onClick={() => setCourseModal(true)}> {lang.CREATE_COURSE}</StyledBtn>
-                <SelectCourse unit={activeUnit} setActiveCourse={setActiveCourse} activeCourse={activeCourse} reset={[activeUnit]} courses={courses} setCourses={setCourses} />
+                <SelectCourse unit={activeUnit} setActiveCourse={setActiveCourse} activeCourse={activeCourse}  courses={courses} setCourses={setCourses} />
+                {/* reset={[activeUnit]} */}
             </FlexBetween>
 
             <ModalStyled open={openCourseModal} setOpen={setCourseModal} >

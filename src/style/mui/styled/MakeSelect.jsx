@@ -9,13 +9,23 @@ function MakeSelect({ title, value, setValue, options, reset = [], disabled = fa
         }
     }, [...reset])
 
+    // Validate the value to ensure it exists in the options array
+    const isValidValue = options?.some(option => {
+        if (option.value) {
+            return option.value === value;
+        } else {
+            return option === value;
+        }
+    });
+    const selectValue = isValidValue ? value : "";
+
     return (
         <FormControl disabled={disabled} sx={{ maxWidth: '500px', minWidth: '250px' }}>
             <InputLabel id="demo-simple-select-label">{title}</InputLabel>
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={value || ""}
+                value={selectValue || ""}
                 label={title || "اختر"}
                 // defaultValue={""} // Sets the default value to empty string
                 onChange={(e, newValue) => { setValue(e.target.value) }}

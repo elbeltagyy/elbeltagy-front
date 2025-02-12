@@ -1,7 +1,7 @@
-import dayjs from "dayjs"
 import ms from "ms"
 
 export const DAYES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+export const DAYES_AR = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعه", "السبت"]
 
 export const dateOptions = {
     year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timeZone: 'Africa/Cairo',

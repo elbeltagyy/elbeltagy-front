@@ -2,9 +2,8 @@ import { useState } from 'react'
 import TabInfo from '../../components/ui/TabInfo'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button, Typography } from '@mui/material'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
-import Image from '../../components/ui/Image'
+import { Box, Typography } from '@mui/material'
+
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
 import Separator from '../../components/ui/Separator'
@@ -12,6 +11,7 @@ import { red } from '@mui/material/colors'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { user_roles } from '../../settings/constants/roles'
+import UserAvatar from '../users/UserAvatar'
 
 
 const exportObj = {
@@ -29,15 +29,14 @@ const exportObj = {
 
 
 function GetStudentsNotViewed({ grade, lectureId, lectureName }) {
-    const [fileConfirm, setFileConfirm] = useState()
-    const [openFileModal, setOpenFileModal] = useState(false)
+
     const [notViewedCount, setNotViewedCount] = useState('loading ...')
 
     const [getData, status] = useLazyGetUsersQuery()
     const [getNotViewedUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getNotViewedUsers({ ...params, lectures: `!=_split_${lectureId}`, grade }, false)
+        const res = await getNotViewedUsers({ ...params, lectures: `!=_split_${lectureId}`, grade }, false) // modify role
         const data = { values: res.users, count: res.count }
         setNotViewedCount(res.count)
         return data
@@ -51,22 +50,7 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName }) {
             filterable: false,
             sortable: false,
             renderCell: (params) => {
-                return (
-                    <Button sx={{ width: '100%' }} onClick={() => {
-                        if (params.row?.avatar?.url) {
-                            setFileConfirm(params.row?.avatar?.url)
-                            setOpenFileModal(true)
-                        }
-                    }}>
-                        <Avatar alt={params.row?.name?.toUpperCase() || 'E'} src={params.row?.avatar?.url || "#"}
-                            sx={{
-                                objectFit: 'contain',
-                                bgcolor: 'primary.main',
-                                fontWeight: 600,
-                                color: 'grey.0'
-                            }} />
-                    </Button>
-                )
+                return <UserAvatar user={params.row} />
             }
         },
         {
@@ -140,10 +124,6 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName }) {
                     }
                 }
             />
-
-            <ModalStyled open={openFileModal} setOpen={setOpenFileModal} >
-                <Image img={fileConfirm} />
-            </ModalStyled>
         </>
     )
 }
