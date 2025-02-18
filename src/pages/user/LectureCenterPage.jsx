@@ -1,21 +1,34 @@
-import React from 'react'
+
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetLectureAndCheckQuery } from '../../toolkit/apis/coursesApi';
+
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton';
 import LectureBody from '../../components/grades/LectureBody';
-import { useGetLectureForCenterQuery, useGetOneLectureQuery } from '../../toolkit/apis/lecturesApi';
+import { useLazyGetLectureForCenterQuery } from '../../toolkit/apis/lecturesApi';
 import Section from '../../style/mui/styled/Section';
 import { FlexColumn } from '../../style/mui/styled/Flexbox';
 import { FilledHoverBtn } from '../../style/buttonsStyles';
+import useLazyGetData from '../../hooks/useLazyGetData';
+import { useEffect, useState } from 'react';
 
 function LectureCenterPage() {
 
     const navigate = useNavigate()
     const params = useParams()
-    const { data: lecture } = useGetLectureForCenterQuery({
-        id: params.lectureId
-    })
-    
+    const [getData] = useLazyGetLectureForCenterQuery()
+    const [getLecture] = useLazyGetData(getData)
+
+    const [lecture, setLecture] = useState()
+    const trigger = async () => {
+        const res = await getLecture({ id: params.lectureId })
+        setLecture(res)
+    }
+
+    useEffect(() => {
+        if (!lecture) {
+            trigger()
+        }
+    }, [lecture])
+
     if (!lecture) return <LoaderSkeleton />
 
     return (

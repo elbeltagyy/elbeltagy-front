@@ -78,10 +78,10 @@ function GetViewsCompo({ lectureId, courseId, role }) {
         const modifiedRes = res.views.map((view) => {
             return {
                 ...view,
-                avatar: view.user.avatar, name: view.user.name, userName: view.user.userName, isActive: view.user.isActive, phone: view.user.phone, familyPhone: view.user.familyPhone, grade: view.user.grade,
+                avatar: view.user?.avatar, name: view.user?.name, userName: view.user?.userName, isActive: view.user?.isActive, phone: view.user?.phone, familyPhone: view.user?.familyPhone, grade: view.user?.grade,
                 courseId: view.course?._id,
                 courseName: view.course?.name || 'غير مشترك', price: view.course?.price,
-                lectureName: view.lecture.name,
+                lectureName: view.lecture?.name,
                 duration: view.video?.duration
             }
         })

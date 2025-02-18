@@ -13,6 +13,7 @@ import gradeConstants from '../../settings/constants/gradeConstants'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { Link } from 'react-router-dom'
 import UserAvatar from '../users/UserAvatar'
+import TitleWithDividers from '../ui/TitleWithDividers'
 
 const exportObj = {
     grade: (row) => {
@@ -40,7 +41,7 @@ const exportObj = {
 }
 
 
-function GetSubscriptions({ courseId = '' }) {
+function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
 
     // const { courseId } = useParams()
     const [subscriptionsCount, setSubscriptionsCount] = useState('loading ...')
@@ -64,6 +65,8 @@ function GetSubscriptions({ courseId = '' }) {
     }
 
     const fetchFc = async (params) => {
+        user ? params.user = user : ''
+
         const res = await getSubscriptions({ ...params, course: courseId, populate: 'user course' }, false)
         const modifiedRes = res.subscriptions.map((subscribe) => {
             return {
@@ -191,16 +194,21 @@ function GetSubscriptions({ courseId = '' }) {
             filterable: false,
             sortable: false,
             renderCell: (params) => {
-                return <Button disabled={courseId ? true : false} to={`${params.row?.courseId}`} component={Link}>
+                return <Button disabled={courseId ? true : false} to={`/statistics/courses/${params.row?.courseId}`} component={Link}>
                     احصائيات الكورس
                 </Button>
             }
-        },
+        }
     ]
 
+
+
     return (
-        <Section>
-            <TabInfo count={subscriptionsCount} title={'عدد الطلاب المشتركين'} i={1} />
+        <Box sx={{ width: '100%' }}>
+            {isShowTitle && (
+                <TitleWithDividers title={'الاشتراكات'} />
+            )}
+            <TabInfo count={subscriptionsCount} title={'عدد الاشتراكات'} i={1} />
             <MeDatagrid
                 type={'crud'}
                 exportObj={exportObj} exportTitle={'الاشتراكات'}
@@ -213,8 +221,7 @@ function GetSubscriptions({ courseId = '' }) {
                     }
                 }
             />
-
-        </Section>
+        </Box>
     )
 }
 

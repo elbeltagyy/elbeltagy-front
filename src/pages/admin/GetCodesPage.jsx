@@ -21,6 +21,15 @@ import Separator from '../../components/ui/Separator'
 import { FaCopy } from 'react-icons/fa'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getFullDate } from '../../settings/constants/dateConstants'
+import { codeConstants } from '../../settings/constants/codeConstants'
+import BtnModal from '../../components/ui/BtnModal'
+import { FaSchoolCircleCheck, FaSchoolCircleXmark } from 'react-icons/fa6'
+import { green } from '@mui/material/colors'
+import GetGroupLectures from '../../components/groups/GetGroupLectures'
+import GetGroupLecturesNot from '../../components/groups/GetGroupLecturesNot'
+import { useSearchParams } from 'react-router-dom'
+
+import { useGetOneLectureQuery } from '../../toolkit/apis/lecturesApi'
 
 
 
@@ -50,17 +59,24 @@ const exportObj = {
 
 function GetCodesPage() {
 
+    const [searchParams] = useSearchParams()
+    const lecture = searchParams.get('lecture')
+
     const [reset, setReset] = useState(false)
 
     const [getData, { isLoading: getLoading }] = useLazyGetCodesQuery()
     const [getCodes] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
+        if (lecture) {
+            params.lecture = lecture
+        }
         const res = await getCodes(params, false)
         const codes = { values: res.codes, count: res.count }
         return codes
     }
 
+    const { data } = useGetOneLectureQuery({ id: lecture, select: 'name' }, { skip: lecture ? false : true })
     //update
     const [updateData, { isLoading: updateLoading }] = useUpdateCodeMutation()
     const [updateCode] = usePostData(updateData)
@@ -111,9 +127,35 @@ function GetCodesPage() {
             field: 'type',
             headerName: 'نوع الكود',
             type: 'singleSelect',
-            width: 170
-        }
-        , {
+            width: 170,
+            valueOptions: [codeConstants.ACTIVATE, codeConstants.CENTER, codeConstants.WALLET, codeConstants.LECTURES]
+        }, {
+            field: 'lectures',
+            headerName: "المحاضرات",
+            width: 170,
+            disableExport: true,
+            sortable: false,
+            filterable: false,
+            renderCell: (params) => {
+                return params.row.type === codeConstants.LECTURES && <BtnModal btnName={'عرض المحاضرات'} icon={<FaSchoolCircleCheck size={'1.2rem'} color={green[500]} />}>
+                    <TitleWithDividers title={'عرض المحاضرات ' + params.row?.code} />
+                    <GetGroupLectures code={params.row} />
+                </BtnModal>
+            }
+        }, {
+            field: 'lectureNot',
+            headerName: 'محاضرات غير مضافه',
+            width: 150,
+            disableExport: true,
+            sortable: false,
+            filterable: false,
+            renderCell: (params) => {// code
+                return params.row.type === codeConstants.LECTURES && (<BtnModal btnName={' الغير مضافه'} color={'error'} icon={<FaSchoolCircleXmark size={'1.2rem'} />}>
+                    <TitleWithDividers title={' الغير مضافه ' + params.row.code} />
+                    <GetGroupLecturesNot code={params.row} />
+                </BtnModal>)
+            }
+        }, {
             field: 'usedBy',
             headerName: "المستخدمين",
             width: 170,
@@ -158,7 +200,7 @@ function GetCodesPage() {
     const [open, setOpen] = useState(false)
     return (
         <Section>
-            <TitleWithDividers title={'صفحه الاكواد'} />
+            <TitleWithDividers title={lecture ? 'محاضره: ' + data?.values?.name : 'صفحه الاكواد'} />
 
             <FlexColumn>
                 <FilledHoverBtn onClick={() => setOpen(true)}>انشاء كود</FilledHoverBtn>
@@ -179,7 +221,7 @@ function GetCodesPage() {
             />
 
             <ModalStyled open={open} setOpen={setOpen} >
-                <CreateCode setReset={setReset} />
+                <CreateCode setReset={setReset} lecture={data?.values?.name ? data?.values : false} />
             </ModalStyled>
 
             <ModalStyled open={openUsedBy} setOpen={setOpenUsedBy}>

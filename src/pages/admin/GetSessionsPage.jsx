@@ -135,7 +135,7 @@ function GetSessionsPage() {
             }
         }, {
             field: 'isLoggedOutAutomatic',
-            headerName: 'هل كان تسجيل الدخول تلقائي ؟',
+            headerName: 'هل كان تسجيل الخروج تلقائي ؟',
             width: 200,
             type: "boolean",
             disableExport: true,

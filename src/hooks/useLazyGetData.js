@@ -35,6 +35,7 @@ export default function useLazyGetData(getData) {
                     }
 
                     dispatch(setGlobalMsg({ message: result.error.data?.message || result.error.message || result.error.error, severity: "error" }))
+                    reject(result.error)
                     return;
                 }
 

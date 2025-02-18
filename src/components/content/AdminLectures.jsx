@@ -13,7 +13,7 @@ import { OutLinedHoverBtn } from '../../style/buttonsStyles'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import LectureCreate from './LectureCreate'
 
-function AdminLectures({ course, unit, grade, refetchLectures }) {
+function AdminLectures({ course, unit, grade, refetchLectures, setLecturesCount }) {
 
   const [open, setOpen] = useState(false)
   const [lectures, setLectures] = useState([])
@@ -25,6 +25,9 @@ function AdminLectures({ course, unit, grade, refetchLectures }) {
     const trigger = async () => {
       const res = await getLectures({ course }, false)
       setLectures(res.lectures)
+      if (setLecturesCount) {
+        setLecturesCount(res.lectures?.length || 'loading')
+      }
     }
     trigger()
   }, [course, refetchLectures])

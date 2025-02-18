@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardActions, CardContent, CardHeader, IconButton, Typography } from '@mui/material'
+import { Avatar, Card, CardActions, CardContent, CardHeader, IconButton, Typography } from '@mui/material'
 import { FlexBetween, FlexRow } from '../../style/mui/styled/Flexbox'
 import LectureUpdate from './LectureUpdate'
 import { FilledHoverBtn, OutLinedHoverBtn } from '../../style/buttonsStyles'
@@ -23,38 +23,41 @@ import Loader from '../../style/mui/loaders/Loader'
 import { Link as LinkMui } from '@mui/material'
 import { user_roles } from '../../settings/constants/roles'
 import { useState } from 'react'
+import InfoText from '../ui/InfoText'
+import AdminLinkLectureToGroup from './AdminLinkLectureToGroup'
 
 
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
   const [open, setOpen] = useState(false)
 
-  const isLectureLinked = lecture?.course?._id !== courseId
-  const [isCenter, setCenter] = useState(lecture.isCenter)
+  // const isLectureLinked = lecture?.course?._id !== courseId
 
   const [sendData, { isLoading }] = useUpdateLectureMutation()
   const [updateLecture] = usePostData(sendData)
 
   const navigate = useNavigate()
-  const changeIsCenter = async (value) => {
-    const res = await updateLecture({ id: lecture._id, isCenter: value }, true)
-    setCenter(res.isCenter)
-  }
 
-  const [isActive, setIsActive] = useState(lecture.isActive)
+  const changeStatus = async (object) => {
+    const res = await updateLecture({ id: lecture._id, ...object }, true)
 
-  const changeActivity = async (value) => {
-    const res = await updateLecture({ id: lecture._id, isActive: value }, true)
     setLectures((pre) => {
 
       const modified = pre.map(storedLec => {
         if (storedLec._id === res._id) {
-          storedLec = { ...storedLec, isActive: res.isActive }
+          storedLec = { ...storedLec }
+
+          for (const key of Object.keys(object)) {
+            // Update the corresponding key in `storedLec` with the value from `res`
+            if (res[key] !== undefined) {
+              storedLec[key] = res[key];
+            }
+          }
+
         }
         return storedLec
       })
       return modified
     })
-    setIsActive(res.isActive)
   }
 
   const [openDelete, setOpenDelete] = useState(false)
@@ -101,17 +104,23 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
         {(lecture?.course?._id === courseId) && (
           <>
-            <Box>
-              <SwitchStyled label={"الحاله"} checked={isActive} onChange={changeActivity} isLoading={isLoading} />
-            </Box>
+            <InfoText label={'الوصف'} description={lecture.description} />
 
-            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              {lecture.description}
-            </Typography>
+            <SwitchStyled label={"الحاله"} checked={lecture.isActive} onChange={(value) => changeStatus({ isActive: value })} isLoading={isLoading} />
+            <SwitchStyled label={"جعل المحاضره مجانيه"} checked={lecture.isFree} onChange={(val) => changeStatus({ isFree: val })} isLoading={isLoading} />
+
+            <div>
+              <LinkMui href={"/management/codes?lecture=" + lecture._id} underline="hover" mr={'auto'} onClick={(e) => {
+                e.preventDefault()
+                navigate("/management/codes?lecture=" + lecture._id)
+              }}>
+                اكواد المحاضره
+              </LinkMui>
+            </div>
 
             <Separator />
             <Typography sx={{ width: '100%', textAlign: 'center', textDecoration: 'underline' }} variant='subtitle2'>خاص بطلاب السنتر</Typography>
-            <SwitchStyled label={"تفعيله لطلاب السنتر"} checked={isCenter} onChange={changeIsCenter} isLoading={isLoading} />
+            <SwitchStyled label={"تفعيله لطلاب السنتر"} checked={lecture.isCenter} onChange={(val) => changeStatus({ isCenter: val })} isLoading={isLoading} />
 
             {lecture.sectionType === sectionConstants.EXAM && (
               <div>
@@ -134,6 +143,10 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
                 </LinkMui>
               </div>
             )}
+            <FlexRow sx={{ mt: '20px', justifyContent: 'center' }}>
+              <AdminLinkLectureToGroup lecture={lecture} setLectures={changeStatus} status={{ isLoading }} />
+            </FlexRow>
+
           </>
         )}
 
@@ -141,6 +154,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
       <CardActions sx={{ width: '100%' }} >
         <FlexBetween sx={{ width: '100%' }}>
+
           <FlexRow>
 
             {(lecture?.course?._id === courseId) && (
@@ -163,7 +177,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
           </FlexRow>
 
           {(lecture?.course?._id === courseId) && (
-            <IconButton disabled={status.isLoading || isLoading} onClick={() => setOpenDelete(true)} sx={{ bgcolor: 'red', '&:hover': { bgcolor: red[500], opacity: .8 } }}>
+            <IconButton disabled={status.isLoading || isLoading} onClick={() => setOpenDelete(true)} sx={{ bgcolor: 'error.main', '&:hover': { bgcolor: red[500], opacity: .8 } }}>
               {status.isLoading ? <Loader /> : <MdDelete color='#fff' />}
             </IconButton>
           )}

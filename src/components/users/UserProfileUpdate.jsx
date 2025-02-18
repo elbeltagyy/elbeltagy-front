@@ -43,7 +43,7 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
             name: "userName",
             label: lang.USERNAME,
             value: user.userName,
-            disabled: true,
+            disabled: !isAdmin && true,
             icon: <VerifiedUserIcon sx={{ color: green[500] }} />
         }, {
             name: "name",
@@ -66,7 +66,7 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
             width: { xs: '100%', md: '49%' },
             icon: <FaSquarePhoneFlip color={green[500]} />,
             validation: Yup.string().required(lang.REQUERIED).matches(/^[0-9]{11}$/, "يجب ان يكون 11 رقم"),
-            disabled: true
+            disabled: !isAdmin && true
         }, {
             name: "familyPhone",
             label: lang.FAMILY_PHONE,

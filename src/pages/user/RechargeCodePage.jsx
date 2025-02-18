@@ -32,8 +32,8 @@ function RechargeCodePage() {
             label: lang.CODE,
             icon: <CiBarcode color='green' />,
             validation: Yup.string()
-                .matches(/^(act|wal|cen)\d{1}-\d{4}-\d{4}-\d{4}$/, {
-                    message: 'Code must start with "act", "wal", or "cen", followed by a number, and be in the format wal0-0000-0000-0000',
+                .matches(/^(act|wal|cen|grp|lec)\d{1}-\d{4}-\d{4}-\d{4}$/, {
+                    message: 'Code must start with "act", "wal", "cen", "grp", or "lec", followed by a number, and be in the format wal0-0000-0000-0000',
                     excludeEmptyString: true,
                 })
                 .required('Code is required'),

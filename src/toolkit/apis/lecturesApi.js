@@ -21,6 +21,7 @@ const lecturesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        //Admin, SubAdmin
         getOneLecture: builder.query({
             query: (queries) => {
                 const params = queries
@@ -94,11 +95,29 @@ const lecturesApi = apiSlice.injectEndpoints({
                 body: data
             })
         }),
-
+        addToLectures: builder.mutation({
+            query: data => ({
+                url: '/content/lectures/array',
+                method: 'POST',
+                body: data
+            })
+        }),
+        removeFromLectures: builder.mutation({
+            query: data => ({
+                url: '/content/lectures/array',
+                method: 'DELETE',
+                body: data
+            })
+        }),
     })
 })
-export const { useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useGetLectureForCenterQuery, useLazyGetAllLecturesQuery,
+export const {
+    useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useLazyGetLectureForCenterQuery, useLazyGetAllLecturesQuery,
     useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
     useGetSecureVideoMutation
-    , useCreateExamMutation, useUpdateExamMutation, usePatchLectureMutation
+    , useCreateExamMutation, useUpdateExamMutation, usePatchLectureMutation,
+    useAddToLecturesMutation, useRemoveFromLecturesMutation
 } = lecturesApi
+
+// Get LectureForUser => center || group => isValid
+// Protect GetLectures

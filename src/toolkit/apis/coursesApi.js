@@ -18,7 +18,6 @@ const coursesApi = apiSlice.injectEndpoints({
                 return {
                     url: "/content/courses/" + params._id,
                     params
-
                 }
             }
         }),

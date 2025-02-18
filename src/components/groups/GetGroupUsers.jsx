@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Box, Button, Typography } from '@mui/material'
-import { useGridApiRef } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material'
+
 
 import { user_roles } from '../../settings/constants/roles'
 import governments from '../../settings/constants/governments'
@@ -10,19 +9,21 @@ import { lang } from '../../settings/constants/arlang'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 
 import Section from "../../style/mui/styled/Section"
-import ModalStyled from '../../style/mui/styled/ModalStyled'
 
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 
-import { useDeleteUserMutation, useLazyGetUsersQuery, useUpdateUserMutation } from '../../toolkit/apis/usersApi'
+import { useLazyGetUsersQuery, } from '../../toolkit/apis/usersApi'
 import usePostData from '../../hooks/usePostData'
 import useLazyGetData from '../../hooks/useLazyGetData'
 
-import CreateUser from '../../components/users/CreateUser'
 import TabInfo from '../../components/ui/TabInfo'
 import UserAvatar from '../../components/users/UserAvatar';
 import { useRemoveUserFromGroupMutation } from '../../toolkit/apis/groupsApi';
+import WrapperHandler from '../../tools/WrapperHandler'
+import { ErrorBtn } from '../../style/buttonsStyles'
+import Loader from '../../style/mui/loaders/Loader'
+import ModalStyled from '../../style/mui/styled/ModalStyled'
 // import CreateUser from '../../components/users/CreateUser'
 
 
@@ -47,13 +48,12 @@ const exportObj = {
 
 
 
-function GetGroupUsers({ setExcludedUsers, group }) {
-
-    const navigate = useNavigate()
-    const [open, setOpen] = useState(false)
+function GetGroupUsers({ group }) {
 
     //get users
     const [reset, setReset] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [chosenUsers, setChosenUsers] = useState([])
 
     const [getData, { isLoading }] = useLazyGetUsersQuery()
     const [getUsers] = useLazyGetData(getData)
@@ -160,11 +160,17 @@ function GetGroupUsers({ setExcludedUsers, group }) {
         },
     ]
 
-    const [deleteData, { isLoading: deleteLoader }] = useRemoveUserFromGroupMutation()
+    const [deleteData, removeStatus] = useRemoveUserFromGroupMutation()
     const [removeUserFromGroup] = usePostData(deleteData)
 
     const deleteFc = async (id) => {
-        await removeUserFromGroup({ _id: id, groupId: group._id })
+        await removeUserFromGroup({ users: [id], groupId: group._id })
+        setReset(!reset)
+    }
+
+    const deleteMany = async () => {
+        await removeUserFromGroup({ users: chosenUsers, groupId: group._id })
+        setChosenUsers([])
         setReset(!reset)
     }
 
@@ -173,11 +179,11 @@ function GetGroupUsers({ setExcludedUsers, group }) {
         <Section>
             <MeDatagrid
                 reset={[reset]}
-                setSelection={setExcludedUsers}
-                type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
+                setSelection={setChosenUsers}
+                type={'crud'} exportObj={exportObj} exportTitle={'اعضاء ' + group.name}
                 columns={columns}
                 fetchFc={fetchFc} deleteFc={deleteFc}
-                loading={isLoading || deleteLoader}
+                loading={isLoading || removeStatus.isLoading}
                 editing={
                     {
                         bgcolor: 'background.alt',
@@ -187,9 +193,14 @@ function GetGroupUsers({ setExcludedUsers, group }) {
                 }
             />
 
-            <ModalStyled open={open} setOpen={setOpen} >
-                <CreateUser setReset={setReset} />
-            </ModalStyled>
+            {chosenUsers.length > 0 && (
+                <WrapperHandler status={removeStatus} showSuccess={true}>
+                    <ErrorBtn onClick={() => setOpen(true)} disabled={removeStatus.isLoading}>
+                        {removeStatus.isLoading ? <Loader color={'#fff'} /> : 'ازاله المستخدمين'}
+                    </ErrorBtn>
+                    {open && <ModalStyled open={open} setOpen={setOpen} title={"هل انت متاكد من ازاله المستخدمين ؟"} action={deleteMany} />}
+                </WrapperHandler>
+            )}
         </Section>
     )
 }

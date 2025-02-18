@@ -34,6 +34,7 @@ function ManageCoursesPage() {
     const [getCoursesCountFc] = useLazyGetCoursesCountQuery()
     const [getCoursesCount] = useLazyGetData(getCoursesCountFc)
 
+    const [lecturesCount, setLecturesCount] = useState('loading...')
     useEffect(() => {
         const trigger = async () => {
             const allGrades = await getCoursesCount()
@@ -83,7 +84,11 @@ function ManageCoursesPage() {
 
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>
-                            <AdminCourseDetails setCourses={setCourses} setActiveCourse={setActiveCourse} courseId={activeCourse} setRefetchLectures={setRefetchLectures} />
+                            <AdminCourseDetails
+                                setCourses={setCourses}
+                                setActiveCourse={setActiveCourse}
+                                lecturesCount={lecturesCount}
+                                courseId={activeCourse} setRefetchLectures={setRefetchLectures} />
                         </Box>
                     )}
 
@@ -91,7 +96,7 @@ function ManageCoursesPage() {
 
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>
-                            <AdminLectures course={activeCourse} unit={activeUnit} grade={grade} refetchLectures={refetchLectures} />
+                            <AdminLectures setLecturesCount={setLecturesCount} course={activeCourse} unit={activeUnit} grade={grade} refetchLectures={refetchLectures} />
                         </Box>
                     )}
 

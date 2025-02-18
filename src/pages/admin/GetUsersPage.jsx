@@ -165,6 +165,8 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true }) {
             type: 'singleSelect',
             width: 200,
             editable: true,
+            sortable: false,
+            filterable: false,
             valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
             renderCell: (params) => {
                 const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]

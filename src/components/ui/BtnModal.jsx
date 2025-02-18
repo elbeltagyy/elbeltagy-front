@@ -1,27 +1,24 @@
 import { useState } from 'react'
 
 import ModalStyled from '../../style/mui/styled/ModalStyled'
-import TitleWithDividers from '../ui/TitleWithDividers'
-import GetGroupUsers from './GetGroupUsers'
 import { Box, Button } from '@mui/material'
 import Section from '../../style/mui/styled/Section'
 
-function GetGroupUsersBtn({ group }) {
+function BtnModal({ btnName, icon, children, color }) {
     const [open, setOpen] = useState(false)
     return (
         <Box>
-            <Button size='small' onClick={() => setOpen(true)}>
-                عرض المستخدمين
+            <Button endIcon={icon} size='small' onClick={() => setOpen(true)} color={color}>
+                {btnName}
             </Button>
 
             <ModalStyled open={open} setOpen={setOpen}>
                 <Section>
-                    <TitleWithDividers title={'الاعضاء فى جروب ' + group?.name} />
-                    <GetGroupUsers group={group} />
+                    {children}
                 </Section>
             </ModalStyled>
         </Box>
     )
 }
 
-export default GetGroupUsersBtn
+export default BtnModal

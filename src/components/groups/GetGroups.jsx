@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDeleteGroupMutation, useLazyGetGroupsQuery, useUpdateGroupMutation } from '../../toolkit/apis/groupsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import usePostData from '../../hooks/usePostData'
@@ -9,13 +8,26 @@ import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import gradeConstants from '../../settings/constants/gradeConstants'
 import { Box } from '@mui/material'
 import TabInfo from '../ui/TabInfo'
-import GetGroupUsersBtn from './GetGroupUsersBtn'
-import GetGroupNotUsersBtn from './GetGroupNotUsersBtn'
+
+
+import BtnModal from '../ui/BtnModal'
+import TitleWithDividers from '../ui/TitleWithDividers'
+import GetGroupUsers from './GetGroupUsers'
+import GetGroupNotUsers from './GetGroupNotUsers'
+import GetGroupLectures from './GetGroupLectures'
+import GetGroupLecturesNot from './GetGroupLecturesNot'
+
+import { FaSchoolCircleCheck } from "react-icons/fa6";
+import { green, red } from '@mui/material/colors'
+import { FaSchoolCircleXmark } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa";
+import { FaUserSlash } from "react-icons/fa";
+
 
 const exportObj = {
-    // grade: (row) => {
-    //     return gradeConstants.find(grade => grade.index === row.grade)?.name
-    // },
+    grade: (row) => {
+        return gradeConstants.find(grade => grade.index === row.grade)?.name
+    },
     isActive: (row) => {
         if (row.isActive) {
             return 'فعال'
@@ -66,7 +78,7 @@ function GetGroups({ reset }) {
     const columns = [
         {
             field: "name",
-            headerName: 'group name',
+            headerName: 'اسم المجموعه',
             width: 200,
             editable: true
         }, {
@@ -91,14 +103,40 @@ function GetGroups({ reset }) {
             headerName: 'الاعضاء',
             width: 150,
             renderCell: (params) => {
-                return <GetGroupUsersBtn group={params.row} />
+                return <BtnModal btnName={'عرض المستخدمين'} icon={<FaUsers size={'1.2rem'} />}>
+                    <TitleWithDividers title={'الاعضاء فى جروب ' + params.row?.name} />
+                    <GetGroupUsers group={params.row} />
+                </BtnModal>
             }
         }, {
             field: 'notUsers',
             headerName: 'الطلاب',
             width: 150,
             renderCell: (params) => {
-                return <GetGroupNotUsersBtn group={params.row} />
+                return <BtnModal btnName={'الغير مشتركين'} color='error' icon={<FaUserSlash size={'1.2rem'} />}>
+                    <TitleWithDividers title={'الاعضاء الغير مشتركين فى جروب ' + params.row?.name} />
+                    <GetGroupNotUsers group={params.row} />
+                </BtnModal>
+            }
+        }, {
+            field: 'lectures',
+            headerName: 'المحاضرات',
+            width: 150,
+            renderCell: (params) => {
+                return <BtnModal btnName={'عرض المحاضرات'} icon={<FaSchoolCircleCheck size={'1.2rem'} color={green[500]} />}>
+                    <TitleWithDividers title={'عرض المحاضرات ' + params.row?.name} />
+                    <GetGroupLectures group={params.row} />
+                </BtnModal>
+            }
+        }, {
+            field: 'lectureNot',
+            headerName: 'محاضرات غير مضافه',
+            width: 150,
+            renderCell: (params) => {
+                return <BtnModal btnName={' الغير مضافه'} color={'error'} icon={<FaSchoolCircleXmark size={'1.2rem'} />}>
+                    <TitleWithDividers title={' الغير مضافه ' + params.row?.name} />
+                    <GetGroupLecturesNot group={params.row} />
+                </BtnModal>
             }
         }, {
             field: 'updatedAt',

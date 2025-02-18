@@ -6,6 +6,7 @@ import gradeConstants from '../../settings/constants/gradeConstants'
 
 import Grid from '../../style/vanilla/Grid'
 import DataWith3Items from './DataWith3Items'
+import { RiGovernmentFill } from "react-icons/ri";
 
 import { FaSquarePhoneFlip } from 'react-icons/fa6'
 import { PiPhoneDisconnectFill } from 'react-icons/pi'
@@ -16,13 +17,13 @@ import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import RowInfo from './RowInfo'
 import { FaWallet } from 'react-icons/fa'
 import { HashLink } from 'react-router-hash-link';
+import governments from '../../settings/constants/governments'
 
 // eslint-disable-next-line react/prop-types
 export default function UserHeader({ children, user, flexDirection = 'row', variant, isAll = false }) {
 
     const theme = useTheme()
     const isMobileScreen = useMediaQuery('(max-width:600px)');
-
     return (
         <Box sx={{
             display: 'flex',
@@ -44,7 +45,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                     }}
                     variant={variant || 'square'} />
                 {(!user?.avatar?.url && !isAll) && (
-                    <HashLink to={'/user/profile#edit'} smooth style={{color: theme.palette.primary.main}}>
+                    <HashLink to={'/user/profile#edit'} smooth style={{ color: theme.palette.primary.main }}>
                         <Typography color={'primary.main'} sx={{ cursor: 'pointer' }}>هل تريد ايضافه صوره شخصيه ؟</Typography>
                     </HashLink>
                 )}
@@ -64,6 +65,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                             <DataWith3Items title={lang.EMAIL} icon={<MdMarkEmailRead size={'2rem'} />} desc={user?.email} />
                             <DataWith3Items title={lang.PHONE} icon={<FaSquarePhoneFlip size={'2rem'} />} desc={user?.phone} />
                             <DataWith3Items title={lang.FAMILY_PHONE} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.familyPhone} />
+                            <DataWith3Items title={lang.GOVERNMENT} icon={<RiGovernmentFill size={'2rem'} />} desc={governments.find(g => Number(g.id)=== user?.government)?.governorate_name_ar} />
                             <DataWith3Items title={'عدد الاجهزه المسجله'} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.devicesRegistered.length} />
                             {(user.role === user_roles.STUDENT || user.role === user_roles.ONLINE) && (
                                 <FlexColumn sx={{ width: '100%' }}>

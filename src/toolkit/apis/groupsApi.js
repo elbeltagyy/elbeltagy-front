@@ -56,10 +56,29 @@ const groupsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        addLectureToGroup: builder.mutation({
+            query: (data) => {
+                return {
+                    url: '/groups/' + data.groupId + '/lectures',
+                    method: 'POST',
+                    body: data
+                }
+            }
+        }),
+        removeLectureFromGroup: builder.mutation({
+            query: (data) => {
+                return {
+                    url: '/groups/' + data.groupId + '/lectures',
+                    method: 'DELETE',
+                    body: data
+                }
+            }
+        }),
     })
 })
 
 export const {
     useLazyGetGroupsQuery, useCreateGroupMutation, useUpdateGroupMutation, useDeleteGroupMutation,
-    useAddUserToGroupMutation, useRemoveUserFromGroupMutation
+    useAddUserToGroupMutation, useRemoveUserFromGroupMutation,
+    useAddLectureToGroupMutation, useRemoveLectureFromGroupMutation,
 } = groupsApi

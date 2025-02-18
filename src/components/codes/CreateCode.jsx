@@ -1,11 +1,9 @@
-import React, { memo, useState } from 'react'
+import { memo, useState } from 'react'
 import MakeSelect from '../../style/mui/styled/MakeSelect'
-import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { codeConstants } from '../../settings/constants/codeConstants'
 import Section from '../../style/mui/styled/Section'
 import MakeForm from '../../tools/makeform/MakeForm'
 import { Alert, Button, Typography } from '@mui/material'
-import gradeConstants from '../../settings/constants/gradeConstants'
 import { useCreateCodeMutation } from '../../toolkit/apis/codesApi'
 
 import usePostData from '../../hooks/usePostData'
@@ -14,7 +12,7 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import * as Yup from 'yup'
 import { lang } from '../../settings/constants/arlang'
 
-function CreateCode({ setReset }) {
+function CreateCode({ setReset, lecture = false }) {
 
 
     const [sendData, status] = useCreateCodeMutation()
@@ -95,6 +93,28 @@ function CreateCode({ setReset }) {
         },
     ]
 
+    const lectureInputs = [
+        {
+            name: 'lecture',
+            value: lecture,
+            disabled: true,
+            hidden: true
+        }, {
+            name: 'type',
+            label: 'نوع الكود',
+            type: 'select',
+            options: [codeConstants.LECTURES],
+            validation: Yup.string().required(lang.REQUERIED)
+        }, {
+            name: 'numbers',
+            label: 'العدد المسموح به للاستخدام',
+            type: 'number',
+            value: 1,
+            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
+        },
+    ]
+
+
     const onSubmit = async (values, props) => {
         await createCode(values)
         if (setReset) {
@@ -105,9 +125,11 @@ function CreateCode({ setReset }) {
 
     return (
         <Section>
-            <Typography variant='h6' textAlign={'center'} borderBottom={'4px solid'} my={'16px'}>انشاء كود</Typography>
+            <Typography variant='h6' textAlign={'center'} borderBottom={'4px solid'} my={'16px'}>انشاء كود {lecture?.name ? 'للمحاضره' + ' ' + lecture.name : ''}</Typography>
             <MakeSelect title={'اختر كود'} value={type} setValue={setType}
-                options={[codeConstants.ACTIVATE, codeConstants.CENTER, codeConstants.WALLET]}
+                options={[codeConstants.ACTIVATE, codeConstants.CENTER, codeConstants.WALLET, codeConstants.LECTURES]}
+                disableValue={lecture?.name && [codeConstants.ACTIVATE, codeConstants.CENTER, codeConstants.WALLET]}
+
             />
 
             {type === codeConstants.ACTIVATE ?
@@ -116,9 +138,12 @@ function CreateCode({ setReset }) {
                 type === codeConstants.CENTER ?
                     <MakeForm status={status}
                         onSubmit={onSubmit} inputs={centerInputs} /> :
-                    type === codeConstants.WALLET &&
-                    <MakeForm status={status}
-                        onSubmit={onSubmit} inputs={walletInputs} />}
+                    type === codeConstants.LECTURES ?
+                        <MakeForm status={status}
+                            onSubmit={onSubmit} inputs={lectureInputs} /> :
+                        type === codeConstants.WALLET &&
+                        <MakeForm status={status}
+                            onSubmit={onSubmit} inputs={walletInputs} />}
 
             {status?.data?.values && (
                 <Alert severity='success' variant='filled' >

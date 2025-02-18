@@ -47,7 +47,7 @@ export const routes = [
             }, {
                 path: '/grades', children: gradesRoutes
             }, {
-                path: '/lectures/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.STUDENT]}>
+                path: '/lectures/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.STUDENT, user_roles.ONLINE]}>
                     <LectureCenterPage />
                 </ProtectedRoute>
             }, {
@@ -74,7 +74,7 @@ export const routes = [
                 path: '/management/reports', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
                     <ReportsPage />
                 </ProtectedRoute>
-            },{
+            }, {
                 path: '/management/groups', children: groupsRoutes,
             }, {
                 path: '/login', element: <LoginPage />

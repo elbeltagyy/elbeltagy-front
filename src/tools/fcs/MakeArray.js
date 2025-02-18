@@ -37,3 +37,9 @@ export const filterArrWithValue = (arr, { key, value }, isOne) => {
         return filtered
     }
 }
+
+export const convertObjToArray = (obj = {}) => {
+    const arrayOfKeys = Object.keys(obj);
+    const arrayOfValues = Object.values(obj);
+    return [arrayOfValues, arrayOfKeys]
+}

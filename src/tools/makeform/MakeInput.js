@@ -48,7 +48,7 @@ export default function MakeInput({ input, props, nestedInputName, style }) {
         if (input.player === 'google') {
             file.url = getGoogleDrivePreviewLink(value)
         }
-        
+
         return <FlexColumn gap={'22px'} sx={{ alignItems: "flex-start" }}>
             <MakeField input={input} inputName={inputName} props={props} />
             {value && (

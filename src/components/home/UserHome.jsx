@@ -12,10 +12,11 @@ import Grid from '../../style/vanilla/Grid'
 import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
 import Separator from '../../components/ui/Separator'
 import { lang } from '../../settings/constants/arlang'
-import CenterLectures from './CenterLectures'
+
 import { user_roles } from '../../settings/constants/roles'
 import { useLazyIsLoggedQuery } from '../../toolkit/apis/usersApi'
 import { setUser } from '../../toolkit/globalSlice'
+import UserLectures from './UserLectures'
 
 function UserHome() {
 
@@ -48,7 +49,7 @@ function UserHome() {
             }
             const { data } = await getUserData()
             const userData = data?.values
-            
+
             dispatch(setUser({ ...user, ...userData }))
         }
         checkIslogged()
@@ -61,29 +62,34 @@ function UserHome() {
             </Typography>
             <Separator />
             <UserHeader user={user} flexDirection={'row'} variant={'circle'} />
-            {(user.role !== user_roles.ADMIN || user.role !== user_roles.SUBADMIN) && (
-                <>
-                    <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
-                    <AccordionStyled title={lang.COURSES} bgcolor="background.alt" expanded={openUserCourses} setExpanded={setOpenCourses}>
-                        {status.isLoading && (
-                            <LoaderWithText />
-                        )}
-                        {courses?.length === 0 && status.isSuccess && (
-                            <Alert variant='filled' severity='warning'> انت لم تشترك فى اى كورس بعد...!</Alert>
-                        )}
-                        <Grid>
-                            {courses && courses?.map(({ course, createdAt, updatedAt, currentIndex }, i) => <UnitCourseDetails key={i}
-                                course={course}
-                                subscribedAt={createdAt}
-                                lastLectureAt={updatedAt}
-                                currentIndex={currentIndex}
-                            />)}
-                        </Grid>
-                    </AccordionStyled>
-                </>
-            )}
+            <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
+            <AccordionStyled title={'كورساتك'} bgcolor="background.alt" expanded={openUserCourses} setExpanded={setOpenCourses}>
+                {status.isLoading && (
+                    <LoaderWithText />
+                )}
+                {courses?.length === 0 && status.isSuccess && (
+                    <Alert variant='filled' severity='warning'> انت لم تشترك فى اى كورس بعد...!</Alert>
+                )}
+                <Grid>
+                    {courses && courses?.map(({ course, createdAt, updatedAt, currentIndex }, i) => <UnitCourseDetails key={i}
+                        course={course}
+                        subscribedAt={createdAt}
+                        lastLectureAt={updatedAt}
+                        currentIndex={currentIndex}
+                    />)}
+                </Grid>
+            </AccordionStyled>
+
+            <UserLectures query={{ codes: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها)'} />
+
             {user.role === user_roles.STUDENT && (
-                <CenterLectures user={user} />
+                <UserLectures query={{ isCenter: true }} accordionTitle='محاضرات السنتر' />
+            )}
+
+            <UserLectures query={{ isFree: true }} accordionTitle='محاضرات مجانيه' />
+
+            {user.groups?.length > 0 && (
+                <UserLectures query={{ isGroups: true }} accordionTitle='محاضرات مجموعاتك' />
             )}
         </Section>
     )

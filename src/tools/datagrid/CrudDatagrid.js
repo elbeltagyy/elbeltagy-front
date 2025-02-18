@@ -219,14 +219,22 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                     ...pre, isLoading: true
                 }
             })
+            try {
 
-            const res = await fetchFc(
-                { ...sort, ...filter, limit: paginationModel.pageSize, page: paginationModel.page + 1 }
-            )
+                const res = await fetchFc(
+                    { ...sort, ...filter, limit: paginationModel.pageSize, page: paginationModel.page + 1 }
+                )
 
-            //res = {values, count}
-            setRows(res.values)
-            setPageState(pre => { return { isLoading: false, rowCount: res.count } })
+                //res = {values, count}
+                setRows(res.values)
+                setPageState(pre => { return { isLoading: false, rowCount: res.count } })
+            } catch (error) {
+                setPageState(pre => {
+                    return {
+                        ...pre, isLoading: false
+                    }
+                })
+            }
         }
 
         triggerFetch()
@@ -346,7 +354,6 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                 keepNonExistentRowsSelected
 
                 onRowSelectionModelChange={(newRowSelectionModel) => {
-                    console.log(newRowSelectionModel);
                     if (setSelection) {
                         setSelection(newRowSelectionModel)
                     }

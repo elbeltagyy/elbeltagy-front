@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Box, Button, Typography } from '@mui/material'
-import { useGridApiRef } from '@mui/x-data-grid'
-import { useNavigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material'
+
 
 import { user_roles } from '../../settings/constants/roles'
 import governments from '../../settings/constants/governments'
@@ -19,10 +18,12 @@ import { useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
 import usePostData from '../../hooks/usePostData'
 import useLazyGetData from '../../hooks/useLazyGetData'
 
-import CreateUser from '../users/CreateUser'
 import TabInfo from '../ui/TabInfo'
 import UserAvatar from '../users/UserAvatar';
-import { useAddUserToGroupMutation, useRemoveUserFromGroupMutation } from '../../toolkit/apis/groupsApi';
+import { useAddUserToGroupMutation } from '../../toolkit/apis/groupsApi';
+import WrapperHandler from '../../tools/WrapperHandler';
+import { FilledHoverBtn } from '../../style/buttonsStyles';
+import Loader from '../../style/mui/loaders/Loader';
 // import CreateUser from '../../components/users/CreateUser'
 
 
@@ -47,9 +48,10 @@ const exportObj = {
 
 
 
-function GetGroupNotUsers({ setExcludedUsers, group }) {
+function GetGroupNotUsers({ group }) {
 
     const [open, setOpen] = useState(false)
+    const [chosenUsers, setChosenUsers] = useState([])
 
     //get users
     const [reset, setReset] = useState(false)
@@ -160,10 +162,17 @@ function GetGroupNotUsers({ setExcludedUsers, group }) {
     ]
 
     //removing subscription
-    const [sendData, { addIsLoading }] = useAddUserToGroupMutation()
+    const [sendData, addStatus] = useAddUserToGroupMutation()
     const [addUserToGroup] = usePostData(sendData)
+
     const addUser = async (user) => {
-        await addUserToGroup({ ...user, groupId: group._id })
+        await addUserToGroup({ users: [user._id], groupId: group._id })
+        setReset(!reset)
+    }
+
+    const addManyUsers = async () => {
+        await addUserToGroup({ users: chosenUsers, groupId: group._id })
+        setChosenUsers([])
         setReset(!reset)
     }
 
@@ -172,11 +181,11 @@ function GetGroupNotUsers({ setExcludedUsers, group }) {
         <Section>
             <MeDatagrid
                 reset={[reset]}
-                setSelection={setExcludedUsers}
+                setSelection={setChosenUsers}
                 type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
                 columns={columns}
                 fetchFc={fetchFc} viewFc={addUser}
-                loading={isLoading || addIsLoading}
+                loading={isLoading || addStatus.isLoading}
                 editing={
                     {
                         bgcolor: 'background.alt',
@@ -186,9 +195,14 @@ function GetGroupNotUsers({ setExcludedUsers, group }) {
                 }
             />
 
-            <ModalStyled open={open} setOpen={setOpen} >
-                <CreateUser setReset={setReset} />
-            </ModalStyled>
+            {chosenUsers.length > 0 && (
+                <WrapperHandler status={addStatus} showSuccess={true}>
+                    <FilledHoverBtn onClick={() => setOpen(true)} disabled={addStatus.isLoading}>
+                        {addStatus.isLoading ? <Loader color={'#fff'} /> : 'ايضافه المستخدمين'}
+                    </FilledHoverBtn>
+                    {open && <ModalStyled open={open} setOpen={setOpen} title={"هل انت متاكد من ايضافه المستخدمين ؟"} action={addManyUsers} />}
+                </WrapperHandler>
+            )}
         </Section>
     )
 }
