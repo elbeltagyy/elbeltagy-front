@@ -98,7 +98,6 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
                 return sessionId
             }
         }
-        console.log(statisticsId())
         //each event => name, date
 
         // let StartEventTime = 0

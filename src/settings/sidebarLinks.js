@@ -17,6 +17,8 @@ import { SiHashicorp } from "react-icons/si";
 import { FcPrivacy } from "react-icons/fc";
 import { RiEditCircleFill } from "react-icons/ri";
 import { MdWatchLater } from "react-icons/md";
+import { MdGroups } from "react-icons/md";
+import { TbReportSearch } from "react-icons/tb";
 
 export const sidebarLinks = [
     {
@@ -58,13 +60,13 @@ export const sidebarLinks = [
     }, {
         name: "انشاء كود", icon: <SiHashicorp size="22px" />, to: "/management/codes/create", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "إدارة المجموعات", icon: <RiEditCircleFill size="22px" />, to: "/management/groups", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isNew: true
+        name: "إدارة المجموعات", icon: <MdGroups size="22px" />, to: "/management/groups", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isNew: true
     }, {
         name: "إدارة سياسات الموقع", icon: <RiEditCircleFill size="22px" />, to: "/management/privacy", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "تقارير الطلاب", icon: <RiEditCircleFill size="22px" />, to: "/management/reports", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isNew: true
+        name: "تقارير الطلاب", icon: <TbReportSearch size="22px" />, to: "/management/reports", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isNew: true
     }, {
-        name: "وسايل الدفع", icon: <SignupIcon size="22px" />, to: "/management/payments", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isNew: true
+        name: "الدفع", icon: <SignupIcon size="22px" />, to: "/management/payments", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isNew: true, isDisabled: true
     },
 ]
 // {

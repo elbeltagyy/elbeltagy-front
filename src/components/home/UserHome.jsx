@@ -79,8 +79,9 @@ function UserHome() {
                     />)}
                 </Grid>
             </AccordionStyled>
-
-            <UserLectures query={{ codes: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها)'} />
+            {user.role === user_roles.STUDENT || user.role === user_roles.ONLINE && (
+                <UserLectures query={{ codes: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها)'} />
+            )}
 
             {user.role === user_roles.STUDENT && (
                 <UserLectures query={{ isCenter: true }} accordionTitle='محاضرات السنتر' />

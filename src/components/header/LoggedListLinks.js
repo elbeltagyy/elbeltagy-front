@@ -39,7 +39,7 @@ function LoggedListLinks({ user, setSidebar }) {
                     return (
                         <ListItem key={i} sx={{ p: "0 10px" }}>
                             <ListItemButton
-                                disabled={link.disabled}
+                                disabled={link.isDisabled}
                                 component={Link}
                                 to={link.to}
                                 onClick={(e) => {
@@ -87,7 +87,7 @@ function LoggedListLinks({ user, setSidebar }) {
 
                                 {(link.isNew && activeLink !== link.to) && <TabInfo sx={{
                                     m: 'auto'
-                                }} count={'new'} i={3} />}
+                                }} count={'new'} i={1} />}
 
                             </ListItemButton>
                         </ListItem>

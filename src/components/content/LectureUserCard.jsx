@@ -1,8 +1,8 @@
 import { alpha, Avatar, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material'
-import { red } from '@mui/material/colors'
+import { green, red } from '@mui/material/colors'
 
 import TabInfo from '../ui/TabInfo'
-import { FilledHoverBtn } from '../../style/buttonsStyles'
+import { FilledHoverBtn, ScallyBtn } from '../../style/buttonsStyles'
 
 import { FaClock } from "react-icons/fa";
 import { MdDateRange } from 'react-icons/md'
@@ -12,8 +12,9 @@ import { IoMdDoneAll } from "react-icons/io";
 import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SectionIcon from './SectionIcon'
+import { IoTimerSharp } from "react-icons/io5";
 
 function LectureUserCard({ lecture, isSubscribed, currentIndex, lectureIndex }) {
     const navigate = useNavigate()
@@ -80,12 +81,20 @@ function LectureUserCard({ lecture, isSubscribed, currentIndex, lectureIndex }) 
             {(!isSubscribed || lecture?.locked) && (
                 <Box sx={{ width: '100%', height: '100%', bgcolor: alpha('#000', .6), position: 'absolute', top: 0, }}>
                     <FlexColumn height={'100%'} gap={'10px'}>
-                        <Avatar sx={{ width: '4rem', height: '4rem', bgcolor: red[500], color: 'grey.0' }}>
-                            <FaLock size={'2rem'} />
+                        <Avatar sx={{ width: '4rem', height: '4rem', bgcolor: !lecture.locked && lecture.isFree ? green[500] : red[500], color: 'grey.0' }}>
+                            {!lecture.locked && lecture.isFree ? <IoTimerSharp size={'2rem'} /> : <FaLock size={'2rem'} />}
+
                         </Avatar>
-                        <Typography variant='subtitle1' sx={{ color: 'grey.1000', bgcolor: 'grey.0', p: '8px 12px', borderRadius: '12px' }}>
-                            {lecture.locked ? 'عليك اكمال المحاضرات السابقه' : 'اشترك الان'}
-                        </Typography>
+                        <FlexColumn sx={{ color: 'grey.1000', bgcolor: 'grey.0', p: '8px 12px', borderRadius: '12px', minWidth: '150px' }}>
+                            {!lecture.locked && lecture.isFree && (
+                                <Typography>
+                                    محاضره مجانيه
+                                </Typography>
+                            )}
+                            <Typography variant='subtitle1'>
+                                {lecture.locked ? 'عليك اكمال المحاضرات السابقه' : lecture.isFree ? <ScallyBtn component={Link} to={'/lectures/' + lecture._id} sx={{ minWidth: '100px' }} >معاينه</ScallyBtn> : 'اشترك الان'}
+                            </Typography>
+                        </FlexColumn>
                     </FlexColumn>
                 </Box>
             )}

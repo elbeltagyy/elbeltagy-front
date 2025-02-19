@@ -156,7 +156,7 @@ function GetViewsCompo({ lectureId, courseId, role }) {
             headerName: 'عرض الاحداث',
             renderCell: (params) => {
                 return <Button onClick={() => {
-                    setEvents(params.row.mainEvents)
+                    setEvents(params.row.mainEvents || [])
                     setUserInEvent({
                         userName: params.row.userName,
                         name: params.row.name,
@@ -295,7 +295,7 @@ function GetViewsCompo({ lectureId, courseId, role }) {
                             })}
                         </FlexColumn>
                     ) : (
-                        <Alert variant='filled' severity='warning'>لم يتم استخدامه حتى الان !</Alert>
+                        <Alert variant='filled' severity='warning'>لم يتم المشاهده حتى الان !</Alert>
                     )}
                 </Section>
             </ModalStyled>
