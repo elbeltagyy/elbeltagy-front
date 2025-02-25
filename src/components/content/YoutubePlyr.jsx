@@ -3,6 +3,7 @@ import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
 import { useTheme } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+import YoutubeAdd from './YoutubeAdd';
 
 const options = {
     controls: [
@@ -10,18 +11,19 @@ const options = {
         'play-large',
         'play',
         'fast-forward', // Adds a forward 10 seconds button
-        'progress',
-        'current-time',
-        'mute',
-        'volume',
-        'settings',
+        // 'progress',
+        // 'current-time',
+        // 'mute',
+        // 'volume',
+        // 'settings',
         'fullscreen'
     ],
     // controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
     settings: ['captions', 'quality', 'speed', 'loop'],
     tooltips: { controls: true },
-
+    youtube: { controls: 1, fs: 0, rel: 0, noCookie: false, showinfo: 0, iv_load_policy: 3, modestbranding: 1 }
 }
+
 const createElement = (user = null) => {
     // Select target element
     const target = document.querySelector('.plyr');
@@ -147,6 +149,9 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
 
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
+        {vid && (
+            <YoutubeAdd />
+        )}
     </div>
 }
 

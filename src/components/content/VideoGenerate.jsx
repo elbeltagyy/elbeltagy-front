@@ -5,9 +5,6 @@ import { useTheme } from '@mui/material'
 import filePlayers from '../../settings/constants/filePlayers'
 import { useVideoOnMutation } from '../../toolkit/apis/videosStatisticsApi'
 import usePostData from '../../hooks/usePostData'
-// import YouTubePlayer from './YoutubeQuality'
-
-
 
 function VideoGenerate({ video, lecture, course }) {
     //youtube => button , iframe || bunny => iframe || server => iframe
@@ -26,6 +23,7 @@ function VideoGenerate({ video, lecture, course }) {
     return (
         <>
             {video.player === filePlayers.YOUTUBE ? (
+                // <YouTubePlayer url={video.url} />
                 <YoutubePlyr url={video.url} videoId={video._id} course={course} lecture={lecture._id} sendStatistics={trigger} />
             ) : video.player === filePlayers.BUNNY || video.player === filePlayers.BUNNY_UPLOAD ? (
                 <div style={{ margin: 'auto', paddingBottom: '56.25%', position: 'relative' }}>
