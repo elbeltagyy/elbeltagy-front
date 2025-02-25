@@ -21,7 +21,7 @@ const options = {
     // controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
     settings: ['captions', 'quality', 'speed', 'loop'],
     tooltips: { controls: true },
-    youtube: { controls: 1, fs: 0, rel: 0, noCookie: false, showinfo: 0, iv_load_policy: 3, modestbranding: 1 }
+    youtube: { controls: 1, fs: 0, rel: 0, noCookie: false, showinfo: 0, iv_load_policy: 3, modestbranding: 1, hl: 'ar' }
 }
 
 const createElement = (user = null) => {
