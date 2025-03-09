@@ -28,7 +28,7 @@ const exportObj = {
 }
 
 
-function GetStudentsNotViewed({ grade, lectureId, lectureName }) {
+function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
 
     const [notViewedCount, setNotViewedCount] = useState('loading ...')
 
@@ -36,7 +36,7 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName }) {
     const [getNotViewedUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getNotViewedUsers({ ...params, lectures: `!=_split_${lectureId}`, grade }, false) // modify role
+        const res = await getNotViewedUsers({ ...params, lectures: `!=_split_${lectureId}`, grade, courses: course, role }, false) // modify role
         const data = { values: res.users, count: res.count }
         setNotViewedCount(res.count)
         return data
@@ -110,7 +110,7 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName }) {
 
     return (
         <>
-            <TabInfo count={notViewedCount} title={' عدد الطلاب الذين لم يشاهدوا المحاضره' + " : " + lectureName} i={3} />
+            <TabInfo count={notViewedCount} title={' عدد الطلاب الذين لم يشاهدوا المحاضره' + (role === user_roles.STUDENT ? ' ' + 'من طلاب السنتر فقط' + ' ' : ' فى الكورس فقط ') + " : " + lectureName} i={3} />
             <Separator sx={{ width: '200px' }} color={red[500]} />
             <MeDatagrid
                 type={'crud'}

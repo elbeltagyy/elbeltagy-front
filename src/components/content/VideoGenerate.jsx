@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import YoutubePlyr from './YoutubePlyr'
 import { useTheme } from '@mui/material'
 // import VideoPlyr from './VideoPlyr'
@@ -14,17 +14,21 @@ function VideoGenerate({ video, lecture, course }) {
     const [sendData, status] = useVideoOnMutation()
     const [sendStatistics] = usePostData(sendData)
 
+    const [isForbidden, setForbidden] = useState(false)
+
     const trigger = useCallback(async (values) => {
         const cloned = { ...values }
         // console.log('cloned ==>', cloned)
         await sendStatistics(cloned)
     }, []);
 
+    if(isForbidden) return <></>
+
     return (
         <>
             {video.player === filePlayers.YOUTUBE ? (
                 // <YouTubePlayer url={video.url} />
-                <YoutubePlyr url={video.url} videoId={video._id} course={course} lecture={lecture._id} sendStatistics={trigger} />
+                <YoutubePlyr setForbidden={setForbidden} url={video.url} videoId={video._id} course={course} lecture={lecture._id} sendStatistics={trigger} />
             ) : video.player === filePlayers.BUNNY || video.player === filePlayers.BUNNY_UPLOAD ? (
                 <div style={{ margin: 'auto', paddingBottom: '56.25%', position: 'relative' }}>
                     <iframe

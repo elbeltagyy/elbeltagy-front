@@ -74,7 +74,15 @@ function GetViewsCompo({ lectureId, courseId, role }) {
     // }
 
     const fetchFc = async (params) => {
-        const res = await getViews({ ...params, course: courseId, lecture: lectureId, role, populate: 'user course lecture video' }, false)
+        params = {
+            ...params,
+            lecture: lectureId, view_role: role, populate: 'user course lecture video'
+        }
+        if (courseId) {
+            params.course = courseId
+        }
+
+        const res = await getViews(params, false)
         const modifiedRes = res.views.map((view) => {
             return {
                 ...view,

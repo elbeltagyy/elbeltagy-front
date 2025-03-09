@@ -41,15 +41,18 @@ function GetViewsPage() {
 
   return (
     <Section>
-      {<TitleWithDividers
+
+      <TitleWithDividers
         title={
+          lectureId && 'اسم المحاضره : ' + lectureData?.values?.name
+        }
+        desc={
           (courseId && courseType === courseId) ?
             'اسم الكورس : ' + data?.values?.name :
             courseType !== courseId ?
-              'احصائيات المحاضره' + (isCenterRole ? ' لطلاب السنتر' : '') : 'احصائيات المنصه فى المشاهدات'
-        }
-        desc={lectureId && 'اسم المحاضره : ' + lectureData?.values?.name}
-      />}
+              'احصائيات المحاضره' + (isCenterRole ? ' لطلاب السنتر' : '') : 'احصائيات المنصه فى المشاهدات'}
+      />
+
 
       {(role !== user_roles.STUDENT && courseId) && (
         <SwitchStyled
@@ -65,11 +68,15 @@ function GetViewsPage() {
           }} />
       )}
 
-
       <GetViewsCompo lectureId={lectureId} courseId={courseType} role={role || ''} />
-      {(courseId && data?.values?.grade) && (
-        <GetStudentsNotViewed grade={data?.values?.grade} lectureId={lectureId} lectureName={lectureData?.values?.name} />
-      )}
+
+      <GetStudentsNotViewed
+        grade={data?.values?.grade}
+        lectureId={lectureId}
+        course={isCenterRole ? '' : courseId}
+        lectureName={lectureData?.values?.name}
+        role={role ? role : ''}
+      />
     </Section>
   )
 }

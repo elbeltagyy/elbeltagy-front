@@ -15,7 +15,7 @@ const options = {
         // 'current-time',
         // 'mute',
         // 'volume',
-        // 'settings',
+        'settings',
         'fullscreen'
     ],
     // controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
@@ -57,7 +57,7 @@ const createElement = (user = null) => {
     }
 }
 
-function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
+function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidden }) {
 
     const theme = useTheme()
     const vid = useRef(null)
@@ -150,8 +150,10 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics }) {
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
         {vid && (
-            <YoutubeAdd />
+            <YoutubeAdd setForbidden={setForbidden} />
         )}
+        {/* {window.innerWidth > 1200 ? 'true' : 'false'}, {window.innerWidth} */}
+
     </div>
 }
 

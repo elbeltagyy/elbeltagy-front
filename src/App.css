@@ -78,10 +78,10 @@
     /* background-color: red !important; */
 }
 
-.plyr__time,
+/* .plyr__time,
 .plyr__progress__container {
     display: none !important;
-}
+} */
 
 .fly-me {
     position: absolute;
@@ -91,8 +91,12 @@
     /* background-color: red; */
 }
 
-.plyr__menu button {
-    display: none !important;
+.onqual {
+    position: absolute;
+    bottom: 53px;
+    width: 100%;
+    height: 50px;
+    /* background-color: red; */
 }
 
 .control--overlaid {
