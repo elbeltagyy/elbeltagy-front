@@ -44,7 +44,7 @@ function GetViewsPage() {
 
       <TitleWithDividers
         title={
-          lectureId && 'اسم المحاضره : ' + lectureData?.values?.name
+          lectureId && 'اسم المحاضره : ' + lectureData?.values?.name || 'المحاضرات'
         }
         desc={
           (courseId && courseType === courseId) ?
@@ -70,13 +70,15 @@ function GetViewsPage() {
 
       <GetViewsCompo lectureId={lectureId} courseId={courseType} role={role || ''} />
 
-      <GetStudentsNotViewed
-        grade={data?.values?.grade}
-        lectureId={lectureId}
-        course={isCenterRole ? '' : courseId}
-        lectureName={lectureData?.values?.name}
-        role={role ? role : ''}
-      />
+      {lectureId && (
+        <GetStudentsNotViewed
+          grade={data?.values?.grade}
+          lectureId={lectureId}
+          course={isCenterRole ? '' : courseId}
+          lectureName={lectureData?.values?.name}
+          role={role ? role : ''}
+        />
+      )}
     </Section>
   )
 }
