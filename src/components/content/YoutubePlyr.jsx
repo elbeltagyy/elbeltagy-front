@@ -68,7 +68,7 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
         title: 'Example title',
         sources: [
             {
-                src: url,
+                src: 'blob:' + url, //'blob:' +
                 provider: 'youtube'
             }
         ]
@@ -147,6 +147,26 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
         };
     }, [lecture])
 
+    useEffect(() => {
+        const disableRightClick = (e) => {
+          e.preventDefault();
+        };
+      
+        const disableShortcuts = (e) => {
+          if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'I' || e.key === 'i')) {
+            e.preventDefault();
+          }
+        };
+      
+        window.addEventListener('contextmenu', disableRightClick);
+        window.addEventListener('keydown', disableShortcuts);
+      
+        return () => {
+          window.removeEventListener('contextmenu', disableRightClick);
+          window.removeEventListener('keydown', disableShortcuts);
+        };
+      }, []);
+      
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
         {vid && (
