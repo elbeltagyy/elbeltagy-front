@@ -149,24 +149,30 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
 
     useEffect(() => {
         const disableRightClick = (e) => {
-          e.preventDefault();
-        };
-      
-        const disableShortcuts = (e) => {
-          if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'I' || e.key === 'i')) {
             e.preventDefault();
-          }
         };
-      
+
+
+        const disableShortcuts = (e) => {
+            // Disable common shortcuts for opening developer tools
+            if (
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || // Ctrl+U (View Source)
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) || // Ctrl+Shift+I (Inspect)
+                (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) || // Ctrl+Shift+C (Inspect Element)
+                (e.key === 'F12') // F12 (Developer Tools)
+            ) {
+                e.preventDefault();
+            }
+        };
         window.addEventListener('contextmenu', disableRightClick);
-        window.addEventListener('keydown', disableShortcuts);
-      
+        window.addEventListener('keydown', disableRightClick);
+
         return () => {
-          window.removeEventListener('contextmenu', disableRightClick);
-          window.removeEventListener('keydown', disableShortcuts);
+            window.removeEventListener('contextmenu', disableRightClick);
+            window.removeEventListener('keydown', disableShortcuts);
         };
-      }, []);
-      
+    }, []);
+
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
         {vid && (
