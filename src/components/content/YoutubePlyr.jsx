@@ -169,7 +169,7 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
 
         return () => {
             window.removeEventListener('contextmenu', disableRightClick);
-            window.removeEventListener('keydown', disableShortcuts);
+            window.removeEventListener('keydown', disableRightClick);
         };
     }, []);
 
