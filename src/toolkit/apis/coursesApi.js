@@ -3,9 +3,7 @@ import { apiSlice } from "../apiSlice";
 const coursesApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getCourses: builder.query({
-            query: (queries) => {
-                const params = queries
-
+            query: (params) => {
                 return {
                     url: "/content/courses",
                     params
@@ -13,8 +11,7 @@ const coursesApi = apiSlice.injectEndpoints({
             }
         }),
         getOneCourse: builder.query({
-            query: (queries) => {
-                const params = queries
+            query: (params) => {
                 return {
                     url: "/content/courses/" + params._id,
                     params
@@ -44,7 +41,6 @@ const coursesApi = apiSlice.injectEndpoints({
         }),
         getCourseLecturesAndCheckUser: builder.query({
             query: (queries) => {
-                const params = queries
                 return {
                     url: "/content/courses/" + queries.index + '/lectures',
                     // params
@@ -53,7 +49,6 @@ const coursesApi = apiSlice.injectEndpoints({
         }),
         getLectureAndCheck: builder.query({
             query: (queries) => {
-                const params = queries
                 return {
                     url: "/content/courses/" + queries.index + '/lectures/' + queries.lectureId,
                     // params: {
@@ -73,7 +68,6 @@ const coursesApi = apiSlice.injectEndpoints({
         }),
         getExam: builder.query({
             query: (queries) => {
-                const params = queries
                 return {
                     url: "/content/courses/" + queries.courseId + '/exams/' + queries.examId,
                     // params: {

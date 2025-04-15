@@ -4,16 +4,27 @@ import Whatsapp from '../../components/whatsapp/Whatsapp'
 import CreateReport from '../../components/reports/CreateReport'
 import GetReports from '../../components/reports/GetReports'
 import Separator from '../../components/ui/Separator'
+import { useSearchParams } from 'react-router-dom'
+
+import CourseName from '../../components/content/CourseName'
 
 function ReportsPage() {
+    const [searchParams] = useSearchParams();
+    const course = searchParams.get('course')
+
     return (
         <Section>
-            <TitleWithDividers title={'اداره التقارير'} />
+            <TitleWithDividers title={'اداره التقارير'}>
+                {course && (
+                    <CourseName course={course} title={'اسم الكورس : '} />
+                )}
+
+            </TitleWithDividers>
             <Whatsapp />
             <Separator />
-            <CreateReport />
+            <CreateReport course={course}/>
             <br />
-            <GetReports />
+            <GetReports course={course} />
             <br />
         </Section>
     )

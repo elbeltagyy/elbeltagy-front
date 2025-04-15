@@ -18,6 +18,15 @@ const videosStatisticsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getByUserViews: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/video_statistics/users",
+                    params
+                }
+            }
+        }),
         updateView: builder.mutation({
             query: (data) => ({
                 url: `/video_statistics/` + data.id,
@@ -39,6 +48,7 @@ const videosStatisticsApi = apiSlice.injectEndpoints({
 export const {
     useVideoOnMutation,
 
+    useLazyGetByUserViewsQuery,
     useLazyGetViewsQuery,
     useUpdateViewMutation,
     useDeleteViewMutation,

@@ -6,6 +6,7 @@ import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import { Fm } from "./Fm.js"
 import TestDate from './TestDate.jsx'
 import { DataGrid } from '@mui/x-data-grid'
+import TestAgg from './TestAgg.jsx'
 
 // in framer motion ===> varient and initial and animate to parent 
 // only varient for child but has same object properties(keys) in parent
@@ -92,6 +93,7 @@ function TestPage() {
   ]
   // x
   // dir
+  return <TestAgg />
   return (
     <FlexColumn position={'relative'}>
 

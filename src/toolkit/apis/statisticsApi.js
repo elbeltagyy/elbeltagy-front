@@ -72,11 +72,32 @@ const statisticsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getViewsCount: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/views",
+                    params
+                }
+            }
+        }),
+        getByUsersViewsCount: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/views_users",
+                    params
+                }
+            }
+        }),
     })
 })
 
 
 
 export const { useLazyGetUsersCountQuery, useLazyGetUserExamAttemptsCountQuery,
-    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery, useGetSubscriptionsCountQuery, useGetUsersNotificationsCountQuery
+    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery, useGetSubscriptionsCountQuery, useGetUsersNotificationsCountQuery,
+    useGetViewsCountQuery, useGetByUsersViewsCountQuery
 } = statisticsApi

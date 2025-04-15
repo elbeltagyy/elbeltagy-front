@@ -28,6 +28,7 @@ import MakeForm from '../../tools/makeform/MakeForm'
 
 import * as Yup from "yup"
 import Section from '../../style/mui/styled/Section'
+import AdminCourseStatisticsMenu from './AdminCourseStatisticsMenu'
 
 function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchLectures, lecturesCount }) {
 
@@ -86,7 +87,8 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
 
                     <FlexRow gap={'12px'} width={"100%"}>
                         <OutLinedHoverBtn component={Link} to={'/statistics/courses/' + courseId} sx={{ my: '12px' }} colorm='orange' endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
-                        <TabInfo count={subscribersCount?.values?.count || 0} title={lang.SUBSCRIBERS_NUMS} i={2} />
+                        <AdminCourseStatisticsMenu course={course} />
+                        <TabInfo count={subscribersCount?.values?.count ?? 0} title={lang.SUBSCRIBERS_NUMS} i={2} />
                         <TabInfo count={course?.isActive ? lang.ACTIVE : lang.NOT_ACTIVE} title={lang.IS_ACTIVE} i={course?.isActive ? 1 : 3} />
                         <TabInfo count={lecturesCount + ' ' + 'محاضره'} title={'عدد المحاضرات'} i={1} />
                         <TabInfo count={course.price + " " + lang.POUND} title={lang.PRICE} i={0} />

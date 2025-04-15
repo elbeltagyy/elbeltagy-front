@@ -14,8 +14,9 @@ import GetUsersPage from '../../pages/admin/GetUsersPage'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import SwitchStyled from '../../style/mui/styled/SwitchStyled'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import CourseName from '../content/CourseName'
 
-function CreateReport() {
+function CreateReport({ course = '', lecture = '' }) {
 
     const [excludedUsers, setExcludedUsers] = useState([])
     const [isExcluded, setIsExcluded] = useState(true)
@@ -26,7 +27,11 @@ function CreateReport() {
     const [createReport] = usePostData(sendData)
 
     const trigger = async (values) => {
-        await createReport({ ...values, excludedUsers, isExcluded })
+        const params = { ...values, excludedUsers, isExcluded }
+        if (course) {
+            params.course = course
+        }
+        await createReport(params)
     }
 
     const inputs = [
@@ -45,11 +50,6 @@ function CreateReport() {
             label: 'الي',
             type: 'fullDate'
         }, {
-            name: 'grade',
-            label: lang.GRADE,
-            type: 'select',
-            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-        }, {
             name: 'role',
             label: lang.ROLE,
             type: 'select',
@@ -61,18 +61,31 @@ function CreateReport() {
             value: true,
         },
     ]
+
+    if (!course) {
+        inputs.push({
+            name: 'grade',
+            label: lang.GRADE,
+            type: 'select',
+            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+        })
+    }
     return (
         <FlexColumn>
             <FilledHoverBtn onClick={() => setOpen(!open)}>ارسال تقرير</FilledHoverBtn>
+
             <ModalStyled open={open} setOpen={setOpen} sx={{ minWidth: '100vw' }}>
 
                 <Section sx={{ width: '100%' }}>
                     <TitleWithDividers title={'اختر الاعدادات بعنايه'} />
+                    {course && (
+                        <CourseName course={course} title={'اسم الكورس : '} />
+                    )}
                     <MakeForm inputs={inputs} onSubmit={trigger} status={status} />
                     <TitleWithDividers title={isExcluded ? 'استثناء الطلاب' : 'ارسال لطلاب المختارين'} />
                     <SwitchStyled checked={isExcluded} onChange={setIsExcluded} label={isExcluded ? 'استثناء الطلاب' : 'ارسال لطلاب المختارين'} />
                 </Section>
-                <GetUsersPage setExcludedUsers={setExcludedUsers} isShowTitle={false} />
+                <GetUsersPage setExcludedUsers={setExcludedUsers} isShowTitle={false} isShowGrades={course ? false : true} courses={[course]} />
 
             </ModalStyled>
         </FlexColumn>

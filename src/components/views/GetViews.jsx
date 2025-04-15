@@ -49,7 +49,7 @@ const exportObj = {
 }
 
 
-function GetViewsCompo({ lectureId, courseId, role }) {
+function GetViewsCompo({ lectureId, courseId, role, refetchViews }) {
 
 
 
@@ -94,6 +94,9 @@ function GetViewsCompo({ lectureId, courseId, role }) {
             }
         })
         setViewsCount(res.count)
+        if (refetchViews) {
+            refetchViews()
+        }
         const data = { values: modifiedRes, count: res.count }
         return data
     }

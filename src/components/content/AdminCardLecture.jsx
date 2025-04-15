@@ -135,9 +135,9 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
             {lecture.sectionType === sectionConstants.VIDEO && (
               <div>
-                <LinkMui href={'/statistics/courses/' + courseId + '/views/' + lecture._id + '?' + 'role=' + user_roles.STUDENT} underline="hover" mr={'auto'} onClick={(e) => {
+                <LinkMui href={'/statistics/views?role=' + user_roles.STUDENT + '&course=' + courseId + '&lecture=' + lecture._id} underline="hover" mr={'auto'} onClick={(e) => {
                   e.preventDefault()
-                  navigate('/statistics/courses/' + courseId + '/views/' + lecture._id + '?' + 'role=' + user_roles.STUDENT)
+                  navigate('/statistics/views?role=' + user_roles.STUDENT + '&course=' + courseId + '&lecture=' + lecture._id)
                 }}>
                   احصائيات طلاب السنتر
                 </LinkMui>
@@ -172,7 +172,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
             {lecture.sectionType === sectionConstants.VIDEO && (
               <OutLinedHoverBtn
                 colorm='orange'
-                component={Link} to={'/statistics/courses/' + courseId + '/views/' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
+                component={Link} to={'/statistics/views?course=' + courseId + '&lecture=' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
             )}
           </FlexRow>
 

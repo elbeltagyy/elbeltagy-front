@@ -51,7 +51,7 @@ const exportObj = {
 
 
 
-function GetUsersPage({ setExcludedUsers, isShowTitle = true }) {
+function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades= true }) {
 
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
@@ -74,7 +74,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true }) {
     const [getUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getUsers({ ...params, grade: grade || 'all' }, false)
+        const res = await getUsers({ ...params, grade: grade || 'all', courses }, false)
         const data = { values: res.users, count: res.count }
         return data
     }
@@ -324,7 +324,9 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true }) {
                 </>
             )}
 
-            <GradesTabs grade={grade} setGrade={changeGrade} counts={gradesCounts} />
+            {isShowGrades && (
+                <GradesTabs grade={grade} setGrade={changeGrade} counts={gradesCounts} />
+            )}
 
             <MeDatagrid
                 apiRef={apiRef}

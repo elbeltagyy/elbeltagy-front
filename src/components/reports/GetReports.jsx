@@ -22,7 +22,7 @@ const exportObj = {
 }
 
 
-function GetReports() {
+function GetReports({ course = '', lecture = '' }) {
 
     const columns = [
         {
@@ -35,6 +35,21 @@ function GetReports() {
             headerName: 'وصف التقرير',
             width: 200,
             editable: true
+        }, {
+            field: 'course',
+            headerName: 'الكورس',
+            width: 200,
+            default: 'no',
+            renderCell: (params) => {
+                return params.row?.course?.name || 'تقرير شامل'
+            }
+        }, {
+            field: 'numbers',
+            headerName: 'عدد الطلاب',
+            width: 200,
+            renderCell: (params) => {
+                return <TabInfo count={params.row?.numbers} i={0} />
+            }
         }, {
             field: 'startDate',
             headerName: 'من',
@@ -65,7 +80,16 @@ function GetReports() {
     const [getData, status] = useLazyGetReportsQuery()
     const [getReports] = useLazyGetData(getData)
 
-    const fetchFc = async (params) => {
+    const fetchFc = async (values) => {
+
+        const params = { ...values, course, lecture }
+        // if (course) {
+        //     params.course = course
+        // }
+        // if (lecture) {
+        //     params.lecture = lecture
+        // }
+
         const res = await getReports(params)
         const data = { values: res.reports, count: res.count }
         return data
@@ -87,7 +111,6 @@ function GetReports() {
     }
 
     const viewFc = (report) => {
-        //
         setChosenReport(report)
         setOpen(true)
     }
