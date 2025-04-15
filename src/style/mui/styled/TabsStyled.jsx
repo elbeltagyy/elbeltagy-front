@@ -21,6 +21,7 @@ export default function TabsStyled({ tabs, setValue, value }) {
                 // maxWidth: { xs: 320, sm: 480 },
                 bgcolor: 'background.paper',
                 borderRadius: '16px',
+                width: '100%'
             }}
         >
             <Tabs

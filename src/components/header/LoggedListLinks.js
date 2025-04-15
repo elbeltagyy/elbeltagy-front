@@ -85,9 +85,9 @@ function LoggedListLinks({ user, setSidebar }) {
                                     }} />
                                 )}
 
-                                {(link.isNew && activeLink !== link.to) && <TabInfo sx={{
+                                {(link.info && activeLink !== link.to) && <TabInfo sx={{
                                     m: 'auto'
-                                }} count={'new'} i={1} />}
+                                }} count={link.info.title} i={link.info.i} />}
 
                             </ListItemButton>
                         </ListItem>
