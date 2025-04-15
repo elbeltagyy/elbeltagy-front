@@ -32,7 +32,7 @@ const exportObj = {
 }
 
 
-function GetEveryUserViews({ lectureId, courseId, role, refetchUsers }) {
+function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) {
 
     const [usersCount, setUsersCount] = useState('')
 
@@ -42,7 +42,7 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers }) {
     const fetchFc = async (params) => {
         params = {
             ...params,
-            lecture: lectureId, view_role: role, course: courseId
+            lecture: lectureId, view_role: role, course: courseId, user: userId
         }
         const res = await getViews(params, false)
         const modifiedRes = res.views.map((view) => {
@@ -89,7 +89,7 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers }) {
             renderCell: (params) => {
                 return <TabInfo count={params.row.watches} i={0} />
             }
-        },{
+        }, {
             field: 'watchedTime',
             headerName: 'الوقت الفعلى للمشاهدات',
             type: 'number',
@@ -104,14 +104,14 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers }) {
                 return <TabInfo count={formatDuration(params.row.totalTime, true, true)} i={2} />
             }
         },
-         {
+        {
             field: 'role',
             headerName: lang.ROLE,
             width: 150,
             sortable: false,
             filterable: false,
         },
-         {
+        {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",

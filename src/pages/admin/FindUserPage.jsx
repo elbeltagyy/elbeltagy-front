@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Alert, Box, Button, TextField } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import { useSearchParams } from 'react-router-dom';
 
 import Loader from '../../style/mui/loaders/Loader'
 import Section from '../../style/mui/styled/Section'
-import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import { ErrorBtn, FilledHoverBtn, OutLinedHoverBtn } from '../../style/buttonsStyles'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FilledHoverBtn } from '../../style/buttonsStyles'
 
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { useLazyGetOneUserQuery, useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
@@ -13,15 +13,10 @@ import WrapperHandler from '../../tools/WrapperHandler'
 
 import Separator from '../../components/ui/Separator'
 import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import UserAttempts from '../../components/users/UserAttempts'
 import UserHeader from '../../components/ui/UserHeader'
-import UserCodes from '../../components/users/UserCodes'
-import UserSubscriptions from '../../components/users/UserSubscriptions'
-import UserNotifications from '../../components/users/UserNotifications'
-import UserProfileUpdate from '../../components/users/UserProfileUpdate'
 import AutoInput from '../../style/mui/styled/AutoInput';
-import GetSubscriptions from '../../components/subscriptions/GetSubscriptions';
 import UserActions from '../../components/users/UserActions';
+import UserInfoTabs from '../../components/users/UserInfoTabs';
 
 function FindUserPage() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -82,11 +77,8 @@ function FindUserPage() {
                     <FlexColumn sx={{ width: '100%', gap: "12px" }}>
                         <UserHeader user={user} isAll={true} flexDirection='column' />
                         <UserActions user={user} setUser={setUser} />
-                        <UserNotifications user={user} />
-                        <UserCodes user={user} />
-                        <GetSubscriptions user={user._id} isShowTitle={true} />
-                        <UserAttempts user={user} />
-                        <UserProfileUpdate user={user} isAdmin={true} setUserAdmin={setUser} />
+
+                        <UserInfoTabs user={user} setUser={setUser} />
                     </FlexColumn>
                 )}
             </Box>

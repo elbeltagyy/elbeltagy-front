@@ -49,8 +49,7 @@ const exportObj = {
 }
 
 
-function GetViewsCompo({ lectureId, courseId, role, refetchViews }) {
-
+function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
 
 
     const [viewsCount, setViewsCount] = useState('')
@@ -76,13 +75,14 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews }) {
     const fetchFc = async (params) => {
         params = {
             ...params,
-            lecture: lectureId, view_role: role, populate: 'user course lecture video'
+            lecture: lectureId, view_role: role, populate: 'user course lecture video', user: userId
         }
         if (courseId) {
             params.course = courseId
         }
 
         const res = await getViews(params, false)
+
         const modifiedRes = res.views.map((view) => {
             return {
                 ...view,
@@ -93,6 +93,7 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews }) {
                 duration: view.video?.duration
             }
         })
+
         setViewsCount(res.count)
         if (refetchViews) {
             refetchViews()

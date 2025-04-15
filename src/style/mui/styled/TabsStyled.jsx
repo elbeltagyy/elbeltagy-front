@@ -1,15 +1,10 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Avatar, Button } from '@mui/material';
 import TabInfo from '../../../components/ui/TabInfo';
 
-
-
-
-
-export default function TabsStyled({ tabs, setValue, value, defaultValue = '' }) {
+export default function TabsStyled({ tabs, setValue, value }) {
+    // **_** Make component to be fully automatic
 
     const handleChange = (e, newValue) => {
         setValue(newValue);

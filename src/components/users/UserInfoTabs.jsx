@@ -6,6 +6,7 @@ import GetSubscriptions from '../subscriptions/GetSubscriptions'
 import UserAttempts from './UserAttempts'
 import UserProfileUpdate from './UserProfileUpdate'
 import GetViewsCompo from '../views/GetViews'
+import GetEveryUserViews from '../views/GetEveryUserViews'
 
 function UserInfoTabs({ user, setUser }) {
 
@@ -18,7 +19,8 @@ function UserInfoTabs({ user, setUser }) {
         { label: "الاشتراكات", value: 2 },
         { label: "الاختبارات", value: 3 },
         { label: "المشاهدات", value: 4 },
-        { label: "تحديث البيانات", value: 5 },
+        { label: "وقت التدريب", value: 5 },
+        { label: "تحديث البيانات", value: 6 },
     ]
 
 
@@ -33,8 +35,9 @@ function UserInfoTabs({ user, setUser }) {
                         <GetSubscriptions user={user._id} isShowTitle={true} /> : tabOpen === 3 ?
                             <UserAttempts user={user} /> : tabOpen === 4 ?
                                 <GetViewsCompo userId={user?._id} />
-                                :
-                                <UserProfileUpdate user={user} isAdmin={true} setUserAdmin={setUser} />
+                                : tabOpen === 5 ?
+                                    <GetEveryUserViews userId={user._id} /> :
+                                    <UserProfileUpdate user={user} isAdmin={true} setUserAdmin={setUser} />
             }
 
         </>

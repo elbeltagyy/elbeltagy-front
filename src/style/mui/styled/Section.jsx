@@ -1,6 +1,4 @@
 import { Box } from '@mui/material'
-import React from 'react'
-
 
 const paddingX = {
     xs: '10px',
@@ -19,7 +17,7 @@ const paddingY = {
 
 function Section({ children, sx }) {
     return (
-        <Box sx={{ px: paddingX, py: paddingY, ...sx }} as={'section'}>
+        <Box sx={{ px: paddingX, py: paddingY, ...sx, width: '100%' }} as={'section'}>
             {children}
         </Box>
     )
