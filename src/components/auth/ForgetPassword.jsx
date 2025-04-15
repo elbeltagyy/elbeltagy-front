@@ -38,10 +38,10 @@ export default function ForgetPassword() {
             value: senderConstants.WHATSAPP,
             label: senderConstants.WHATSAPP,
             icon: <FaWhatsapp />,
-            isValid: true,
+            isValid: isSuccess && data?.values?.isValid || false,
             description: isLoading ? <TabInfo count={'loading...'} i={0} /> :
                 (isSuccess && data?.values?.isValid) ? <TabInfo count={'active'} i={1} /> :
-                    <TabInfo count={'Not active'} i={3} sx={{ fontSize: '8px' }} />
+                    <TabInfo count={'غير فعال'} i={3} sx={{ fontSize: '8px' }} />
         },
         { value: senderConstants.CONTACT, label: senderConstants.CONTACT, icon: <FcContacts />, isValid: true },
     ]
