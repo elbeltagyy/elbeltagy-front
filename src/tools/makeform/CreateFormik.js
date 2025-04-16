@@ -8,7 +8,7 @@ import { FilledHoverBtn } from '../../style/buttonsStyles';
 
 const SEND = 'إرسال'
 
-export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false }) {
+export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false, disabledBtn = false }) {
 
 
     let data = {}
@@ -56,7 +56,7 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
 
                             <FilledHoverBtn
                                 type='submit'
-                                disabled={status?.isLoading || (!props.dirty && !submitBtnStatus) ? true : false}
+                                disabled={disabledBtn ? disabledBtn : status?.isLoading || (!props.dirty && !submitBtnStatus) ? true : false}
                                 sx={{
                                     width: btnWidth || '100%', py: '10px', ...btnStyle
                                 }}

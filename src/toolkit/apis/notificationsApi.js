@@ -22,7 +22,7 @@ const notificationsApi = apiSlice.injectEndpoints({
             query: (queries) => {
                 const params = queries
                 return {
-                    url: "/notifications/" + params.id,
+                    url: "/notifications/one/" + params.id,
                     params
                 }
             }
@@ -40,7 +40,7 @@ const notificationsApi = apiSlice.injectEndpoints({
         updateNotification: builder.mutation({
             query: (data) => {
                 return {
-                    url: '/notifications/' + data._id,
+                    url: '/notifications/one/' + data._id,
                     method: 'put',
                     body: data
                 }
@@ -49,15 +49,25 @@ const notificationsApi = apiSlice.injectEndpoints({
         deleteNotification: builder.mutation({
             query: (data) => {
                 return {
-                    url: '/notifications/' + data.id,
+                    url: '/notifications/one/' + data.id,
                     method: 'delete',
                 }
             }
         }),
-
+        sendToMany: builder.mutation({
+            query: (data) => {
+                return {
+                    url: '/notifications/many',
+                    method: 'POST',
+                    body: data
+                }
+            }
+        }),
     })
 })
 
 
-export const { useLazyGetNotificationsQuery, useCreateNotificationMutation, useUpdateNotificationMutation, useDeleteNotificationMutation, useLazyMakeSeenQuery
+export const { useLazyGetNotificationsQuery, useCreateNotificationMutation, useUpdateNotificationMutation, useDeleteNotificationMutation,
+    useLazyMakeSeenQuery,
+    useSendToManyMutation
 } = notificationsApi
