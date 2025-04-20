@@ -22,6 +22,7 @@ import { RiFolderUnknowFill } from "react-icons/ri";
 import { IoIosRadio } from "react-icons/io";
 import { orange } from '@mui/material/colors'
 import dayjs from 'dayjs'
+import { MdGpsFixed } from "react-icons/md";
 
 function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, currentIndex = false }) {
 
@@ -34,7 +35,6 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
         }
         return isDisabled
     }
-
     return (
         <CardStyled img={course?.thumbnail?.url} title={<Button startIcon={<RtArrow size='1.5rem' />} disabled={isCourseDisabled()} endIcon={<CoursesIcon size='1.5rem' />} sx={{ color: 'primary.main' }}
             component={Link} to={"/grades/" + course.grade + "/courses/" + course.index}
@@ -83,8 +83,14 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                     {course.dateEnd && (
                         <TabInfo count={getFullDate(course.dateEnd)} i={2} title={"موعد نهايه الكورس"} icon={<RiFolderUnknowFill size='1.3rem' />} isBold={false} />
                     )}
+                    {(course.isFixed && !currentIndex) && (
+                        <TabInfo sx={{ width: '100%' }} count={"كورس مثبت"} i={0} icon={<MdGpsFixed size='1.3rem' />} isBold={false} />
+
+                    )}
                     {course.price === 0 && (
-                        <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ bgcolor: orange[800], backgroundImage: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white', m: 'auto' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
+                        <FlexColumn sx={{ width: '100%' }}>
+                            <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ bgcolor: orange[800], backgroundImage: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
+                        </FlexColumn>
                     )}
 
                 </FlexBetween>

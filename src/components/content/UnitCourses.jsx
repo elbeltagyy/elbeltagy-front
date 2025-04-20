@@ -18,8 +18,11 @@ function UnitsList({ unit }) {
 
     useEffect(() => {
         const getCourse = async () => {
-            const { courses, count } = await getCourses({ unit: unit._id, isActive: true })
-            setCourses(courses)
+            let { courses, count } = await getCourses({ unit: unit._id, isActive: true })
+            const sortedCourses = [...courses].sort((a, b) => {
+                return (b.isFixed === true) - (a.isFixed === true);
+            });
+            setCourses(sortedCourses)
         }
 
         if (open && courses.length === 0) {

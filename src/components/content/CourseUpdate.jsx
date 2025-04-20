@@ -12,7 +12,6 @@ import { VscSymbolBoolean } from "react-icons/vsc";
 
 import * as Yup from "yup"
 import { Box, FormControlLabel, Switch, Typography } from '@mui/material'
-import { useField } from 'formik'
 import MakeInput from '../../tools/makeform/MakeInput'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 import dayjs from 'dayjs'
@@ -95,6 +94,12 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             value: course.isActive ?? false,
             options: [{ value: true, label: lang.ACTIVE }, { value: false, label: lang.NOT_ACTIVE }],
             icon: <VscSymbolBoolean />,
+            width: "100%",
+        }, {
+            name: 'isFixed',
+            label: 'تثبيت الكورس',
+            type: 'switch',
+            value: course.isFixed ?? false,
             width: "100%",
         }, {
             name: 'isMust',
