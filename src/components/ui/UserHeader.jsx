@@ -66,7 +66,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                             <DataWith3Items title={lang.PHONE} icon={<FaSquarePhoneFlip size={'2rem'} />} desc={user?.phone} />
                             <DataWith3Items title={lang.FAMILY_PHONE} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.familyPhone} />
                             <DataWith3Items title={lang.GOVERNMENT} icon={<RiGovernmentFill size={'2rem'} />} desc={governments.find(g => Number(g.id)=== user?.government)?.governorate_name_ar} />
-                            <DataWith3Items title={'عدد الاجهزه المسجله'} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.devicesRegistered.length} />
+                            {/* <DataWith3Items title={'عدد الاجهزه المسجله'} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.devicesRegistered.length} /> */}
                             {(user.role === user_roles.STUDENT || user.role === user_roles.ONLINE) && (
                                 <FlexColumn sx={{ width: '100%' }}>
                                     <RowInfo icon={<FaWallet size={'1.5rem'} />} title={'رصيد محفظتك '} fromStart={false} desc={user.wallet + ' جنيها'} />
