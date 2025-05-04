@@ -11,9 +11,9 @@ const options = {
         'play-large',
         'play',
         'fast-forward', // Adds a forward 10 seconds button
-        // 'progress',
-        // 'current-time',
-        // 'mute',
+        'progress',
+        'current-time',
+        'mute',
         // 'volume',
         'settings',
         'fullscreen'

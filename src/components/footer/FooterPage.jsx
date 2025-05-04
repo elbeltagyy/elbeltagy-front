@@ -61,7 +61,7 @@ function FooterPage() {
                     تم التطوير بواسطه <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Menasste for Education Services </span>
                 </Typography>
                 {/* <img src='/assets/megroup-footer.webp' style={{ borderRadius: 0, my: '12px', maxWidth: '120px' }} /> */}
-                <Image borderRadius={0} sx={{ my: '12px' }} img={'/assets/menasste-logo-nobg.png'} maxWidth="120px" ratio={'auto'} />
+                <Image borderRadius={0} sx={{ my: '12px' }} img={'/assets/menasste-logo-nobg.png'} maxWidth="90px" ratio={'auto'} />
             </FlexColumn>
         </Section>
     )
