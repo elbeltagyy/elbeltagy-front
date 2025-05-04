@@ -70,13 +70,13 @@
 }
 
 /* ### */
-/* .plyr__controls {
-    width: 80px;
-    height: 125px;
-    left: auto !important;
-    background: transparent !important;
-    background-color: red !important;
-} */
+.plyr__controls {
+    /* width: 80px; */
+    height: 80px;
+    /* left: auto !important; */
+    /* background: transparent !important; */
+    /* background-color: red !important; */
+}
 
 /* .plyr__time,
 .plyr__progress__container {

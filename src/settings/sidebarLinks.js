@@ -33,7 +33,7 @@ export const sidebarLinks = [
     }, {
         name: "محاضراتى", icon: <FaSchool size="22px" />, to: "/grades/" + store?.getState()?.global?.user?.grade, allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
-        name: "بنك الاسئله", icon: <CiBank size="22px" />, to: "/grades/qs" , allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'تحت الانشاء', i: 2 }
+        name: "بنك الاسئله", icon: <CiBank size="22px" />, to: "/grades/qs" , allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'قريبا', i: 2 }
     }, {
         name: "اداره الحساب", allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
