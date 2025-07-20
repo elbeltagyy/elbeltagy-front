@@ -1,11 +1,13 @@
 import { Box, Button, Card, CardActions, useTheme } from '@mui/material'
-import React, { useState } from 'react'
-import { buttonStyle } from '../../style/buttonsStyles'
+import { useState } from 'react'
+import { buttonStyle, FilledHoverBtn } from '../../style/buttonsStyles'
 import QuizPagination from './QuizPagination'
 import AnsweredQuestion from './AnsweredQuestion'
+import { red } from '@mui/material/colors'
+import { useNavigate } from 'react-router-dom'
 
-export default function AttemptCard({ exam, isAnsweres }) {
-
+export default function AttemptCard({ exam, setQuestion, isShowBack }) {
+    const navigate = useNavigate()
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
     const disabledNext = exam.questions.length <= 0 || exam.questions.length === (currentQuestionIndex + 1) ? true : false
@@ -16,9 +18,9 @@ export default function AttemptCard({ exam, isAnsweres }) {
     return (
         <Card sx={{ bgcolor: theme.palette.background.alt, width: "100%" }} >
 
-            <AnsweredQuestion currentQuestion={exam.questions[currentQuestionIndex]} index={currentQuestionIndex} />
+            <AnsweredQuestion setQuestion={setQuestion} currentQuestion={exam.questions[currentQuestionIndex]} index={currentQuestionIndex} />
 
-            <CardActions>
+            <CardActions sx={{ width: '100%' }}>
                 <Button sx={buttonStyle} disabled={disabledPre} onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}>
                     السؤال السابق
                 </Button>
@@ -26,10 +28,15 @@ export default function AttemptCard({ exam, isAnsweres }) {
                     السؤال التالى
                 </Button>
 
+                {isShowBack && (
+                    <FilledHoverBtn onClick={() => navigate(-1, { state: { refetch: true }, replace: true })} colorm={red[500]} sx={{ m: '0 0 0 auto !important' }}>
+                        الرجوع
+                    </FilledHoverBtn>
+                )}
             </CardActions>
 
             <Box >
-                <QuizPagination isAnsweres={isAnsweres} examQuestions={exam.questions} count={exam.questions.length} index={currentQuestionIndex} setIndex={setCurrentQuestionIndex} />
+                <QuizPagination questions={exam.questions} index={currentQuestionIndex} setIndex={setCurrentQuestionIndex} isShowError={true} />
             </Box>
         </Card>
     )

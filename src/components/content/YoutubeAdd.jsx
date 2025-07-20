@@ -16,13 +16,14 @@ function YoutubeAdd({ setForbidden }) {
         qualDiv.className = 'onqual';
         target.appendChild(qualDiv);
 
-
         //mutation
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
                     const newStyle = mutation.target.style.cssText;
-                    setForbidden(true)
+                    if (setForbidden) {
+                        setForbidden(true)
+                    }
                 }
             });
         });

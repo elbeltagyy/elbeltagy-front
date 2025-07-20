@@ -15,18 +15,18 @@ import ReportCompo from './ReportCompo'
 function CreateReport({ course = '' }) {
 
     const [excludedUsers, setExcludedUsers] = useState([])
-    const [isExcluded, setIsExcluded] = useState(true)
+    // const [isExcluded, setIsExcluded] = useState(true)
 
     const [open, setOpen] = useState(false)
 
     const tabs = [
         {
             value: 0, label: 'ارسال تقرير', component: <ReportCompo
-                course={course} excludedUsers={excludedUsers} isExcluded={isExcluded} />,
+                course={course} excludedUsers={excludedUsers} />,
         },
         {
             value: 1, label: 'ارسال رسائل', component: <MessagesCompo
-                course={course} excludedUsers={excludedUsers} isExcluded={isExcluded} />,
+                course={course} excludedUsers={excludedUsers}  />,
         },
     ]
 
@@ -42,11 +42,11 @@ function CreateReport({ course = '' }) {
                         <CourseName course={course} title={'اسم الكورس : '} />
                     )}
 
-                    <TabsAutoStyled tabs={tabs} />
+                    <TabsAutoStyled originalTabs={tabs} />
 
-                    <TitleWithDividers title={isExcluded ? 'استثناء الطلاب' : 'ارسال لطلاب المختارين'} />
+                    {/* <TitleWithDividers title={isExcluded ? 'استثناء الطلاب' : 'ارسال لطلاب المختارين'} /> */}
 
-                    <SwitchStyled checked={isExcluded} onChange={setIsExcluded} label={isExcluded ? 'استثناء الطلاب' : 'ارسال لطلاب المختارين'} />
+                    {/* <SwitchStyled checked={isExcluded} onChange={setIsExcluded} label={isExcluded ? 'استثناء الطلاب' : 'ارسال لطلاب المختارين'} /> */}
                 </Section>
                 <GetUsersPage setExcludedUsers={setExcludedUsers} isShowTitle={false} isShowGrades={course ? false : true} courses={[course]} />
 

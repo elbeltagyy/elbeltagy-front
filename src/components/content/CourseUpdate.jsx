@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import { useUpdateCourseMutation } from '../../toolkit/apis/coursesApi'
 import usePostData from '../../hooks/usePostData'
@@ -11,7 +11,7 @@ import { VscSymbolBoolean } from "react-icons/vsc";
 
 
 import * as Yup from "yup"
-import { Box, FormControlLabel, Switch, Typography } from '@mui/material'
+import { Box, FormControlLabel, Switch} from '@mui/material'
 import MakeInput from '../../tools/makeform/MakeInput'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 import dayjs from 'dayjs'
@@ -19,20 +19,22 @@ import dayjs from 'dayjs'
 const PreDiscount = ({ props, value, input, inputName }) => {
 
     const [isPreDiscount, setPreDiscount] = useState(value ? true : false)
+    const [initialVal] = useState(value)
 
     useEffect(() => {
         setPreDiscount(value || value === 0 ? true : false)
     }, [value])
 
     useEffect(() => {
-        props.setFieldValue(inputName, isPreDiscount ? value : '')
+        const handledVal = value || initialVal
+        props.setFieldValue(inputName, isPreDiscount ? handledVal : '')
     }, [isPreDiscount])
 
     return <FlexRow sx={{
-        justifyContent: 'space-between', gap: '10px'
+        justifyContent: 'space-between', gap: '6px'
     }}>
         <FormControlLabel control={<Switch checked={isPreDiscount} onChange={() => setPreDiscount(!isPreDiscount)} />} label="اضافه سعر قبل الخصم" />
-        <Box sx={{ width: { xs: '100%', md: '40%' } }}>
+        <Box sx={{ width: { xs: '100%', md: '60%' } }}>
             {isPreDiscount && (
                 <MakeInput input={{ ...input, value: value }} props={props} />
             )}
@@ -57,13 +59,14 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             label: lang.COURSE_NAME,
             value: course.name,
             icon: <MdOutlineDriveFileRenameOutline />,
-            validation: Yup.string().required(lang.REQUERIED)
-
+            validation: Yup.string().required(lang.REQUERIED),
+            column: 1, row: 1
         }, {
             name: 'description',
             label: lang.COURSE_DESCRIPTION,
             value: course.description,
-            type: 'editor'
+            type: 'editor',
+            column: 2, row: 1, rowSpan: 5
         }, {
             name: 'price',
             label: lang.PRICE,
@@ -73,12 +76,15 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             validation: Yup.number()
                 .min(0, 'يجب ان يكون 0 او اكبر')
                 .required(lang.REQUERIED),
+            column: 1, row: 2
+
         }, {
             name: 'preDiscount',
             label: 'السعر قبل الخصم',
             value: course.preDiscount,
             icon: <AiFillPoundCircle />,
             width: "100%",
+            column: 1, row: 3,
             component: PreDiscount,
             validation: Yup.number()
                 .nullable()
@@ -89,18 +95,22 @@ function CourseUpdate({ course, setCourse, setCourses }) {
                 }),
         }, {
             name: 'isActive',
-            label: lang.IS_ACTIVE,
+            label: 'حاله الكورس',
             type: 'radio',
             value: course.isActive ?? false,
             options: [{ value: true, label: lang.ACTIVE }, { value: false, label: lang.NOT_ACTIVE }],
             icon: <VscSymbolBoolean />,
             width: "100%",
+            column: 1, row: 4,
+
         }, {
             name: 'isFixed',
             label: 'تثبيت الكورس',
             type: 'switch',
             value: course.isFixed ?? false,
             width: "100%",
+            column: 1, row: 5,
+
         }, {
             name: 'isMust',
             label: 'تفعيل اكمال المحاضرات',
@@ -108,18 +118,23 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             value: course.isMust ?? false,
             icon: <VscSymbolBoolean />,
             width: "100%",
+            column: 1, row: 5,
+
         }, {
             name: 'dateStart',
             label: 'تاريخ بدايه الكورس',
             type: 'fullDate',
             width: "100%",
             value: course.dateStart ? dayjs(course.dateStart) : null,
+            column: 2, row: 2,
 
         }, {
             name: 'dateEnd',
             label: 'تاريخ نهايه الكورس',
             type: 'fullDate',
             width: "100%",
+            column: 2, row: 2,
+
             value: course.dateEnd ? dayjs(course.dateEnd) : null,
             validation: Yup.mixed()
                 .nullable()
@@ -143,6 +158,8 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             label: lang.THUMBNAIL,
             type: 'file',
             width: '100%',
+            column: 1, row: 6,
+
             value: course.thumbnail,
             validation: Yup.mixed()
                 .test({
@@ -174,7 +191,7 @@ function CourseUpdate({ course, setCourse, setCourses }) {
         },
     ]
 
-    const onSubmit = async (values, props) => {
+    const onSubmit = async (values) => {
         const res = await updateCourse(values, true)
         if (setCourse) {
             setCourse(res)

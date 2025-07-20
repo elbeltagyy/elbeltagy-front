@@ -18,7 +18,7 @@ function HomePage() {
         <div>
             <Hero />
             <HeroScience />
-            <AboutUS />
+            {/* <AboutUS /> */}
             <Services />
             <Grades />
         </div>

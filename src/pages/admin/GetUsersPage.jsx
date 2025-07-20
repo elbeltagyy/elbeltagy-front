@@ -12,12 +12,12 @@ import { getDateWithTime, getFullDate } from '../../settings/constants/dateConst
 import Section from "../../style/mui/styled/Section"
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FlexBetween, FlexColumn } from '../../style/mui/styled/Flexbox'
 
-import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
+import { handelObjsOfArr, makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 
-import { useLazyGetUsersCountQuery } from '../../toolkit/apis/statisticsApi'
+import { useAnalysisUsersQuery, useLazyAnalysisUsersQuery, useLazyGetUsersCountQuery } from '../../toolkit/apis/statisticsApi'
 import { useDeleteUserMutation, useLazyGetUsersQuery, useUpdateUserMutation } from '../../toolkit/apis/usersApi'
 import usePostData from '../../hooks/usePostData'
 import useLazyGetData from '../../hooks/useLazyGetData'
@@ -27,6 +27,8 @@ import TabInfo from '../../components/ui/TabInfo'
 import TitleSection from '../../components/ui/TitleSection'
 import GradesTabs from '../../components/grades/GradesTabs'
 import UserAvatar from '../../components/users/UserAvatar';
+import DynamicBarChart from '../../tools/charts/BarChart';
+import Grid from '../../style/vanilla/Grid';
 // import CreateUser from '../../components/users/CreateUser'
 
 
@@ -51,11 +53,10 @@ const exportObj = {
 
 
 
-function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades= true }) {
+function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades = true }) {
 
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
-
 
     const [gradesCounts, setGradeCounts] = useState({})
     const [grade, setGrade] = useState(Number(searchParams.get('grade')) || 0)
@@ -85,15 +86,13 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
 
     useEffect(() => {
         const trigger = async () => {
-            const allGrades = await getUsersCount({ grade: 'all' })
-            const grade1 = await getUsersCount({ grade: 1, })
-            const grade2 = await getUsersCount({ grade: 2 })
 
-            setGradeCounts({
-                allGrades, grade1, grade2
-            })
+            const [...counts] = await Promise.all([
+                getUsersCount({ grade: 'all' }),
+                ...gradeConstants.map(g => getUsersCount({ grade: g.index })),
+            ])
+            setGradeCounts(counts)
         }
-
         trigger()
     }, [])
 
@@ -129,7 +128,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             headerName: lang.IS_ACTIVE,
             type: "boolean",
             editable: true,
-            valueGetter: (params) => params.row?.isActive,
+            valueGetter: (params) => params, //*_*
             renderCell: (params) => {
                 return (
                     <Box>
@@ -194,9 +193,16 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
                 )
             }
         }, {
+            field: 'marks',
+            headerName: 'درجات الاسئله',
+            type: 'number',
+        }, {
+            field: 'exam_marks',
+            headerName: 'درجات الاختبارات',
+            type: 'number',
+        }, {
             field: 'totalPoints',
             headerName: 'نقاط الطالب',
-            width: 200,
             type: 'number',
         }, {
             field: "isResetPassword",
@@ -266,7 +272,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             headerName: 'تاريخ الانشاء',
             width: 200,
             type: 'date',
-            valueGetter: (params) => new Date(params.row.createdAt),
+            valueGetter: (params) => new Date(params),//*_*
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={1} />
             }
@@ -313,20 +319,30 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
         setUserRegister()
     }
 
+    const [getAnalysis, { data }] = useLazyAnalysisUsersQuery()
+
     return (
         <Section>
             {isShowTitle && (
                 <>
                     <TitleSection title={lang.USERS_PAGE} />
-                    <FlexColumn sx={{ width: '100%' }}>
-                        <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>
-                    </FlexColumn>
                 </>
             )}
+            <DynamicBarChart
+                title='احصائيات الطلاب'
+                trigger={getAnalysis}
+                categories={data?.values?.categories}
+                series={data?.values?.result}
+                height="300px"
+            />
 
+            <FlexColumn sx={{ width: '100%' }}>
+                <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>
+            </FlexColumn>
             {isShowGrades && (
                 <GradesTabs grade={grade} setGrade={changeGrade} counts={gradesCounts} />
             )}
+
 
             <MeDatagrid
                 apiRef={apiRef}
@@ -348,8 +364,6 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             <ModalStyled open={open} setOpen={setOpen} >
                 <CreateUser setReset={setReset} />
             </ModalStyled>
-
-
 
             <ModalStyled open={isOpenRegisterModal} setOpen={setOpenRegisterModal} title={'هل انت متاكد من مسح الاجهزه المسجله لهذا المستخدم ؟'} action={resetDevicesReg} />
             <ModalStyled open={openReset} setOpen={setOpenReset} title={'هل انت متاكد من اعاده ضبط كلمه السر ؟'} action={resetPassword} />

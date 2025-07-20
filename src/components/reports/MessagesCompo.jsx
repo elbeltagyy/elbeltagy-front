@@ -6,6 +6,7 @@ import senderConstants from "../../settings/constants/senderConstants"
 import { useSendToManyMutation } from "../../toolkit/apis/notificationsApi"
 import MakeForm from "../../tools/makeform/MakeForm"
 import GetWhatsStatus from "../whatsapp/GetWhatsStatus"
+import * as yup from 'yup'
 
 const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
     const [whatsStatus, setWhatsStatus] = useState(false)
@@ -14,7 +15,7 @@ const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
     const [createReport] = usePostData(sendData)
 
     const trigger = async (values) => {
-        const params = { ...values, excludedUsers, isExcluded }
+        const params = { ...values, excludedUsers } //, isExcluded
         if (course) {
             params.course = course
         }
@@ -43,7 +44,13 @@ const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
             label: 'ارسال للطلاب الفعالين فقط',
             type: 'switch',
             value: true,
-        }
+        }, {
+            name: 'isExcluded',
+            label: 'هل تريد الارسال الي الطلاب المختارين ام استبعادهم',
+            type: 'select',
+            options: [{ value: true, label: 'استبعاد الطلاب' }, { value: false, label: 'الارسال الي الطلاب المختارين فقط' }],
+            validation: yup.boolean().required()
+        },
     ]
     return <>
         <GetWhatsStatus setWhatsStatus={setWhatsStatus} />

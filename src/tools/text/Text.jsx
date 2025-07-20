@@ -54,26 +54,24 @@ import translations from 'ckeditor5/translations/ar.js';
 import 'ckeditor5/ckeditor5.css';
 
 import './text.css';
-import { useTheme } from '@mui/material';
 
 export default function Text({ setText, defaultData }) {
     const editorContainerRef = useRef(null);
     const editorMenuBarRef = useRef(null);
     const editorToolbarRef = useRef(null);
+
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
 
 
-
     useEffect(() => {
         setIsLayoutReady(true);
-
         return () => setIsLayoutReady(false);
     }, []);
 
 
     // on Destroy
-    let editorInstance = null;
+    const [editorInstance, setEditorInstance] = useState(null);
 
     useEffect(() => {
         return () => {
@@ -82,6 +80,14 @@ export default function Text({ setText, defaultData }) {
             }
         };
     }, []);
+
+    const safeClearChildren = (ref) => {
+        if (ref?.current?.children) {
+            Array.from(ref.current.children).forEach((child) => {
+                if (child?.remove) child.remove();
+            });
+        }
+    };
 
     const editorConfig = {
         toolbar: {
@@ -237,7 +243,7 @@ export default function Text({ setText, defaultData }) {
     };
 
     return (
-        <div >
+        <div style={{ width: '100%' }} >
             <div className="main-container">
                 <div className="editor-container editor-container_document-editor" ref={editorContainerRef}>
                     <div className="editor-container__menu-bar" ref={editorMenuBarRef}></div>
@@ -248,18 +254,34 @@ export default function Text({ setText, defaultData }) {
                                 {isLayoutReady && (
                                     <CKEditor
                                         onInstanceReady={(event) => {
-                                            editorInstance = event.editor;
+                                            setEditorInstance(event.editor);
                                         }}
                                         onChange={(e, editor) => setText(editor.getData())}
-                                        onReady={editor => {
-                                            editorToolbarRef.current.appendChild(editor.ui.view.toolbar.element);
-                                            editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+                                        // onReady={editor => {
+
+                                        //     editorToolbarRef.current.appendChild(editor.ui.view.toolbar.element);
+                                        //     editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+
+                                        // }}
+                                        // onAfterDestroy={() => {
+                                        //     Array.from(editorToolbarRef.current.children).forEach(child => child.remove());
+                                        //     Array.from(editorMenuBarRef.current.children).forEach(child => child.remove());
+                                        // }}
+
+                                        onReady={(editor) => {
+                                            if (editorToolbarRef.current) {
+                                                editorToolbarRef.current.appendChild(editor.ui.view.toolbar.element);
+                                            }
+                                            if (editorMenuBarRef.current) {
+                                                editorMenuBarRef.current.appendChild(editor.ui.view.menuBarView.element);
+                                            }
+                                            setEditorInstance(editor);
                                         }}
                                         onAfterDestroy={() => {
-                                            Array.from(editorToolbarRef.current.children).forEach(child => child.remove());
-                                            Array.from(editorMenuBarRef.current.children).forEach(child => child.remove());
+                                            safeClearChildren(editorToolbarRef);
+                                            safeClearChildren(editorMenuBarRef);
                                         }}
-                                        
+
                                         data={defaultData}
                                         editor={DecoupledEditor}
                                         config={editorConfig}

@@ -32,7 +32,7 @@ const lecturesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        getLectureForCenter: builder.query({
+        getLectureForCenter: builder.query({ //Get Lecture
             query: (queries) => {
                 const params = queries
                 return {
@@ -81,19 +81,6 @@ const lecturesApi = apiSlice.injectEndpoints({
                     method: 'POST', body: data
                 }
             }
-        }), createExam: builder.mutation({
-            query: data => ({
-                url: '/content/lectures/exams',
-                method: 'POST',
-                body: data
-            })
-        }),
-        updateExam: builder.mutation({
-            query: data => ({
-                url: '/content/lectures/exams/' + data.lecture,
-                method: 'PUT',
-                body: data
-            })
         }),
         addToLectures: builder.mutation({
             query: data => ({
@@ -115,7 +102,7 @@ export const {
     useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useLazyGetLectureForCenterQuery, useLazyGetAllLecturesQuery,
     useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
     useGetSecureVideoMutation
-    , useCreateExamMutation, useUpdateExamMutation, usePatchLectureMutation,
+    ,usePatchLectureMutation,
     useAddToLecturesMutation, useRemoveFromLecturesMutation
 } = lecturesApi
 

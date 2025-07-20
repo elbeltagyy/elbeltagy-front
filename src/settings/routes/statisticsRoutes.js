@@ -17,12 +17,13 @@ export const statisticsRoutes = [
         path: '/statistics/courses/:courseId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
             <GetSubscriptionsCourse />
         </ProtectedRoute>
-    },
+    }, 
+    // {
+    //     path: '/statistics/courses/:courseId/exams/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+    //         <GetAttemptsPage />
+    //     </ProtectedRoute>
+    // }, 
     {
-        path: '/statistics/courses/:courseId/exams/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
-            <GetAttemptsPage />
-        </ProtectedRoute>
-    }, {
         path: '/statistics/courses/:courseId/views/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
             <GetViewsPage />
         </ProtectedRoute>

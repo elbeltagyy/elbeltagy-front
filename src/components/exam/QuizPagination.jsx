@@ -1,17 +1,10 @@
 import { Box, Pagination, PaginationItem, useTheme } from '@mui/material'
-import React, { memo, useEffect, useState } from 'react'
+import { memo } from 'react'
 import { BiCurrentLocation } from "react-icons/bi";
 
-function QuizPagination({ count, index, setIndex, isLoading, examQuestions, isAnsweres }) {
+function QuizPagination({ index, setIndex, isLoading, questions, isShowError = false }) {
 
     const theme = useTheme()
-
-    const [questions, setQuestions] = useState([])
-
-    useEffect(() => {
-        setQuestions(examQuestions)
-    }, [index])
-
     if (questions.length <= 0) return "loading ..."
 
     return (
@@ -19,9 +12,9 @@ function QuizPagination({ count, index, setIndex, isLoading, examQuestions, isAn
             <Pagination
                 variant='outlined'
                 disabled={isLoading || false}
-                count={count}
+                count={questions.length}
                 page={index + 1 || 1}
-                shape="rounded" siblingCount={count}
+                shape="rounded" siblingCount={questions.length}
                 renderItem={(item) => {
 
                     const isRight = item.type === "page" && questions[item.page - 1].chosenOptionId
@@ -29,8 +22,8 @@ function QuizPagination({ count, index, setIndex, isLoading, examQuestions, isAn
                     const isError = item.type === "page" &&
                         questions[item.page - 1].chosenOptionId !==
                         questions[item.page - 1].rtOptionId &&
-                        questions[item.page - 1].rtOptionId &&
-                        isAnsweres
+                        questions[item.page - 1].rtOptionId // && isShowError
+
 
                     // not answered - ritht - wrong - lsa
                     return (

@@ -2,10 +2,16 @@ import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TabInfo from '../../../components/ui/TabInfo';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FlexColumn } from './Flexbox';
 
-export default function TabsAutoStyled({ tabs, defaultVal = 0, style = {} }) {
+
+// {
+//     value: 0, label: 'ارسال تقرير', component: <ReportCompo
+//         course={course} excludedUsers={excludedUsers} isExcluded={isExcluded} />,
+// },
+
+export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, style = {} }) {
     // **_** Make component to be fully automatic
 
     const [value, setValue] = useState(defaultVal)
@@ -14,9 +20,19 @@ export default function TabsAutoStyled({ tabs, defaultVal = 0, style = {} }) {
         setValue(newValue);
     };
 
+    const tabs = useMemo(() => {
+        const arr = originalTabs.map((tab, i) => {
+            if (!tab.value) {
+                tab.value = i
+            }
+            return tab
+        })
+        return arr
+    }, [originalTabs])
+
     // Validate the `value` value
     const isValid = tabs.some(option => option.value === value);
-    const safeValue = isValid ? value : (tabs[0]?.value); // Fallback to 0 if the grade is invalid
+    const safeValue = isValid ? value : (tabs[0]?.value)
     const component = tabs.find(t => t.value === value)?.component
 
     return (

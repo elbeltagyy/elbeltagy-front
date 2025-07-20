@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import { useLocation, useParams } from 'react-router-dom'
-import QuizCard from '../../components/exam/QuizCard'
-import TitleWithDividers from '../../components/ui/TitleWithDividers'
+
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 import AttemptHeader from '../../components/exam/AttemptHeader'
 import AttemptCard from '../../components/exam/AttemptCard'
@@ -10,7 +9,7 @@ import { useLazyGetOneAttemptQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 
 const totalDegree = (exam) => {
-    
+
     const total = exam.questions.reduce((acc, question) => {
         return acc += question.points || 1
     }, 0)
@@ -19,30 +18,58 @@ const totalDegree = (exam) => {
     return total
 }
 
-const modifyAndGetScore = (exam, chosenOptions) => {
+const arrangeQuestions = (questions, answers) => {
+    // console.log(questions)
+    const examQuestions = questions.map(q => ({ ...q, _id: q._id.toString() }));
+    const answerIds = answers.map(a => a.question.toString());
 
+    // Create a map for quick access
+    const questionMap = Object.fromEntries(examQuestions.map(q => [q._id, q]));
+
+    // First: questions in the same order as answers
+    const sortedFromAnswers = answerIds.map(id => questionMap[id]).filter(Boolean);
+
+    // Second: questions not in answers
+    const remainingQuestions = examQuestions.filter(q => !answerIds.includes(q._id));
+
+    // Merge both
+    return [...sortedFromAnswers, ...remainingQuestions];
+}
+
+const modifyAndGetScore = (exam, answers) => {
+    //arrange exam.questions = answers
+    // const attempt = exam.attempt
+    // const modifiedQuestions = exam.questions.map(question => {
+    //     const itsAnswer = attempt.answers.find(a => a?.question === question._id)
+    //     if (!itsAnswer) return question
+
+    //     return { ...question, rtOptionId: itsAnswer?.rtOptionId, chosenOptionId: itsAnswer?.chosenOptionId, answer: itsAnswer }
+    // })
+
+    exam.questions = arrangeQuestions(exam.questions, answers)
+    console.log(exam, answers)
     // chosenOptionId = rtOptionId ==> + score, right
-    const score = exam?.questions.reduce((acc, question, i,) => {
+    const score = exam.questions.reduce((acc, q, i,) => {
 
-        const AnsweredQuestion = chosenOptions.filter(({ questionId }) => questionId === question._id)[0]
-
+        const AnsweredQuestion = answers.find(answer => answer.question === String(q._id))
+        q.answer = AnsweredQuestion
         if (AnsweredQuestion?.chosenOptionId === "Not answered" || !AnsweredQuestion?.chosenOptionId) {
 
-            question.isAnswered = false
+            q.isAnswered = false
             return acc
         }
 
 
-        if (question.rtOptionId === AnsweredQuestion?.chosenOptionId) {
+        if (q.rtOptionId === AnsweredQuestion?.chosenOptionId) {
 
-            question.isAnswered = true
-            question.chosenOptionId = AnsweredQuestion.chosenOptionId
+            q.isAnswered = true
+            q.chosenOptionId = AnsweredQuestion.chosenOptionId
 
-            return acc += question.points
+            return acc += q.points
         } else {
 
-            question.isAnswered = true
-            question.chosenOptionId = AnsweredQuestion.chosenOptionId
+            q.isAnswered = true
+            q.chosenOptionId = AnsweredQuestion.chosenOptionId
 
             return acc
         }
@@ -56,49 +83,66 @@ const modifyAndGetScore = (exam, chosenOptions) => {
 
     exam.assessment = { score, percentage, rating, total: exam.total, ratingColor }
     return score
-
 }
 
-function AttemptPage() {
+function AttemptPage({ attempt, isShowBack = true }) {
 
     const location = useLocation()
     const { attemptId } = useParams()
-    let foundExam = location.state
+    const foundExam = location.state
 
-    let [exam, setExam] = useState()
-    // console.log('exam ==>', exam)
-
-    useEffect(() => {
-        setExam(JSON.parse(JSON.stringify(foundExam)))
-    }, [location])
+    const [exam, setExam] = useState()
 
     const [getData] = useLazyGetOneAttemptQuery()
     const [getAttempts] = useLazyGetData(getData)
 
+    const handelExam = (exam) => {
+        // Optimal Schema ={...examInfo, attempt ={answers, info}, questions={rtOptionId}, assessment}
+        const clonedExam = { ...exam }
+        totalDegree(clonedExam)
+        modifyAndGetScore(clonedExam, clonedExam?.attempt?.answers) //first change
+        clonedExam.tokenTime = clonedExam?.attempt?.tokenTime
+
+        setExam(clonedExam)
+    }
+
+    const setQuestion = (qId, newQ) => {
+        setExam(prev => {
+            prev.questions = prev.questions.map((question) => {
+                if (question._id === qId) {
+                    return { ...question, ...newQ }
+                } else {
+                    return question
+                }
+            })
+            return prev
+        })
+    }
+
     useEffect(() => {
         const trigger = async () => {
-            const res = await getAttempts({ id: attemptId }) //attempt and exam inside
-            setExam(JSON.parse(JSON.stringify({ ...res.exam, attempt: res })))
+            const res = await getAttempts({ id: attempt || attemptId }) //attempt and exam inside
+            handelExam({ ...res.exam, attempt: res })
         }
 
         if (!foundExam) {
             trigger()
+        } else {
+            handelExam(foundExam)
         }
     }, [location])
 
-
     if (!exam) return <LoaderSkeleton />
-
-    totalDegree(exam)
-    modifyAndGetScore(exam, exam?.attempt?.chosenOptions)
-    exam.tokenTime = exam?.attempt.tokenTime
-
+    //1- have Exam ={..exam, questions: rtOptId, attempt: {answers}}
+    //2- have Answers
+    //3- arrange exam questions as answers in same manner
+    //4- modify
 
     return (
         <Section>
             {/* <TitleWithDividers title={'حلك فى الاختبار'} /> */}
             <AttemptHeader exam={exam} />
-            <AttemptCard exam={exam} isAnsweres={true} />
+            <AttemptCard exam={exam} setQuestion={setQuestion} isShowBack={isShowBack} />
         </Section>
     )
 }

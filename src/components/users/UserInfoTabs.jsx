@@ -31,7 +31,7 @@ function UserInfoTabs({ user, setUser }) {
             />
             {tabOpen === 0 ?
                 <UserNotifications user={user} /> : tabOpen === 1 ?
-                    < UserCodes user={user} /> : tabOpen === 2 ?
+                    <UserCodes user={user} /> : tabOpen === 2 ?
                         <GetSubscriptions user={user._id} isShowTitle={true} /> : tabOpen === 3 ?
                             <UserAttempts user={user} /> : tabOpen === 4 ?
                                 <GetViewsCompo userId={user?._id} />

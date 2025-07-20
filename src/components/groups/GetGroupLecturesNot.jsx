@@ -101,7 +101,7 @@ function GetGroupLecturesNot({ group, code }) {
             headerName: 'تاريخ الانشاء',
             width: 200,
             type: 'date',
-            valueGetter: (params) => new Date(params.row.createdAt),
+            valueGetter: (params) => new Date(params),
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={1} />
             }

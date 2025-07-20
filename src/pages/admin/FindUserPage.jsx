@@ -31,7 +31,7 @@ function FindUserPage() {
     const [filterUsers] = useLazyGetData(getUsersData)
 
     const fetchFc = async (filter) => {
-        const res = await filterUsers({ userName: filter, limit: 3 })
+        const res = await filterUsers({ userName: 'contains_split_' + filter, limit: 3 })
         return res.users.map(user => user.userName)
     }
 

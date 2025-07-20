@@ -5,7 +5,7 @@ import * as Yup from "yup"
 import MakeInput from './MakeInput';
 import Loader from '../../style/mui/loaders/Loader';
 import { FilledHoverBtn } from '../../style/buttonsStyles';
-
+import DynamicFormGrid from './DynamicFormGrid2';
 const SEND = 'إرسال'
 
 export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false, disabledBtn = false }) {
@@ -44,16 +44,8 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
                     {(props) => (
                         <Form onChange={() => props.validateForm()} style={{ display: 'flex', alignItems: 'center', flexDirection: formDirection }}>
 
-                            <Box display={"flex"} justifyContent={"space-between"} flexWrap={"wrap"} width={'100%'} >
-                                {inputs && inputs.map((input, i) => {
-                                    return (
-                                        <Box key={i} sx={{ width: input.width || '100%', margin: !input.hidden && '14px 0' }}>
-                                            <MakeInput input={input} props={props} />
-                                        </Box>
-                                    )
-                                })}
-                            </Box>
-
+                            <DynamicFormGrid inputs={inputs} props={props} />
+                            
                             <FilledHoverBtn
                                 type='submit'
                                 disabled={disabledBtn ? disabledBtn : status?.isLoading || (!props.dirty && !submitBtnStatus) ? true : false}

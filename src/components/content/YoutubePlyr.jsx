@@ -76,6 +76,8 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
 
     // [s1-10:20, s2-50-80]
     useEffect(() => {
+        if (!sendStatistics) return
+
         let totalTime = 0;
         let watchedTime = 0;
         let currentTime = 0;
@@ -152,18 +154,6 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
             e.preventDefault();
         };
 
-
-        const disableShortcuts = (e) => {
-            // Disable common shortcuts for opening developer tools
-            if (
-                (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || // Ctrl+U (View Source)
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) || // Ctrl+Shift+I (Inspect)
-                (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) || // Ctrl+Shift+C (Inspect Element)
-                (e.key === 'F12') // F12 (Developer Tools)
-            ) {
-                e.preventDefault();
-            }
-        };
         window.addEventListener('contextmenu', disableRightClick);
         window.addEventListener('keydown', disableRightClick);
 
@@ -179,7 +169,6 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
             <YoutubeAdd setForbidden={setForbidden} />
         )}
         {/* {window.innerWidth > 1200 ? 'true' : 'false'}, {window.innerWidth} */}
-
     </div>
 }
 

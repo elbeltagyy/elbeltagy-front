@@ -47,7 +47,7 @@ function LoginPage() {
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
                 {/* banner */}
-                <BannerAuth title={lang.LOGIN_ENTRY} img={'/assets/login.jpg'} />
+                <BannerAuth title={lang.LOGIN_ENTRY} img={'/assets/login.png'} />
 
                 {/* Login form */}
                 <Box sx={{

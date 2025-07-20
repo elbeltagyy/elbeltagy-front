@@ -7,6 +7,8 @@ export default function usePostData(sendData, setLoading) {
   const navigate = useNavigate()
   let data
 
+  if(!sendData) return [null]
+
   const trigger = (values, isMultiPart, params) => {
 
     if (setLoading) {
@@ -23,6 +25,7 @@ export default function usePostData(sendData, setLoading) {
         }
       }
     })
+    
     // if multipart request into multer ...
     let formData = data
     if (isMultiPart) {

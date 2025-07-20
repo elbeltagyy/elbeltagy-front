@@ -14,6 +14,8 @@ import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { Link } from 'react-router-dom'
 import UserAvatar from '../users/UserAvatar'
 import TitleWithDividers from '../ui/TitleWithDividers'
+import { useLazyAnalysisSubscriptionsQuery } from '../../toolkit/apis/statisticsApi'
+import DynamicBarChart from '../../tools/charts/BarChart'
 
 const exportObj = {
     grade: (row) => {
@@ -202,12 +204,25 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
     ]
 
 
+    const [analysisSubscriptions, { data }] = useLazyAnalysisSubscriptionsQuery()
+    const analysisFc = async () => {
+        await analysisSubscriptions({ course: courseId, user })
+    }
 
     return (
         <Box sx={{ width: '100%' }}>
+
             {isShowTitle && (
                 <TitleWithDividers title={'الاشتراكات'} />
             )}
+
+            <DynamicBarChart
+                title='الاشتراكات'
+                trigger={analysisFc}
+                categories={data?.values?.categories}
+                series={data?.values?.result}
+                height="300px"
+            />
             <TabInfo count={subscriptionsCount} title={'عدد الاشتراكات'} i={1} />
             <MeDatagrid
                 type={'crud'}

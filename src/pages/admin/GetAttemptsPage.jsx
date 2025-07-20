@@ -8,7 +8,7 @@ import { Box, Button } from '@mui/material'
 
 import TabInfo from '../../components/ui/TabInfo'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
-import { useLazyGetAttemptsQuery } from '../../toolkit/apis/attemptsApi'
+import { useDeleteAttemptMutation, useLazyGetAttemptsQuery } from '../../toolkit/apis/attemptsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import ms from 'ms'
 import { useGetOneLectureQuery } from '../../toolkit/apis/lecturesApi'
@@ -22,6 +22,7 @@ import { getPercentage, totalDegree } from '../../tools/fcs/GetExamTotal'
 import SwitchStyled from '../../style/mui/styled/SwitchStyled'
 import { user_roles } from '../../settings/constants/roles'
 import UserAvatar from '../../components/users/UserAvatar'
+import usePostData from '../../hooks/usePostData'
 
 
 const exportObj = {
@@ -50,12 +51,17 @@ function GetAttemptsPage() {
 
     const { data: lecture, isLoading } = useGetOneLectureQuery({ id: lectureId, populate: 'exam' })
 
-
     const [attemptsNums, setAttemptsNums] = useState('loading ...')
 
     const [getData, status] = useLazyGetAttemptsQuery()
     const [getAttempts] = useLazyGetData(getData)
 
+    const [sendDelete] = useDeleteAttemptMutation()
+    const [deleteAttempt] = usePostData(sendDelete)
+
+    const deleteFc = async (id) => {
+        await deleteAttempt({ id: id })
+    }
     const [courseType, setCourseType] = useState(courseId)
 
     if (isLoading || !lectureId || !lecture) return <LoaderSkeleton />
@@ -75,7 +81,7 @@ function GetAttemptsPage() {
                 ...attempt.user,
                 _id: attempt._id,
                 createdAt: attempt.createdAt,
-                mark: attempt.mark, tokenTime: ms(attempt.tokenTime), total
+                mark: attempt.mark || 0, tokenTime: ms(attempt.tokenTime || 0), total
             }
         })
         setAttemptsNums(res.count)
@@ -125,7 +131,7 @@ function GetAttemptsPage() {
             }
         }, {
             field: 'tokenTime',
-            headerName: 'الوقت الماخوذ',
+            headerName: 'الوقت المتبقى',
             width: 150,
             renderCell: (params) => {
                 return <TabInfo count={(params.row.tokenTime)} i={2} />
@@ -200,7 +206,7 @@ function GetAttemptsPage() {
             <MeDatagrid
                 type={'crud'}
                 exportObj={exportObj} exportTitle={'عدد من ادو الاختبار'}
-                columns={columns} fetchFc={fetchFc} loading={status.isLoading} reset={courseType}
+                columns={columns} fetchFc={fetchFc} loading={status.isLoading} reset={courseType} deleteFc={deleteFc}
                 editing={
                     {
                         bgcolor: 'background.alt',

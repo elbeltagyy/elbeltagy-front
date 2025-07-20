@@ -12,8 +12,9 @@ function MakeSelect({ props, inputName, input, value }) {
         props.setFieldValue(inputName, e.target.value)
     }
     const disabledValues = input.disabledValues || []
+
     return (
-        <FormControl disabled={input.disabled || false} fullWidth error={hasError(props, inputName) ? true : false} color='warning'>
+        <FormControl disabled={input.disabled ?? false} fullWidth error={hasError(props, inputName) ? true : false} color='warning'>
             <InputLabel id="demo-simple-select-label">
                 <Box display={"flex"} alignItems={"center"} gap={".5rem"} sx={{
                     direction: 'ltr'
@@ -29,7 +30,7 @@ function MakeSelect({ props, inputName, input, value }) {
                 name={inputName}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={value === 0 ? 0 : value || ""}
+                value={value ?? ''} //value === 0 ? 0 : value ?? ""
                 label={input.label + "    --"}
                 onChange={setValue}
             >

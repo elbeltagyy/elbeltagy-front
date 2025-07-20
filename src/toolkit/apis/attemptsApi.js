@@ -21,6 +21,24 @@ const attemptsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        startExam: builder.mutation({
+            query: (data) => {
+                return {
+                    url: '/attempts',
+                    method: 'POST',
+                    body: data
+                }
+            }
+        }),
+        deleteAttempt: builder.mutation({
+            query: (data) => {
+                return {
+                    url: '/attempts/' + data.id,
+                    method: 'delete',
+                    data
+                }
+            }
+        }),
         getUserInfo: builder.query({
             query: (queries) => {
                 const params = queries
@@ -34,4 +52,6 @@ const attemptsApi = apiSlice.injectEndpoints({
 })
 
 
-export const { useLazyGetAttemptsQuery, useLazyGetOneAttemptQuery, useLazyGetUserInfoQuery } = attemptsApi
+export const { useLazyGetAttemptsQuery, useLazyGetOneAttemptQuery, useStartExamMutation,
+    useDeleteAttemptMutation,
+    useLazyGetUserInfoQuery } = attemptsApi

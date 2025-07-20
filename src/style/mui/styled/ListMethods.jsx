@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import { Radio } from '@mui/material';
 
-function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) { //{ id, icon, label, desc }
+function ListMethods({ methods = [], setMethod, activeMethod, disabled = [], sx, itemWidth = 360, isMulti = false, disableP = true }) { //{ value, icon, label, desc }
 
     const isDisabled = (method) => {
         if (method.isValid) return false
@@ -16,33 +16,50 @@ function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) {
         } else {
             return false
         }
+    }
 
+    const isChecked = (value) => {
+        if (isMulti) {
+            return activeMethod.includes(value)
+        } else {
+            return activeMethod === value
+        }
+    }
+
+    const handelChosen = (value) => {
+        if (isMulti) {
+            if (isChecked(value)) {
+                setMethod(prev => (prev.filter(ele => ele !== value)))
+            } else {
+                setMethod(prev => ([...prev, value]))
+            }
+        } else {
+            setMethod(value)
+        }
     }
 
     return (
-        <List sx={{ width: '100%', maxWidth: 360 }}>
+        <List sx={{ width: '100%', ...sx }}>
             {methods.map((method) => {
                 const labelId = `checkbox-list-label-${method.value}`;
 
                 return (
                     <ListItem
                         key={method.value}
-                        secondaryAction={
-                            <IconButton edge="end" aria-label="comments" disabled={isDisabled(method)}>
-                                {method.icon}
-                            </IconButton>
-                        }
+
                         sx={{
                             border: '1px dotted grey',
                             mb: '6px',
-                            borderRadius: '6px'
+                            borderRadius: '6px',
+                            maxWidth: itemWidth,
+                            ...method.sx
                         }}
-                        disablePadding
+                        disablePadding={disableP}
                     >
-                        <ListItemButton disabled={isDisabled(method)} role={undefined} onClick={() => setMethod(method.value)} dense>
+                        <ListItemButton disabled={isDisabled(method)} role={undefined} onClick={() => handelChosen(method.value)} dense>
                             <ListItemIcon>
                                 <Radio
-                                    checked={activeMethod === method.value}
+                                    checked={isChecked(method?.value)}
                                     value={method.value}
                                     name="radio-buttons"
                                     inputProps={{ 'aria-label': method.value }}
@@ -50,6 +67,11 @@ function ListMethods({ methods = [], setMethod, activeMethod, disabled = [] }) {
                                 />
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={method.label} secondary={method.description} />
+                            {/* secondaryAction={ */}
+                            <IconButton edge="end" aria-label="comments" disabled={isDisabled(method)}>
+                                {method.icon}
+                            </IconButton>
+                        {/* } */}
                         </ListItemButton>
                     </ListItem>
                 );

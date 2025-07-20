@@ -29,6 +29,7 @@ export default function NestedInput({ inputName, input, props, index }) {
                 return (
                     <Box key={i} sx={{ my: '16px' }}>
                         <MakeInput input={nestedInput} props={props} nestedInputName={nestedInputName} />
+
                         {hasError(props, nestedInputName) && (
                             <Alert sx={{ m: "5px" }} severity='error'>{props.getFieldMeta(nestedInputName).error}</Alert>
                         )}

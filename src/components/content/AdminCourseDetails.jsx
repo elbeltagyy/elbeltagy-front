@@ -30,7 +30,7 @@ import * as Yup from "yup"
 import Section from '../../style/mui/styled/Section'
 import AdminCourseStatisticsMenu from './AdminCourseStatisticsMenu'
 
-function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchLectures, lecturesCount }) {
+function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchLectures, lecturesCount, setGrade }) {
 
     const [course, setCourse] = useState(null)
     const [getData, status] = useLazyGetOneCourseQuery()
@@ -43,6 +43,9 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
         const trigger = async () => {
             setCourse({ isLoading: true })
             const res = await getOneCourse({ _id: courseId }, false)
+            if (setGrade) {
+                setGrade(res?.grade)
+            }
             setCourse(res)
         }
         trigger()

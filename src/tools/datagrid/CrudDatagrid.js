@@ -1,12 +1,11 @@
 import { DataGrid, GridActionsCellItem, GridRowEditStopReasons, GridRowModes, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import React, { useEffect, useMemo, useState } from 'react'
 
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { Box, Button, CircularProgress, Grid, IconButton, styled, Typography, useTheme } from '@mui/material';
+import { Box, Grid, IconButton, useTheme } from '@mui/material';
 import ModalStyled from '../../style/mui/styled/ModalStyled';
 import ExportAsPdf from './ExportAsPdf';
 import { HiOutlineRefresh } from "react-icons/hi";
@@ -23,10 +22,11 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 // when update done forget to return the new object to rows
 
 
+const fullDateTimeRegex = /^[A-Za-z]{3}\s[A-Za-z]{3}\s\d{1,2}\s\d{4}\s\d{2}:\d{2}:\d{2}\sGMT[+-]\d{4}\s\(.+\)$/;
 
 
-function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc, setSelection = false }) {
-    reset = Array.isArray(reset) ? reset : [reset]
+function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, addColumns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc, setSelection = false, allSelected }) {
+    reset = (Array.isArray(reset) ? reset : [reset])
 
     const [isOpen, setOpenModal] = useState(false)
     const [deleteId, setDeleteId] = useState("")
@@ -51,10 +51,13 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
 
     // filtering
     const onFilterChange = React.useCallback((filterModel) => {
-
         const filtered = {}
         filterModel?.items.map((item) => {
-            filtered[item.field] = item.operator + '_split_' + (item.value || '') || ""
+            if (fullDateTimeRegex.test(item.value)) {
+                const date = new Date(item.value)
+                item.value = date.toISOString().slice(0, 10);
+            }
+            filtered[item.field] = item.operator + '_split_' + (item.value ?? '') ?? ""
             return filtered
         })
         setFilter(filtered)
@@ -77,13 +80,13 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
     }, []);
 
 
-
-
     // for editing settings #####
     const [rowModesModel, setRowModesModel] = React.useState({});
 
     const handleRowModesModelChange = (newRowModesModel) => {
-        setRowModesModel(newRowModesModel);
+        if (updateFc) {
+            setRowModesModel(newRowModesModel);
+        }
     };
 
     const handleEditClick = (id) => () => {
@@ -133,6 +136,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
         if (!isShowActions) {
             return [...columns]
         }
+
         return [...columns, {
             field: 'actions',
             type: 'actions',
@@ -304,7 +308,7 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
         );
     }
     return (
-        <Box width={'100%'} sx={{ position: 'relative' }}>
+        <Box width={'100%'} sx={{ position: 'relative', height: '100%' }}>
             <DataGrid
                 apiRef={apiRef}
                 rows={rows || []}
@@ -314,7 +318,6 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                 getRowId={(param) => param._id}
 
                 pageSizeOptions={[5, 10, 50, 100]}
-
 
                 // isRowSelectable={(params) => params.row.isChecked}
 
@@ -349,12 +352,23 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                         return updatedCols
                     })
                 }}
-
+                //#Selection
                 checkboxSelection
                 keepNonExistentRowsSelected
 
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     if (setSelection) {
+
+                        if (allSelected) {
+                            newRowSelectionModel = newRowSelectionModel.map(selection => {
+                                if (typeof selection === 'string') {
+                                    selection = rows.find(r => r._id === selection)
+                                }
+
+                                return selection
+                            })
+                        }
+
                         setSelection(newRowSelectionModel)
                     }
                 }}
@@ -364,10 +378,17 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                 slots={{
                     toolbar: CustomToolbar,
                 }}
+                // showToolbar
 
+                //problems in updateing => transitions for of 9 5-1 || show/hide all || when click it change pos and override data
                 // Hide columns status and traderName, the other columns will remain visible
                 // columnVisibilityModel={hideColumns || []}
-                autoHeight={editing?.autoHeight || true}
+                // autoHeight={editing?.autoHeight || true}
+                // autosizeOptions={{
+                //     includeOutliers: true
+                // }}
+                getRowHeight={() => 'auto'}
+
                 sx={{
                     bgcolor: 'background.default',
                     // height: '70vh',
@@ -375,17 +396,16 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                     borderRadius: '16px',
                     border: 'none',
                     boxShadow: theme.shadows[1],
-                    "&  .muirtl-1iyq7zh-MuiDataGrid-columnHeaders": {
+                    "&  .MuiDataGrid-columnHeaders": {
                         bgcolor: 'background.alt', my: '8px', color: 'neutral.0' //28323D
                     },
                     '&  .MuiTablePagination-input': {
                         display: 'inline-flex'
-                    },
-                    // '& .MuiDataGrid-overlay': {
-                    //     position: 'fixed',
-                    //     top: 0,
-                    //     width: '100%', height: '100%'
-                    // }
+                    }, '& .MuiDataGrid-columnHeader': {
+                        bgcolor: 'background.alt',
+                    }, '& .MuiDataGrid-scrollbar': {
+                        height: '5px'
+                    }
                 }}
 
             />

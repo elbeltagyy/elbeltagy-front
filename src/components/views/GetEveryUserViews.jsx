@@ -52,6 +52,7 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
                 avatar: view.user?.avatar, name: view.user?.name, userName: view.user?.userName, isActive: view.user?.isActive, phone: view.user?.phone, familyPhone: view.user?.familyPhone, grade: view.user?.grade,
             }
         })
+        // console.log(res)
         setUsersCount(res.count)
         if (refetchUsers) {
             refetchUsers()

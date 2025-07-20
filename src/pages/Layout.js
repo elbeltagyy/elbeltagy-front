@@ -1,6 +1,6 @@
 import { Box, useMediaQuery } from '@mui/material'
 import { Suspense, useEffect, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
 
 import Navbar from '../components/header/Navbar'
 import Sidebar from '../components/header/Sidebar'
@@ -16,9 +16,13 @@ function Layout() {
     const isMobileScreen = useMediaQuery('(max-width:630px)');
     const [isOpenedSidebar, setSidebar] = useState(false)
 
+    const pathName = location.pathname
+
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [location])
+        window.scrollTo({
+            top: 0, left: 0, behavior: 'instant'
+        })
+    }, [pathName])
 
     // useEffect(() => {
     //     if (localStorage.getItem('deviceId')) {

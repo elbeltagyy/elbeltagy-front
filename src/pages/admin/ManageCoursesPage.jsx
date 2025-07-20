@@ -15,6 +15,7 @@ import AdminCourseDetails from '../../components/content/AdminCourseDetails'
 import ManageUnits from './ManageUnits'
 import ManageCourses from './ManageCourses'
 import { useSearchParams } from 'react-router-dom'
+import gradeConstants from '../../settings/constants/gradeConstants'
 
 
 function ManageCoursesPage() {
@@ -37,10 +38,11 @@ function ManageCoursesPage() {
     const [lecturesCount, setLecturesCount] = useState('loading...')
     useEffect(() => {
         const trigger = async () => {
-            const allGrades = await getCoursesCount()
-            const grade1 = await getCoursesCount({ grade: 1 }, false)
-            const grade2 = await getCoursesCount({ grade: 2 }, false)
-            setCounts({ allGrades, grade1, grade2 })
+            const [...counts] = await Promise.all([
+                getCoursesCount({ grade: 'all' }),
+                ...gradeConstants.map(g => getCoursesCount({ grade: g.index })),
+            ])
+            setCounts(counts)
         }
         trigger()
     }, [grade, activeCourse, activeUnit])
@@ -52,6 +54,14 @@ function ManageCoursesPage() {
         })
         setActiveUnit('')
         setActiveCourse('')
+    }
+
+    const changeOnlyGrade = (index) => {
+        setGrade(index)
+        setSearchParams(prev => ({
+            ...Object.fromEntries(prev.entries()), // convert to a plain object
+            grade: index.toString(),              // set the new param
+        }));
     }
 
     const changeUnit = (unit) => {
@@ -85,6 +95,7 @@ function ManageCoursesPage() {
                     {(activeCourse && activeUnit) && (
                         <Box sx={{ width: '100%' }}>
                             <AdminCourseDetails
+                                setGrade={changeOnlyGrade}
                                 setCourses={setCourses}
                                 setActiveCourse={setActiveCourse}
                                 lecturesCount={lecturesCount}

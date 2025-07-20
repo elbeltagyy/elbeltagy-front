@@ -2,9 +2,24 @@
     --main-userName: '';
 }
 
+html{
+    scroll-behavior: smooth !important;
+}
+
 .test {
     animation: name duration timing-function delay iteration-count direction fill-mode;
 }
+
+.MuiDataGrid-columnHeaderTitle {
+    line-height: inherit !important;
+}
+
+/* singleSelect => top right error */
+.MuiDataGrid-cell {
+    display: flex;
+    align-items: center;
+}
+
 
 @media (max-width: 600px) {
     .MuiDataGrid-filterForm {
@@ -44,12 +59,12 @@
 
 /* Hide "Up Next" suggestions */
 .ytp-pause-overlay {
-  display: none !important;
+    display: none !important;
 }
 
 /* Hide the "More videos" end screen */
 .ytp-endscreen-content {
-  display: none !important;
+    display: none !important;
 }
 
 
@@ -76,6 +91,7 @@
     /* left: auto !important; */
     /* background: transparent !important; */
     /* background-color: red !important; */
+    /* display: none !important; */
 }
 
 /* .plyr__time,
@@ -107,6 +123,7 @@
         height: 100%;
     }
 }
+
 .control--overlaid {
     z-index: 2 !important;
 }

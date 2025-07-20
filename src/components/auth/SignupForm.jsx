@@ -83,7 +83,6 @@ function SignupForm() {
             type: 'password',
             icon: <TbPasswordUser color='green' />,
             validation: Yup.string().required("مطلوب").min(6, "يجب ان يكون اكثر من 6")
-
         }, {
             name: 'confirmPassword',
             label: lang.CONFIRM_PASSWORD,
@@ -91,40 +90,7 @@ function SignupForm() {
             icon: <TbPasswordUser color='green' />,
             validation: Yup.string().required("مطلوب")
                 .min(6, "يجب ان يكون اكثر من 6").oneOf([Yup.ref('password'), null], 'كلمة المرور غير متطابقه')
-        }, {
-            name: 'fileConfirm',
-            type: 'file',
-            label: 'صوره تاكيد للهويه',
-            icon: <TbPasswordUser color='green' />,
-            validation: Yup.mixed().test('fileRequired', 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم', function (file) {
-                const { code } = this.parent; // Access the `code` field from the parent object
-                if (!code || code.length === 0) {
-                    // If `code` is empty, file is required
-                    if (!file) {
-                        return this.createError({
-                            message: 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم',
-                        });
-                    }
-                    // File type validation
-                    const isValidType = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
-                    if (!isValidType) {
-                        return this.createError({
-                            message: 'Please provide a supported image type (jpg, png, or webp)',
-                        });
-                    }
-                    // File size validation (must be less than 3MB)
-                    const isValidSize = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) * 1024 * 1024; // 3MB
-                    if (!isValidSize) {
-                        return this.createError({
-                            message: 'File must be less than ' + (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) + 'MB',
-                        });
-                    }
-                }
-
-                return true; // No validation error if `code` has a value or file is valid
-            })
-
-        },
+        }, 
     ]
 
     const [sendData, status] = useSignupMutation()
@@ -133,15 +99,51 @@ function SignupForm() {
     const dispatch = useDispatch()
 
     const onSubmit = async (values) => {
-        const user = await signupFc(values, true)
+        const user = await signupFc(values)
 
         if (user) {
             dispatch(setUser({ ...user }))
         }
     }
     return (
-        <MakeForm inputs={inputs} onSubmit={onSubmit} btnWidth={'100%'} status={status} />
+        <MakeForm inputs={inputs} onSubmit={onSubmit} modalInfo={{desc: 'هل انت متاكد من ان البيانات صحيحه ؟'}} btnWidth={'100%'} status={status} />
     )
 }
 
 export default SignupForm
+
+
+// {
+//     name: 'fileConfirm',
+//     type: 'file',
+//     label: 'صوره تاكيد للهويه',
+//     icon: <TbPasswordUser color='green' />,
+//     validation: Yup.mixed().test('fileRequired', 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم', function (file) {
+//         const { code } = this.parent; // Access the `code` field from the parent object
+//         if (!code || code.length === 0) {
+//             // If `code` is empty, file is required
+//             if (!file) {
+//                 return this.createError({
+//                     message: 'صوره شهاده ميلادك او اى اثبات شخصيه او استعمل كود للتفعيل من خلال التواصل مع الدعم',
+//                 });
+//             }
+//             // File type validation
+//             const isValidType = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
+//             if (!isValidType) {
+//                 return this.createError({
+//                     message: 'Please provide a supported image type (jpg, png, or webp)',
+//                 });
+//             }
+//             // File size validation (must be less than 3MB)
+//             const isValidSize = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) * 1024 * 1024; // 3MB
+//             if (!isValidSize) {
+//                 return this.createError({
+//                     message: 'File must be less than ' + (import.meta.env.VITE_MAX_IMAGE_SIZE || 3) + 'MB',
+//                 });
+//             }
+//         }
+
+//         return true; // No validation error if `code` has a value or file is valid
+//     })
+
+// },

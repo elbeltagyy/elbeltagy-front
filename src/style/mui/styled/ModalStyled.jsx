@@ -13,7 +13,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function ModalStyled({ open, setOpen, title, desc, children, action, agree, fullWidth = false }) {
+export default function ModalStyled({ open, setOpen, title, desc, children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -28,9 +28,10 @@ export default function ModalStyled({ open, setOpen, title, desc, children, acti
             <Dialog
                 open={open}
                 TransitionComponent={Transition}
-                // keepMounted
+                keepMounted={isKeepMounted}
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
+                fullScreen={fullScreen}
                 sx={{
                     '& .MuiPaper-root': {
                         minWidth: '250px', border: '1px solid rgba(255 255 255, .1)', outline: '1px solid #fff', width: fullWidth ? '100%' : 'auto'

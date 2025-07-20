@@ -1,16 +1,20 @@
-import { Avatar, Card, CardHeader, CardMedia, IconButton, Typography, useTheme } from '@mui/material'
-import React, { useState } from 'react'
+import { Alert, Avatar, Card, CardHeader, IconButton, Typography, useTheme } from '@mui/material'
+import { useState } from 'react'
 import ReactPlayer from 'react-player'
 
 import { MdCancel } from "react-icons/md";
 import ModalStyled from '../../../style/mui/styled/ModalStyled';
 
+const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
 
 export default function ShowVid({ file, removeFile }) {
     const theme = useTheme()
 
     const [open, setOpen] = useState(false)
-
+    if (!youtubeRegex.test(file?.url)) {
+        return <Alert sx={{ m: "5px" }} severity='error'>Invalid Youtube URL .</Alert>
+    }
+    
     return (
         <Card sx={{ maxWidth: 345, backgroundColor: theme.palette.background.alt }}>
             <ReactPlayer

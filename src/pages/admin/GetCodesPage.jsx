@@ -191,7 +191,7 @@ function GetCodesPage() {
             width: 170,
             // type: 'number',
             renderCell: (params) => {
-                return <TabInfo count={getFullDate(params.row.createdAt)} i={0} />
+                return <TabInfo count={getFullDate(params?.row?.createdAt)} i={0} />
             }
         },
     ]

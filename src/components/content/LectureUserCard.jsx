@@ -39,12 +39,12 @@ function LectureUserCard({ lecture, isSubscribed, currentIndex, lectureIndex }) 
                     )}
                 </Box>}
             />
-            <CardMedia
+            {/* <CardMedia
                 component="img"
                 height="194"
                 image="https://th.bing.com/th?id=OIP.xEW4lFt6NL-5vdigUqSG1AHaEK&w=333&h=187&c=8&rs=1&qlt=90&r=0&o=6&pid=3.1&rm=2"
                 alt="Paella dish"
-            />
+            /> */}
             <CardContent sx={{ flex: 1 }}>
                 <Typography variant="body1" sx={{ color: 'text.secondary' }}>
                     {lecture.description}
@@ -85,6 +85,7 @@ function LectureUserCard({ lecture, isSubscribed, currentIndex, lectureIndex }) 
                             {!lecture.locked && lecture.isFree ? <IoTimerSharp size={'2rem'} /> : <FaLock size={'2rem'} />}
 
                         </Avatar>
+                        {/* when Locked And Free Lecture */}
                         <FlexColumn sx={{ color: 'grey.1000', bgcolor: 'grey.0', p: '8px 12px', borderRadius: '12px', minWidth: '150px' }}>
                             {!lecture.locked && lecture.isFree && (
                                 <Typography>

@@ -2,7 +2,6 @@ import { FormHelperText, useTheme } from '@mui/material'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { ErrorMessage, FastField } from 'formik'
-import React, { useState } from 'react'
 
 function MakeFullDate({ inputName, props, value, input }) {
 
@@ -14,7 +13,8 @@ function MakeFullDate({ inputName, props, value, input }) {
 
     return (
         <div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider
+                dateAdapter={AdapterDayjs}  >
                 <FastField
                     as={DateTimePicker}
                     name={inputName}
@@ -22,7 +22,7 @@ function MakeFullDate({ inputName, props, value, input }) {
                     color="warning"
 
                     onChange={(newValue) => handleValue(newValue)} label={input.label} />
-                <FormHelperText sx={{color: theme.palette.error.dark}}>
+                <FormHelperText sx={{ color: theme.palette.error.dark }}>
                     <ErrorMessage name={inputName} />
                 </FormHelperText>
             </LocalizationProvider>

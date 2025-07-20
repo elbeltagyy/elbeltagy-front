@@ -93,7 +93,7 @@ function GetCoupons({ course, reset }) {
             field: 'name',
             headerName: "اسم الكورس",
             width: 300,
-            valueGetter: (params) => params.row.course?.name || codeConstants.GLOBAL,
+            valueGetter: (name) => name|| codeConstants.GLOBAL,
         }, {
             field: 'type',
             headerName: "نوع الكوبون",

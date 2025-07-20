@@ -37,11 +37,11 @@ function Hero() {
 
                         <Typography variant='h2' component={'h1'}
                             sx={{ WebkitTextStroke: "4px  cyan", color: 'transparent', opacity: '.2', position: 'absolute', left: 0, top: '-80px', minWidth: "200px" }}  >
-                            الجيولوجيا فى شوال
+                            الاحياء السنه دى غير
                         </Typography>
 
                         <Typography variant='banner' component={'h1'} sx={{ scale: isMobileScreen ? '1.1' : '1' }}  >
-                            مع م/ <br /> <span style={{ color: 'orange', }}>البلتاجى</span> جيو
+                             م/   <span style={{ color: 'orange', }}>محمد</span> البلتاجي
                         </Typography>
 
                     </Box>
@@ -64,8 +64,8 @@ function Hero() {
                         </Typography>
                     </Box>
 
-                    {/* <Typography variant='h6'>إحنا نغيب  غبتنا و نرجع بهيبتنا</Typography> */}
-                    <ScallyBtn endIcon={<img style={{ width: '30px' }} alt='كورسات الچيولوچيا' src='/assets/earth-icon.svg' />} component={Link} to={'/grades/2'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الچيولوچيا</ScallyBtn>
+                    <Typography variant='h6'>إحنا نغيب  غبتنا و نرجع بهيبتنا</Typography>
+                    <ScallyBtn endIcon={<img style={{ width: '30px' }} alt='كورسات الاحياء' src='/assets/bacteria.svg' />} component={Link} to={'/grades/3'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الاحياء</ScallyBtn>
 
                     <Box display={'flex'} justifyContent={'space-around'} flexDirection={'row'} sx={{ minWidth: '250px' }}>
                         <IconButton component={Link} to={'https://www.facebook.com/Elbeltagy.Geo?mibextid'}>

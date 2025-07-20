@@ -14,7 +14,6 @@ export default function TabsStyled({ tabs, setValue, value }) {
     const isValid = tabs.some(option => option.value === value);
     const safeValue = isValid ? value : (tabs[0]?.value); // Fallback to 0 if the grade is invalid
 
-
     return (
         <Box
             sx={{

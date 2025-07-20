@@ -5,7 +5,7 @@ import { hasError } from './constants/hasError'
 
 function MakeField({ input, inputName, props }) {
     return (
-        <Field
+        <FastField
             as={TextField}
             sx={{
                 display: input.hidden && "none",
@@ -13,7 +13,8 @@ function MakeField({ input, inputName, props }) {
                 direction: input.direction || 'ltr',
                 '& label': {
                     top: '-6px',
-                }
+                },
+                ...input.sx
             }}
 
             name={inputName}

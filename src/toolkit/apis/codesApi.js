@@ -24,7 +24,7 @@ const codesApi = apiSlice.injectEndpoints({
             query: (queries) => {
                 const params = queries
                 return {
-                    url: "/codes/user",
+                    url: "/codes/user", 
                     params
                 }
             }
@@ -33,7 +33,7 @@ const codesApi = apiSlice.injectEndpoints({
             query: (queries) => {
                 const params = queries
                 return {
-                    url: "/codes" + params.id,
+                    url: "/codes" + params.id, // *_*
                     params
                 }
             }

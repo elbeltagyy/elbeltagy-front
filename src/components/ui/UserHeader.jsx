@@ -13,11 +13,12 @@ import { PiPhoneDisconnectFill } from 'react-icons/pi'
 import { IoSchool } from 'react-icons/io5'
 import { MdMarkEmailRead, MdOutlineDriveFileRenameOutline } from 'react-icons/md'
 import { MdVerifiedUser } from "react-icons/md";
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FlexBetween, FlexColumn } from '../../style/mui/styled/Flexbox'
 import RowInfo from './RowInfo'
 import { FaWallet } from 'react-icons/fa'
 import { HashLink } from 'react-router-hash-link';
 import governments from '../../settings/constants/governments'
+import TabInfo from './TabInfo'
 
 // eslint-disable-next-line react/prop-types
 export default function UserHeader({ children, user, flexDirection = 'row', variant, isAll = false }) {
@@ -59,13 +60,17 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                     <DataWith3Items title={lang.NAME} icon={<MdOutlineDriveFileRenameOutline size={'2rem'} />} desc={user?.name} />
                     <DataWith3Items title={lang.GRADE} icon={<IoSchool size={'2rem'} />} desc={user?.role === user_roles.ADMIN || user?.role === user_roles.SUBADMIN ? user?.role : gradeConstants.filter(g => g.index === Number(user?.grade))[0]?.name} />
                     <DataWith3Items title={lang.ROLE} icon={<MdVerifiedUser size={'2rem'} />} desc={user?.role} />
+                    <DataWith3Items title={'الدرجات'} icon={<MdVerifiedUser size={'2rem'} />} desc={<FlexBetween>
+                        <TabInfo count={user.marks} i={1} title={'درجات الاسئله'} isBold={false} />
+                        <TabInfo count={user.exam_marks} i={2} title={'درجات الاختبارت'} isBold={false} />
+                    </FlexBetween>} />
                     {isAll && (
                         <>
                             <DataWith3Items title={lang.USERNAME} icon={<MdOutlineDriveFileRenameOutline size={'2rem'} />} desc={user?.userName} />
                             <DataWith3Items title={lang.EMAIL} icon={<MdMarkEmailRead size={'2rem'} />} desc={user?.email} />
                             <DataWith3Items title={lang.PHONE} icon={<FaSquarePhoneFlip size={'2rem'} />} desc={user?.phone} />
                             <DataWith3Items title={lang.FAMILY_PHONE} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.familyPhone} />
-                            <DataWith3Items title={lang.GOVERNMENT} icon={<RiGovernmentFill size={'2rem'} />} desc={governments.find(g => Number(g.id)=== user?.government)?.governorate_name_ar} />
+                            <DataWith3Items title={lang.GOVERNMENT} icon={<RiGovernmentFill size={'2rem'} />} desc={governments.find(g => Number(g.id) === user?.government)?.governorate_name_ar} />
                             {/* <DataWith3Items title={'عدد الاجهزه المسجله'} icon={<PiPhoneDisconnectFill size={'2rem'} />} desc={user?.devicesRegistered.length} /> */}
                             {(user.role === user_roles.STUDENT || user.role === user_roles.ONLINE) && (
                                 <FlexColumn sx={{ width: '100%' }}>

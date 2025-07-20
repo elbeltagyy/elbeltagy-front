@@ -12,6 +12,16 @@ const statisticsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        analysisUsers: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/users/analysis",
+                    params
+                }
+            }
+        }),
         getUnitsCount: builder.query({
             query: (queries) => {
                 const params = queries
@@ -48,6 +58,16 @@ const statisticsApi = apiSlice.injectEndpoints({
 
                 return {
                     url: "/statistics/subscriptions",
+                    params
+                }
+            }
+        }),
+        analysisSubscriptions: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/subscriptions/analysis",
                     params
                 }
             }
@@ -92,12 +112,48 @@ const statisticsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        getTagsCount: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/tags",
+                    params
+                }
+            }
+        }),
+        getQuestionsCount: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/questions",
+                    params
+                }
+            }
+        }),
+        getAnswersCount: builder.query({
+            query: (queries) => {
+                const params = queries
+
+                return {
+                    url: "/statistics/answers",
+                    params
+                }
+            }
+        }),
     })
 })
 
 
 
-export const { useLazyGetUsersCountQuery, useLazyGetUserExamAttemptsCountQuery,
-    useLazyGetUnitsCountQuery, useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery, useGetSubscriptionsCountQuery, useGetUsersNotificationsCountQuery,
-    useGetViewsCountQuery, useGetByUsersViewsCountQuery
+export const {
+    useLazyGetUsersCountQuery, useLazyAnalysisUsersQuery, useAnalysisUsersQuery,
+    useLazyGetUserExamAttemptsCountQuery,
+    useLazyGetUnitsCountQuery,
+    useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery,
+    useGetSubscriptionsCountQuery, useLazyAnalysisSubscriptionsQuery,
+    useGetUsersNotificationsCountQuery,
+    useGetViewsCountQuery, useGetByUsersViewsCountQuery,
+    useGetTagsCountQuery, useGetQuestionsCountQuery, useGetAnswersCountQuery
 } = statisticsApi

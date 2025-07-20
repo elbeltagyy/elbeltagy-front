@@ -28,6 +28,8 @@ export const getDateWithTime = (date) => {
 const durationRegex = /^(?!^\d+$)(?:(?:\d+[hms]))(?:\s+(?:(?:\d+[hms])))*$/;
 
 export const formatDuration = (ms, isSeconds = false, separated) => {
+    if (!ms || !Number(ms) === 0) return
+
     let milliSeconds = ms
     if (/[a-zA-Z]/.test(ms)) {
         // Run something if there is a letter
@@ -58,7 +60,9 @@ export const formatDuration = (ms, isSeconds = false, separated) => {
 }
 
 export const convertToMs = (duration) => {
+
     let milliSeconds = 0
+    if (typeof duration === 'number') return duration
     // if (!durationRegex.test(duration)) {
     //     return 0
     // }

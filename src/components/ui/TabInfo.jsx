@@ -1,8 +1,7 @@
-import React, { memo } from 'react'
-import './tabInfo.css'
+import { memo } from 'react'
 import { Box, Typography, useTheme } from '@mui/material'
+import './tabInfo.css'
 
-let m = 0
 function TabInfo({ count, i, title, icon, isBold = true, sx }) {
 
     const theme = useTheme()

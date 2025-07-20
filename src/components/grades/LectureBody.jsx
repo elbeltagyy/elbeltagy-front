@@ -20,7 +20,7 @@ function LectureBody({ lecture, lectureIndex, courseId }) {
         let value = '"' + user.userName + '"'
         document.documentElement.style.setProperty('--main-userName', `${value}`)
     }
-    
+
     return (
         <Box sx={{ width: '100%', maxWidth: '800px' }}>
             <FlexColumn gap={'16px'}>

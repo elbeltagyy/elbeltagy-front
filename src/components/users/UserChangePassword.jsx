@@ -33,14 +33,14 @@ function UserChangePassword({ user }) {
             placeholder: "كلمه السر الجديده",
             icon: <PasswordIcon sx={{ color: green[500] }} />,
             validation: Yup.string().min(6, "يجب ان يكون اكثر من 6")
-
         }, {
             name: 'confirmPassword',
             label: lang.CONFIRM_PASSWORD,
             type: "password",
-            placeholder: "new password",
-            validation: Yup.string().min(6, "should be at least 6 characters"),
-            icon: <PasswordIcon sx={{ color: green[500] }} />
+            placeholder: "تاكيد كلمه السر الجديده",
+            icon: <PasswordIcon sx={{ color: green[500] }} />,
+            validation: Yup.string().required("مطلوب")
+            .min(6, "يجب ان يكون اكثر من 6").oneOf([Yup.ref('password'), null], 'كلمة المرور غير متطابقه')
         }
     ]
 

@@ -276,7 +276,7 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
                 <Section>
                     <TabInfo count={'عدد الاحداث ' + " " + events.length + " " + "حدث"} i={1} />
                     <Separator />
-                    <TitleWithDividers title={'تفاصيل المشاهده للطالب' + ' : ' + userInEvent.name} avatar={userInEvent.avatar} isIcon={true} />
+                    <TitleWithDividers title={'تفاصيل المشاهده للطالب' + ' : ' + userInEvent.name} avatar={userInEvent.avatar} />
                     {events.length !== 0 ? (
                         <FlexColumn gap={'12px'}>
                             {events.map((event, i) => {

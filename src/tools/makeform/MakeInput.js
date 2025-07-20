@@ -1,6 +1,3 @@
-import { ErrorMessage, FastField, Field, useField } from 'formik'
-import React, { useEffect, useMemo, useState } from 'react'
-
 import MakeFieldArray from './MakeFieldArray'
 import MakeRadio from './components/MakeRadio'
 import MakeFile from './components/MakeFile'
@@ -8,7 +5,6 @@ import MakeFile from './components/MakeFile'
 import { getValues } from './constants/getValue'
 import { getInputName } from './constants/getInputName'
 import MakeTitle from './components/MakeTitle'
-import { hasError } from './constants/hasError'
 import MakeChunk from './MakeChunk'
 import MakeSelect from './components/MakeSelect'
 import MakeSelectRef from './components/MakeSelectRef'
@@ -22,6 +18,8 @@ import ShowPdf from './components/ShowPdf'
 import MakeField from './MakeField'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import ShowBunny from './components/ShowBunny'
+import { hasError } from './constants/hasError'
+import { Alert } from '@mui/material'
 
 const getGoogleDrivePreviewLink = (originalLink) => {
     const fileIdRegex = /\/d\/(.*?)\//;
@@ -35,100 +33,87 @@ const getGoogleDrivePreviewLink = (originalLink) => {
     }
 };
 
-const m = '6px 0'
 export default function MakeInput({ input, props, nestedInputName, style }) {
     //nestedInputName in case used by field array
 
     const inputName = getInputName(nestedInputName, input)
     const value = getValues(inputName, props)
+    const setValue = (value) => {
+        props.setFieldValue(inputName, value)
+    }
 
-    if (input.type === 'url' || input.type === 'iframe') {
+    if (['url', 'iframe'].includes(input.type)) {
         const file = { url: value }
-
         if (input.player === 'google') {
             file.url = getGoogleDrivePreviewLink(value)
         }
 
-        return <FlexColumn gap={'22px'} sx={{ alignItems: "flex-start" }}>
-            <MakeField input={input} inputName={inputName} props={props} />
-            {value && (
-                <>
-                    {input.player === 'youtube' ? (
-                        <ShowVid file={file} />
-                    ) : input.player === 'image' ? (
-                        <ShowImg file={file} />) :
-                        input.player === 'bunny' ? (
-                            <ShowBunny file={file} />
-                        ) : <ShowPdf file={file} />}
-                </>
+        const renderPreview = () => {
+            switch (input.player) {
+                case 'youtube': return <ShowVid file={file} />
+                case 'image': return <ShowImg file={file} />
+                case 'bunny': return <ShowBunny file={file} />
+                default: return <ShowPdf file={file} />
+            }
+        }
+
+        return (
+            <FlexColumn gap="22px" sx={{ alignItems: "flex-start" }}>
+                <MakeField input={input} inputName={inputName} props={props} />
+                {value && renderPreview()}
+            </FlexColumn>
+        )
+    }
+
+
+    if (input.component) {
+        return <input.component setValue={setValue} input={{ ...input, component: false }} props={props} value={value} inputName={inputName} />
+    }
+    if (input.Component) {
+        return <FlexColumn>
+            <input.Component setValue={setValue} input={{ ...input, component: false }} props={props} value={value} inputName={inputName} />
+            {hasError(props, inputName) && (
+                <Alert sx={{ my: "5px", width: '100%' }} severity='error'>{props.errors[inputName]}</Alert>
             )}
         </FlexColumn>
     }
 
-    if (input.component) {
-        return <input.component input={{ ...input, component: false }} props={props} value={value} inputName={inputName} />
+    // Dynamic switch per type
+    switch (input.type) {
+        case 'chunk':
+            return <MakeChunk inputName={inputName} input={input} props={props} values={value} />
+
+        case 'header':
+            return <MakeTitle title={input.title} />
+
+        case 'array':
+            return <MakeFieldArray inputName={inputName} input={input} props={props} values={value} />
+
+        case 'radio':
+            return <MakeRadio inputName={inputName} input={input} props={props} />
+
+        case 'file':
+            return <MakeFile inputName={inputName} input={input} props={props} value={value} />
+
+        case 'fullDate':
+            return <MakeFullDate inputName={inputName} props={props} value={value} input={input} />
+
+        case 'select':
+            return <MakeSelect props={props} inputName={inputName} input={input} value={value} />
+
+        case 'choosed': //Bad in Syntax *_*
+            return <MakeChoosed props={props} inputName={inputName} input={input} value={value} />
+
+        case 'selectRef': //Bad *_*
+            return <MakeSelectRef inputName={inputName} input={input} props={props} value={value} />
+
+        case 'editor':
+            return <Text defaultData={value} setText={(text) => props.setFieldValue(inputName, text)} />
+
+        case 'switch':
+            return <MakeSwitch input={input} props={props} inputName={inputName} />
+
+        default:
+            return <MakeField input={input} inputName={inputName} props={props} />
     }
-
-    if (input.type === "chunk") {
-        return <MakeChunk inputName={inputName} input={input} props={props} values={value} />
-    }
-
-    if (input?.type === "header") {
-        return <MakeTitle title={input.title} />
-    }
-
-    if (input?.type === "array") {
-        return <MakeFieldArray inputName={inputName} input={input} props={props} values={value} />
-    }
-
-    if (input?.type === "radio") { // done
-        return (
-            <MakeRadio inputName={inputName} input={input} props={props} />
-        )
-    }
-
-    if (input?.type === "file") {
-        return (
-            <MakeFile inputName={inputName} input={input} props={props} value={value} />
-        )
-    }
-
-    if (input.type === 'fullDate') {
-        return <MakeFullDate inputName={inputName} props={props} value={value} input={input} />
-    }
-
-    if (input.type === "select") { //done
-
-        return (
-            <MakeSelect props={props} inputName={inputName} input={input} value={value} />
-        )
-    }
-
-    if (input.type === "choosed") { //bad
-
-        return (
-            <MakeChoosed props={props} inputName={inputName} input={input} value={value} />
-        )
-    }
-
-    if (input.type === "selectRef") {
-        return <MakeSelectRef inputName={inputName} input={input} props={props} value={value} />
-    }
-
-    if (input.type === 'editor') {
-        return <div style={{ width: '100%' }}>
-            <Text defaultData={getValues(inputName, props)} setText={(text) => props.setFieldValue(inputName, text)} />
-        </div>
-    }
-
-    if (input.type === 'switch') {
-        return <MakeSwitch input={input} props={props} inputName={inputName} />
-    }
-    return (
-        <MakeField input={input} inputName={inputName} props={props} />
-    )
 }
-
-
-// normal, nested
-// types ===>>>  text,

@@ -9,6 +9,9 @@ const baseQuery = fetchBaseQuery({
     baseUrl: import.meta.env.VITE_DB_URI + '/api',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
+        headers.set('x-client', 'teacher')
+        headers.set('x-powered-by', 'Menassty ,')
+
         const token = getState()?.global?.user?.token
         if (token) {
             headers.set('authorization', token)

@@ -19,6 +19,7 @@ export default function useLazyGetData(getData) {
     }
 
     const dispatch = useDispatch()
+    if (!getData) return [null]
 
     const getFromDB = (params, enableCache = false) => {
 
@@ -49,7 +50,6 @@ export default function useLazyGetData(getData) {
             }
         })
     }
-
 
     return [getFromDB]
 }

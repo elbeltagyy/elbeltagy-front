@@ -1,15 +1,15 @@
-import React from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import * as Yup from 'yup'
 import { v4 as uuidv4 } from 'uuid'
 import sectionConstants from '../../settings/constants/sectionConstants'
 import { lang } from '../../settings/constants/arlang'
 import dayjs from 'dayjs'
-
+import LinkToQuestion from './LinkToQuestion'
+import { memo } from 'react'
+import examMethods, { getExamMethod } from '../../settings/constants/examMethods'
+import { isDevelop } from '../../tools/isDevelop'
 
 const durationRegex = /^(?:(?:\d+)\s*[hms]?)(?:\s+(?:(?:\d+)\s*[hms]))*$/;
-
-
 
 function ExamForm({ lecture, status, onSubmit }) {
 
@@ -19,6 +19,10 @@ function ExamForm({ lecture, status, onSubmit }) {
         image: "",
         rtOptionId: "",
         points: 1,
+        grade: lecture.grade,
+        isShuffle: true,
+        clarifyText: '',
+        clarifyUrl: '',
         options: [
             {
                 id: uuidv4(),
@@ -38,7 +42,6 @@ function ExamForm({ lecture, status, onSubmit }) {
                 id: uuidv4(),
                 title: "",
                 image: ""
-
             }
         ]
     }
@@ -54,11 +57,14 @@ function ExamForm({ lecture, status, onSubmit }) {
     const lectureInfoInputs = [
         {
             name: 'sectionType',
-            label: '',
+            label: 'section',
             value: sectionConstants.EXAM,
-            hidden: true,
+            hidden: false,
+            disabled: true,
             validation: Yup.string()
                 .required(lang.REQUERIED),
+            column: 1,
+            row: 1
         }, {
             name: 'grade',
             label: '',
@@ -79,29 +85,57 @@ function ExamForm({ lecture, status, onSubmit }) {
             value: lecture.name ?? '',
             validation: Yup.string()
                 .required(lang.REQUERIED),
+            column: 1,
+            row: 2,
         }, {
             name: 'description',
             label: lang.LECTURE_DESCRIPTION,
-            rows: 11,
+            rows: 10,
             value: lecture.description ?? '',
             validation: Yup.string()
                 .required(lang.REQUERIED),
+            column: 2,
+            row: 1,
+            rowSpan: 3, // to match height of 3 rows in column 1
         }, {
             name: 'isActive',
             label: lang.IS_ACTIVE,
             type: 'switch',
             value: lecture.isActive ?? true,
-
+            column: 1,
+            row: 5,
+        }, {
+            name: 'method',
+            label: 'اختر نوع الاختبار',
+            type: 'select',
+            value: lecture?.exam?.method ?? getExamMethod({ isDefault: true, key: 'value' }),
+            options: examMethods,
+            column: 1,
+            row: 3,
+            validation: Yup.string()
+                .required(lang.REQUERIED),
+        },
+        {
+            name: "isTime",
+            label: "هل تريد تفعيل التوقيت فى الاختبار",
+            type: 'switch',
+            value: lecture?.exam?.isTime ?? true,
+            column: 1,
+            row: 3,
         }, {
             name: "dateStart",
-            label: "تاريخ البدء",
+            label: "تاريخ تفعيل الاختبار",
             type: 'fullDate',
             value: lecture?.dateStart ? dayjs(lecture.dateStart) : null,
+            column: 3,
+            row: 1,
         }, {
             name: "dateEnd",
             label: "تاريخ الغاء الاختبار",
             type: 'fullDate',
             value: lecture?.dateEnd ? dayjs(lecture.dateEnd) : null,
+            column: 3,
+            row: 2,
             validation: Yup.mixed()
                 .nullable()
                 .when('dateStart', (dateStart, schema) =>
@@ -119,36 +153,47 @@ function ExamForm({ lecture, status, onSubmit }) {
                         )
                         : schema
                 ),
+        }, {
+            name: "attemptsNums",
+            label: "عدد المحاولات",
+            type: 'number',
+            value: lecture?.exam?.attemptsNums ?? 1,
+            validation: Yup.number()
+                .required(lang.REQUERIED),
+            column: 1,
+            row: 4
+        },
+        {
+            name: "showAnswersDate",
+            label: "تاريخ اظهار الايجابات",
+            type: 'fullDate',
+            value: lecture?.exam?.showAnswersDate ? dayjs(lecture.exam.showAnswersDate) : null,
+            column: 3,
+            row: 3,
+        }, {
+            name: "isShowAnswers",
+            label: "هل تريد اظهار الايجابات",
+            type: 'switch',
+            value: lecture?.exam?.isShowAnswers ?? true,
+            column: 3,
+            row: 3,
+        }, {
+            name: "time",
+            label: "الوقت",
+            value: lecture?.exam?.time ?? '15m',
+            validation: Yup.string()
+                .matches(durationRegex, 'ارقام فقط, غير مسموح بوجود مساحات, h,m,s فقط')
+                .required(lang.REQUERIED),
+            column: 1,
+            row: 4
+        }, {
+            name: "linkedQuestions",
+            component: LinkToQuestion
         },
     ]
 
     //exam info => in update nested
-    const inputs = [...lectureInfoInputs,
-    {
-        name: "attemptsNums",
-        label: "عدد المحاولات",
-        type: 'number',
-        value: lecture?.exam?.attemptsNums ?? 1,
-        validation: Yup.number()
-            .required(lang.REQUERIED)
-    }, {
-        name: "showAnswersDate",
-        label: "تاريخ اظهار الايجابات",
-        type: 'fullDate',
-        value: lecture?.exam?.showAnswersDate ? dayjs(lecture.exam.showAnswersDate) : null,
-    }, {
-        name: "isShowAnswers",
-        label: "هل تريد اظهار الايجابات",
-        type: 'switch',
-        value: lecture?.exam?.isShowAnswers ?? true,
-    }, {
-        name: "time",
-        label: "الوقت",
-        value: lecture?.exam?.time ?? '15m',
-        validation: Yup.string()
-            .matches(durationRegex, 'ارقام فقط, غير مسموح بوجود مساحات, h,m,s فقط')
-            .required(lang.REQUERIED),
-    }, {
+    const inputs = [...lectureInfoInputs, {
         name: "questions",
         label: "الاسئله ==>",
         value: lecture?.exam?.questions ?? [],
@@ -172,10 +217,13 @@ function ExamForm({ lecture, status, onSubmit }) {
                 name: "points",
                 label: "عدد النقاط",
                 type: "number",
-                value: 1
             }, {
                 type: 'header',
                 title: 'الاختيارات'
+            }, {
+                name: "isShuffle",
+                label: "هل تريد جعل الاختيارات عشوائيه؟",
+                type: 'switch',
             }, {
                 name: "rtOptionId",
                 label: "الايجابه الصحيحه",
@@ -199,6 +247,17 @@ function ExamForm({ lecture, status, onSubmit }) {
                         from: 'id'
                     }
                 ]
+            },
+            {
+                name: "clarifyText",
+                label: "ايضافه توضيح لايجابه (يظهر عن عرض الحل)",
+                rows: 4,
+                variant: 'filled'
+            }, {
+                name: "clarifyUrl",
+                label: "ايضافه لينك فيديو (يظهر عن عرض الحل)",
+                type: "url",
+                player: "youtube"
             },
         ], validation:
             Yup.array()
@@ -241,20 +300,14 @@ function ExamForm({ lecture, status, onSubmit }) {
                     })
                 )
                 .required('يجب ان يكون هناك اسئله') // these constraints are shown if and only if inner constraints are satisfied
-                .min(5, '5 على الاقل')
+                .min(isDevelop ? 1 : 5, '5 على الاقل')
         ,
     }
     ]
 
     return (
-        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} enableReinitialize={true} />
+        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} enableReinitialize={false} />
     )
 }
 
-export default ExamForm
-// {
-//     name: 'isMust',
-//     label: 'بعد انتهاء تاريخ نهايه الاختبار سيتم اغلاقه',
-//     type: 'switch',
-//     value: lecture.isMust ?? false,
-// },
+export default memo(ExamForm)

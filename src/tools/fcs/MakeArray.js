@@ -13,6 +13,7 @@ export const makeArrWithValueAndLabel = (arr, { value, label, isNumber = false }
     return options
 }
 
+
 export const filterWithFoundKey = (arr, { key }) => {
     const myArr = [...arr]
 
@@ -42,4 +43,21 @@ export const convertObjToArray = (obj = {}) => {
     const arrayOfKeys = Object.keys(obj);
     const arrayOfValues = Object.values(obj);
     return [arrayOfValues, arrayOfKeys]
+}
+
+export const handelObjsOfArr = (arr, newObj) => {
+
+    const [vals, keys] = convertObjToArray(newObj)
+
+    const newArr = arr.map(ele => {
+        const createdObj = {}
+        keys.forEach((key, i) => {
+            const value = ele[vals[i]]
+
+            createdObj[key] = value
+        })
+        return createdObj
+    })
+
+    return newArr
 }

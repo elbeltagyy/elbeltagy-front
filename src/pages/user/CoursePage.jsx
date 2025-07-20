@@ -80,7 +80,7 @@ function CoursePage() {
         }
         return index
     }
-  
+
     return (
         <Section>
             <SEOHelmetAsync
@@ -106,6 +106,7 @@ function CoursePage() {
                     : <Loader />}
             </HeaderContent>
 
+            {/* Lecture Is Here */}
             <Outlet context={[getLectureCurrentIndex(), setCurrentIndex, currentIndex, courseDetails.course._id]} />
 
             <TitleSection title={'محتوى الكورس'} />

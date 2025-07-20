@@ -47,13 +47,10 @@ const coursesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        getLectureAndCheck: builder.query({
+        getLectureAndCheck: builder.query({ //Get Lecture
             query: (queries) => {
                 return {
                     url: "/content/courses/" + queries.index + '/lectures/' + queries.lectureId,
-                    // params: {
-                    //     courseId: params.courseId
-                    // }
                 }
             }
         }),
@@ -109,6 +106,6 @@ const coursesApi = apiSlice.injectEndpoints({
 
 export const {
     useLazyGetCoursesQuery, useLazyGetOneCourseQuery, useGetOneCourseQuery, useCreateCourseMutation, useUpdateCourseMutation, useDeleteCourseMutation,
-    useSubscribeMutation, useLazyGetCourseLecturesAndCheckUserQuery, useGetLectureAndCheckQuery, usePassLectureMutation,
+    useSubscribeMutation, useLazyGetCourseLecturesAndCheckUserQuery, useLazyGetLectureAndCheckQuery,useGetLectureAndCheckQuery, usePassLectureMutation,
     useLazyGetExamQuery, useAddAttemptMutation, useLinkCourseMutation
 } = coursesApi

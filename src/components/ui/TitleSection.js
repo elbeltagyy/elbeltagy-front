@@ -12,11 +12,8 @@ const lineStyle = (width) => {
 
 function TitleSection({ title, icon }) {
     return (
-        <Box width={'100%'} my={'32px'}>
+        <Box width={'100%'}>
             <Box>
-                <Box sx={lineStyle("500px")}> </Box>
-                <Box sx={lineStyle("250px")}> </Box>
-
                 <FlexRow width={'100%'} bgcolor={'primary.main'} p={'16px'} borderRadius={'8px'} color={'grey.0'}>
                     <span style={{
                         marginBottom: '-10px'
@@ -29,6 +26,7 @@ function TitleSection({ title, icon }) {
                 </FlexRow>
 
                 <Box sx={lineStyle("500px")}> </Box>
+                <Box sx={lineStyle("300px")}> </Box>
             </Box>
         </Box>
     )
