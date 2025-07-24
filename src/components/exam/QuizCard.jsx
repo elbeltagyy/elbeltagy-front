@@ -62,7 +62,7 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
             exam: exam._id,
             answers
         }
-        if (time) {
+        if (time && (exam.isTime ?? true)) {
             attempt.tokenTime = time // *_* modify it
         }
 
@@ -73,7 +73,7 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
         if (user.role === user_roles.STUDENT) {
             attempt.role = user_roles.STUDENT
         }
-
+        // console.log(attempt)
         submit(attempt)
     }
     // chosen option => questionId: _id, chosenOptionId
@@ -104,7 +104,7 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
                         </Button>
                     ) : !method?.markQ ? (
                         <Button sx={sendSuccess} disabled={isLoading} onClick={openModal}>
-                            {isLoading ? <Loader /> : "ارسال"}
+                            {isLoading ? <Loader color={'#fff'} /> : "ارسال"}
                         </Button>
                     ) : <BankNavigateBtn exam={exam} navigateToAnswers={navigateToAnswers} questions={questions} submit={sendData} />}
 

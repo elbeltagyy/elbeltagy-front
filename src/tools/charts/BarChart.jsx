@@ -168,7 +168,7 @@ export default function DynamicBarChart({ categories = [], series = [], height =
                         <Button size="small" color="warning" endIcon={<PiFileSvg size={'1.5rem'} />} variant="outlined" sx={{ textTransform: 'none' }} onClick={() => exportAsImage("svg")}>
                             Export as svg
                         </Button>
-                        <Button color="secondary" endIcon={<PiFilePdf size={'1.5rem'} />} size="small" variant="contained" sx={{ textTransform: 'none' }} onClick={() => exportToPDF}>
+                        <Button color="secondary" endIcon={<PiFilePdf size={'1.5rem'} />} size="small" variant="contained" sx={{ textTransform: 'none' }} onClick={() => exportToPDF()}>
                             Export as PDF
                         </Button>
                     </FlexRow>

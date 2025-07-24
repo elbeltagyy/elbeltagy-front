@@ -1,10 +1,10 @@
 import './home.css'
-import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, IconButton, Typography,  useTheme } from '@mui/material'
 
 import Section from '../../style/mui/styled/Section'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import Separator from '../ui/Separator'
-import Image from '../ui/Image'
+// import Image from '../ui/Image'
 import { ScallyBtn } from '../../style/buttonsStyles'
 
 import { FaFacebook } from "react-icons/fa";
@@ -13,14 +13,35 @@ import { FaYoutube } from "react-icons/fa";
 import TextTyping from '../animations/Text.typing'
 import { Link } from 'react-router-dom'
 import { PiTelegramLogoFill } from "react-icons/pi";
+import Ballons from '../animations/ballons/ballons/Ballons'
+import { useState } from 'react'
 
 function Hero() {
     const theme = useTheme()
-    const isMobileScreen = useMediaQuery('(max-width:600px)');
+    // const isMobileScreen = useMediaQuery('(max-width:600px)');
 
+
+    const [isSee, setSee] = useState(false)
     return (
         <Section>
 
+            {isSee && (
+                <>
+                    <Ballons />
+                    <Box sx={{ position: 'absolute', top: 0, left: 0, bgcolor: "#00000090", width: '100%', height: '100%' }} />
+                    <Typography sx={{
+                        p: '12px 16px', bgcolor: 'white', outline: '5px dashed red',
+                        position: 'absolute', top: '45%', left: '50%', transform: 'translateX(-50%)',
+                        textAlign: 'center', fontSize: '40px', color: 'grey.900'
+                    }}>
+
+                        <span style={{  fontSize: '60px' }}>أهلاً ❤️</span>
+                        <br />
+                        بدفعه
+                        <span style={{ color: 'orangered' }}>2025</span> / <span style={{ color: 'red' }}>2026</span>
+                    </Typography>
+                </>
+            )}
             <FlexRow justifyContent={'center'} >
 
                 {/* content */}
@@ -40,8 +61,9 @@ function Hero() {
                             الاحياء السنه دى غير
                         </Typography>
 
-                        <Typography variant='banner' component={'h1'} sx={{ scale: isMobileScreen ? '1.1' : '1' }}  >
-                             م/   <span style={{ color: 'orange', }}>محمد</span> البلتاجي
+                        <Typography variant='banner' component={'h1'} textAlign={'center'}  >
+                            {/* sx={{ scale: isMobileScreen ? '1.1' : '1' }} */}
+                            م/   <span style={{ color: 'orange', }}>محمد</span> البلتاجي
                         </Typography>
 
                     </Box>
@@ -64,7 +86,7 @@ function Hero() {
                         </Typography>
                     </Box>
 
-                    <Typography variant='h6'>إحنا نغيب  غبتنا و نرجع بهيبتنا</Typography>
+                    <Typography variant='h6'>إحنا نغيب  غبتنا <span onClick={() => setSee(true)}>و</span> نرجع بهيبتنا</Typography>
                     <ScallyBtn endIcon={<img style={{ width: '30px' }} alt='كورسات الاحياء' src='/assets/bacteria.svg' />} component={Link} to={'/grades/3'} sx={{ minWidth: '250px', fontSize: '1.5rem', borderRadius: 1 }}>كورسات الاحياء</ScallyBtn>
 
                     <Box display={'flex'} justifyContent={'space-around'} flexDirection={'row'} sx={{ minWidth: '250px' }}>

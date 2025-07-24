@@ -31,7 +31,6 @@ import DynamicBarChart from '../../tools/charts/BarChart';
 import Grid from '../../style/vanilla/Grid';
 // import CreateUser from '../../components/users/CreateUser'
 
-
 const exportObj = {
     grade: (row) => {
         return gradeConstants.find(grade => grade.index === row.grade)?.name
@@ -50,7 +49,6 @@ const exportObj = {
         return getDateWithTime(row.createdAt)
     }
 }
-
 
 
 function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades = true }) {

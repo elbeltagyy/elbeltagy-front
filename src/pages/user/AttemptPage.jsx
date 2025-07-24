@@ -47,7 +47,7 @@ const modifyAndGetScore = (exam, answers) => {
     // })
 
     exam.questions = arrangeQuestions(exam.questions, answers)
-    console.log(exam, answers)
+    // console.log(exam, answers)
     // chosenOptionId = rtOptionId ==> + score, right
     const score = exam.questions.reduce((acc, q, i,) => {
 

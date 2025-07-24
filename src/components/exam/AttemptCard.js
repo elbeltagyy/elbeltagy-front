@@ -20,7 +20,7 @@ export default function AttemptCard({ exam, setQuestion, isShowBack }) {
 
             <AnsweredQuestion setQuestion={setQuestion} currentQuestion={exam.questions[currentQuestionIndex]} index={currentQuestionIndex} />
 
-            <CardActions sx={{ width: '100%' }}>
+            <CardActions sx={{ width: '100%', flexWrap: 'wrap',justifyContent: 'space-evenly' }}>
                 <Button sx={buttonStyle} disabled={disabledPre} onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}>
                     السؤال السابق
                 </Button>
