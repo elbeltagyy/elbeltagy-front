@@ -43,7 +43,7 @@ export const sidebarLinks = [
     }, {
         name: "محاضراتى", icon: <FaSchool size="22px" />, to: "/grades/" + store?.getState()?.global?.user?.grade, allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
-        name: "بنك الاسئله", icon: <CiBank size="22px" />, to: "/questions_bank", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: false, info: { title: 'قريبا', i: 2 }
+        name: "بنك الاسئله", icon: <CiBank size="22px" />, to: "/questions_bank", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: false, info: { title: 'جديد', i: 2 }
     }, {
         name: "ايجاباتك", icon: <MdQuestionAnswer size="22px" />, to: "/answers", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: false, info: { title: 'جديد', i: 1 }
     }, {
