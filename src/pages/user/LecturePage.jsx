@@ -45,7 +45,6 @@ function LecturePage() {
         await passLecture({ courseId: course, lectureId: lecture._id, nextLectureIndex }) //linked to
         setCurrentIndex(nextLectureIndex)
     }
-
     return (
         <FlexColumn sx={{ minHeight: '90vh', backgroundColor: 'background.alt', borderRadius: '16px', p: '12px' }}>
 
@@ -54,7 +53,7 @@ function LecturePage() {
             )}
 
             {(lecture?.sectionType !== sectionConstants.EXAM || lecture.exam?.attempts.length !== 0 || (dayjs().isAfter(dayjs(lecture.dateEnd)))) && (
-                <FilledHoverBtn onClick={() => passed()} disabled={status.isLoading || lectureIndex !== currentIndex || false} >تم الانتهاء ! </FilledHoverBtn>
+                <FilledHoverBtn onClick={() => passed()} disabled={status.isLoading || (lectureIndex !== currentIndex && currentIndex !== 0) || false} >تم الانتهاء ! </FilledHoverBtn>
             )}
             <WrapperHandler status={status} showSuccess={true} />
         </FlexColumn>

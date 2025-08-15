@@ -45,10 +45,20 @@ const tokensApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        analysisSessions: builder.query({
+            query: (queries) => {
+                const params = queries
 
+                return {
+                    url: "/sessions/statistics/analysis",
+                    params
+                }
+            }
+        }),
     })
 })
 
 
-export const { useLazyGetSessionsQuery, useSessionLogoutMutation
+export const { useLazyGetSessionsQuery, useSessionLogoutMutation,
+    useLazyAnalysisSessionsQuery
 } = tokensApi

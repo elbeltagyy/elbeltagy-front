@@ -187,6 +187,18 @@ function ExamForm({ lecture, status, onSubmit }) {
             column: 1,
             row: 4
         }, {
+            name: 'price',
+            label: 'السعر',
+            type: 'number',
+            value: lecture?.price ?? 0,
+            column: 2
+        }, {
+            name: 'isSalable',
+            label: 'قابله للبيع',
+            type: 'switch',
+            value: lecture?.isSalable ?? true,
+            column: 3
+        }, {
             name: "linkedQuestions",
             component: LinkToQuestion
         },

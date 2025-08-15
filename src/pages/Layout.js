@@ -24,11 +24,13 @@ function Layout() {
         })
     }, [pathName])
 
-    // useEffect(() => {
-    //     if (localStorage.getItem('deviceId')) {
-    //         localStorage.removeItem("deviceId")
-    //     }
-    // }, [location])
+    useEffect(() => {
+        if (localStorage.getItem('prevPage')) {
+            const prev = localStorage.getItem('prevPage')
+            localStorage.removeItem('prevPage')
+            window.location.href = prev
+        }
+    }, [])
 
     return (
         <Box>

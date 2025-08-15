@@ -37,6 +37,7 @@ const customFetchBase = async (args, api, extraOptions) => {
             api.dispatch(setUser({ ...user, token: refreshResult.data.token }))
             result = await baseQuery(args, api, extraOptions);
         } else {
+            console.log('from token customBase Query')
             api.dispatch(logout());
         }
     }

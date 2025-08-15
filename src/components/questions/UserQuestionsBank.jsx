@@ -6,7 +6,7 @@ import { useStartQuestionBankMutation } from "../../toolkit/apis/questionsApi"
 import { useSelector } from "react-redux"
 import { useLazyGetTagsQuery } from "../../toolkit/apis/tagsApi"
 import useLazyGetData from "../../hooks/useLazyGetData"
-import { FlexColumn } from "../../style/mui/styled/Flexbox"
+import { FlexColumn, FlexRow } from "../../style/mui/styled/Flexbox"
 import Loader from "../../style/mui/loaders/Loader"
 import TabInfo from "../ui/TabInfo"
 import usePostData from "../../hooks/usePostData"
@@ -14,6 +14,9 @@ import { useNavigate } from "react-router-dom"
 import * as yup from 'yup'
 import examMethods from "../../settings/constants/examMethods"
 import { isDevelop } from "../../tools/isDevelop"
+import { Box, Typography } from "@mui/material"
+import PaymentMethods from "../payment/PaymentMethods"
+import products from "../../settings/constants/products"
 
 function UserQuestionsBank() {
     const navigate = useNavigate()
@@ -31,7 +34,21 @@ function UserQuestionsBank() {
     const fetchFc = async () => {
         const res = await getTagsFc({ isActive: true, grade: user.grade, counting: true })
         const methods = res.tags.map(tag => {
-            return { value: tag._id, label: tag.name, description: tag.description, icon: <TabInfo count={tag.unansweredCount + '/' + tag.count} i={1} /> }
+            return {
+                value: tag._id, label: tag.name, description: tag.description,
+                icon: <TabInfo count={tag.unansweredCount + '/' + tag.count} i={tag.unansweredCount === 0 ? 3 : 1} />,
+                overlay: !tag.access && <Box onClick={() => {
+                    setTagToPay(tag)
+                    setOpen(true)
+                }}
+                    sx={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', bgcolor: '#00000073', zIndex: 2, cursor: 'pointer' }
+                    }>
+                    <Typography sx={{ color: 'grey.0', bgcolor: 'primary.main', width: 'fit-content', height: 'fit-content' }}>
+                        شراء الاسئله بسعر {tag.price} جنيه
+                    </Typography>
+                </Box>,
+                disabled: tag.unansweredCount === 0
+            }
         })
         setMethods(methods)
     }
@@ -42,6 +59,20 @@ function UserQuestionsBank() {
         }
     }, [user.grade])
 
+    //Payments
+    const [open, setOpen] = useState(false)
+    const [tagToPay, setTagToPay] = useState()
+
+    const handelResponse = (res) => {
+        // console.log('respo ==>', res)
+        const modifiedMethods = methods.map(method => {
+            if (method.value === res.tag) {
+                delete method.overlay
+            }
+            return method
+        })
+        setMethods(modifiedMethods)
+    }
 
     const inputs = [
         {
@@ -76,6 +107,7 @@ function UserQuestionsBank() {
                     itemWidth='fit-content'
                     sx={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', }}
                     activeMethod={chosenTags} setMethod={setChosenTags} isMulti={true}
+
                     methods={methods} />
             }
         }
@@ -91,9 +123,23 @@ function UserQuestionsBank() {
         }
         //exams/_id
     }
+
+    const setCoupon = (coupon) => {
+        setTagToPay({
+            ...tagToPay, ...coupon
+        })
+    }
     return (
         <div>
             <MakeForm modalInfo={{ desc: 'فلتستمع ولتجب جيدا على الاسئله, حظا سعيدا' }} inputs={inputs} onSubmit={onSubmit} status={status} />
+            <PaymentMethods
+                open={open} setOpen={setOpen}
+                title={'الاشتراك فى الرابط' + ' :' + tagToPay?.name}
+                subTitle={'الاشتراك فى الرابط' + ' :' + tagToPay?.name}
+                setCoupon={setCoupon}
+                tag={tagToPay?._id} handelResponse={handelResponse}
+                price={tagToPay?.price} invoiceNameId={'tag'}
+            />
         </div>
     )
 }

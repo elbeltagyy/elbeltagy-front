@@ -11,7 +11,6 @@ function CreateGroup({ setReset }) {
     const [createGroup] = usePostData(sendData)
 
     const onSubmit = async (values, props) => {
-        console.log(values)
         await createGroup(values)
 
         if (setReset) {

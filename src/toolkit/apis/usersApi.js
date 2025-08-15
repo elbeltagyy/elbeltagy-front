@@ -11,6 +11,23 @@ const usersApi = apiSlice.injectEndpoints({
                 }
             },
         }),
+        deleteManyUsers: builder.mutation({
+            query: data => ({
+                url: '/users',
+                method: 'DELETE',
+                body: data,
+                params: data
+            })
+        }),
+        analysisUsers: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/users/analysis",
+                    params
+                }
+            },
+        }),
         getOneUser: builder.query({
             query: (userName) => `/users/${userName}`
         }),
@@ -20,6 +37,15 @@ const usersApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data
             })
+        }),
+        addToUser: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/users/push`,
+                    method: 'PATCH',
+                    body: data
+                }
+            }
         }),
         updateUser: builder.mutation({
             query: (data) => {
@@ -94,9 +120,12 @@ const usersApi = apiSlice.injectEndpoints({
 
 export const {
     useLazyGetUsersQuery,
+    useDeleteManyUsersMutation,
     useLazyGetOneUserQuery,
+    useLazyAnalysisUsersQuery,
 
     useCreateUserMutation,
+    useAddToUserMutation,
     useUpdateUserMutation,
     useUpdateUserProfileMutation,
 

@@ -78,7 +78,17 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
             label: lang.IS_ACTIVE,
             type: 'switch',
             value: lecture?.isActive ?? true,
-        }
+        }, {
+            name: 'isSalable',
+            label: 'قابله للبيع',
+            type: 'switch',
+            value: lecture?.isSalable ?? true,
+        }, {
+            name: 'price',
+            label: 'السعر',
+            type: 'number',
+            value: lecture?.price ?? 0,
+        },
     ]
 
     // ######################### manage videos #########################

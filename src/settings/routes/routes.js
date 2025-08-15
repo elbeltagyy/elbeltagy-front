@@ -20,6 +20,10 @@ import { groupsRoutes } from "./groupsRoutes";
 import { questionsRoutes } from "./questions";
 import { answerRoutes } from "./answersRoutes";
 import { attemptsRoutes } from "./attemptsRoutes";
+import { paymentsRoutes } from "./paymentRoutes";
+import { invoicesRoutes } from "./invoicesRoutes";
+import LecturesPage from "../../pages/admin/LecturesPage";
+
 
 const ErrorPage = lazy(() => import("../../pages/errors/ErrorPage"))
 const NotFoundPage = lazy(() => import("../../pages/errors/NotFoundPage"))
@@ -31,6 +35,9 @@ const LectureCenterPage = lazy(() => import("../../pages/user/LectureCenterPage"
 
 const ManagePrivacyPage = lazy(() => import("../../pages/admin/ManagePrivacyPage"))
 const PrivacyPage = lazy(() => import("../../pages/user/PrivacyPage"))
+
+const PaymentsPage = lazy(() => import("../../pages/user/PaymentsPage"))
+const FeedBacks = lazy(() => import("../../pages/user/FeedBacks"))
 
 
 export const routes = [
@@ -75,6 +82,24 @@ export const routes = [
                 path: '/management/sessions', children: manageSessionRoutes
             }, {
                 path: '/management/courses', children: manageCoursesRoutes
+            }, {
+                path: '/management/payments', children: paymentsRoutes
+            }, {
+                path: '/management/invoices', children: invoicesRoutes
+            }, {
+                path: '/management/feedBacks', element: <FeedBacks isAdmin={true} />
+            }, {
+                path: '/feedBacks', element: <ProtectedRoute>
+                    <FeedBacks />
+                </ProtectedRoute>
+            }, {
+                path: '/payments', element: <ProtectedRoute allowedTo={[user_roles.ONLINE, user_roles.STUDENT]}>
+                    <PaymentsPage />
+                </ProtectedRoute>
+            }, {
+                path: '/management/lectures', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+                    <LecturesPage />
+                </ProtectedRoute>
             }, {
                 path: '/management/reports', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
                     <ReportsPage />

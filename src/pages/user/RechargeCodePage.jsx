@@ -1,10 +1,9 @@
-import React from 'react'
 import Section from '../../style/mui/styled/Section'
 import TitleSection from '../../components/ui/TitleSection'
-import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import { Typography } from '@mui/material'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import {  Typography } from '@mui/material'
 import MakeForm from '../../tools/makeform/MakeForm'
-import { useGetCodesQuery, useGetUserCodesQuery, useVerifyCodeMutation } from '../../toolkit/apis/codesApi'
+import { useGetUserCodesQuery, useVerifyCodeMutation } from '../../toolkit/apis/codesApi'
 
 import usePostData from "../../hooks/usePostData"
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,9 +11,9 @@ import { setUser } from '../../toolkit/globalSlice'
 import { lang } from '../../settings/constants/arlang'
 import { CiBarcode } from 'react-icons/ci'
 import * as Yup from 'yup'
-import RowInfo from '../../components/ui/RowInfo'
-import { FaWallet } from "react-icons/fa";
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
+import TitleWithDividers from '../../components/ui/TitleWithDividers'
+
 
 function RechargeCodePage() {
 
@@ -25,7 +24,7 @@ function RechargeCodePage() {
     const [verifyCode] = usePostData(sendData)
 
     const { data: usedCodes, isLoading, refetch } = useGetUserCodesQuery()
-    // wal5-8121-2228-8865
+
     const inputs = [
         {
             name: 'code',
@@ -63,17 +62,20 @@ function RechargeCodePage() {
             width: 170
         }
     ]
+
     return (
         <Section>
             <TitleSection title={'شحن كود'} />
-            <FlexColumn sx={{ width: '100%' }}>
-                <RowInfo icon={<FaWallet size={'1.5rem'} />} title={'رصيد محفظتك '} fromStart={false} desc={user.wallet + ' جنيها'} />
-            </FlexColumn>
-            <FlexRow>
+
+
+            <FlexColumn sx={{ maxWidth: '500px', m: '16px auto' }}>
                 <Typography variant='subtitle1'>اكتب الكود المكون من 16 رقم هنا</Typography>
                 <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} />
-            </FlexRow>
+            </FlexColumn>
+            <TitleWithDividers title={'اكوادك'} />
             <MeDatagrid type={'simple'} columns={columns} data={usedCodes?.values || []} loading={isLoading || false} />
+
+
         </Section>
     )
 }

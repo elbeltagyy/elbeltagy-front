@@ -4,11 +4,11 @@ import CrudDatagrid from './CrudDatagrid'
 import { useMemo } from 'react'
 
 export default function MeDatagrid({
-    type, data, filterParams, reset, columns = [], editing, loading, addColumns,
+    type, data, filterParams, reset, columns = [], editing, loading, addColumns = null, massActions,
     exportObj, exportTitle,
-    viewFc, fetchFc, updateFc, deleteFc, apiRef,
+    viewFc, fetchFc, updateFc, deleteFc, apiRef, deleteMany, ViewRow, analysisFc,viewRowModal,
     setSelection = false, allSelected,
-    disabledActions = [], disableAllActions
+    disabledActions = [], disableAllActions, allStatuses
 }) {
 
     const modifiedColumns = useMemo(() => {
@@ -38,17 +38,18 @@ export default function MeDatagrid({
     if (type === "server") return <ServerSideDatagrid editing={editing} rows={data} columns={modifiedColumns} loading={loading} fetchFc={fetchFc} />
 
     if (type === "crud") return <CrudDatagrid
+        massActions={massActions} allStatuses={allStatuses}
         exportTitle={exportTitle}
         exportObj={exportObj}
         apiRef={apiRef}
-        viewFc={viewFc}
+        viewFc={viewFc} ViewRow={ViewRow} analysisFc={analysisFc} viewRowModal={viewRowModal}
         editing={editing}
         filterParams={filterParams}
         columns={modifiedColumns} reset={reset} addColumns={addColumns}
         loading={loading}
         setSelection={setSelection}
         allSelected={allSelected}
-        fetchFc={fetchFc} deleteFc={deleteFc} updateFc={updateFc} />
+        fetchFc={fetchFc} deleteFc={deleteFc} updateFc={updateFc} deleteMany={deleteMany} />
 
     return (
         <SimpleDatagrid exportTitle={exportTitle} exportObj={exportObj} editing={editing} rows={data} columns={modifiedColumns} loading={loading} />

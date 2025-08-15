@@ -8,7 +8,7 @@ import UserProfileUpdate from './UserProfileUpdate'
 import GetViewsCompo from '../views/GetViews'
 import GetEveryUserViews from '../views/GetEveryUserViews'
 
-function UserInfoTabs({ user, setUser }) {
+function UserInfoTabs({ user, setUser, setReset }) {
 
 
 
@@ -37,7 +37,7 @@ function UserInfoTabs({ user, setUser }) {
                                 <GetViewsCompo userId={user?._id} />
                                 : tabOpen === 5 ?
                                     <GetEveryUserViews userId={user._id} /> :
-                                    <UserProfileUpdate user={user} isAdmin={true} setUserAdmin={setUser} />
+                                    <UserProfileUpdate user={user} isAdmin={true} setUserAdmin={setUser} setReset={setReset} />
             }
 
         </>

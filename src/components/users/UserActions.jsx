@@ -14,16 +14,22 @@ import { GridDeleteIcon } from "@mui/x-data-grid"
 import { FaUserMinus } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa";
 
-function UserActions({ user, setUser }) {
+function UserActions({ user, setUser, setReset = null }) {
 
     const [sendData, updateStatus] = useUpdateUserMutation()
     const [updateUser] = usePostData(sendData)
+    const refresh = () => {
+        if (setReset) {
+            setReset(p => !p)
+        }
+    }
 
     const updateFc = async (valueObj) => {
         const res = await updateUser({ _id: user._id, ...valueObj })
         if (setUser) {
             setUser({ ...user, ...res })
         }
+        refresh()
     }
 
     const [sendDelete, deleteStatus] = useDeleteUserMutation()
@@ -32,6 +38,7 @@ function UserActions({ user, setUser }) {
     const deleteFc = async () => {
         await deleteUser(user)
         setUser()
+        refresh()
     }
 
     const [modalDesc, setModalDesc] = useState()

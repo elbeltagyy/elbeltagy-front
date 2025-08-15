@@ -44,6 +44,7 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
             ...params,
             lecture: lectureId, view_role: role, course: courseId, user: userId
         }
+        // console.log(params)
         const res = await getViews(params, false)
         const modifiedRes = res.views.map((view) => {
             return {

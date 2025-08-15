@@ -17,9 +17,8 @@ import DataWith3Items from "../ui/DataWith3Items"
 
 import { getFullDate } from "../../settings/constants/dateConstants"
 import { codeConstants } from "../../settings/constants/codeConstants"
-
-
-
+import BtnModal from "../ui/BtnModal"
+import CreateCoupon from "./CreateCoupon"
 
 const exportObj = {
     isActive: (row) => {
@@ -47,13 +46,15 @@ const exportObj = {
     }
 }
 
-function GetCoupons({ course, reset }) {
+function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
+
+    const [reset, setReset] = useState(false)
 
     const [getData, { isLoading: getLoading }] = useLazyGetCouponsQuery()
     const [getCouponsFc] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getCouponsFc({ ...params, course, populate: 'usedBy course' }, false) //edit it
+        const res = await getCouponsFc({ ...params, course, tag, populate: 'usedBy course tag' }, false) //edit it
         const coupons = { values: res.coupons, count: res.count }
         return coupons
     }
@@ -93,7 +94,7 @@ function GetCoupons({ course, reset }) {
             field: 'name',
             headerName: "اسم الكورس",
             width: 300,
-            valueGetter: (name) => name|| codeConstants.GLOBAL,
+            valueGetter: (name) => name || codeConstants.GLOBAL,
         }, {
             field: 'type',
             headerName: "نوع الكوبون",
@@ -147,6 +148,15 @@ function GetCoupons({ course, reset }) {
 
     return (
         <Box>
+            <BtnModal
+                btnName={createBtnName}
+                component={<CreateCoupon
+                    setReset={setReset} sectionName={createBtnName} course={course} tag={tag}
+                    coupon={{ type: (tag || course) ? codeConstants.PRIVATE : codeConstants.GLOBAL }}
+                />}
+                isFilledHover={true}
+            />
+
             <MeDatagrid
                 type={'crud'} columns={columns} reset={reset}
                 exportTitle={'كوبونات'} exportObj={exportObj}
@@ -177,6 +187,7 @@ function GetCoupons({ course, reset }) {
                     )}
                 </Section>
             </ModalStyled>
+
         </Box>
     )
 }

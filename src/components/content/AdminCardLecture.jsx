@@ -25,6 +25,9 @@ import { user_roles } from '../../settings/constants/roles'
 import { useState } from 'react'
 import InfoText from '../ui/InfoText'
 import AdminLinkLectureToGroup from './AdminLinkLectureToGroup'
+import BtnModal from '../ui/BtnModal'
+import MakeForm from '../../tools/makeform/MakeForm'
+import BtnConfirm from '../ui/BtnConfirm'
 
 
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
@@ -105,6 +108,16 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
         {(lecture?.course?._id === courseId) && (
           <>
             <InfoText label={'الوصف'} description={lecture.description} />
+            <FlexRow>
+              <InfoText label={'سعر المجاضره'} description={lecture.price + ' ' + 'جنيه'} />
+              <BtnModal
+                btn={<TabInfo sx={{ cursor: 'pointer', margin: '0 8px' }} count={'اضغط لتعديل السعر'} i={2} />}
+                component={<MakeForm inputs={[
+                  { name: 'price', label: 'السعر الجديد', type: 'number' }
+                ]} onSubmit={changeStatus} status={{ isLoading }} formDirection={'row'} btnStyle={{ width: 'fit-content' }} />}
+              />
+              <SwitchStyled label={"قابله للبيع"} checked={lecture.isSalable} onChange={(value) => changeStatus({ isSalable: value })} isLoading={isLoading} />
+            </FlexRow>
 
             <SwitchStyled label={"الحاله"} checked={lecture.isActive} onChange={(value) => changeStatus({ isActive: value })} isLoading={isLoading} />
             <SwitchStyled label={"جعل المحاضره مجانيه"} checked={lecture.isFree} onChange={(val) => changeStatus({ isFree: val })} isLoading={isLoading} />

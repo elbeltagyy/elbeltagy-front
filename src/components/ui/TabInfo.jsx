@@ -19,6 +19,7 @@ function TabInfo({ count, i, title, icon, isBold = true, sx }) {
 
     return (
         <Box
+            component={'span'}
             sx={{
                 display: 'inline-flex',
                 alignItems: "center",

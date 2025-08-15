@@ -36,9 +36,11 @@ const globalSlice = createSlice({
             return state;
         },
         setUser: (state, action) => {
-            setCookie('u', action.payload)
-            state.user = action.payload
+            const user = { ...state.user, ...action.payload }
+            setCookie('u', user)
+            state.user = user
             sessionStorage.setItem('user', JSON.stringify({ name: state.user.name, userName: state.user.userName }))
+             
             return state;
         },
         logout: (state) => {

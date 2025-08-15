@@ -5,17 +5,14 @@ import CouponForm from './CouponForm'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import Section from '../../style/mui/styled/Section'
 
-function CreateCoupon({ course, setReset, coupon }) {
+function CreateCoupon({ course, setReset, coupon, tag = null, sectionName = 'انشاء كوبون' }) {
 
 
     const [sendData, status] = useCreateCouponMutation()
     const [createCoupon] = usePostData(sendData)
 
     const onSubmit = async (values, props) => {
-        if (!values.course) {
-            delete values.course
-        }
-        await createCoupon(values)
+        await createCoupon({ ...values, tag })
         if (setReset) {
             setReset(pre => !pre)
         }
@@ -24,7 +21,7 @@ function CreateCoupon({ course, setReset, coupon }) {
 
     return (
         <Section>
-            <TitleWithDividers title={'انشاء كوبون'} />
+            <TitleWithDividers title={sectionName} />
             <CouponForm onSubmit={onSubmit} status={status} course={course} coupon={coupon} />
         </Section>
     )

@@ -31,7 +31,7 @@ export default function ForgetPassword() {
     const [verifyResetPassword] = usePostData(sendVerify)
 
     const { data, isLoading, isSuccess } = useGetWhatsappStatusQuery()
-
+    console.log(data?.values?.isValid)
     const methods = [
         { value: senderConstants.EMAIL, label: senderConstants.EMAIL, icon: <MdMarkEmailUnread />, isValid: true },
         {
@@ -39,6 +39,7 @@ export default function ForgetPassword() {
             label: senderConstants.WHATSAPP,
             icon: <FaWhatsapp />,
             isValid: isSuccess && data?.values?.isValid || false,
+            descCompo: true,
             description: isLoading ? <TabInfo count={'loading...'} i={0} /> :
                 (isSuccess && data?.values?.isValid) ? <TabInfo count={'active'} i={1} /> :
                     <TabInfo count={'غير فعال'} i={3} sx={{ fontSize: '8px' }} />

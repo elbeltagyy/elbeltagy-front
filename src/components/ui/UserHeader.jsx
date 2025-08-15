@@ -19,6 +19,7 @@ import { FaWallet } from 'react-icons/fa'
 import { HashLink } from 'react-router-hash-link';
 import governments from '../../settings/constants/governments'
 import TabInfo from './TabInfo'
+import { GrScorecard } from "react-icons/gr";
 
 // eslint-disable-next-line react/prop-types
 export default function UserHeader({ children, user, flexDirection = 'row', variant, isAll = false }) {
@@ -60,7 +61,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
                     <DataWith3Items title={lang.NAME} icon={<MdOutlineDriveFileRenameOutline size={'2rem'} />} desc={user?.name} />
                     <DataWith3Items title={lang.GRADE} icon={<IoSchool size={'2rem'} />} desc={user?.role === user_roles.ADMIN || user?.role === user_roles.SUBADMIN ? user?.role : gradeConstants.filter(g => g.index === Number(user?.grade))[0]?.name} />
                     <DataWith3Items title={lang.ROLE} icon={<MdVerifiedUser size={'2rem'} />} desc={user?.role} />
-                    <DataWith3Items title={'الدرجات'} icon={<MdVerifiedUser size={'2rem'} />} desc={<FlexBetween>
+                    <DataWith3Items title={'الدرجات'} icon={<GrScorecard size={'1.8rem'} />} desc={<FlexBetween>
                         <TabInfo count={user.marks} i={1} title={'درجات الاسئله'} isBold={false} />
                         <TabInfo count={user.exam_marks} i={2} title={'درجات الاختبارت'} isBold={false} />
                     </FlexBetween>} />

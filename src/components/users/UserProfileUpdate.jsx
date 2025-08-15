@@ -15,11 +15,17 @@ import { FaSquarePhoneFlip } from 'react-icons/fa6';
 import TitleWithDividers from '../ui/TitleWithDividers';
 import { green } from '@mui/material/colors';
 import UserChangePassword from './UserChangePassword';
+import { user_roles } from '../../settings/constants/roles';
 
 
-function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
+function UserProfileUpdate({ user, isAdmin = false, setUserAdmin, setReset }) {
 
     const dispatch = useDispatch()
+    const refresh = () => {
+        if (setReset) {
+            setReset(p => !p)
+        }
+    }
 
     const [sendData, status] = useUpdateUserProfileMutation()
     const [updateProfile] = usePostData(sendData)
@@ -28,6 +34,7 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
         const res = await updateProfile(values, true)
         if (isAdmin) {
             setUserAdmin({ ...user, ...res })
+            refresh
         } else {
             dispatch(setUser({ ...user, ...res }))
         }
@@ -109,9 +116,19 @@ function UserProfileUpdate({ user, isAdmin = false, setUserAdmin }) {
                         }
                     }
                 })
-        },]
+        }]
 
+    if (isAdmin) {
+        inputs.push({
+            name: "role",
+            label: lang.ROLE,
+            value: user.role,
+            disabled: !isAdmin && true,
+            type: 'select',
+            options: [user_roles.ONLINE, user_roles.STUDENT, user_roles.INREVIEW]
+        });
 
+    }
     return (
         <div>
             <TitleWithDividers title={'تحديث البيانات'} />

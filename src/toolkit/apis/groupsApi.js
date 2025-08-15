@@ -24,7 +24,7 @@ const groupsApi = apiSlice.injectEndpoints({
         updateGroup: builder.mutation({
             query: (data) => {
                 return {
-                    url: '/groups/' + data.id,
+                    url: '/groups/' + data._id,
                     method: 'put',
                     body: data
                 }

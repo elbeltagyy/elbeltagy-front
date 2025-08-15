@@ -17,8 +17,8 @@ import { FlexBetween, FlexColumn } from '../../style/mui/styled/Flexbox'
 import { handelObjsOfArr, makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 
-import { useAnalysisUsersQuery, useLazyAnalysisUsersQuery, useLazyGetUsersCountQuery } from '../../toolkit/apis/statisticsApi'
-import { useDeleteUserMutation, useLazyGetUsersQuery, useUpdateUserMutation } from '../../toolkit/apis/usersApi'
+import { useLazyGetUsersCountQuery } from '../../toolkit/apis/statisticsApi'
+import { useDeleteManyUsersMutation, useDeleteUserMutation, useLazyAnalysisUsersQuery, useLazyGetUsersQuery, useUpdateUserMutation } from '../../toolkit/apis/usersApi'
 import usePostData from '../../hooks/usePostData'
 import useLazyGetData from '../../hooks/useLazyGetData'
 
@@ -29,6 +29,7 @@ import GradesTabs from '../../components/grades/GradesTabs'
 import UserAvatar from '../../components/users/UserAvatar';
 import DynamicBarChart from '../../tools/charts/BarChart';
 import Grid from '../../style/vanilla/Grid';
+import UserShowTable from '../../components/users/UserShowTable';
 // import CreateUser from '../../components/users/CreateUser'
 
 const exportObj = {
@@ -281,11 +282,9 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
     const [updateUser] = usePostData(sendData)
 
     const updateFc = async (values) => {
-
         const user = await updateUser(values)
         return user
     }
-
 
 
     const [deleteData, { isLoading: deleteLoader }] = useDeleteUserMutation()
@@ -317,8 +316,12 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
         setUserRegister()
     }
 
-    const [getAnalysis, { data }] = useLazyAnalysisUsersQuery()
+    const [getAnalysis] = useLazyAnalysisUsersQuery()
+    const [analysisUsers] = useLazyGetData(getAnalysis)
 
+    const [deleteMany, deleteManyStatus] = useDeleteManyUsersMutation()
+    const [deleteManyUsers] = usePostData(deleteMany)
+    
     return (
         <Section>
             {isShowTitle && (
@@ -326,13 +329,6 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
                     <TitleSection title={lang.USERS_PAGE} />
                 </>
             )}
-            <DynamicBarChart
-                title='احصائيات الطلاب'
-                trigger={getAnalysis}
-                categories={data?.values?.categories}
-                series={data?.values?.result}
-                height="300px"
-            />
 
             <FlexColumn sx={{ width: '100%' }}>
                 <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>
@@ -346,9 +342,12 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
                 apiRef={apiRef}
                 reset={[reset, grade]}
                 setSelection={setExcludedUsers}
-                type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE}
-                columns={columns}
+                type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE} analysisFc={analysisUsers}
+                columns={columns} allStatuses={[deleteManyStatus]} deleteMany={deleteManyUsers}
                 viewFc={viewFc} fetchFc={fetchFc} updateFc={updateFc} deleteFc={deleteFc}
+                ViewRow={UserShowTable} viewRowModal={{
+                    fullScreen: true
+                }}
                 loading={isLoading || updateLoader || deleteLoader}
                 editing={
                     {

@@ -204,10 +204,8 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
     ]
 
 
-    const [analysisSubscriptions, { data }] = useLazyAnalysisSubscriptionsQuery()
-    const analysisFc = async () => {
-        await analysisSubscriptions({ course: courseId, user })
-    }
+    const [analysisSubscriptions] = useLazyAnalysisSubscriptionsQuery()
+    const [analysisFc] = useLazyGetData(analysisSubscriptions)
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -215,19 +213,12 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
             {isShowTitle && (
                 <TitleWithDividers title={'الاشتراكات'} />
             )}
-
-            <DynamicBarChart
-                title='الاشتراكات'
-                trigger={analysisFc}
-                categories={data?.values?.categories}
-                series={data?.values?.result}
-                height="300px"
-            />
             <TabInfo count={subscriptionsCount} title={'عدد الاشتراكات'} i={1} />
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj} exportTitle={'الاشتراكات'}
-                columns={columns} fetchFc={fetchFc} updateFc={updateFc} loading={status.isLoading || updateStatus.isLoading || isLoading} deleteFc={removeFc}
+                exportObj={exportObj} exportTitle={'الاشتراكات'} filterParams={{ user }}
+                columns={columns} fetchFc={fetchFc} analysisFc={analysisFc}
+                updateFc={updateFc} loading={status.isLoading || updateStatus.isLoading || isLoading} deleteFc={removeFc}
                 editing={
                     {
                         bgcolor: 'background.alt',

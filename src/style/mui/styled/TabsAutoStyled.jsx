@@ -2,37 +2,52 @@ import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TabInfo from '../../../components/ui/TabInfo';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FlexColumn } from './Flexbox';
+import { useSearchParams } from 'react-router-dom';
 
 
 // {
 //     value: 0, label: 'ارسال تقرير', component: <ReportCompo
 //         course={course} excludedUsers={excludedUsers} isExcluded={isExcluded} />,
 // },
+const parseTabValue = (val) => {
+    const parsed = Number(val);
+    return isNaN(parsed) ? val : parsed;
+};
 
-export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, style = {} }) {
+export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, style = {}, searchVal = 'valueId' }) {
     // **_** Make component to be fully automatic
 
-    const [value, setValue] = useState(defaultVal)
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [value, setValue] = useState(() => {
+        const paramVal = searchParams.get(searchVal);
+        return paramVal ? parseTabValue(paramVal) : defaultVal;
+    });
 
     const handleChange = (e, newValue) => {
         setValue(newValue);
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set(searchVal, newValue);
+        setSearchParams(newParams);
     };
 
+    useEffect(() => {
+        const paramVal = searchParams.get(searchVal);
+        setValue(paramVal !== null ? Number(paramVal) : defaultVal);
+    }, [searchParams, searchVal, defaultVal]);
+
     const tabs = useMemo(() => {
-        const arr = originalTabs.map((tab, i) => {
-            if (!tab.value) {
-                tab.value = i
-            }
-            return tab
-        })
-        return arr
-    }, [originalTabs])
+        return originalTabs.map((tab, i) => ({
+            ...tab,
+            value: tab.value ?? i
+        }));
+    }, [originalTabs]);
 
     // Validate the `value` value
-    const isValid = tabs.some(option => option.value === value);
-    const safeValue = isValid ? value : (tabs[0]?.value)
+    const safeValue = useMemo(() => {
+        return tabs.some(tab => tab.value === value) ? value : tabs[0]?.value;
+    }, [value, tabs]);
     const component = tabs.find(t => t.value === value)?.component
 
     return (
@@ -67,8 +82,6 @@ export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, styl
 
                         )
                     })}
-
-
 
                 </Tabs>
             </Box>

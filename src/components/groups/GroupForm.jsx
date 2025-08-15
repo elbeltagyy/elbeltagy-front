@@ -1,5 +1,5 @@
 import * as Yup from "yup"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 import { DAYES_AR } from "../../settings/constants/dateConstants"
 import MakeForm from "../../tools/makeform/MakeForm"
 import { IoSchool } from "react-icons/io5"
@@ -7,7 +7,7 @@ import { green } from "@mui/material/colors"
 import { makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
 import gradeConstants from "../../settings/constants/gradeConstants"
 
-function GroupForm({ status, onSubmit, group }) {
+function GroupForm({ status, onSubmit, group = {}, enableReinitialize = false, isResetNewVal }) {
 
     const daySchema = {
         time: '',
@@ -28,14 +28,13 @@ function GroupForm({ status, onSubmit, group }) {
         }, {
             name: "name",
             label: "اسم المجموعه",
-            validation: Yup.string().required("مطلوب")
+            validation: Yup.string().required("مطلوب"),
         }, {
             name: "days",
             type: 'array',
             add: daySchema,
             addLabel: "ايضافه يوم",
             removeLabel: "ازاله يوم",
-            value: [],
             validation:
                 Yup.array()
                     .of(
@@ -64,8 +63,8 @@ function GroupForm({ status, onSubmit, group }) {
     ]
 
     return (
-        <MakeForm inputs={inputs} status={status} onSubmit={onSubmit} />
+        <MakeForm inputs={inputs} status={status} onSubmit={onSubmit} preValue={group} enableReinitialize={enableReinitialize} isResetNewVal={isResetNewVal} />
     )
 }
 
-export default GroupForm
+export default memo(GroupForm)

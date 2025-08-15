@@ -5,11 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import { Box, Grid, IconButton, useTheme } from '@mui/material';
+import { Box, Button, Grid, IconButton, useTheme } from '@mui/material';
 import ModalStyled from '../../style/mui/styled/ModalStyled';
 import ExportAsPdf from './ExportAsPdf';
 import { HiOutlineRefresh } from "react-icons/hi";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import DataGridMassActions from './DataGridMassActions';
 // import MakePdf from './MakePdf';
 
 
@@ -20,15 +21,47 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 // only for listen
 //filter params +> object has filter keys
 // when update done forget to return the new object to rows
+import SwitchStyled from '../../style/mui/styled/SwitchStyled';
+import DynamicBarChart from '../charts/BarChart';
+import BtnConfirm from '../../components/ui/BtnConfirm';
 
+const BooleanSwitchCell = ({ field, row, updateFc, params }) => {
+    const handleChange = async () => {
+        const newRow = { [field]: !row[field], _id: row._id, id: row._id }
+        await updateFc(newRow);
+        params.api.updateRows([{ ...newRow }])
+    };
+
+    return <SwitchStyled checked={!!row[field]} onChange={handleChange} disabled={!updateFc} />
+
+    // return (
+    //     <Switch
+    //         checked={!!row[field]}
+    //         onChange={handleChange}
+    //         color="primary"
+    //     />
+    // );
+};
 
 const fullDateTimeRegex = /^[A-Za-z]{3}\s[A-Za-z]{3}\s\d{1,2}\s\d{4}\s\d{2}:\d{2}:\d{2}\sGMT[+-]\d{4}\s\(.+\)$/;
+//mass Actions = [] => {onCLick(chosenIds), label, sx}
 
-
-function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, columns, addColumns, editing = {}, fetchFc, loading, updateFc, deleteFc, apiRef, viewFc, setSelection = false, allSelected }) {
+function CrudDatagrid(
+    {
+        filterParams = [], exportObj, exportTitle, reset, columns,
+        editing = {},
+        fetchFc, loading, updateFc, deleteFc, apiRef, viewFc, deleteMany, ViewRow, analysisFc,
+        setSelection = false, allSelected, viewRowModal = {},
+        massActions = [], allStatuses = [{ isLoading: false }]
+    }) {
     reset = (Array.isArray(reset) ? reset : [reset])
 
+    const [selectionModel, setSelectionModel] = useState([])
+
     const [isOpen, setOpenModal] = useState(false)
+    const [openView, setView] = useState(false)
+    const [selectedRow, setSelectedRow] = useState(null);
+
     const [deleteId, setDeleteId] = useState("")
 
     const [isRefresh, setRefresh] = useState(false)
@@ -123,7 +156,6 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
     };
 
     const processRowUpdate = async (newRow) => {
-
         const res = await updateFc(newRow)
         const updatedRow = { ...res, isNew: true };
 
@@ -133,11 +165,27 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
 
     const modifiedColumns = useMemo(() => {
         const isShowActions = viewFc || updateFc || deleteFc || false
+        const switchedCols = columns.map(col => {
+            if (col.type === 'boolean' && (col.isSwitch ?? false)) { // && !col.renderCell
+                return {
+                    ...col,
+                    renderCell: (params) =>
+                        <BooleanSwitchCell
+                            params={params}
+                            row={params.row}
+                            field={col.field}
+                            updateFc={updateFc}
+                        />
+                };
+            }
+            return col
+        })
+
         if (!isShowActions) {
-            return [...columns]
+            return [...switchedCols]
         }
 
-        return [...columns, {
+        return [...switchedCols, {
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
@@ -168,17 +216,23 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                     ];
                 }
                 const actionsArr = []
-                if (viewFc) {
+                if (viewFc || ViewRow) {
                     actionsArr.push(<GridActionsCellItem
                         key={1}
                         icon={<RemoveRedEyeIcon />}
                         label="View"
                         className="textPrimary"
                         onClick={() => {
+                            if (ViewRow) {
+                                setView(true)
+                                setSelectedRow(params.row)
+                                return
+                            }
                             if (!viewFc) {
                                 return alert("لا يمكن عرض الصف !")
+                            } else {
+                                viewFc(params.row)
                             }
-                            viewFc(params.row)
                         }}
                         color="inherit"
                     />)
@@ -245,15 +299,6 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
 
     }, [paginationModel.page, paginationModel.pageSize, sort, filter, ...reset, isRefresh])
 
-
-    // // hide columns 
-    // const hideColumns = useMemo(() => {
-    //     const inVisibleModels = {}
-    //     editing?.hideColumns?.map(ele => inVisibleModels[ele] = false)
-    //     return inVisibleModels
-
-    // }, [editing?.hideColumns])
-
     const [chosenColumns, setColumns] = useState(columns)
     // slots
     function CustomToolbar() {
@@ -294,6 +339,30 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                             {/* <MakePdf /> */}
                         </Grid>
                     )}
+                    {<Grid item>
+                        <DataGridMassActions
+                            setSelection={() => {
+                                if (setSelection) {
+                                    setSelection([])
+                                }
+                                setSelectionModel([])
+                            }} selectedIds={selectionModel} actions={massActions} deleteMany={deleteMany} />
+                    </Grid>}
+                    {(deleteMany && pageState.rowCount > 0) && (
+                        <Grid item>
+                            <BtnConfirm modalInfo={{
+                                title: 'سيتم حذف ' + pageState.rowCount + ' عنصر !',
+                                desc: 'يرجي العلم انه سيتم حذف عدد ' + pageState.rowCount + 'عنصر' + ' وان كان من ضمنهم ادمن لن يتم ازالته'
+                            }} btn={<Button variant='outlined' color='error' onClick={() => {
+                                deleteMany(
+                                    filter || {}
+                                )
+                                setRefresh(!isRefresh)
+                            }}>
+                                ازاله {pageState.rowCount} عنصر
+                            </Button>} />
+                        </Grid>
+                    )}
                     <Grid item>
                         <IconButton disabled={pageState.isLoading || loading} onClick={() => {
                             // setFilter()
@@ -307,13 +376,33 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
             </GridToolbarContainer>
         );
     }
+    const [analysisData, setAnalysisData] = useState({})
+
+    const analysis = async () => {
+        const res = await analysisFc(filterParams)
+        setAnalysisData({
+            categories: res.categories,
+            series: res.result
+        })
+    }
+
     return (
         <Box width={'100%'} sx={{ position: 'relative', height: '100%' }}>
+            {analysisFc && (
+                <DynamicBarChart
+                    title={exportTitle}
+                    trigger={analysis}
+                    categories={analysisData.categories}
+                    series={analysisData.series}
+                    height="300px"
+                />
+            )}
+
             <DataGrid
                 apiRef={apiRef}
                 rows={rows || []}
                 columns={modifiedColumns}
-                loading={pageState?.isLoading || loading || false}
+                loading={allStatuses.some((s) => s?.isLoading) || pageState?.isLoading || loading || false}
                 rowCount={pageState?.rowCount} // ===> total for server (.length)
                 getRowId={(param) => param._id}
 
@@ -357,22 +446,23 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
                 keepNonExistentRowsSelected
 
                 onRowSelectionModelChange={(newRowSelectionModel) => {
+                    setSelectionModel(newRowSelectionModel)
+
+                    if (allSelected) {
+                        newRowSelectionModel = newRowSelectionModel.map(selection => {
+                            if (typeof selection === 'string') {
+                                selection = rows.find(r => r._id === selection)
+                            }
+
+                            return selection
+                        })
+                    }
+
                     if (setSelection) {
-
-                        if (allSelected) {
-                            newRowSelectionModel = newRowSelectionModel.map(selection => {
-                                if (typeof selection === 'string') {
-                                    selection = rows.find(r => r._id === selection)
-                                }
-
-                                return selection
-                            })
-                        }
-
                         setSelection(newRowSelectionModel)
                     }
                 }}
-                // rowSelectionModel={rowSelectionModel}
+                rowSelectionModel={selectionModel}
 
                 //slots
                 slots={{
@@ -411,6 +501,11 @@ function CrudDatagrid({ filterParams = [], exportObj, exportTitle, reset, column
             />
 
             <ModalStyled open={isOpen} setOpen={setOpenModal} title={'هل انت متاكد من الحذف  ؟'} action={handleDeleteClick(deleteId)} />
+            {ViewRow && (
+                <ModalStyled open={openView} setOpen={setView} {...viewRowModal}>
+                    <ViewRow row={selectedRow} setReset={setRefresh} />
+                </ModalStyled>
+            )}
         </Box>
 
     )

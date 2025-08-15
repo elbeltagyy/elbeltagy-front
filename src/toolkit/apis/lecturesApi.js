@@ -50,8 +50,9 @@ const lecturesApi = apiSlice.injectEndpoints({
         }),
         updateLecture: builder.mutation({
             query: data => {
+                const id = (data.get("id") || data.get("_id"))
                 return ({
-                    url: '/content/lectures/' + data.get("id"), //remove it 
+                    url: '/content/lectures/' + id, //remove it 
                     method: 'PUT',
                     body: data
                 })
@@ -96,14 +97,21 @@ const lecturesApi = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        pushLectures: builder.mutation({
+            query: data => ({
+                url: '/content/lectures/push',
+                method: 'POST',
+                body: data
+            })
+        }),
     })
 })
 export const {
     useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useLazyGetLectureForCenterQuery, useLazyGetAllLecturesQuery,
     useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
     useGetSecureVideoMutation
-    ,usePatchLectureMutation,
-    useAddToLecturesMutation, useRemoveFromLecturesMutation
+    , usePatchLectureMutation,
+    useAddToLecturesMutation, useRemoveFromLecturesMutation, usePushLecturesMutation
 } = lecturesApi
 
 // Get LectureForUser => center || group => isValid

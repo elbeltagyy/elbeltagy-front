@@ -6,7 +6,7 @@ function CouponForm({ course, onSubmit, status, coupon = { type: codeConstants.P
     const inputs = [
         {
             name: 'course',
-            value: course?._id,
+            value: course?._id || course,
             disabled: true,
             hidden: true
         }, {

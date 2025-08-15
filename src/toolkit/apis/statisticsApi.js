@@ -12,16 +12,6 @@ const statisticsApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        analysisUsers: builder.query({
-            query: (queries) => {
-                const params = queries
-
-                return {
-                    url: "/statistics/users/analysis",
-                    params
-                }
-            }
-        }),
         getUnitsCount: builder.query({
             query: (queries) => {
                 const params = queries
@@ -148,7 +138,7 @@ const statisticsApi = apiSlice.injectEndpoints({
 
 
 export const {
-    useLazyGetUsersCountQuery, useLazyAnalysisUsersQuery, useAnalysisUsersQuery,
+    useLazyGetUsersCountQuery, 
     useLazyGetUserExamAttemptsCountQuery,
     useLazyGetUnitsCountQuery,
     useLazyGetCoursesCountQuery, useLazyGetLecturesCountQuery,

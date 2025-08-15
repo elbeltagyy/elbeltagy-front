@@ -4,12 +4,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
-import { Radio } from '@mui/material';
+import { Avatar, Box, ListItemAvatar, Radio, Typography } from '@mui/material';
+import Grid from '../../vanilla/Grid';
 
-function ListMethods({ methods = [], setMethod, activeMethod, disabled = [], sx, itemWidth = 360, isMulti = false, disableP = true }) { //{ value, icon, label, desc }
+function ListMethods({ methods = [], setMethod, activeMethod, disabled = [], excludeFc = null, sx, itemWidth = 360, isMulti = false, disableP = true }) { //{ value, icon, label, desc }
 
     const isDisabled = (method) => {
         if (method.isValid) return false
+        if (method.disabled) return true
 
         if (disabled.includes(method?.value)) {
             return true
@@ -39,44 +41,74 @@ function ListMethods({ methods = [], setMethod, activeMethod, disabled = [], sx,
     }
 
     return (
-        <List sx={{ width: '100%', ...sx }}>
-            {methods.map((method) => {
-                const labelId = `checkbox-list-label-${method.value}`;
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <List sx={{ ...sx }}>
 
-                return (
-                    <ListItem
-                        key={method.value}
+                {methods.map((method) => {
+                    if (excludeFc) {
+                        const isTrue = excludeFc(method)
 
-                        sx={{
-                            border: '1px dotted grey',
-                            mb: '6px',
-                            borderRadius: '6px',
-                            maxWidth: itemWidth,
-                            ...method.sx
-                        }}
-                        disablePadding={disableP}
-                    >
-                        <ListItemButton disabled={isDisabled(method)} role={undefined} onClick={() => handelChosen(method.value)} dense>
-                            <ListItemIcon>
-                                <Radio
-                                    checked={isChecked(method?.value)}
-                                    value={method.value}
-                                    name="radio-buttons"
-                                    inputProps={{ 'aria-label': method.value }}
-                                    edge='end'
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={method.label} secondary={method.description} />
-                            {/* secondaryAction={ */}
-                            <IconButton edge="end" aria-label="comments" disabled={isDisabled(method)}>
-                                {method.icon}
-                            </IconButton>
-                        {/* } */}
-                        </ListItemButton>
-                    </ListItem>
-                );
-            })}
-        </List>
+                        if (isTrue) {
+                            return
+                        }
+                    }
+                    const labelId = `checkbox-list-label-${method.value}`;
+
+                    return (
+                        <Grid key={method.value}>
+
+                            <ListItem
+                                key={method.value}
+
+                                sx={{
+                                    position: 'relative',
+                                    border: '1px dotted grey',
+                                    mb: '6px',
+                                    borderRadius: '6px',
+                                    width: '100%',
+                                    // maxWidth: itemWidth,
+                                    ...method.sx
+                                }}
+                                disablePadding={disableP}
+                            >
+                                {method.overlay}
+
+                                <ListItemButton disabled={isDisabled(method)} onClick={() => handelChosen(method.value)} dense>
+                                    <ListItemIcon>
+                                        <Radio
+                                            checked={isChecked(method?.value)}
+                                            value={method.value}
+                                            name="radio-buttons"
+                                            inputProps={{ 'aria-label': method.value }}
+                                            edge='end'
+                                        />
+                                    </ListItemIcon>
+
+                                    <ListItemText id={labelId}
+                                        primary={<Typography component={'span'} color={'primary.main'} variant='subtitle1'>{method.label}</Typography>}
+                                        secondary={method.descCompo ? method.description : <span dangerouslySetInnerHTML={{ __html: method.description }} />}
+                                    />
+
+                                    {/* secondaryAction={ */}
+                                    <IconButton edge="end" aria-label="comments" disabled={isDisabled(method)}>
+                                        {method.icon}
+                                    </IconButton>
+
+                                    {method.image && (
+                                        <ListItemAvatar>
+                                            <Avatar alt="Image" src={method.image} />
+                                        </ListItemAvatar>
+                                    )}
+                                </ListItemButton>
+                            </ListItem>
+
+                        </Grid>
+
+                    )
+                })}
+            </List>
+        </Box>
+
     );
 }
 

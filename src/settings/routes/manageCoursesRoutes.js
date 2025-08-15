@@ -13,10 +13,6 @@ export const manageCoursesRoutes = [
             <ManageCoursesPage />
         </ProtectedRoute>
     }, {
-        path: '/management/courses/:courseId/coupons', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
-            <GetCourseCoupons />
-        </ProtectedRoute>
-    }, {
         path: '/management/courses/:courseId/exams/create', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
             <ExamCreatePage />
         </ProtectedRoute>
@@ -26,3 +22,9 @@ export const manageCoursesRoutes = [
         </ProtectedRoute>
     },
 ]  
+
+// {
+//     path: '/management/courses/:courseId/coupons', element: <ProtectedRoute allowedTo={[user_roles.ADMIN, user_roles.SUBADMIN]}>
+//         <GetCourseCoupons />
+//     </ProtectedRoute>
+// }, 

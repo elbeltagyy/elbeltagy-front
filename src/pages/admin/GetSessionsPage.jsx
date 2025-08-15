@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { Avatar, Button } from '@mui/material'
 import { useGridApiRef } from '@mui/x-data-grid'
 
-import { useLazyGetSessionsQuery, useSessionLogoutMutation } from '../../toolkit/apis/sessionsApi'
+import { useLazyAnalysisSessionsQuery, useLazyGetSessionsQuery, useSessionLogoutMutation } from '../../toolkit/apis/sessionsApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import usePostData from '../../hooks/usePostData'
 
 import { lang } from '../../settings/constants/arlang'
-import { getFullDate } from '../../settings/constants/dateConstants'
+import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import Section from '../../style/mui/styled/Section'
@@ -19,11 +19,35 @@ import TabInfo from '../../components/ui/TabInfo'
 
 import dayjs from 'dayjs'
 
+const exportObj = {
+    isLoggedOutAutomatic: (row) => {
+        return row.isLoggedOutAutomatic ? 'نعم' : "لا"
+    },
+    isExpired: (row) => {
+        return row.isExpired ? 'نعم' : "لا"
+    },
+    loginDate: (row) => {
+        return getDateWithTime(row.loginDate)
+    },
+    logoutDate: (row) => {
+        return getDateWithTime(row.logoutDate)
+    },
+    createdAt: (row) => {
+        return getDateWithTime(row.createdAt)
+    },
+    expiresAt: (row) => {
+        return getDateWithTime(row.expiresAt)
+    }
+}
+
 function GetSessionsPage() {
 
     const [fileConfirm, setFileConfirm] = useState()
     const [openFileModal, setOpenFileModal] = useState(false)
 
+
+    const [getAnalysis] = useLazyAnalysisSessionsQuery()
+    const [analysisSessions] = useLazyGetData(getAnalysis)
 
     const [getData, { isLoading }] = useLazyGetSessionsQuery()
     const [getTokens] = useLazyGetData(getData)
@@ -110,7 +134,6 @@ function GetSessionsPage() {
             field: 'loginDate',
             headerName: 'تاريخ تسجيل الدخول',
             width: 200,
-            disableExport: true,
             filterable: false,
             sortable: false,
             renderCell: (params) => {
@@ -120,7 +143,6 @@ function GetSessionsPage() {
             field: 'logoutDate',
             headerName: 'تاريخ تسجيل الخروج',
             width: 200,
-            disableExport: true,
             filterable: false,
             sortable: false,
             renderCell: (params) => {
@@ -138,26 +160,22 @@ function GetSessionsPage() {
             headerName: 'هل كان تسجيل الخروج تلقائي ؟',
             width: 200,
             type: "boolean",
-            disableExport: true,
             sortable: false,
         }, {
             field: 'isExpired',
             headerName: 'هل انتهت الصلاحيه؟',
             width: 200,
             type: "boolean",
-            disableExport: true,
             filterable: false,
             sortable: false,
         }, {
             field: 'ip',
             headerName: 'User IP',
             width: 200,
-            disableExport: true,
         }, {
             field: 'expiresAt',
             headerName: 'تنتهى فى',
             width: 200,
-            disableExport: true,
             filterable: false,
             sortable: false,
             renderCell: (params) => {
@@ -185,15 +203,17 @@ function GetSessionsPage() {
     return (
         <Section>
             <TitleWithDividers title={'صفحه التسجيلات'} />
-
             <MeDatagrid
                 apiRef={apiRef}
                 type={'crud'}
                 columns={columns} fetchFc={fetchFc} loading={isLoading || isLogoutLoading}
+                exportTitle={'التسجيلات'}
+                analysisFc={analysisSessions} exportObj={exportObj}
                 editing={
                     {
                         bgcolor: 'background.alt',
-                        showSlots: ["density", "filter", "columns", "export"]
+                        showSlots: ["density", "filter", "columns", "export"],
+                        isPdf: true
                     }
                 }
             />

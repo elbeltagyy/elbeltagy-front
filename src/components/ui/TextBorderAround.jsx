@@ -1,5 +1,4 @@
 import { Typography, useTheme } from '@mui/material'
-import React from 'react'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 
 function TextBorderAround({ children }) {

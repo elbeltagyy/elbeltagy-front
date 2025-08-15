@@ -49,11 +49,25 @@ export const handelObjsOfArr = (arr, newObj) => {
 
     const [vals, keys] = convertObjToArray(newObj)
 
+    const getNestedValue = (obj, path) => {
+        return path.split('.').reduce((acc, key) => acc?.[key], obj)
+    }
+    // const newArr = arr.map(ele => {
+    //     const createdObj = {}
+    //     keys.forEach((key, i) => {
+    //         const value = ele[vals[i]]
+
+    //         createdObj[key] = value
+    //     })
+    //     return createdObj
+    // })
+
     const newArr = arr.map(ele => {
         const createdObj = {}
         keys.forEach((key, i) => {
-            const value = ele[vals[i]]
-
+            // console.log('ele ==>', ele, 'vals[i] ===>', vals[i], 'ele[vals[i]] ===>', ele[vals[i]])
+            const path = vals[i]
+            const value = getNestedValue(ele, path)
             createdObj[key] = value
         })
         return createdObj

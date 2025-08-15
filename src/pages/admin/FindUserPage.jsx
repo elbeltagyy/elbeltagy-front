@@ -13,10 +13,8 @@ import WrapperHandler from '../../tools/WrapperHandler'
 
 import Separator from '../../components/ui/Separator'
 import TitleWithDividers from '../../components/ui/TitleWithDividers'
-import UserHeader from '../../components/ui/UserHeader'
 import AutoInput from '../../style/mui/styled/AutoInput';
-import UserActions from '../../components/users/UserActions';
-import UserInfoTabs from '../../components/users/UserInfoTabs';
+import UserInAdmin from '../../components/users/UserInAdmin';
 
 function FindUserPage() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -74,12 +72,7 @@ function FindUserPage() {
                 <Separator />
 
                 {user && (
-                    <FlexColumn sx={{ width: '100%', gap: "12px" }}>
-                        <UserHeader user={user} isAll={true} flexDirection='column' />
-                        <UserActions user={user} setUser={setUser} />
-
-                        <UserInfoTabs user={user} setUser={setUser} />
-                    </FlexColumn>
+                    <UserInAdmin user={user} setUser={setUser} />
                 )}
             </Box>
         </Section>

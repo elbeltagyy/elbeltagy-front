@@ -29,7 +29,7 @@ export default function DynamicFormGrid({ inputs, props }) {
   const [columns, restInputs] = groupByColumn(inputs);
 
   return (
-    <FlexBetween>
+    <FlexBetween sx={{ width: '100%' }}>
       <Grid container spacing={2} width="100%">
         {Object.entries(columns).map(([col, colInputs]) => {
           const sortedInputs = sortInputs(colInputs);

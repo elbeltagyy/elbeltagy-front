@@ -2,6 +2,39 @@ import ms from "ms"
 
 export const DAYES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 export const DAYES_AR = ["الاحد", "الاثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعه", "السبت"]
+export const getDay = (index) => {
+    return DAYES_AR[index]
+}
+
+export function formatTime(timeInput) {
+    let hours, minutes;
+
+    // Parse input: string ("HH:mm") or Date object
+    if (typeof timeInput === 'string') {
+        const [h, m] = timeInput.split(':').map(Number);
+        if (isNaN(h) || isNaN(m)) return ''; // Invalid format
+        hours = h;
+        minutes = m;
+    } else if (timeInput instanceof Date) {
+        hours = timeInput.getHours();
+        minutes = timeInput.getMinutes();
+    } else {
+        return ''; // Unsupported type
+    }
+
+    // Determine period
+    const period = hours < 12 ? 'صباحًا' : 'مساءً';
+
+    // Convert to 12-hour format
+    const displayHour = hours % 12 || 12;
+
+    // Format time with leading zeros
+    const formattedHour = displayHour.toString().padStart(2, '0');
+    const formattedMinute = minutes.toString().padStart(2, '0');
+
+    return `${formattedHour}:${formattedMinute} ${period}`;
+}
+
 
 export const dateOptions = {
     year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timeZone: 'Africa/Cairo',

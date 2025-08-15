@@ -21,14 +21,13 @@ function GetGroupsPage() {
           انشاء مجموعه جديده
         </FilledHoverBtn>
 
-        <GetGroups reset={reset} />
+        <GetGroups reset={reset} setReset={setReset} />
 
       </FlexColumn>
 
       <ModalStyled open={open} setOpen={setOpen} fullWidth={true}>
         <CreateGroup setReset={setReset} />
       </ModalStyled>
-
 
     </Section>
   )

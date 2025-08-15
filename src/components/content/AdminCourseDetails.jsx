@@ -24,11 +24,13 @@ import ModalStyled from '../../style/mui/styled/ModalStyled'
 import Loader from '../../style/mui/loaders/Loader'
 import WrapperHandler from '../../tools/WrapperHandler'
 import MakeForm from '../../tools/makeform/MakeForm'
-// import {   MingcuteCouponFill } from '../icons/Icons'
+import { MingcuteCouponFill } from '../icons/Icons'
 
 import * as Yup from "yup"
 import Section from '../../style/mui/styled/Section'
 import AdminCourseStatisticsMenu from './AdminCourseStatisticsMenu'
+import BtnModal from '../ui/BtnModal'
+import GetCoupons from '../coupons/GetCoupons'
 
 function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchLectures, lecturesCount, setGrade }) {
 
@@ -104,18 +106,14 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
                         {course.dateEnd && (
                             <TabInfo count={getFullDate(course.dateEnd)} title={'تاريخ النهايه'} i={3} />
                         )}
-                        <Button
-                            component={Link}
-                            to={'/management/courses/' + course._id + '/coupons'}
-                            color="success"
-                            sx={{
-                                color: 'grey.0'
-                            }}
-                            // endIcon={<MingcuteCouponFill size={'1.5rem'}
-                            // />}
-                            disabled={statusDelete.isLoading} variant='contained' >
-                            عرض الكوبونات
-                        </Button>
+
+                        <BtnModal
+                            // icon={<MingcuteCouponFill size={'1.5rem'} />}
+                            btnName={'عرض الكوبونات'}
+                            fullScreen={true} size='medium'
+                            titleInSection={'كوبونات الكورس ' + course.name}
+                            component={<GetCoupons course={course._id} createBtnName={'انشاء كوبون للكورس ' + course.name} />}
+                        />
 
                         <Button color="error" disabled={statusDelete.isLoading} onClick={() => setOpen(true)} variant='contained' endIcon={<MdRemoveCircleOutline size={'1.5rem'}
                         />}>
@@ -150,3 +148,16 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
 }
 
 export default AdminCourseDetails
+
+{/* <Button
+                            component={Link}
+                            to={'/management/courses/' + course._id + '/coupons'}
+                            color="success"
+                            sx={{
+                                color: 'grey.0'
+                            }}
+                            // endIcon={<MingcuteCouponFill size={'1.5rem'}
+                            // />}
+                            disabled={statusDelete.isLoading} variant='contained' >
+                            عرض الكوبونات
+                        </Button> */}

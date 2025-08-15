@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button } from '@mui/material'
+import { Alert, Button, IconButton } from '@mui/material'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 
 import { useDeleteCodeMutation, useLazyGetCodesQuery, useUpdateCodeMutation } from '../../toolkit/apis/codesApi'
@@ -24,12 +24,12 @@ import { getFullDate } from '../../settings/constants/dateConstants'
 import { codeConstants } from '../../settings/constants/codeConstants'
 import BtnModal from '../../components/ui/BtnModal'
 import { FaSchoolCircleCheck, FaSchoolCircleXmark } from 'react-icons/fa6'
-import { green } from '@mui/material/colors'
-import GetGroupLectures from '../../components/groups/GetGroupLectures'
-import GetGroupLecturesNot from '../../components/groups/GetGroupLecturesNot'
 import { useSearchParams } from 'react-router-dom'
 
-import { useGetOneLectureQuery } from '../../toolkit/apis/lecturesApi'
+import { useGetOneLectureQuery, usePushLecturesMutation } from '../../toolkit/apis/lecturesApi'
+import Lectures from '../../components/all/Lectures'
+import BtnConfirm from '../../components/ui/BtnConfirm'
+import { IoIosAddCircleOutline } from 'react-icons/io'
 
 
 
@@ -64,7 +64,7 @@ function GetCodesPage() {
 
     const [reset, setReset] = useState(false)
 
-    const [getData, { isLoading: getLoading }] = useLazyGetCodesQuery()
+    const [getData, getStatus] = useLazyGetCodesQuery()
     const [getCodes] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
@@ -78,7 +78,7 @@ function GetCodesPage() {
 
     const { data } = useGetOneLectureQuery({ id: lecture, select: 'name' }, { skip: lecture ? false : true })
     //update
-    const [updateData, { isLoading: updateLoading }] = useUpdateCodeMutation()
+    const [updateData, updateStatus] = useUpdateCodeMutation()
     const [updateCode] = usePostData(updateData)
 
     const updateFc = async (values) => {
@@ -87,15 +87,23 @@ function GetCodesPage() {
     }
 
     //delete
-    const [deleteData, { isLoading: deleteLoading }] = useDeleteCodeMutation()
+    const [deleteData, deleteStatus] = useDeleteCodeMutation()
     const [deleteCode] = usePostData(deleteData)
 
     const deleteFc = async (id) => {
         await deleteCode({ _id: id })
     }
 
+
+    //push and pull Codes
+    const [pushData, pushStatus] = usePushLecturesMutation()
+    const [pushCodes] = usePostData(pushData, null, setReset)
+
     const [usedBy, setUsedby] = useState([])
     const [openUsedBy, setOpenUsedBy] = useState(false)
+    const allStatuses = [
+        pushStatus, deleteStatus, updateStatus, getStatus
+    ]
     const columns = [
         {
             field: 'code',
@@ -116,7 +124,8 @@ function GetCodesPage() {
             headerName: "تعليم كتم استعماله",
             width: 170,
             type: 'boolean',
-            editable: true
+            isSwitch: true
+            // editable: true
         }, {
             field: 'price',
             headerName: "السعر",
@@ -137,9 +146,29 @@ function GetCodesPage() {
             sortable: false,
             filterable: false,
             renderCell: (params) => {
-                return params.row.type === codeConstants.LECTURES && <BtnModal btnName={'عرض المحاضرات'} icon={<FaSchoolCircleCheck size={'1.2rem'} color={green[500]} />}>
+                const code = params.row
+
+                return params.row.type === codeConstants.LECTURES && <BtnModal
+                    btnName={'عرض المحاضرات'}
+                    icon={<FaSchoolCircleCheck color='#fff' size={'1.2rem'}
+                    />}>
+
                     <TitleWithDividers title={'عرض المحاضرات ' + params.row?.code} />
-                    <GetGroupLectures code={params.row} />
+                  
+                    <Lectures
+                        reset={reset} allStatuses={allStatuses} filters={{ codes: params.row._id }}
+                        massActions={[{
+                            label: 'ازاله المحاضرات من ' + code?.code,
+                            onClick: (ids) => pushCodes({
+                                field: 'codes', value: code._id, ids, action: 'pull'
+                            })
+                        }]}
+                        deleteFc={(id) => {
+                            pushCodes({
+                                field: 'codes', value: code._id, id, action: 'pull'
+                            })
+                        }}
+                    />
                 </BtnModal>
             }
         }, {
@@ -150,9 +179,37 @@ function GetCodesPage() {
             sortable: false,
             filterable: false,
             renderCell: (params) => {// code
-                return params.row.type === codeConstants.LECTURES && (<BtnModal btnName={' الغير مضافه'} color={'error'} icon={<FaSchoolCircleXmark size={'1.2rem'} />}>
+                const code = params.row
+                return params.row.type === codeConstants.LECTURES && (<BtnModal btnName={'الغير مضافه'} color={'error'} icon={<FaSchoolCircleXmark color='#fff' size={'1.2rem'} />}>
                     <TitleWithDividers title={' الغير مضافه ' + params.row.code} />
-                    <GetGroupLecturesNot code={params.row} />
+                    <Lectures
+                        reset={reset} allStatuses={allStatuses} filters={{ codes: '!=' + code._id }}
+                        massActions={[{
+                            label: 'ايضافه المحاضرات الي ' + code?.code,
+                            onClick: (ids) => pushCodes({
+                                field: 'codes', value: code._id, ids, action: 'push'
+                            })
+                        }]}
+                        addColumns={[{
+                            field: 'add',
+                            headerName: 'ايضافه',
+                            type: 'actions',
+                            getActions: (params) => {
+                                const lecture = params.row
+                                return [
+                                    <BtnConfirm
+                                        modalInfo={{
+                                            desc: 'سيتم اضافه هذه المحاضره الي الكود'
+                                        }}
+                                        btn={<IconButton color='success' onClick={() => pushCodes({
+                                            field: 'codes', value: code._id, id: lecture._id, action: 'push'
+                                        })}>
+                                            <IoIosAddCircleOutline></IoIosAddCircleOutline>
+                                        </IconButton>} key={0} />
+                                ]
+                            }
+                        }]}
+                    />
                 </BtnModal>)
             }
         }, {
@@ -210,7 +267,7 @@ function GetCodesPage() {
                 type={'crud'} columns={columns} reset={reset}
                 exportTitle={'اكواد'} exportObj={exportObj}
                 fetchFc={fetchFc} updateFc={updateFc} deleteFc={deleteFc}
-                loading={getLoading || updateLoading || deleteLoading}
+                allStatuses={allStatuses}
                 editing={
                     {
                         bgcolor: 'background.alt',

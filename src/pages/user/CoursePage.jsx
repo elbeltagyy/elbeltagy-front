@@ -89,7 +89,6 @@ function CoursePage() {
                 url={window.location.href}
             />
 
-
             <HeaderContent title={courseDetails?.course?.name} body={<div dangerouslySetInnerHTML={{ __html: courseDetails?.course?.description }} />}
                 infos={[
                     {

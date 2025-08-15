@@ -23,6 +23,13 @@ import { CiBank } from "react-icons/ci";
 import { MdQuestionAnswer } from "react-icons/md";
 import { PiQuestionFill } from "react-icons/pi";
 import { TbWorldQuestion } from "react-icons/tb";
+import { RiSecurePaymentFill } from "react-icons/ri";
+import { PiInvoiceBold } from "react-icons/pi";
+import { VscFeedback } from "react-icons/vsc";
+
+const LectureIcon = () => {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2m4-10v2H9v13H7v-6H5v6H3v-8H1.5V9a2 2 0 0 1 2-2zM8 4a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2a2 2 0 0 1 2 2" /></svg>
+}
 
 export const sidebarLinks = [
     {
@@ -36,7 +43,11 @@ export const sidebarLinks = [
     }, {
         name: "محاضراتى", icon: <FaSchool size="22px" />, to: "/grades/" + store?.getState()?.global?.user?.grade, allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
-        name: "بنك الاسئله", icon: <CiBank size="22px" />, to: "/questions_bank", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'قريبا', i: 2 }
+        name: "بنك الاسئله", icon: <CiBank size="22px" />, to: "/questions_bank", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: false, info: { title: 'قريبا', i: 2 }
+    }, {
+        name: "ايجاباتك", icon: <MdQuestionAnswer size="22px" />, to: "/answers", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: false, info: { title: 'جديد', i: 1 }
+    }, {
+        name: "مجتمع الطلاب", icon: <TbWorldQuestion size="22px" />, to: "/community5050", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'قريبا', i: 2 }
     }, {
         name: "اداره الحساب", allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
@@ -62,6 +73,8 @@ export const sidebarLinks = [
     }, {
         name: "الاختبارات", icon: <MdQuestionAnswer size="22px" />, to: "/management/attempts", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false, info: { title: 'جديد', i: 1 }
     }, {
+        name: "المحاضرات", icon: <LectureIcon size="22px" />, to: '/management/lectures', allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+    }, {
         name: "عرض المشاهدات", icon: <MdWatchLater size="22px" />, to: '/statistics/views', allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
         name: "اخري", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
@@ -78,7 +91,17 @@ export const sidebarLinks = [
     }, {
         name: "تقارير الطلاب", icon: <TbReportSearch size="22px" />, to: "/management/reports", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
-        name: "الدفع", icon: <SignupIcon size="22px" />, to: "/management/payments", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: true, info: { title: 'تحت الانشاء', i: 2 }
+        name: "المدفوعات", icon: <SignupIcon size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,// info: { title: 'تحت الانشاء', i: 2 }
+    }, {
+        name: "وسائل الدفع", icon: <RiSecurePaymentFill size="22px" />, to: "/management/payments", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,// info: { title: 'تحت الانشاء', i: 2 }
+    }, {
+        name: "الفواتير", icon: <PiInvoiceBold size="22px" />, to: "/management/invoices", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,// info: { title: 'تحت الانشاء', i: 2 }
+    }, {
+        name: 'المحفظه و المدفوعات', icon: <PiInvoiceBold size="22px" />, to: "/payments", allowedTo: [user_roles.ONLINE, user_roles.STUDENT]
+    }, {
+        name: "اقتراح/شكوي", icon: <VscFeedback size="22px" />, to: "/feedBacks", allowedTo: [user_roles.ONLINE, user_roles.STUDENT]
+    }, {
+        name: "اقتراحات/شكاوي", icon: <VscFeedback size="22px" />, to: "/management/feedBacks", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     },
 ]
 // {
@@ -93,8 +116,3 @@ export const sidebarLinks = [
 
 
 
-// {
-//     name: "ايجاباتك", icon: <MdQuestionAnswer size="22px" />, to: "/answers", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: false, info: { title: 'جديد', i: 1 }
-// }, {
-//     name: "مجتمع الطلاب", icon: <TbWorldQuestion size="22px" />, to: "/community5050", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'قريبا', i: 2 }
-// }, 

@@ -23,6 +23,7 @@ import { IoIosRadio } from "react-icons/io";
 import { orange } from '@mui/material/colors'
 import dayjs from 'dayjs'
 import { MdGpsFixed } from "react-icons/md";
+import InfoText from '../ui/InfoText';
 
 function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, currentIndex = false }) {
 
@@ -60,7 +61,7 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                         },
                         width: '100%'
                     }}>
-                        <div dangerouslySetInnerHTML={{ __html: course?.description }} />
+                        <InfoText label={'الوصف'} description={<span dangerouslySetInnerHTML={{ __html: course?.description }} />} />
                     </Box>
 
                     {/* <TabInfo count={lecturesCounts?.videos} i={'1'} title={lang.LECTURES} icon={<VidsIcon2 size='1.5rem' />} />

@@ -13,7 +13,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function ModalStyled({ open, setOpen, title, desc, children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false }) {
+export default function ModalStyled({ open, setOpen, title, desc = 'بمجرد الموافقه لن يمكنك العوده !', children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false }) {
 
     const handleClose = () => {
         setOpen(false);

@@ -68,7 +68,7 @@ function UserHome() {
 
     const btns = [
         <Button key={0} variant={activeCompo === 0 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(0)}>كورساتك</Button>,
-        <Button key={1} variant={activeCompo === 1 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(1)}>محاضرات (اكواد)</Button>,
+        <Button key={1} variant={activeCompo === 1 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(1)}>محاضرات خاصه</Button>,
         <Button key={2} variant={activeCompo === 2 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(2)}>محتوى مجموعاتك</Button>,
         <Button key={3} variant={activeCompo === 3 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(3)}> محاضرات مجانيه</Button>,
 
@@ -94,7 +94,7 @@ function UserHome() {
                 </Grid>
             </AccordionStyled>,
         },
-        { compo: <UserLectures query={{ codes: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها)'} />, value: 1 },
+        { compo: <UserLectures query={{ codes: true, paid: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها' + " || " + "اكواد)"} />, value: 1 },
         {
             value: 2,
             compo: <UserLectures query={{ isGroups: true }} accordionTitle='محاضرات مجموعاتك' />
@@ -123,41 +123,16 @@ function UserHome() {
             <Box sx={{ my: '16px' }}></Box>
             <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
 
-            <FlexColumn>
-                <ButtonGroup color="primary" aria-label="Medium-sized button group">
-                    {btns}
-                </ButtonGroup>
-            </FlexColumn>
+            {(user.role === user_roles.ONLINE || user.role == user_roles.STUDENT) && <>
+                <FlexColumn>
+                    <ButtonGroup color="primary" aria-label="Medium-sized button group">
+                        {btns}
+                    </ButtonGroup>
+                </FlexColumn>
 
-            {compos.find(compo => compo.value === activeCompo)?.compo}
-
-            {/* <TitleSection title='احصائياتك' />
-            <FlexRow minHeight={'100vh'}>
-                <Box width={'50%'}>
-                    <DynamicBarChart
-                        categories={categories}
-                        series={data}
-                        height="420px"
-                    />
-                </Box>
-                <Box width={'40%'}>
-                    <PieChart />
-                </Box>
-            </FlexRow> */}
-
-            {/* {(user.role === user_roles.STUDENT || user.role === user_roles.ONLINE) && (
-                <UserLectures query={{ codes: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها)'} />
-            )} */}
-
-            {/* {user.role === user_roles.STUDENT && (
-                <UserLectures query={{ isCenter: true }} accordionTitle='محاضرات السنتر' />
-            )} */}
-
-            {/* <UserLectures query={{ isFree: true }} accordionTitle='محاضرات مجانيه' /> */}
-
-            {/* {user.groups?.length > 0 && (
-                <UserLectures query={{ isGroups: true }} accordionTitle='محاضرات مجموعاتك' />
-            )} */}
+                {compos.find(compo => compo.value === activeCompo)?.compo}
+            </>
+            }
         </Section>
     )
 }

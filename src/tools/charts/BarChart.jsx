@@ -58,7 +58,7 @@ export default function DynamicBarChart({ categories = [], series = [], height =
         if (trigger && isActive && series.length === 0) {
             trigger()
         }
-    }, [isActive, trigger])
+    }, [isActive])
 
 
     /** @type {import('echarts').EChartsOption} */   // ← the magic line

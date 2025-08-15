@@ -1,5 +1,4 @@
-import { Avatar, CardHeader, useTheme } from '@mui/material'
-import React from 'react'
+import { Avatar, CardHeader, Typography, useTheme } from '@mui/material'
 
 function DataWith3Items({ icon, title, desc, src }) {
     const theme = useTheme()
@@ -23,7 +22,9 @@ function DataWith3Items({ icon, title, desc, src }) {
                     }
                 </>
             }
-            title={title}
+            title={<Typography>
+                {title}
+            </Typography>}
             subheader={desc}
         />
     )
