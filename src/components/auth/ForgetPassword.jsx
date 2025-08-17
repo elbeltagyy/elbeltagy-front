@@ -31,7 +31,7 @@ export default function ForgetPassword() {
     const [verifyResetPassword] = usePostData(sendVerify)
 
     const { data, isLoading, isSuccess } = useGetWhatsappStatusQuery()
-    console.log(data?.values?.isValid)
+    // console.log(data?.values?.isValid)
     const methods = [
         { value: senderConstants.EMAIL, label: senderConstants.EMAIL, icon: <MdMarkEmailUnread />, isValid: true },
         {
