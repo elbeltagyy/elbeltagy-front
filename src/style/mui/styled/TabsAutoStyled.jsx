@@ -85,7 +85,9 @@ export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, styl
 
                 </Tabs>
             </Box>
-            {component}
+            <Box sx={{ width: '100%' }}>
+                {component}
+            </Box>
         </FlexColumn>
 
     );

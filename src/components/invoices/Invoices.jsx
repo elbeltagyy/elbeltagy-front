@@ -75,6 +75,10 @@ function Invoices() {
             headerName: 'الوصف',
             width: 200
         }, {
+            field: 'sendFrom',
+            headerName: 'تم الارسال من',
+            width: 200
+        }, {
             field: 'status',
             headerName: lang.IS_ACTIVE,
             type: "singleSelect",

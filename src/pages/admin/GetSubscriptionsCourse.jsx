@@ -8,6 +8,7 @@ import Separator from '../../components/ui/Separator'
 import GetSubscriptionsNot from './GetSubscriptionsNot'
 import { red } from '@mui/material/colors'
 import GetSubscriptions from '../../components/subscriptions/GetSubscriptions'
+import TabsAutoStyled from '../../style/mui/styled/TabsAutoStyled'
 
 function GetSubscriptionsCourse() {
 
@@ -15,15 +16,15 @@ function GetSubscriptionsCourse() {
     const { data, isLoading } = useGetOneCourseQuery({ _id: courseId })
 
     if (isLoading) return <LoaderSkeleton />
+    const tabs = [
+        { label: 'الطلاب المشتركون', component: <GetSubscriptions courseId={courseId} /> },
+        { label: 'الطلاب الغير مشتركين', component: <GetSubscriptionsNot grade={data?.values?.grade} /> },
 
+    ]
     return (
         <Section>
             <TitleWithDividers title={'اسم الكورس : ' + data?.values?.name} />
-
-            <GetSubscriptions courseId={courseId} />
-            <Separator color={red[500]} sx={{ width: '300px' }} />
-            <GetSubscriptionsNot grade={data?.values?.grade} />
-
+            <TabsAutoStyled originalTabs={tabs} />
         </Section>
     )
 }

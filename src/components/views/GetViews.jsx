@@ -16,6 +16,7 @@ import TitleWithDividers from '../ui/TitleWithDividers'
 import DataWith3Items from '../ui/DataWith3Items'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import UserAvatar from '../users/UserAvatar'
+import { user_roles } from '../../settings/constants/roles'
 
 const exportObj = {
     grade: (row) => {
@@ -75,14 +76,15 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
     const fetchFc = async (params) => {
         params = {
             ...params,
-            lecture: lectureId, view_role: role, populate: 'user course lecture video', user: userId
+            lecture: lectureId, populate: 'user course lecture video', user: userId //*_* view_role
+        }
+        if (role) {
+            params.role = role
         }
         if (courseId) {
             params.course = courseId
         }
-
         const res = await getViews(params, false)
-
         const modifiedRes = res.views.map((view) => {
             return {
                 ...view,
@@ -132,8 +134,10 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
             field: 'role',
             headerName: lang.ROLE,
             width: 150,
-            sortable: false,
-            filterable: false,
+            type: 'singleSelect',
+            valueOptions: [user_roles.ONLINE, user_roles.STUDENT, user_roles.INREVIEW],
+            sortable: role ? false : true,
+            filterable: role ? false : true,
         },
         {
             field: 'lectureName',

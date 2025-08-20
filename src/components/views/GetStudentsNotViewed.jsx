@@ -36,7 +36,15 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
     const [getNotViewedUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getNotViewedUsers({ ...params, lectures: `!=_split_${lectureId}`, grade, courses: course, role }, false) // modify role
+        params = {
+            ...params,
+            lectures: `!=_split_${lectureId}`, grade, courses: course
+        }
+
+        if (role) {
+            params.role = role
+        }
+        const res = await getNotViewedUsers(params, false) // modify role
         const data = { values: res.users, count: res.count }
         setNotViewedCount(res.count)
         return data
@@ -88,9 +96,10 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
             headerName: lang.ROLE,
             type: 'singleSelect',
             width: 200,
-            valueOptions: [user_roles.ONLINE, user_roles.STUDENT],
-        },
-        {
+            valueOptions: [user_roles.ONLINE, user_roles.STUDENT, user_roles.INREVIEW],
+            sortable: role ? false : true,
+            filterable: role ? false : true,
+        }, {
             field: "grade",
             headerName: lang.GRADE,
             type: 'singleSelect',

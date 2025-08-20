@@ -46,6 +46,11 @@ function PaymentMethods({ coupon, price, handelResponse,
             disabled: true,
             validation: Yup.string().required()
         }, {
+            name: 'sendFrom',
+            label: 'رقم الهاتف او الحساب الذي تم التحويل منه',
+            validation: Yup.string().required('قم بكتابه رقم الهاتف او اسم الحساب الذي قمت بتحويل الاموال من خلاله')
+            // variant: 'filled'
+        }, {
             name: 'note',
             label: 'ارسال ملاحظه',
             variant: 'filled'
@@ -124,13 +129,13 @@ function PaymentMethods({ coupon, price, handelResponse,
                             {
                                 [paymentInteg.WALLET]: <FlexColumn>
                                     <Wallet price={price} />
-                                    <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file')} enableReinitialize={true} />
+                                    <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
                                 </FlexColumn>,
                                 [paymentInteg.PAYMOB]:
-                                    <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file')} enableReinitialize={true} />
+                                    <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
                                 ,
                                 [paymentInteg.FAWRY]:
-                                    <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file')} enableReinitialize={true} />
+                                    <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
 
                             }[activePayment.type] || <MakeForm status={status} onSubmit={onSubmit} inputs={inputs} enableReinitialize={true} />
 

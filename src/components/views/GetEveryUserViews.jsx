@@ -11,6 +11,7 @@ import gradeConstants from '../../settings/constants/gradeConstants'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { useLazyGetByUserViewsQuery } from '../../toolkit/apis/videosStatisticsApi'
 import UserAvatar from '../users/UserAvatar'
+import { user_roles } from '../../settings/constants/roles'
 
 const exportObj = {
     grade: (row) => {
@@ -42,18 +43,19 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
     const fetchFc = async (params) => {
         params = {
             ...params,
-            lecture: lectureId, view_role: role, course: courseId, user: userId
+            lecture: lectureId, course: courseId, user: userId //view_role:
         }
-        // console.log(params)
+        if (role) {
+            params.role = role
+        }
         const res = await getViews(params, false)
         const modifiedRes = res.views.map((view) => {
             return {
                 ...view,
-                role: view.user.role,
+                role: view.user?.role,
                 avatar: view.user?.avatar, name: view.user?.name, userName: view.user?.userName, isActive: view.user?.isActive, phone: view.user?.phone, familyPhone: view.user?.familyPhone, grade: view.user?.grade,
             }
         })
-        // console.log(res)
         setUsersCount(res.count)
         if (refetchUsers) {
             refetchUsers()
@@ -83,7 +85,6 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
             headerName: lang.USERNAME,
             width: 150,
             sortable: false,
-
         }, {
             field: 'watches',
             headerName: 'عدد المشاهدات',
@@ -110,8 +111,10 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
             field: 'role',
             headerName: lang.ROLE,
             width: 150,
-            sortable: false,
-            filterable: false,
+            type: 'singleSelect',
+            valueOptions: [user_roles.ONLINE, user_roles.STUDENT, user_roles.INREVIEW],
+            sortable: role ? false : true,
+            filterable: role ? false : true,
         },
         {
             field: 'isActive',

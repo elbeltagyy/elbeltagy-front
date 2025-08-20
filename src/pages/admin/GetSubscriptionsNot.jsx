@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import Section from '../../style/mui/styled/Section'
+import { useState } from 'react'
 import TabInfo from '../../components/ui/TabInfo'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Avatar, Box, Button, Typography } from '@mui/material'
+import { Avatar, Box, Button } from '@mui/material'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import Image from '../../components/ui/Image'
 import useLazyGetData from '../../hooks/useLazyGetData'
@@ -16,8 +15,8 @@ import usePostData from '../../hooks/usePostData'
 import { useGridApiRef } from '@mui/x-data-grid'
 import Loader from '../../style/mui/loaders/Loader'
 import gradeConstants from '../../settings/constants/gradeConstants'
-import { getDateWithTime } from '../../settings/constants/dateConstants'
-import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
+import { convertObjToArray, makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
+import { user_roles } from '../../settings/constants/roles'
 
 
 const exportObj = {
@@ -63,7 +62,7 @@ function GetSubscriptionsNot({ grade }) {
         apiRef.current.updateRows(([{ _id: res.user, _action: 'delete' }]))
     }
     const apiRef = useGridApiRef();
-
+    const [userRoles] = convertObjToArray(user_roles)
     const columns = [
         {
             field: "avatar",
@@ -103,7 +102,6 @@ function GetSubscriptionsNot({ grade }) {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (params) => params.row?.isActive,
             renderCell: (params) => {
                 return (
                     <Box>
@@ -120,6 +118,12 @@ function GetSubscriptionsNot({ grade }) {
             field: 'familyPhone',
             headerName: lang.FAMILY_PHONE,
             width: 200
+        }, {
+            field: 'role',
+            headerName: lang.ROLE,
+            width: 200,
+            type: 'singleSelect',
+            valueOptions: userRoles,
         },
         {
             field: "grade",
@@ -128,14 +132,6 @@ function GetSubscriptionsNot({ grade }) {
             width: 200,
             filterable: false,
             valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {grade.name}
-                    </Typography>
-                )
-            }
         }, {
             field: "addsubscribe",
             headerName: 'اضافه اشتراك',

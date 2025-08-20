@@ -144,6 +144,12 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
             headerName: lang.FAMILY_PHONE,
             width: 200
         }, {
+            field: 'role',
+            headerName: lang.ROLE,
+            width: 200,
+            filterable: false,
+            sortable: false
+        }, {
             field: "grade",
             headerName: lang.GRADE,
             type: 'singleSelect',

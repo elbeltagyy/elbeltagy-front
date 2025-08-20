@@ -111,6 +111,8 @@ function AttemptsGrid({ exam, courseId, attemptRole }) {
             width: 200,
             type: 'singleSelect',
             valueOptions: [user_roles.INREVIEW, user_roles.ONLINE, user_roles.STUDENT],
+            sortable: false,
+            filterable: false
         }, {
             field: 'phone',
             headerName: lang.PHONE,
@@ -175,7 +177,10 @@ function AttemptsGrid({ exam, courseId, attemptRole }) {
     const fetchFilters = useMemo(() => {
         const params = {
             populate: 'exam course user',
-            course: courseId, exam: exam?._id, attemptRole
+            course: courseId, exam: exam?._id
+        }
+        if (attemptRole) {
+            params.role = attemptRole
         }
         if (exam) {
             params.populate = 'course user'
