@@ -58,7 +58,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     sourcemap: mode === 'development',
     minify: 'esbuild',
-    cssMinify: 'lightningcss',
+    // cssMinify: 'lightningcss',
     chunkSizeWarningLimit: 1000,
     reportCompressedSize: true,
     rollupOptions: {
