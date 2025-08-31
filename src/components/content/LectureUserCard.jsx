@@ -147,7 +147,7 @@ function LectureUserCard({ lecture, isSubscribed, currentIndex, lectureIndex }) 
                                             فتح المحاضره
                                         </ScallyBtn>
                                     </>
-                                ) : (lecture.price && (lecture.isSalable ?? false)) ? (
+                                ) : (lecture.price && (lecture.isSalable ?? false) && !isSubscribed) ? (
                                     <>
                                         <Typography variant='subtitle1'>
                                             سعر المحاضره {lecture.price} جنيه
