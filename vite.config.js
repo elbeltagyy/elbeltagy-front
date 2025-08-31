@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
     }),
     mode === 'production' &&
     sentryVitePlugin({
-      org: 'elbeltagy',
+      org: 'elawadii',
       project: 'elbeltagy',
       authToken: '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',
       release: 'production',
