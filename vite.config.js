@@ -27,8 +27,8 @@ export default defineConfig(({ mode }) => ({
   sentryVitePlugin({
     org: 'elawadii',
     project: 'elbeltagy',
-    authToken: import.meta.env.VITE_SENTRY_AUTH_TOKEN, // Use env for security
-    release: 'production', // Set dynamically
+    authToken: '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', // Use env for security
+    release: 'production-' + new Date().getDay(), // Set dynamically
     sourceMapReference: false, // Avoid source map bloat
   }),
     // Compress images
