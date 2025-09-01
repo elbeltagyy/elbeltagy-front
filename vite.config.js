@@ -28,8 +28,40 @@ export default defineConfig(({ mode }) => ({
     org: 'elawadii',
     project: 'elbeltagy',
     authToken: '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', // Use env for security
-    release: 'production-' + new Date().getDay(), // Set dynamically
-    sourceMapReference: false, // Avoid source map bloat
+    release: {
+      name: 'production-' + new Date().getDay(),
+      create: true,
+      inject: true, // This is key for proper sourcemap linking
+      cleanArtifacts: true,
+    },
+    sourcemaps: {
+      assets: ['./dist/**/*.js', './dist/**/*.js.map'],
+      ignore: [
+        'node_modules/**',
+        '**/*.css',
+        '**/*.html',
+        '**/*.png',
+        '**/*.jpg',
+        '**/*.svg',
+        'dist/assets/static/**' // Ignore static assets if needed
+      ],
+      // Delete sourcemaps after upload for security
+      filesToDeleteAfterUpload: ['./dist/**/*.map'],
+    },
+    // Set the correct URL prefix (CRITICAL)
+    urlPrefix: '~/',
+
+    // Error handling - don't fail build on warnings
+    errorHandler: (err) => {
+      if (err.message.includes('Could not auto-detect')) {
+        console.warn('Sentry warning (can be ignored):', err.message);
+      } else {
+        console.error('Sentry error:', err.message);
+        throw err;
+      }
+    },
+
+    // sourceMapReference: false, // Avoid source map bloat
   }),
     // Compress images
     // viteImagemin({
@@ -57,7 +89,7 @@ export default defineConfig(({ mode }) => ({
   },
 
   build: {
-    sourcemap: mode === 'development',
+    sourcemap: true, //mode === 'development'
   },
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.webp'],
 }));
