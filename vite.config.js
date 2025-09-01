@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => ({
   react(),
   mode === 'production' &&
   sentryVitePlugin({
-    org: 'elbeltagy',
+    org: 'elawadii',
     project: 'elbeltagy',
     authToken: import.meta.env.VITE_SENTRY_AUTH_TOKEN, // Use env for security
     release: 'production', // Set dynamically
