@@ -44,7 +44,7 @@ function GetSubscriptionsNot({ grade }) {
     const [getNotSubscribedUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getNotSubscribedUsers({ ...params, courses: `!=_split_${courseId}`, grade }, false)
+        const res = await getNotSubscribedUsers({ ...params, courses: `!=_split_${courseId}` }, false)
         const data = { values: res.users, count: res.count }
         setNotCounts(res.count)
         return data
