@@ -27,7 +27,6 @@ import InfoText from '../ui/InfoText'
 import AdminLinkLectureToGroup from './AdminLinkLectureToGroup'
 import BtnModal from '../ui/BtnModal'
 import MakeForm from '../../tools/makeform/MakeForm'
-import BtnConfirm from '../ui/BtnConfirm'
 
 
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
@@ -109,7 +108,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
           <>
             <InfoText label={'الوصف'} description={lecture.description} />
             <FlexRow>
-              <InfoText label={'سعر المجاضره'} description={lecture.price + ' ' + 'جنيه'} />
+              <InfoText label={'سعر المحاضره'} description={lecture.price + ' ' + 'جنيه'} />
               <BtnModal
                 btn={<TabInfo sx={{ cursor: 'pointer', margin: '0 8px' }} count={'اضغط لتعديل السعر'} i={2} />}
                 component={<MakeForm inputs={[
