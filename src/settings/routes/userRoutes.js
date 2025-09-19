@@ -17,8 +17,6 @@ export const userRoutes = [
         </ProtectedRoute>
     },
     {
-        path: '/user/recharge_code', element: <ProtectedRoute allowedTo={[user_roles.STUDENT, user_roles.ONLINE]}>
-            <RechargeCodePage />
-        </ProtectedRoute>
+        path: '/user/recharge_code', element: <RechargeCodePage />
     },
 ]

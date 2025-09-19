@@ -49,6 +49,23 @@ function ExportAsPdf({
             const columnsField = selectedColumnsData.map(col => col.field)
 
             //manage row 
+            // const exportFc = async (rows) => {
+            //     const modified = [];
+            //     for (const row of rows) {
+            //         let clonedRow = { ...row };
+
+            //         for (const field of columnsField) {
+            //             if (exportObj[field]) {
+            //                 const fieldMethod = exportObj[field];
+            //                 // handle async methods (QR code) or sync methods (others)
+            //                 clonedRow[field] = await fieldMethod(row);
+            //             }
+            //         }
+            //         modified.push(clonedRow);
+            //     }
+            //     return modified;
+            // };
+
             const exportFc = (rows) => {
                 const modify = rows.map(row => {
                     let clonedRow = JSON.parse(JSON.stringify(row));
@@ -95,12 +112,21 @@ function ExportAsPdf({
 
             doc.text(arabicText, x, 10, { font: 'Rubik-Regular', halign: 'center' }); // Now it is centered
 
+            for (let row of modifiedRows) {
+                for (let col of selectedColumnsData) {
+                    if (col?.qrcode) {
+                        row[col.field] = await col.qrcode(row); // store base64 directly in row
+                    }
+                }
+            }
+
             doc.autoTable({
                 head: [tableColumnTitles],
                 body: tableRows,
                 theme: 'striped',
                 styles: {
                     halign: 'right', // Right-to-right alignment for Arabic
+                    cellPadding: 5,
                 },
                 headStyles: {
                     halign: 'right',
@@ -111,7 +137,25 @@ function ExportAsPdf({
                     font: 'Amiri' // Align the body text to the right
                 },
                 tableWidth: 'auto', // Ensures table width is automatically calculated
-                direction: 'rtl'
+                direction: 'rtl',
+                didDrawCell: (data) => {
+                    if (data.section !== "body") return;
+                    const colIndex = data.column.index;
+                    const rowIndex = data.row.index;
+                    // const colDef = data.column; // get original column
+
+                    // const column = selectedColumnsData[colDef.index]
+                    const fieldIndex = selectedColumnsData.length - 1 - colIndex;
+                    const column = selectedColumnsData[fieldIndex];
+                    if (!column || !column.qrcode) return;
+
+                    const qrImage = modifiedRows[rowIndex][column.field]; // already base64
+                    if (qrImage) {
+                        const { x, y, width, height } = data.cell;
+                        const qrSize = Math.min(width, height) - 4; // fit inside cell
+                        doc.addImage(qrImage, "PNG", x + 2, y + 2, qrSize, qrSize);
+                    }
+                }
             });
 
             doc.save(arabicText);
@@ -120,6 +164,7 @@ function ExportAsPdf({
             }, 5000)
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
     };
 

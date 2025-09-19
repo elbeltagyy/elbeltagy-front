@@ -30,8 +30,9 @@ import { useGetOneLectureQuery, usePushLecturesMutation } from '../../toolkit/ap
 import Lectures from '../../components/all/Lectures'
 import BtnConfirm from '../../components/ui/BtnConfirm'
 import { IoIosAddCircleOutline } from 'react-icons/io'
+import GenerateQrCode from '../../components/qrcodes/GenerateQrCode'
 
-
+import QRCode from "qrcode";
 
 const exportObj = {
     isActive: (row) => {
@@ -53,7 +54,7 @@ const exportObj = {
     },
     price: (row) => {
         return row.price + ' جنيه'
-    },
+    }
 }
 
 
@@ -120,6 +121,23 @@ function GetCodesPage() {
             }
         },
         {
+            field: 'qrcode',
+            headerName: "Qrcode",
+            width: 170,
+            type: 'actions',
+            qrcode: async (row) => {
+                const url = window.location.origin + '/user/recharge_code?code=' + row.code + '&method=auto'
+                const qrdata = await QRCode.toDataURL(url);
+                return qrdata
+            },
+            renderCell: (params) => {
+                const url = window.location.origin + '/user/recharge_code?code=' + params.row.code + '&method=auto'
+                return <BtnModal btnName={'عرض qrcode'}>
+                    <GenerateQrCode url={url} />
+                </BtnModal>
+            }
+            // editable: true
+        }, {
             field: 'isChecked',
             headerName: "تعليم كتم استعماله",
             width: 170,
@@ -154,7 +172,7 @@ function GetCodesPage() {
                     />}>
 
                     <TitleWithDividers title={'عرض المحاضرات ' + params.row?.code} />
-                  
+
                     <Lectures
                         reset={reset} allStatuses={allStatuses} filters={{ codes: params.row._id }}
                         massActions={[{

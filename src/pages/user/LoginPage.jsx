@@ -28,7 +28,7 @@ function LoginPage() {
         if (user && isPrev) {
             navigate(-1)
         }
-        if (user) {
+        if (user && !isPrev) {
             navigate('/')
         }
     }, [user, navigate])

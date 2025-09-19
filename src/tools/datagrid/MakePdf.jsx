@@ -5,7 +5,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts'; // Use default fonts or add cust
 import { rubikRegular } from './Rubik-Regular-normal';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs; // Load default fonts
-console.log(pdfMake)
+// console.log(pdfMake)
 
 function MakePdf() {
     const generatePDF = () => {
