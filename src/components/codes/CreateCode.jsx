@@ -40,7 +40,7 @@ function CreateCode({ setReset, lecture = false }) {
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1,
-            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
+            validation: Yup.number().required(lang.REQUERIED).max(1000, 'اقصى عدد هو 1000')
         }
     ]
     const walletInputs = [
@@ -62,7 +62,7 @@ function CreateCode({ setReset, lecture = false }) {
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1,
-            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
+            validation: Yup.number().required(lang.REQUERIED).max(1000, 'اقصى عدد هو 1000')
         }, {
             name: 'price',
             label: 'سعر الكود',
@@ -89,7 +89,7 @@ function CreateCode({ setReset, lecture = false }) {
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1,
-            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
+            validation: Yup.number().required(lang.REQUERIED).max(1000, 'اقصى عدد هو 1000')
         },
     ]
 
@@ -110,7 +110,7 @@ function CreateCode({ setReset, lecture = false }) {
             label: 'العدد المسموح به للاستخدام',
             type: 'number',
             value: 1,
-            validation: Yup.number().required(lang.REQUERIED).max(200, 'اقصى عدد هو 200')
+            validation: Yup.number().required(lang.REQUERIED).max(1000, 'اقصى عدد هو 1000')
         },
     ]
 
