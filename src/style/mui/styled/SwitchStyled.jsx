@@ -6,7 +6,7 @@ import { red } from '@mui/material/colors'
 function SwitchStyled({ label, checked, onChange, isLoading, disabled = false }) {
     return (
         <FormControlLabel
-            sx={{ display: 'block' }}
+            // sx={{ display: 'block' }}
             control={<Switch color='success' sx={{
                 '& .MuiSwitch-thumb': {
                     color: checked ? null : red[500], // Red color when unchecked

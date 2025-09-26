@@ -13,13 +13,6 @@ import Separator from "../../components/ui/Separator"
 import paymentInteg from "../../settings/constants/paymentInteg"
 import TitleSection from "../../components/ui/TitleSection"
 import TitleWithDividers from "../../components/ui/TitleWithDividers"
-import { lang } from "../../settings/constants/arlang"
-import UserAvatar from "../../components/users/UserAvatar"
-import { makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
-import products from "../../settings/constants/products"
-import statusConstants from "../../settings/constants/status"
-import TabInfo from "../../components/ui/TabInfo"
-import { getFullDate } from "../../settings/constants/dateConstants"
 import Invoices from "../../components/all/Invoices"
 
 function PaymentsPage() {

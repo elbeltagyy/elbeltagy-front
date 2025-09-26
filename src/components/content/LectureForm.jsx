@@ -22,7 +22,7 @@ import filePlayers from '../../settings/constants/filePlayers'
 const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
 
 // const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
-const durationRegex = /^(?!^\d+$)(?:(?:\d+[hms]))(?:\s+(?:(?:\d+[hms])))*$/;
+export const durationRegex = /^(?!^\d+$)(?:(?:\d+[hms]))(?:\s+(?:(?:\d+[hms])))*$/;
 const bunnyRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 
 

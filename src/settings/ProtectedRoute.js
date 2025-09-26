@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import NotFoundPage from '../../pages/errors/NotFoundPage'
+import NotFoundPage from '../pages/errors/NotFoundPage'
 
 function ProtectedRoute({ children, allowedTo = [] }) {
 

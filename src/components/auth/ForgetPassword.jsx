@@ -103,7 +103,7 @@ export default function ForgetPassword() {
         await verifyResetPassword({
             userName: changerUserName, ...values
         })
-        props.resetFields()
+        props.resetForm()
     }
     return (
 

@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import { Form, Formik } from 'formik';
 
 import * as Yup from "yup"
-import MakeInput from './MakeInput';
 import Loader from '../../style/mui/loaders/Loader';
 import { FilledHoverBtn } from '../../style/buttonsStyles';
 import DynamicFormGrid from './DynamicFormGrid2';
@@ -20,21 +19,20 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
     const { data, validation } = useMemo(() => {
         let data = {}
         let validation = {}
-
-        inputs.forEach((input, i) => {
+        //In Value => should check valid value => not empty Object, not null, not undefined
+        inputs.forEach((input) => {
             if (input.name) {
                 if (preValue) {
                     data[input.name] = preValue[input.name] ?? ''
-                }
-                if (input.type === 'array') {
-                    data[input.name] = input.value || []
-                }
-                if (input.value === 0) {
-                    data[input.name] = 0
                 } else if ((typeof input.value === 'object' && Object.keys(input.value || {}).length === 0) && input?.value) {
                     data[input.name] = ''
-                } else {
+                } else if (input.value ?? true) {
                     data[input.name] = input.value ?? ""
+                    // After That No
+                } else if (input.type === 'array') {
+                    data[input.name] = input.value || []
+                } else {
+                    data[input.name] = ''
                 }
             }
 

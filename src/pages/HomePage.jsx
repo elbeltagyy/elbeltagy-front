@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Hero from '../components/home/Hero'
 import HeroScience from '../components/home/HeroScience'
 import Services from '../components/home/Services'
-import AboutUS from '../components/home/AboutUS'
+
 import Grades from '../components/home/Grades'
 import UserHome from '../components/home/UserHome'
 import SEOHelmetAsync from '../tools/SEOHelmetAsync'

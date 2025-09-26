@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import UserHeader from '../ui/UserHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Box, Button, ButtonGroup, Typography } from '@mui/material'
+import { Alert, Box, Button,  Typography } from '@mui/material'
 import { useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import TitleSection from '../../components/ui/TitleSection'
@@ -17,10 +17,7 @@ import { user_roles } from '../../settings/constants/roles'
 import { useLazyIsLoggedQuery } from '../../toolkit/apis/usersApi'
 import { setUser } from '../../toolkit/globalSlice'
 import UserLectures from './UserLectures'
-import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import PieChart from '../../tools/charts/PieChart'
-import DynamicBarChart from '../../tools/charts/BarChart'
-import TitleWithDividers from '../ui/TitleWithDividers'
+import { CoursesIcon,  VidsIcon2 } from '../ui/svg/ContentSvgs'
 
 function UserHome() {
 
@@ -67,11 +64,10 @@ function UserHome() {
     const [activeCompo, setActiveCompo] = useState(0)
 
     const btns = [
-        <Button fullWidth key={0} variant={activeCompo === 0 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(0)}>كورساتك</Button>,
-        <Button fullWidth key={1} variant={activeCompo === 1 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(1)}>محاضرات خاصه</Button>,
-        <Button fullWidth key={2} variant={activeCompo === 2 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(2)}>محتوى مجموعاتك</Button>,
+        <Button endIcon={<CoursesIcon />} fullWidth key={0} variant={activeCompo === 0 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(0)}>كورساتك</Button>,
+        <Button endIcon={<VidsIcon2 />} fullWidth key={1} variant={activeCompo === 1 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(1)}>محاضرات خاصه</Button>,
+        // <Button fullWidth key={2} variant={activeCompo === 2 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(2)}>محتوى مجموعاتك</Button>,
         <Button fullWidth key={3} variant={activeCompo === 3 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(3)}> محاضرات مجانيه</Button>,
-
     ]
 
     const compos = [
@@ -95,11 +91,11 @@ function UserHome() {
             </AccordionStyled>,
         },
         { compo: <UserLectures query={{ codes: true, paid: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها' + " || " + "اكواد)"} />, value: 1 },
-        {
-            value: 2,
-            compo: <UserLectures query={{ isGroups: true }} accordionTitle='محاضرات مجموعاتك' />
-            ,
-        },
+        // {
+        //     value: 2,
+        //     compo: <UserLectures query={{ isGroups: true }} accordionTitle='محاضرات مجموعاتك' />
+        //     ,
+        // },
         {
             value: 3,
             compo: <UserLectures query={{ isFree: true }} accordionTitle='محاضرات مجانيه' />
@@ -125,7 +121,6 @@ function UserHome() {
 
             {(user.role === user_roles.ONLINE || user.role == user_roles.STUDENT) && <>
                 <Grid min='120px' sx={{width: '100%'}}>
-
                     {btns}
                 </Grid>
             

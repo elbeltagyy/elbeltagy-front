@@ -448,17 +448,17 @@ function CrudDatagrid(
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     setSelectionModel(newRowSelectionModel)
 
-                    if (allSelected) {
-                        newRowSelectionModel = newRowSelectionModel.map(selection => {
-                            if (typeof selection === 'string') {
-                                selection = rows.find(r => r._id === selection)
-                            }
-
-                            return selection
+                    if (allSelected && setSelection) {
+                        setSelection(prev => {
+                            const newSelection = newRowSelectionModel.map(selection => {
+                                //selection is Id
+                                const rowData = rows.find(r => r._id === selection)
+                                    || prev.find(p => p._id === selection)
+                                return rowData
+                            })
+                            return newSelection
                         })
-                    }
-
-                    if (setSelection) {
+                    } else if (setSelection) {
                         setSelection(newRowSelectionModel)
                     }
                 }}

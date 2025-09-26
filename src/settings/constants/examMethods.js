@@ -3,7 +3,7 @@ const examMethods = [
     { value: 'Exam', label: 'تصحيح كاختبار', markQ: false } // time for All || can correct it individually
 ]
 
-const defaultVal = examMethods[1].value
+const defaultVal = examMethods[0].value
 
 export const getExamMethod = ({ methodValue, isDefault = false, key = null }) => {
 

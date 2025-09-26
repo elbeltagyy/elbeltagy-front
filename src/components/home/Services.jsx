@@ -32,7 +32,7 @@ function Services() {
                             </Box>
 
                             <Typography variant='subtitle1' mt={'-10px'} sx={{ p: '0 6px', textAlign: 'center' }}>
-                                خبره <span style={{ color: 'orange' }}>20</span> سنه فى <span style={{ color: 'green' }}>الجيولوجيا</span>
+                                خبره <span style={{ color: 'orange' }}>24</span> سنه فى <span style={{ color: 'green' }}>الجيولوجيا</span>
                             </Typography>
                         </FlexColumn>
                     </Battery>

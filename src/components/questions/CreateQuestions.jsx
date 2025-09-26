@@ -19,7 +19,7 @@ function CreateQuestions({ setReset }) {
             const { questions } = await saveFiles(values)
             await createQuestionFc(questions)
 
-            localStorage.setItem("grade", questions[questions.length - 1]?.grade)
+            // localStorage.setItem("grade", questions[questions.length - 1]?.grade)
             if (setReset) {
                 setReset(pre => !pre)
             }

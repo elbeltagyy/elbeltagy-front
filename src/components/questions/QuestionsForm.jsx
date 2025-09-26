@@ -17,7 +17,7 @@ function QuestionsForm({ onSubmit, status, questions = null, metaData = { isAdd:
         isShuffle: true,
         clarifyText: '',
         clarifyUrl: '',
-        grade: Number(localStorage.getItem("grade")) ?? '',
+        grade:  '', //Number(localStorage.getItem("grade")) ??
         options: [
             {
                 id: uuidv4(),

@@ -116,11 +116,16 @@ function PaymentMethods({ coupon, price, handelResponse,
                             {note}
                         </Alert>
                     )}
-                    <ListMethods
-                        setMethod={setChosenPayment}
-                        methods={payments} activeMethod={chosenPayment}
-                        disabled={exclude} excludeFc={(method) => exclude.includes(method.type)}
-                    />
+                    {payments.length ? (
+
+                        <ListMethods
+                            setMethod={setChosenPayment}
+                            methods={payments} activeMethod={chosenPayment}
+                            disabled={exclude} excludeFc={(method) => exclude.includes(method.type)}
+                        />
+                    ) : (
+                        <Alert sx={{ mt: '16px' }} severity="warning" variant="filled">لا يوجد وسائل دفع متاحه حاليا</Alert>
+                    )}
                     <Box>
                         {chosenPayment && (
                             <InfoText label={'وسيله الدفع'} description={activePayment?.name} />

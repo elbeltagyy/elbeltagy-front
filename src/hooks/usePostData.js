@@ -16,7 +16,7 @@ export default function usePostData(sendData, setLoading, setReset = null) {
     }
 
     // data = values
-    data = Array.isArray(values) ? values: Object.fromEntries(
+    data = Array.isArray(values) ? values : Object.fromEntries(
       Object.entries(values).filter(([k, v]) => v !== null && v !== undefined && v !== '')
     );
     // console.log(data)
@@ -50,13 +50,14 @@ export default function usePostData(sendData, setLoading, setReset = null) {
 
       try {
         const res = await sendData(formData, params)
-
+        if (setLoading) {
+          setLoading(false)
+        }
+        
         if (res.error) {
           // error ===> invalid jwt or not user
           if (res.error?.data?.isKick === true) {
-            if (setLoading) {
-              setLoading(false)
-            }
+
             dispatch(logout())
             dispatch(setGlobalMsg({ message: res.error?.data?.message || "sorry!, you have to log in", severity: "error" }))
             navigate('/')

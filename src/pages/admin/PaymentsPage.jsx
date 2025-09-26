@@ -2,7 +2,7 @@ import GetPayments from "../../components/payment/GetPayements"
 import TitleWithDividers from "../../components/ui/TitleWithDividers"
 import Section from "../../style/mui/styled/Section"
 
-function PaymentsPage() {
+function ManagePaymentsPage() {
     return (
         <Section>
             <TitleWithDividers title={'وسائل الدفع'} />
@@ -11,4 +11,4 @@ function PaymentsPage() {
     )
 }
 
-export default PaymentsPage
+export default ManagePaymentsPage

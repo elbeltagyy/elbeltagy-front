@@ -4,6 +4,7 @@ import ModalStyled from "../../style/mui/styled/ModalStyled"
 import AdminGetQuestions from "../questions/AdminGetQuestions"
 import TabInfo from "../ui/TabInfo"
 import { Box } from "@mui/material"
+import Section from "../../style/mui/styled/Section"
 
 const LinkToQuestion = ({ props }) => {
 
@@ -33,10 +34,12 @@ const LinkToQuestion = ({ props }) => {
         </div>
 
         <ModalStyled open={open} setOpen={setOpen} fullScreen={true} >
-            <Box>
-                <AdminGetQuestions setSelectedQs={setSelectedQs} allSelected={true} />
-            </Box>
-            <FilledHoverBtn onClick={() => linkQs(selectedQs)}>ربط الاسئله</FilledHoverBtn>
+            <Section>
+                <Box>
+                    <AdminGetQuestions setSelectedQs={setSelectedQs} allSelected={true} />
+                </Box>
+                <FilledHoverBtn onClick={() => linkQs(selectedQs)}>ربط الاسئله</FilledHoverBtn>
+            </Section>
         </ModalStyled>
     </div>
 }

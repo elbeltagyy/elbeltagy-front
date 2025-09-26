@@ -31,6 +31,7 @@ import MakeForm from '../../tools/makeform/MakeForm'
 
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
   const [open, setOpen] = useState(false)
+  const isNativeLecture = (lecture?.course?._id === courseId || lecture?.course === courseId)
 
   // const isLectureLinked = lecture?.course?._id !== courseId
 
@@ -96,7 +97,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
         subheader={<TabInfo count={getFullDate(lecture.createdAt)} i={2} />}
       />
       <CardContent sx={{ flex: 1 }}>
-        {lecture?.course?._id !== courseId && (
+        {!isNativeLecture && (
           <div>
             <TabInfo count={lecture.course.name} title={'مربوط بكورس : '} isBold={false} i={1} />
           </div>
@@ -104,7 +105,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
         <TabInfo count={lecture.isActive ? lang.ACTIVE : lang.NOT_ACTIVE} i={lecture.isActive ? 1 : 3} />
 
-        {(lecture?.course?._id === courseId) && (
+        {isNativeLecture && (
           <>
             <InfoText label={'الوصف'} description={lecture.description} />
             <FlexRow>
@@ -169,7 +170,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
           <FlexRow>
 
-            {(lecture?.course?._id === courseId) && (
+            {isNativeLecture && (
               <FilledHoverBtn endIcon={<BiSolidShow />} disabled={status.isLoading || isLoading} onClick={() => setOpen(true)} >
                 عرض التفاصيل
               </FilledHoverBtn>
@@ -188,7 +189,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
             )}
           </FlexRow>
 
-          {(lecture?.course?._id === courseId) && (
+          {isNativeLecture && (
             <IconButton disabled={status.isLoading || isLoading} onClick={() => setOpenDelete(true)} sx={{ bgcolor: 'error.main', '&:hover': { bgcolor: red[500], opacity: .8 } }}>
               {status.isLoading ? <Loader /> : <MdDelete color='#fff' />}
             </IconButton>

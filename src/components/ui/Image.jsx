@@ -17,6 +17,7 @@ function Image({ img, title, maxWidth = '100vh', sx, ratio = 'auto', saturate = 
                     borderRadius: borderRadius,
                     filter: saturate && 'saturate(80%)',
                     transition: '.3s all ease',
+                    display: "block"
                     // pointerEvents: 'none'
                 }}
             />

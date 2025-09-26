@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { logout, setGlobalMsg, setUser } from '../toolkit/globalSlice'
+import { logout, setGlobalMsg } from '../toolkit/globalSlice'
 import { useNavigate } from 'react-router-dom'
 
 // 1- on sending => if cahced, params query
@@ -25,7 +25,11 @@ export default function useLazyGetData(getData) {
 
         return new Promise(async (resolve, reject) => {
             try {
-                const result = await getData(params, enableCache)
+                const handledParams = Array.isArray(params) ? params : typeof params === 'object' ? Object.fromEntries(
+                    Object.entries(params).filter(([k, v]) => v !== null && v !== undefined && v !== '')
+                ) : params
+
+                const result = await getData(handledParams, enableCache)
                 if (result.error) {
                     // error ===> invalid jwt
                     if (result.error?.data?.isKick === true) {

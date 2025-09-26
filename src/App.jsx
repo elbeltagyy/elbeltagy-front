@@ -4,7 +4,7 @@ import { themeSettings } from './style/theme';
 import { RouterProvider, createBrowserRouter, } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
-import { routes } from './settings/routes/routes';
+
 
 import rtlPlugin from 'stylis-plugin-rtl';
 import { prefixer } from 'stylis';
@@ -13,12 +13,21 @@ import createCache from '@emotion/cache'
 
 import * as locales from '@mui/material/locale';
 import { arSD } from '@mui/x-data-grid/locales';
+import Layout from './pages/Layout';
+import ErrorPage from './pages/errors/ErrorPage';
+import { routesLinks } from './settings/sidebarLinks';
 
 function App() {
 
   const { mode } = useSelector(s => s.global)
   const theme = useMemo(() => createTheme(themeSettings(mode), locales["arSD"], arSD), [mode]) // he used useMemo ???
 
+  const routes = [
+    {
+      path: "/", element: <Layout />, errorElement: <ErrorPage />,
+      children: routesLinks
+    }
+  ]
 
   const routesObj = createBrowserRouter(routes, {
     future: {

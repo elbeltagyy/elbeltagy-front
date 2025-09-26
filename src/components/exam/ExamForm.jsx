@@ -8,8 +8,9 @@ import LinkToQuestion from './LinkToQuestion'
 import { memo } from 'react'
 import examMethods, { getExamMethod } from '../../settings/constants/examMethods'
 import { isDevelop } from '../../tools/isDevelop'
+import { durationRegex } from '../content/LectureForm'
 
-const durationRegex = /^(?:(?:\d+)\s*[hms]?)(?:\s+(?:(?:\d+)\s*[hms]))*$/;
+
 
 function ExamForm({ lecture, status, onSubmit }) {
 
@@ -114,8 +115,7 @@ function ExamForm({ lecture, status, onSubmit }) {
             row: 3,
             validation: Yup.string()
                 .required(lang.REQUERIED),
-        },
-        {
+        }, {
             name: "isTime",
             label: "هل تريد تفعيل التوقيت فى الاختبار",
             type: 'switch',
@@ -312,7 +312,7 @@ function ExamForm({ lecture, status, onSubmit }) {
                     })
                 )
                 .required('يجب ان يكون هناك اسئله') // these constraints are shown if and only if inner constraints are satisfied
-                .min(isDevelop ? 1 : 5, '5 على الاقل')
+                .min(isDevelop ? 1 : 5, 'يجب إنشاء 5 اسئله على الاقل !')
         ,
     }
     ]
