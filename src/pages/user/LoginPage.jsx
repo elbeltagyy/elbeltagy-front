@@ -96,7 +96,7 @@ function LoginPage() {
                 setOpen={setOpen}
                 agree='التوصل مع الدعم'
                 action={() => {
-                    window.location.href = "https://api.whatsapp.com/send?phone=" + '2001553251467' + "&text=" + 'لقد نسيت كلمه السر';
+                    window.location.href = "https://api.whatsapp.com/send?phone=" + '2001026476593' + "&text=" + 'لقد نسيت كلمه السر';
                 }}
             /> */}
             <ModalStyled open={open} setOpen={setOpen} fullWidth={true} >

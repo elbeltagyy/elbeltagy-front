@@ -35,7 +35,7 @@ function FooterPage() {
                         {/*  */}
                         <Image img={'/assets/youtube.png'} maxWidth='50px' ratio={'auto'} />
                     </IconButton>
-                    <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=2001553251467&text=" + whatsText}>
+                    <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=2001026476593&text=" + whatsText}>
                         {/*   */}
                         <Image img={'/assets/whatsapp.png'} maxWidth='50px' ratio={'auto'} />
                     </IconButton>

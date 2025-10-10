@@ -139,7 +139,7 @@ export default function ForgetPassword() {
                         <Typography sx={{ maxWidth: '250px' }}> إذا كنت قد نسيت كلمه السر, او تواجه مشكله فى تسجيل الدخول تواصل مع الدعم من الرقم المسجل به لاعاده ضبط الحساب
                         </Typography>
                         <FilledHoverBtn endIcon={<FcContacts />} onClick={() => {
-                            window.location.href = "https://api.whatsapp.com/send?phone=" + '2001553251467' + "&text=" + 'لقد نسيت كلمه السر';
+                            window.location.href = "https://api.whatsapp.com/send?phone=" + '2001026476593' + "&text=" + 'لقد نسيت كلمه السر';
                         }}>
                             التوصل مع الدعم
                         </FilledHoverBtn>
