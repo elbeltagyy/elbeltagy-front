@@ -217,13 +217,13 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
                     type: 'actions',
                     getActions: (params) => {
                         return [
-                            <BtnConfirm 
-                            modalInfo={{
-                                desc: 'سيتم اضافه هذا الرابط الي السؤال'
-                            }}
-                            btn={<IconButton color='success' onClick={() => linkFc(params?.row?._id)}>
-                                <FaPlus></FaPlus>
-                            </IconButton>} key={0} />
+                            <BtnConfirm
+                                modalInfo={{
+                                    desc: 'سيتم اضافه هذا الرابط الي السؤال'
+                                }}
+                                btn={<IconButton color='success' onClick={() => linkFc(params?.row?._id)}>
+                                    <FaPlus></FaPlus>
+                                </IconButton>} key={0} />
                         ]
                     }
                 }

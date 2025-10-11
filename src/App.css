@@ -10,6 +10,24 @@ html{
     animation: name duration timing-function delay iteration-count direction fill-mode;
 }
 
+/* Default: grab */
+.swiper {
+    cursor: grab;
+}
+
+/* When user clicks/holds: grabbing */
+.swiper:active {
+    cursor: grabbing;
+}
+
+.swiper-pagination {
+    position: relative !important;
+    margin-top: 15px;
+    /* Space below the slides */
+    top: auto !important;
+    bottom: auto !important;
+}
+
 .MuiDataGrid-columnHeaderTitle {
     line-height: inherit !important;
 }

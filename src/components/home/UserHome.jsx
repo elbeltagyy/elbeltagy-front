@@ -18,6 +18,7 @@ import { useLazyIsLoggedQuery } from '../../toolkit/apis/usersApi'
 import { setUser } from '../../toolkit/globalSlice'
 import UserLectures from './UserLectures'
 import { CoursesIcon,  VidsIcon2 } from '../ui/svg/ContentSvgs'
+import LatestCourses from './LatestCourses'
 
 function UserHome() {
 
@@ -128,6 +129,7 @@ function UserHome() {
                 {compos.find(compo => compo.value === activeCompo)?.compo}
             </>
             }
+            <LatestCourses />
         </Section>
     )
 }

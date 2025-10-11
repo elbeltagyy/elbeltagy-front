@@ -72,6 +72,7 @@ import NotFoundPage from "../pages/errors/NotFoundPage.jsx";
 import TestPage from "../pages/test/TestPage.js";
 import { isDevelop } from "../tools/isDevelop.js";
 import ManagePaymentsPage from "../pages/admin/PaymentsPage.jsx";
+import CoursesPage from "../pages/user/CoursesPage.jsx";
 
 const GetQuestionsPage = lazy(() => import("../pages/admin/GetQuestionsPage"))
 
@@ -213,6 +214,8 @@ const otherLinks = [
                 </ProtectedRoute>
             }
         ]
+    }, {
+        path: '/courses', element: <CoursesPage />
     }, {
         path: '/lectures/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.STUDENT, user_roles.ONLINE]}>
             <LectureCenterPage />

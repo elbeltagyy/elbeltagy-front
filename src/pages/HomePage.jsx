@@ -7,6 +7,7 @@ import Services from '../components/home/Services'
 import Grades from '../components/home/Grades'
 import UserHome from '../components/home/UserHome'
 import SEOHelmetAsync from '../tools/SEOHelmetAsync'
+import LatestCourses from '../components/home/LatestCourses'
 
 function HomePage() {
 
@@ -33,6 +34,7 @@ function HomePage() {
             />
 
             <Hero />
+            <LatestCourses />
             <HeroScience />
             {/* <AboutUS /> */}
             <Services />

@@ -1,6 +1,5 @@
-import { Box, Divider, Typography } from '@mui/material'
-import React from 'react'
-import { FlexBetween, FlexRow } from '../../style/mui/styled/Flexbox'
+import { Box, Typography } from '@mui/material'
+import { FlexRow } from '../../style/mui/styled/Flexbox'
 
 
 const lineStyle = (width) => {

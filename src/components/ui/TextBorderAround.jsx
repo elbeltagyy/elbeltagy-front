@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 
 function TextBorderAround({ children }) {
@@ -36,22 +36,25 @@ function TextBorderAround({ children }) {
 }
 
 
-export const TextBorderWithIcons = ({ title = '', startIcon, endIcon, color, colorOne }) => {
+export const TextBorderWithIcons = ({ title = '', startIcon, endIcon, color, colorOne, sx = {} }) => {
     const textInArr = title.split(" ")
     return (
-        <FlexRow sx={{ justifyContent: 'center', my: '2.5rem' }}>
+        <FlexRow sx={{ justifyContent: 'center', my: '2.5rem', ...sx }}>
 
             <TextBorderAround>
+                <FlexRow sx={{ gap: '12px' }}>
 
-                {/* <ReactLoginIcon style={{ margin: '0 10px' }} size={'2rem'} /> */}
-                {startIcon}
+                    {/* <ReactLoginIcon style={{ margin: '0 10px' }} size={'2rem'} /> */}
+                    {startIcon}
+                    <Box>
+                        {textInArr?.map((text, i) => (
+                            <Box component='span' key={i} sx={{ color: i === 0 && colorOne || color, }}> {text} </Box>
+                        ))}
+                    </Box>
 
-                {textInArr?.map((text, i) => (
-                    <span key={i} style={{ color: i === 0 && colorOne || color, marginRight: '10px', marginLeft: i === textInArr.length - 1 && '10px' }}> {text} </span>
-                ))}
-
-                {endIcon}
-                {/* <LoginAnimatedIcon size='2rem' /> */}
+                    {endIcon}
+                    {/* <LoginAnimatedIcon size='2rem' /> */}
+                </FlexRow>
             </TextBorderAround>
 
         </FlexRow>
