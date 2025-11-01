@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Section from '../../style/mui/styled/Section'
 import UserHeader from '../ui/UserHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Box, Button,  Typography } from '@mui/material'
+import { Alert, Box, Button, Typography } from '@mui/material'
 import { useLazyGetCourseSubscriptionsQuery } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import TitleSection from '../../components/ui/TitleSection'
@@ -17,7 +17,7 @@ import { user_roles } from '../../settings/constants/roles'
 import { useLazyIsLoggedQuery } from '../../toolkit/apis/usersApi'
 import { setUser } from '../../toolkit/globalSlice'
 import UserLectures from './UserLectures'
-import { CoursesIcon,  VidsIcon2 } from '../ui/svg/ContentSvgs'
+import { CoursesIcon, VidsIcon2 } from '../ui/svg/ContentSvgs'
 import LatestCourses from './LatestCourses'
 
 function UserHome() {
@@ -105,7 +105,7 @@ function UserHome() {
 
 
     if (user.role === user_roles.STUDENT) {
-        btns.push(<Button key={4} variant={activeCompo === 4 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(4)}> محاضرات السنتر</Button>,)
+        btns.push(<Button fullWidth key={4} variant={activeCompo === 4 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(4)}> محاضرات السنتر</Button>,)
         compos.push({ compo: <UserLectures query={{ isCenter: true }} accordionTitle='محاضرات السنتر' />, value: 4 },)
     }
     // const categories = ['يناير', "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر", "نوفبمر", "ديسمبر"]
@@ -121,14 +121,15 @@ function UserHome() {
             <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
 
             {(user.role === user_roles.ONLINE || user.role == user_roles.STUDENT) && <>
-                <Grid min='120px' sx={{width: '100%'}}>
+                <Grid min='120px' sx={{ width: '100%' }}>
                     {btns}
                 </Grid>
-            
+
 
                 {compos.find(compo => compo.value === activeCompo)?.compo}
             </>
             }
+            <Separator />
             <LatestCourses />
         </Section>
     )

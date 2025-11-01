@@ -52,13 +52,10 @@ function GetViewsPage() {
     {
       label: 'المشاهدات', count: viewsCount?.values?.count ?? 'يتم التحميل...',
       component: <GetViewsCompo lectureId={lectureId} courseId={filterByCourse ? courseId : ''} role={role || ''} refetchViews={refetchViews} />
-    },
-    {
+    }, {
       label: 'الطلاب', count: usersCount?.values?.count ?? 'يتم التحميل...',
       component: <GetEveryUserViews lectureId={lectureId} courseId={filterByCourse ? courseId : ''} role={role || ''} refetchUsers={refetchUsers} />
-    },
-
-  ]
+    },]
 
   const modifiedTabs = useMemo(() => {
     if (lectureId) {
@@ -66,7 +63,7 @@ function GetViewsPage() {
       return [...tabs, {
         label: 'الطلاب الذين لما يشاهدوا المحاضره: ' + lectureData?.values?.name,
         component: <GetStudentsNotViewed
-          grade={data?.values?.grade}
+          // grade={data?.values?.grade}
           lectureId={lectureId}
           course={isCenterRole ? '' : courseId}
           lectureName={lectureData?.values?.name}

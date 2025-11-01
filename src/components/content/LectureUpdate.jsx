@@ -38,7 +38,7 @@ function LectureUpdate({ lecture, setLectures }) {
 
     return (
         <Section>
-            <LectureForm lecture={{ ...data?.values }} status={status} onSubmit={onSubmit} location='update' />
+            <LectureForm lecture={{ ...data?.values }} setLectures={setLectures} status={status} onSubmit={onSubmit} location='update' />
         </Section>
     )
 }

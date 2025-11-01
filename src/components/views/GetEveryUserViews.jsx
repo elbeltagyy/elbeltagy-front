@@ -120,7 +120,6 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (params) => params.row?.isActive,
             renderCell: (params) => {
                 return (
                     <Box>

@@ -17,6 +17,9 @@ import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import { Link } from 'react-router-dom'
 import filePlayers from '../../settings/constants/filePlayers'
+import BtnModal from '../ui/BtnModal'
+import ExamCreatePage from '../../pages/admin/ExamCreatePage'
+import ExamUpdatePage from '../../pages/admin/ExamUpdatePage'
 
 
 const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
@@ -26,7 +29,8 @@ export const durationRegex = /^(?!^\d+$)(?:(?:\d+[hms]))(?:\s+(?:(?:\d+[hms])))*
 const bunnyRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 
 
-function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
+function LectureForm({ grade, course, onSubmit, lecture, status, location, setLectures }) {
+    const [close, setClose] = useState(false) //forExam create
 
     const [sectionType, setSectionType] = useState(lecture?.sectionType)
     const [videoPlayer, setVideoPlayer] = useState(lecture?.video?.player)
@@ -57,6 +61,13 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
             name: 'course',
             label: '',
             value: lecture?.course ?? course,
+            hidden: true,
+            validation: Yup.string()
+                .required(lang.REQUERIED)
+        }, {
+            name: 'chapter',
+            label: '',
+            value: lecture?.chapter ?? '',
             hidden: true,
             validation: Yup.string()
                 .required(lang.REQUERIED)
@@ -372,11 +383,21 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location }) {
                     <MakeForm inputs={linkInputs} onSubmit={onSubmit} status={status} />
                     :
                     sectionType === sectionConstants.EXAM &&
-                    <Button
-                        component={Link}
-                        to={location === 'update' ? updateExamUrl : createExamBtnUrl}>
-                        {location === 'update' ? "تعديل الاختبار" : 'انشاء اختبار'}
-                    </Button>
+                    sectionType === sectionConstants.EXAM &&
+                    <BtnModal
+                        close={close}
+                        fullScreen
+                        btnName={location === 'update' ? "تعديل الاختبار" : 'إنشاء اختبار'}>
+                        {location === 'update' ?
+                            <ExamUpdatePage lecId={lecture._id} setLectures={setLectures} /> :
+                            <ExamCreatePage setClose={setClose} courseIdVar={lecture.course} chapter={lecture.chapter} setLectures={setLectures} />}
+                        {/* setClose={setClose} */}
+                    </BtnModal>
+                    // <Button
+                    //     component={Link}
+                    //     to={location === 'update' ? updateExamUrl : createExamBtnUrl}>
+                    //     {location === 'update' ? "تعديل الاختبار" : 'انشاء اختبار'}
+                    // </Button>
                 }
             </FlexColumn>
         </Section>

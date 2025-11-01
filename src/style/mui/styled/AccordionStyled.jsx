@@ -4,10 +4,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { IconButton, Typography, useTheme } from '@mui/material';
-import { FlexColumn } from './Flexbox';
+import { FlexColumn, FlexRow } from './Flexbox';
 import { useState } from 'react';
 
-export default function AccordionStyled({ title, desc, children, bgcolor = 'background.default', expanded = false, setExpanded, titleSx = {}, beforeTitle }) {
+export default function AccordionStyled({ title, desc, children, bgcolor = 'background.default', expanded = false, setExpanded, titleSx = {}, beforeTitle, startIcon, expandIcon, preventRotation }) {
     const theme = useTheme()
     const [open, setOpen] = useState(expanded)
 
@@ -17,7 +17,6 @@ export default function AccordionStyled({ title, desc, children, bgcolor = 'back
         }
         setOpen(!open)
     }
-
 
     return (
         <Accordion
@@ -33,14 +32,18 @@ export default function AccordionStyled({ title, desc, children, bgcolor = 'back
                 '&::before': {
                     display: 'none'
                 },
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                    transform: preventRotation && 'none', // 🔒 Prevent rotation
+                },
             }}>
             <AccordionSummary
                 expandIcon={
-                    <IconButton>
-                        <ExpandMoreIcon sx={{
-                            color: "grey.0", fontSize: '2.5rem', borderRadius: '50%', bgcolor: open ? 'primary.600' : 'primary.light'
-                        }} />
-                    </IconButton>}
+                    expandIcon ? expandIcon :
+                        <IconButton>
+                            <ExpandMoreIcon sx={{
+                                color: "grey.0", fontSize: '2.5rem', borderRadius: '50%', bgcolor: open ? 'primary.600' : 'primary.light'
+                            }} />
+                        </IconButton>}
                 aria-controls="panel1-content"
                 id="panel1-header"
                 sx={{
@@ -53,13 +56,19 @@ export default function AccordionStyled({ title, desc, children, bgcolor = 'back
             >
                 <FlexColumn sx={{ alignItems: 'flex-start' }}>
                     {beforeTitle}
-                    <Typography variant='h6'>
-                        {title}
-                    </Typography>
-                    {desc &&
-                        <Typography component="span" sx={{ color: 'inherit', opacity: .9 }}>
-                            {desc}
-                        </Typography>}
+                    <FlexRow gap={'12px'}>
+                        {startIcon && startIcon}
+                        <FlexColumn sx={{ alignItems: 'flex-start' }}>
+                            <Typography variant='h6'>
+                                {title}
+                            </Typography>
+                            {desc &&
+                                <Typography component="span" sx={{ color: 'inherit', opacity: .9 }}>
+                                    {desc}
+                                </Typography>}
+                        </FlexColumn>
+                    </FlexRow>
+
                 </FlexColumn>
             </AccordionSummary>
 

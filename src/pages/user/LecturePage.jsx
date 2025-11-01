@@ -3,7 +3,7 @@ import { useGetLectureAndCheckQuery, useLazyGetLectureAndCheckQuery, usePassLect
 import { useLocation, useOutletContext, useParams } from 'react-router-dom'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import { FilledHoverBtn } from '../../style/buttonsStyles'
+import { FilledHoverBtn, OutLinedHoverBtn } from '../../style/buttonsStyles'
 import usePostData from '../../hooks/usePostData'
 import WrapperHandler from '../../tools/WrapperHandler'
 import sectionConstants from '../../settings/constants/sectionConstants'
@@ -35,7 +35,7 @@ function LecturePage() {
         }
         trigger()
         status.reset()
-    }, [lectureIndex])
+    }, [lectureIndex, params.lectureId])
 
 
     if (getStatus.isLoading || getStatus.isFetching || getStatus.isError) return <LoaderSkeleton />
@@ -46,14 +46,14 @@ function LecturePage() {
         setCurrentIndex(nextLectureIndex)
     }
     return (
-        <FlexColumn sx={{ minHeight: '90vh', backgroundColor: 'background.alt', borderRadius: '16px', p: '12px' }}>
+        <FlexColumn sx={{ minHeight: '90vh', backgroundColor: 'background.alt', borderRadius: '16px', p: '12px', width: '100%' }}>
 
             {lecture && (
                 <LectureBody lecture={lecture} lectureIndex={lectureIndex} courseId={course} />
             )}
 
             {(lecture?.sectionType !== sectionConstants.EXAM || lecture.exam?.attempts.length !== 0 || (dayjs().isAfter(dayjs(lecture.dateEnd)))) && (
-                <FilledHoverBtn onClick={() => passed()} disabled={status.isLoading || (lectureIndex !== currentIndex && currentIndex !== 0) || false} >تم الانتهاء ! </FilledHoverBtn>
+                <OutLinedHoverBtn onClick={() => passed()} disabled={status.isLoading || (lectureIndex !== currentIndex && currentIndex !== 0) || false} > {(lectureIndex === currentIndex) ? 'تعليم كتم الانتهاء' : 'تم الانتهاء'} ! </OutLinedHoverBtn>
             )}
             <WrapperHandler status={status} showSuccess={true} />
         </FlexColumn>

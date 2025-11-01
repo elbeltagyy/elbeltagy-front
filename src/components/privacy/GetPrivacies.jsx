@@ -51,7 +51,6 @@ function GetPrivacies({ reset, setReset }) {
             headerName: lang.IS_ACTIVE,
             type: "boolean",
             editable: true,
-            valueGetter: (params) => params.row?.isActive,
             renderCell: (params) => {
                 return (
                     <Box>

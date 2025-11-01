@@ -112,89 +112,89 @@ function LecturesPage() {
                     </Typography>
                 )
             }
-        }, 
-        // {
-        //     field: 'users',
-        //     headerName: 'الاعضاء',
-        //     width: 150,
-        //     type: 'actions',
-        //     disableExport: true,
-        //     renderCell: (params) => {
-        //         const lecture = params.row
-        //         return <BtnModal
-        //             titleInSection={'المشتركون فى المحاضره' + lecture?.name}
-        //             btnName={'المشتركون'}
-        //             component={
-        //                 <Users
-        //                     reset={reset}
-        //                     allStatuses={[status]}
-        //                     massActions={[{
-        //                         label: 'ازاله المستخدمين من المحاضره ' + lecture.name,
-        //                         onClick: (chosenUsers) => handelUser({
-        //                             ids: chosenUsers, field: 'lectures', value: lecture._id, action: 'pull'
-        //                         })
-        //                     }]}
-        //                     deleteFc={(userId) => handelUser({
-        //                         id: userId, field: 'lectures', value: lecture._id, action: 'pull'
-        //                     })}
-        //                     filters={{
-        //                         grade: lecture.grade, lectures: lecture._id
-        //                     }}
-        //                 />
-        //             }
-        //         />
-        //     }
-        // }, {
-        //     field: 'notUsers',
-        //     headerName: 'الطلاب الغير مشتركون',
-        //     width: 150,
-        //     type: 'actions',
-        //     disableExport: true,
-        //     renderCell: (params) => {
-        //         const lecture = params.row
-        //         return <BtnModal
-        //             color={'error'}
-        //             titleInSection={'الطلاب الغير مشتركون فى المحاضره' + lecture?.name}
-        //             btnName={'الغير مشتركون'}
-        //             component={
-        //                 <Users
-        //                     reset={reset}
-        //                     allStatuses={[status]}
-        //                     massActions={[{
-        //                         label: 'ايضافه الطلاب الي المحاضره ' + lecture.name,
-        //                         onClick: (chosenUsers) => handelUser({
-        //                             ids: chosenUsers, field: 'lectures', value: lecture._id, action: 'push'
-        //                         })
-        //                     }]}
-        //                     addColumns={[{
-        //                         field: 'add',
-        //                         headerName: 'ايضافه',
-        //                         type: 'actions',
-        //                         getActions: (params) => {
-        //                             const user = params.row
-        //                             return [
-        //                                 <BtnConfirm
-        //                                     modalInfo={{
-        //                                         desc: 'سيتم اضافه هذا الطالب الي المحاضره' + ' ' + lecture.name
-        //                                     }}
-        //                                     btn={<IconButton color='success' onClick={() => handelUser({
-        //                                         id: user._id, field: 'lectures', value: lecture._id, action: 'push'
-        //                                     })}>
-        //                                         <IoIosAddCircleOutline></IoIosAddCircleOutline>
-        //                                     </IconButton>} key={0} />
-        //                             ]
-        //                         }
-        //                     }]}
-        //                     filters={{
-        //                         grade: lecture.grade, lectures: '!=' + lecture._id
-        //                     }}
-        //                 />
-        //             }
-        //         />
-        //     }
-        // }, 
+        },
         {
-          
+            field: 'users',
+            headerName: 'الاعضاء',
+            width: 150,
+            type: 'actions',
+            disableExport: true,
+            renderCell: (params) => {
+                const lecture = params.row
+                return <BtnModal
+                    titleInSection={'المشتركون فى المحاضره' + lecture?.name}
+                    btnName={'المشتركون'}
+                    component={
+                        <Users
+                            reset={reset}
+                            allStatuses={[status]}
+                            massActions={[{
+                                label: 'ازاله المستخدمين من المحاضره ' + lecture.name,
+                                onClick: (chosenUsers) => handelUser({
+                                    ids: chosenUsers, field: 'accessLectures', value: lecture._id, action: 'pull'
+                                })
+                            }]}
+                            deleteFc={(userId) => handelUser({
+                                id: userId, field: 'accessLectures', value: lecture._id, action: 'pull'
+                            })}
+                            filters={{
+                                accessLectures: lecture._id //grade: lecture.grade, 
+                            }}
+                        />
+                    }
+                />
+            }
+        }, {
+            field: 'notUsers',
+            headerName: 'الطلاب الغير مشتركون',
+            width: 150,
+            type: 'actions',
+            disableExport: true,
+            renderCell: (params) => {
+                const lecture = params.row
+                return <BtnModal
+                    color={'error'}
+                    titleInSection={'الطلاب الغير مشتركون فى المحاضره' + lecture?.name}
+                    btnName={'الغير مشتركون'}
+                    component={
+                        <Users
+                            reset={reset}
+                            allStatuses={[status]}
+                            massActions={[{
+                                label: 'ايضافه الطلاب الي المحاضره ' + lecture.name,
+                                onClick: (chosenUsers) => handelUser({
+                                    ids: chosenUsers, field: 'accessLectures', value: lecture._id, action: 'push'
+                                })
+                            }]}
+                            addColumns={[{
+                                field: 'add',
+                                headerName: 'ايضافه',
+                                type: 'actions',
+                                getActions: (params) => {
+                                    const user = params.row
+                                    return [
+                                        <BtnConfirm
+                                            modalInfo={{
+                                                desc: 'سيتم اضافه هذا الطالب الي المحاضره' + ' ' + lecture.name
+                                            }}
+                                            btn={<IconButton color='success' onClick={() => handelUser({
+                                                id: user._id, field: 'accessLectures', value: lecture._id, action: 'push'
+                                            })}>
+                                                <IoIosAddCircleOutline></IoIosAddCircleOutline>
+                                            </IconButton>} key={0} />
+                                    ]
+                                }
+                            }]}
+                            filters={{
+                                accessLectures: '!=' + lecture._id
+                            }}
+                        />
+                    }
+                />
+            }
+        },
+        {
+
             field: 'dateStart',
             headerName: "تاريخ البدء",
             width: 200,
@@ -222,8 +222,6 @@ function LecturesPage() {
             headerName: lang.IS_ACTIVE,
             type: "boolean",
             editable: true,
-
-            valueGetter: (isActive) => isActive,
             renderCell: (params) => {
                 return (
                     <Box>

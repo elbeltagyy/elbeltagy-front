@@ -12,6 +12,9 @@ import ExamCard from '../exam/ExamCard'
 import Separator from '../ui/Separator'
 import SectionIcon from '../content/SectionIcon'
 import { useSelector } from 'react-redux'
+import { formatDuration } from '../../settings/constants/dateConstants'
+import TabInfo from '../ui/TabInfo'
+import InfoText from '../ui/InfoText'
 
 function LectureBody({ lecture, lectureIndex, courseId }) {
     const user = useSelector(s => s.global.user)
@@ -36,7 +39,6 @@ function LectureBody({ lecture, lectureIndex, courseId }) {
                         </Avatar>
                     )}
                     <Typography variant='subtitle1' sx={{ textAlign: 'center', width: '100%', color: 'neutral.0', mr: '40px', textDecoration: 'underline' }}>{lecture.name}</Typography>
-
                 </FlexRow>
             </FlexColumn>
 
@@ -58,8 +60,12 @@ function LectureBody({ lecture, lectureIndex, courseId }) {
 
             <FlexColumn gap={'10px'} mt={'16px'} sx={{ alignItems: 'flex-start' }}>
                 <Separator sx={{ maxWidth: '150px', m: 0 }} />
-                <Typography variant='body1'>{lecture.name}</Typography>
-                <Typography variant='body2'>{lecture.description}</Typography>
+                {lecture.video?.duration &&
+                    <TabInfo count={formatDuration(lecture.video?.duration)} i={0} title={'وقت الفيديو'} />
+                }
+                <InfoText description={lecture.name} label={'الحصه'} />
+                <InfoText description={lecture.description} label={'الوصف'} />
+                <Typography variant='body2'></Typography>
                 <Separator sx={{ maxWidth: '300px' }} />
             </FlexColumn>
         </Box>

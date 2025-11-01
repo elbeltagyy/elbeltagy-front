@@ -28,7 +28,7 @@ const exportObj = {
 }
 
 
-function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
+function GetStudentsNotViewed({  lectureId, lectureName, course, role }) { //grade,
 
     const [notViewedCount, setNotViewedCount] = useState('loading ...')
 
@@ -38,13 +38,14 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
     const fetchFc = async (params) => {
         params = {
             ...params,
-            lectures: `!=_split_${lectureId}`, grade, courses: course
+            lectures: `!=_split_${lectureId}`,  courses: course //grade,
         }
 
         if (role) {
             params.role = role
         }
         const res = await getNotViewedUsers(params, false) // modify role
+        // console.log(res)
         const data = { values: res.users, count: res.count }
         setNotViewedCount(res.count)
         return data
@@ -74,7 +75,6 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (params) => params.row?.isActive,
             renderCell: (params) => {
                 return (
                     <Box>
@@ -106,14 +106,6 @@ function GetStudentsNotViewed({ grade, lectureId, lectureName, course, role }) {
             width: 200,
             filterable: false,
             valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {grade.name}
-                    </Typography>
-                )
-            }
         },
     ]
 

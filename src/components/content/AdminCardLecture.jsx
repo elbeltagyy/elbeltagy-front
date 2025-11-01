@@ -28,12 +28,13 @@ import AdminLinkLectureToGroup from './AdminLinkLectureToGroup'
 import BtnModal from '../ui/BtnModal'
 import MakeForm from '../../tools/makeform/MakeForm'
 
+// course => Lectures
+// course => chapters => lectures(course, chapter)
 
+//Liking
 function AdminCardLecture({ lecture, i, setLectures, courseId }) {
   const [open, setOpen] = useState(false)
   const isNativeLecture = (lecture?.course?._id === courseId || lecture?.course === courseId)
-
-  // const isLectureLinked = lecture?.course?._id !== courseId
 
   const [sendData, { isLoading }] = useUpdateLectureMutation()
   const [updateLecture] = usePostData(sendData)
@@ -81,7 +82,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
   return (
 
-    <Card elevation={4} sx={{ minWidth: '250px', width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column' }}>
+    <Card elevation={4} sx={{ minWidth: '250px', width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0' }} aria-label="recipe">
@@ -96,6 +97,7 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
         title={<Typography variant='subtitle1' >{lecture.name}</Typography>}
         subheader={<TabInfo count={getFullDate(lecture.createdAt)} i={2} />}
       />
+
       <CardContent sx={{ flex: 1 }}>
         {!isNativeLecture && (
           <div>

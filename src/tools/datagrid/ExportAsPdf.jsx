@@ -48,24 +48,6 @@ function ExportAsPdf({
             const tableColumnTitles = selectedColumnsData.map(col => col.headerName).reverse()
             const columnsField = selectedColumnsData.map(col => col.field)
 
-            //manage row 
-            // const exportFc = async (rows) => {
-            //     const modified = [];
-            //     for (const row of rows) {
-            //         let clonedRow = { ...row };
-
-            //         for (const field of columnsField) {
-            //             if (exportObj[field]) {
-            //                 const fieldMethod = exportObj[field];
-            //                 // handle async methods (QR code) or sync methods (others)
-            //                 clonedRow[field] = await fieldMethod(row);
-            //             }
-            //         }
-            //         modified.push(clonedRow);
-            //     }
-            //     return modified;
-            // };
-
             const exportFc = (rows) => {
                 const modify = rows.map(row => {
                     let clonedRow = JSON.parse(JSON.stringify(row));
@@ -126,7 +108,7 @@ function ExportAsPdf({
                 theme: 'striped',
                 styles: {
                     halign: 'right', // Right-to-right alignment for Arabic
-                    cellPadding: 5,
+                    cellPadding: columns.some(col => col.qrcode) ? 5 : 1, //for padding
                 },
                 headStyles: {
                     halign: 'right',

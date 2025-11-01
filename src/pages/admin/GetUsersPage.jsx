@@ -71,12 +71,12 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
     //get users
     const [reset, setReset] = useState(false)
     const [getData, { isLoading }] = useLazyGetUsersQuery()
-    const [getUsers] = useLazyGetData(getData)
 
     const fetchFc = async (params) => {
-        const res = await getUsers({ ...params, grade: grade || 'all', courses }, false)
-        const data = { values: res.users, count: res.count }
-        return data
+        // const res = await getUsers({ ...params, grade: grade || 'all', courses }, false)
+        const { data } = await getData({ ...params, grade: grade || 'all', courses }, false)
+        const res = { values: data.users, count: data.count } //res.users
+        return res
     }
 
     //get users count
@@ -127,7 +127,6 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             headerName: lang.IS_ACTIVE,
             type: "boolean",
             editable: true,
-            valueGetter: (params) => params, //*_*
             renderCell: (params) => {
                 return (
                     <Box>
@@ -166,15 +165,6 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             sortable: false,
             filterable: false,
             valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {params.row.role === user_roles.ADMIN ? user_roles.ADMIN
-                            : grade?.name}
-                    </Typography>
-                )
-            }
         }, {
             field: "government",
             headerName: 'المحافظه',
@@ -182,15 +172,6 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             width: 200,
             editable: true,
             valueOptions: makeArrWithValueAndLabel(governments, { value: 'id', label: 'governorate_name_ar', isNumber: true }),
-            renderCell: (params) => {
-                const government = governments.filter(({ id }) => Number(id) === Number(params.row.government))[0]
-                return (
-                    <Typography>
-                        {params.row.role === user_roles.ADMIN ? user_roles.ADMIN
-                            : government?.governorate_name_ar}
-                    </Typography>
-                )
-            }
         }, {
             field: 'marks',
             headerName: 'درجات الاسئله',
@@ -321,7 +302,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
 
     const [deleteMany, deleteManyStatus] = useDeleteManyUsersMutation()
     const [deleteManyUsers] = usePostData(deleteMany)
-    
+
     return (
         <Section>
             {isShowTitle && (

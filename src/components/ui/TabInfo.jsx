@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { Box, Typography, useTheme } from '@mui/material'
 import './tabInfo.css'
 
-function TabInfo({ count, i, title, icon, isBold = true, sx }) {
+function TabInfo({ count, i, title, icon, isBold = true, sx, fontSize }) {
 
     const theme = useTheme()
     let modeColors = []
@@ -32,14 +32,14 @@ function TabInfo({ count, i, title, icon, isBold = true, sx }) {
 
             {icon}
 
-            {title && <Typography variant={isBold ? 'subtitle1' : 'subtitle2'}>
+            {title && <Typography variant={isBold ? 'subtitle1' : 'subtitle2'} sx={{ fontSize }}>
                 {title}
             </Typography>}
 
             {(count || count === 0) && (
                 <span className='tab-icon' style={{
                     color: modeColors[i],
-                    backgroundColor: modeBgcolors[i]
+                    backgroundColor: modeBgcolors[i], fontSize
                 }}>{count}
                 </span>
             )}

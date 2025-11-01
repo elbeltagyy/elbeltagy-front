@@ -41,6 +41,15 @@ const lecturesApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        changeLectureIndex: builder.mutation({
+            query: data => {
+                return ({
+                    url: '/content/lectures/' + data.id + '/reorder', //remove it 
+                    method: 'POST',
+                    body: data
+                })
+            }
+        }),
         createLecture: builder.mutation({
             query: data => ({
                 url: '/content/lectures',
@@ -110,7 +119,7 @@ export const {
     useLazyGetLecturesQuery, useGetOneLectureQuery, useLazyGetOneLectureQuery, useLazyGetLectureForCenterQuery, useLazyGetAllLecturesQuery,
     useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation,
     useGetSecureVideoMutation
-    , usePatchLectureMutation,
+    , usePatchLectureMutation, useChangeLectureIndexMutation,
     useAddToLecturesMutation, useRemoveFromLecturesMutation, usePushLecturesMutation
 } = lecturesApi
 

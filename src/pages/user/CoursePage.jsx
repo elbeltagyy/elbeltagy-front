@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { Alert, Box, } from '@mui/material'
+import { Alert, Box, Paper, useMediaQuery, } from '@mui/material'
 
 import HeaderContent from '../../components/ui/HeaderContent'
 import { ExamIcon, FilesIcon, VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
@@ -19,15 +19,20 @@ import sectionConstants from '../../settings/constants/sectionConstants'
 import { useLazyGetCourseLecturesAndCheckUserQuery } from '../../toolkit/apis/coursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
+import TitleWithDividers from '../../components/ui/TitleWithDividers'
+import AccordionStyled from '../../style/mui/styled/AccordionStyled'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { OutLinedHoverBtn } from '../../style/buttonsStyles'
 
 function CoursePage() {
     const params = useParams() // {lectureId, courseId = index, gradeId}
+    const isLargeScreen = useMediaQuery('(min-width:900px)')
 
     const [getData, status] = useLazyGetCourseLecturesAndCheckUserQuery()
     const [getCourseAndLectures] = useLazyGetData(getData)
 
     const [courseDetails, setCourseDetails] = useState({})// Not Sub or Not Reg => {lectures=[], counts} || subscribed => {}
-    const [currentIndex, setCurrentIndex] = useState(0)
+    const [currentUserIndex, setCurrentUserIndex] = useState(0)
 
     useEffect(() => {
         const trigger = async () => {
@@ -37,8 +42,8 @@ function CoursePage() {
                 files: lectures.filter(lecture => lecture.sectionType === sectionConstants.FILE)?.length,
                 exams: lectures.filter(lecture => lecture.sectionType === sectionConstants.EXAM)?.length
             }
-            setCurrentIndex(currentIndex)
-            setCourseDetails({ course, lectures, counts })
+            setCurrentUserIndex(currentIndex)
+            setCourseDetails({ course, chapters: lectures, counts })
         }
 
         if (!courseDetails?.course) {
@@ -50,36 +55,88 @@ function CoursePage() {
     useEffect(() => {
         const unLockLecture = () => {
             setCourseDetails(prev => {
-                const lectures = prev.lectures.map(lecture => {
-                    let cloneLecture = { ...lecture }
-                    if (cloneLecture.index === currentIndex) {
-                        cloneLecture.locked = false
-                    }
-                    return cloneLecture
-                })
-
-                return { ...prev, lectures }
+                return {
+                    ...prev,
+                    chapters: prev.chapters.map(chapter => {
+                        const modifiedLecs = chapter.lectures.map(lecture => {
+                            if (lecture.index === currentUserIndex) {
+                                return { ...lecture, locked: false }
+                            }
+                            return lecture
+                        })
+                        return { ...chapter, lectures: modifiedLecs }
+                    })
+                }
             })
         }
-        if (courseDetails?.lectures) {
+        if (courseDetails?.chapters) {
             unLockLecture()
         }
-    }, [currentIndex])
+    }, [currentUserIndex])
+
+    //get /lectures/lectureId (index)
+    const lectureIndexInCourse = useMemo(() => {
+        let index = false
+        if (params.lectureId) {
+            let currentLecture = courseDetails.chapters?.flatMap(ch => ch.lectures).find(item => item._id === params.lectureId)
+            index = currentLecture?.index
+        }
+        return index
+    }, [courseDetails.chapters, params.lectureId])
 
     if (!courseDetails?.course) {
         return <LoaderSkeleton />
     }
 
+    const hereIcon = <svg xmlns="http://www.w3.org/2000/svg" width={'1.5rem'} height={'1.5rem'} viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}>
+            <path fill="currentColor" fillOpacity={0} strokeDasharray={20} strokeDashoffset={20} d="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5">
+                <animate attributeName="d" begin="0.5s" dur="1.5s" repeatCount="indefinite" values="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5;M12 15h2v-3h2.5l-4.5 -4.5M12 15h-2v-3h-2.5l4.5 -4.5;M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"></animate>
+                <animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.5s" values="0;1"></animate>
+                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="20;0"></animate>
+            </path>
+            <path strokeDasharray={14} strokeDashoffset={14} d="M6 19h12">
+                <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.2s" values="14;0"></animate>
+            </path>
+        </g>
+    </svg>
 
-    //get /lectures/lectureId (index)
-    const getLectureCurrentIndex = () => {
-        let index = false
-        if (params.lectureId) {
-            let currentLecture = courseDetails.lectures?.find(item => item._id === params.lectureId)
-            index = currentLecture?.index
-        }
-        return index
-    }
+    const courseChapters = <Paper elevation={1} sx={{ width: '100%', p: '16px', mt: '16px' }}>
+        <TitleWithDividers title={'محتوى الكورس'} />
+        {courseDetails?.chapters && courseDetails?.chapters.map(chapter => {
+            const total = chapter.lectures?.length;
+
+            const start = chapter.lectures[0]?.index;
+            const end = chapter.lectures[total - 1]?.index;
+
+            const inThisChapter = currentUserIndex >= start && currentUserIndex <= end;
+            const currentInChapter = currentUserIndex > end ? total : currentUserIndex < start ? 0 : (currentUserIndex - start + 1);
+
+            return <AccordionStyled
+                beforeTitle={currentUserIndex ? (currentInChapter || 0) + '/' + total : ''}
+                expanded={inThisChapter}
+                expandIcon={inThisChapter && <OutLinedHoverBtn endIcon={hereIcon} sx={{ bgcolor: 'grey.0' }} >الحالي</OutLinedHoverBtn>}
+                preventRotation={inThisChapter}
+
+                key={chapter._id}
+                color='primary.main'
+                desc={chapter.description} title={chapter.name}>
+                <FlexColumn gap={'16px'}>
+                    {chapter?.lectures.length === 0 && (
+                        <Alert variant='filled' severity='warning'>المحاضرات هتنزل قريبا !</Alert>
+                    )}
+                    {chapter.lectures?.length ? chapter.lectures.map((lecture, i) => {
+                        return <LectureUserCard
+                            key={lecture._id}
+                            currentUserIndex={currentUserIndex}
+                            lecture={lecture}
+                            currentLectureIndex={lectureIndexInCourse} i={i} isSubscribed={courseDetails?.course?.isSubscribed}
+                        />
+                    }) : ''}
+                </FlexColumn>
+            </AccordionStyled>
+        })}
+    </Paper >
 
     return (
         <Section>
@@ -99,18 +156,31 @@ function CoursePage() {
                         caption: lang.EXAMS, desc: '+ ' + courseDetails?.counts?.exams, icon: <ExamIcon size='1.5rem' />
                     }
                 ]}
+                sideChildren={<FlexColumn>
+                    <Outlet context={[lectureIndexInCourse, setCurrentUserIndex, currentUserIndex, courseDetails.course._id]} />
+                    {(!isLargeScreen || !params.lectureId) && (
+                        courseChapters
+                    )}
+                </FlexColumn>}
             >
                 {(courseDetails?.course) ?
-                    <CourseSubscribeCard course={courseDetails?.course} isSubscribed={courseDetails?.course?.isSubscribed} setCourseDetails={setCourseDetails} /> // setSubscribed={setSubscribed}
+                    <FlexColumn>
+                        <CourseSubscribeCard course={courseDetails?.course} isSubscribed={courseDetails?.course?.isSubscribed} setCourseDetails={setCourseDetails} />
+                        <FlexColumn width={'100%'} gap={'12px'}>
+                            {isLargeScreen && params.lectureId && (
+                                courseChapters
+                            )}
+                        </FlexColumn>
+                    </FlexColumn>
                     : <Loader />}
             </HeaderContent>
 
             {/* Lecture Is Here */}
-            <Outlet context={[getLectureCurrentIndex(), setCurrentIndex, currentIndex, courseDetails.course._id]} />
+            {/* <Outlet context={[getLectureCurrentIndex(), setCurrentIndex, currentIndex, courseDetails.course._id]} /> */}
 
-            <TitleSection title={'محتوى الكورس'} />
+            {/* <TitleSection title={'محتوى الكورس'} /> */}
 
-            <Box>
+            {/* <Box>
                 {courseDetails.lectures.length === 0 && status.isSuccess && (
                     <Alert variant='filled' severity='warning'>المحاضرات هتنزل قريب , خليك متابع !</Alert>
                 )}
@@ -120,7 +190,7 @@ function CoursePage() {
                             key={i} lecture={lecture} currentIndex={currentIndex} lectureIndex={getLectureCurrentIndex()} i={i} isSubscribed={courseDetails?.course?.isSubscribed} />
                     })}
                 </Grid>
-            </Box>
+            </Box> */}
 
         </Section>
     )

@@ -75,8 +75,6 @@ export default defineConfig(({ mode, command }) => {
       // }),
     ].filter(Boolean), //, visualizer({ open: true }),, viteCompression({ algorithm: 'brotliCompress' })
 
-    
-
     optimizeDeps: {
       // force: true,
       esbuildOptions: { // *for enableing js

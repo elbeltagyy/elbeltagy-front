@@ -9,7 +9,7 @@ function LoaderWithText({ text }) {
         <Alert variant="outlined" severity="warning" sx={{ justifyContent: 'center' }}>
             <FlexRow >
 
-                {lang.DATA_LOADING}
+                {text ? text : lang.DATA_LOADING}
                 <Loader color={'neutral.0'} sx={{ mx: '12px' }} />
             </FlexRow>
         </Alert>

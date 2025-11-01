@@ -52,7 +52,6 @@ const exportObj = {
 
 function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
 
-
     const [viewsCount, setViewsCount] = useState('')
 
     const [getData, status] = useLazyGetViewsQuery()
@@ -187,22 +186,21 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
         }, {
             field: 'createdAt',
             headerName: 'تاريخ المشاهده',
+            type: 'date',
             width: 200,
+            valueGetter: (params) => new Date(params),
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={1} />
             },
-            filterable: false,
         }, {
             field: 'courseName',
             headerName: 'الكورس المشترك فيه',
             width: 300,
             sortable: false,
-            // filterable:  true,
         }, {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (params) => params.row?.isActive,
             renderCell: (params) => {
                 return (
                     <Box>
@@ -231,14 +229,6 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
             filterable: false,
             sortable: false,
             valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {grade?.name}
-                    </Typography>
-                )
-            }
         }, {
             field: 'price',
             headerName: 'سعر الكورس الحالى',
@@ -250,11 +240,12 @@ function GetViewsCompo({ lectureId, courseId, role, refetchViews, userId }) {
         }, {
             field: 'updatedAt',
             headerName: 'تاريخ انتهاء المشاهده',
+            type: 'date',
             width: 200,
+            valueGetter: (params) => new Date(params),
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.updatedAt)} i={2} />
             },
-            filterable: false,
         },
     ]
 

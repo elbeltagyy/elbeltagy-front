@@ -43,7 +43,6 @@ function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allSta
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (params) => params.row?.isActive,
             renderCell: (params) => {
                 return (
                     <Box>

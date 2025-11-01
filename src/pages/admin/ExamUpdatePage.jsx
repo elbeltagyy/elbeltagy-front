@@ -11,8 +11,9 @@ import usePostData from '../../hooks/usePostData'
 import { useUpdateExamMutation } from '../../toolkit/apis/examsApi'
 import useHandelQuestions from '../../hooks/useHandelQuestions'
 
-function ExamUpdatePage() {
+function ExamUpdatePage({ lecId, setLectures }) {
     const { lectureId } = useParams()
+    const usedLectureId = lecId ?? lectureId
 
     const [getData] = useLazyGetOneLectureQuery()
     const [getLecture] = useLazyGetData(getData)
@@ -20,11 +21,11 @@ function ExamUpdatePage() {
 
     useEffect(() => {
         const trigger = async () => {
-            const res = await getLecture({ id: lectureId })
+            const res = await getLecture({ id: usedLectureId })
             setLecture(res)
         }
         trigger()
-    }, [lectureId])
+    }, [usedLectureId])
 
     const [sendData, status] = useUpdateExamMutation()
     const [updateExam] = usePostData(sendData)
@@ -37,12 +38,21 @@ function ExamUpdatePage() {
             // console.log('val =>>>', values)
             setLoading(true)
             const exam = await saveFiles(values)
-            const res = await updateExam({ ...exam, lecture: lectureId })
-            // setLecture({
-            //     ...res.lecture, exam: res.updatedExam
-            // })
+            const res = await updateExam({ ...exam, lecture: usedLectureId })
+
+            if (setLectures) {
+                setLectures((pre) => {
+                    return pre.map(lec => {
+                        if (lec._id === res.lecture._id) {
+                            return { ...res.lecture, exam: res.updatedExam }
+                        } else {
+                            return lec
+                        }
+                    })
+                })
+            }
             // console.log('res ==>', { ...res.lecture, exam: res.updatedExam })
-            // props.resetForm({ ...res.lecture, exam: res.updatedExam })
+            // props.resetForm({ values: { ...res.lecture, exam: res.updatedExam } })
             setLoading(false)
         } catch (error) {
             setLoading(false)

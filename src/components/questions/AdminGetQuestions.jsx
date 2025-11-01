@@ -125,7 +125,6 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             headerName: lang.IS_ACTIVE,
             type: "boolean",
             editable: true,
-            // valueGetter: (isActive) => ,
             renderCell: (params) => {
                 return (
                     <>

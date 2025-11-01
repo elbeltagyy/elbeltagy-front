@@ -18,7 +18,6 @@ function Lectures({ filters, reset, viewFc, deleteFc, updateFc, massActions, all
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (isActive) => isActive,
             renderCell: (params) => {
                 return (
                     <Box>

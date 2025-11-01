@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useLazyGetOneCourseQuery } from '../../toolkit/apis/coursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 
@@ -14,9 +14,11 @@ import useHandelQuestions from '../../hooks/useHandelQuestions'
 import { useCreateExamMutation } from '../../toolkit/apis/examsApi'
 
 
-function ExamCreatePage() {
-    const navigate = useNavigate()
+function ExamCreatePage({ courseIdVar, chapter, setLectures, setClose }) {
+    // const navigate = useNavigate()
     const { courseId } = useParams()
+    const finalCourseId = courseId || courseIdVar
+
     const [course, setCourse] = useState()
 
     const [getData] = useLazyGetOneCourseQuery()
@@ -27,11 +29,11 @@ function ExamCreatePage() {
 
     useEffect(() => {
         const trigger = async () => {
-            const res = await getCourse({ _id: courseId, select: "name grade" })
+            const res = await getCourse({ _id: finalCourseId, select: "name grade" })
             setCourse(res)
         }
         trigger()
-    }, [courseId])
+    }, [finalCourseId])
 
     const [sendData, status] = useCreateExamMutation()
     const [createExam] = usePostData(sendData)
@@ -41,10 +43,15 @@ function ExamCreatePage() {
             // console.log(values)
             setLoading(true)
             const exam = await saveFiles(values)
-            await createExam(exam)
+            const res = await createExam({ ...exam, chapter })
+
+            setLectures(prev => ([...prev, res]))
+            if (setClose) {
+                setClose(p => !p)
+            }
             // console.log('res ==>', res)
             setLoading(false)
-            navigate(-1, { replace: true })
+            // navigate(-1, { replace: true })
         } catch (error) {
             setLoading(false)
         } finally {
