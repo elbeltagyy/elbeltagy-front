@@ -16,7 +16,8 @@ function HeaderContent({ title, body, infos = [], img, sideImg, children, height
         <>
             <Box sx={{
                 // clipPath: `url("#clip")`,
-                minHeight: height, width: '100%', position: 'relative', p: '16px 8px', zIndex: 1,
+                // minHeight: height,
+                 width: '100%', position: 'relative', p: '16px 8px', zIndex: 1,
                 borderRadius: '16px', overflow: 'hidden',
                 // backgroundImage: `url("/assets/remove-magic.png")`,
                 // backgroundImage: `url("https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/background/background-6.webp")`,

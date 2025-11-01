@@ -71,10 +71,11 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
     //get users
     const [reset, setReset] = useState(false)
     const [getData, { isLoading }] = useLazyGetUsersQuery()
+    const [getUsers] = usePostData(getData)
 
     const fetchFc = async (params) => {
-        // const res = await getUsers({ ...params, grade: grade || 'all', courses }, false)
-        const { data } = await getData({ ...params, grade: grade || 'all', courses }, false)
+        const res = await getUsers({ ...params, grade: grade || 'all', courses }, false)
+        // const { data } = await getData({ ...params, grade: grade || 'all', courses }, false)
         const res = { values: data.users, count: data.count } //res.users
         return res
     }
