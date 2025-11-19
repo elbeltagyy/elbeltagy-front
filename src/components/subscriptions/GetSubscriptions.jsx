@@ -43,7 +43,7 @@ const exportObj = {
 }
 
 
-function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
+function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userName }) {
 
     // const { courseId } = useParams()
     const [subscriptionsCount, setSubscriptionsCount] = useState('loading ...')
@@ -217,7 +217,7 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false }) {
         <Box sx={{ width: '100%' }}>
 
             {isShowTitle && (
-                <TitleWithDividers title={'الاشتراكات'} />
+                <TitleWithDividers title={userName || 'الاشتراكات'} desc={userName ? 'اشتراكات الطالب' : ''} />
             )}
             <TabInfo count={subscriptionsCount} title={'عدد الاشتراكات'} i={1} />
             <MeDatagrid

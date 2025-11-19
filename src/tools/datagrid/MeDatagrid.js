@@ -6,19 +6,43 @@ import { useMemo } from 'react'
 export default function MeDatagrid({
     type, data, filterParams, reset, columns = [], editing, loading, addColumns = null, massActions,
     exportObj, exportTitle,
-    viewFc, fetchFc, updateFc, deleteFc, apiRef, deleteMany, ViewRow, analysisFc,viewRowModal,
+    viewFc, fetchFc, updateFc, deleteFc, apiRef, deleteMany, ViewRow, analysisFc, viewRowModal,
     setSelection = false, allSelected,
     disabledActions = [], disableAllActions, allStatuses
 }) {
 
     const modifiedColumns = useMemo(() => {
-        const columnsToAdd = addColumns && (Array.isArray(addColumns) ? addColumns : [addColumns])
-        if (columnsToAdd) {
-            return [...columns, ...columnsToAdd]
-        } else {
-            return columns
-        }
-    }, [addColumns, columns])
+        let result = [...columns];
+
+        // Normalize addColumns into array
+        const columnsToAdd = addColumns
+            ? (Array.isArray(addColumns) ? addColumns : [addColumns])
+            : [];
+
+        columnsToAdd.forEach(col => {
+            if (typeof col.colIndex === "number") {
+                // insert at specific index
+                const index = Math.max(0, Math.min(col.colIndex, result.length));
+                result.splice(index, 0, col);
+            } else {
+                // normal push
+                result.push(col);
+            }
+        });
+
+        return result;
+
+    }, [addColumns, columns]);
+
+
+    // const modifiedColumns = useMemo(() => {
+    //     const columnsToAdd = addColumns && (Array.isArray(addColumns) ? addColumns : [addColumns])
+    //     if (columnsToAdd) {
+    //         return [...columns, ...columnsToAdd]
+    //     } else {
+    //         return columns
+    //     }
+    // }, [addColumns, columns])
 
 
     if (disableAllActions) {
