@@ -23,6 +23,7 @@ import statusConstants from '../../settings/constants/status';
 import InfoText from '../ui/InfoText';
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { AttemptsIcon } from '../ui/svg/ContentSvgs';
+import gradeConstants from '../../settings/constants/gradeConstants';
 
 function LectureUserCard({ lecture, isSubscribed, currentUserIndex, currentLectureIndex }) {
     const navigate = useNavigate()
@@ -74,6 +75,8 @@ function LectureUserCard({ lecture, isSubscribed, currentUserIndex, currentLectu
                 title={<Typography variant='subtitle1' sx={{ maxWidth: '160px' }}>{lecture.name}</Typography>}
                 subheader={<FlexColumn sx={{ alignItems: 'flex-start' }}>
                     <TabInfo i={2} count={getFullDate(lecture.dateStart || lecture.createdAt)} icon={<MdDateRange size='1rem' />} />
+                    <TabInfo count={gradeConstants.find(g => g.index === Number(lecture.grade))?.name} i={1} isBold={false} />
+
                     {lecture.index < currentUserIndex && (
                         <TabInfo i={1} count={'تم الانتهاء'} icon={<IoMdDoneAll size='1.5rem' />} />
                     )}

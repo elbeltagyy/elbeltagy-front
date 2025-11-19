@@ -37,10 +37,12 @@ function CoursePage() {
     useEffect(() => {
         const trigger = async () => {
             const { lectures, course, currentIndex } = await getCourseAndLectures({ index: params.courseId })
+            const allLectures = lectures?.flatMap(ch => ch.lectures)
+
             let counts = {
-                videos: lectures.filter(lecture => lecture.sectionType === sectionConstants.VIDEO)?.length,
-                files: lectures.filter(lecture => lecture.sectionType === sectionConstants.FILE)?.length,
-                exams: lectures.filter(lecture => lecture.sectionType === sectionConstants.EXAM)?.length
+                videos: allLectures.filter(lecture => lecture.sectionType === sectionConstants.VIDEO)?.length,
+                files: allLectures.filter(lecture => lecture.sectionType === sectionConstants.FILE)?.length,
+                exams: allLectures.filter(lecture => lecture.sectionType === sectionConstants.EXAM)?.length
             }
             setCurrentUserIndex(currentIndex)
             setCourseDetails({ course, chapters: lectures, counts })

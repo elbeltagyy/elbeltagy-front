@@ -91,7 +91,7 @@ function UserHome() {
                 </Grid>
             </AccordionStyled>,
         },
-        { compo: <UserLectures query={{ codes: true, paid: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها' + " || " + "اكواد)"} />, value: 1 },
+        { compo: <UserLectures key={0} query={{ codes: true, paid: true }} accordionTitle={'محاضراتك' + ' ' + '(تم شراءها' + " || " + "اكواد)"} />, value: 1 },
         // {
         //     value: 2,
         //     compo: <UserLectures query={{ isGroups: true }} accordionTitle='محاضرات مجموعاتك' />
@@ -99,14 +99,14 @@ function UserHome() {
         // },
         {
             value: 3,
-            compo: <UserLectures query={{ isFree: true }} accordionTitle='محاضرات مجانيه' />
+            compo: <UserLectures key={3} query={{ isFree: true, grade: user.grade }} accordionTitle='محاضرات مجانيه' />
         },
     ]
 
 
     if (user.role === user_roles.STUDENT) {
         btns.push(<Button fullWidth key={4} variant={activeCompo === 4 ? 'contained' : 'outlined'} onClick={() => setActiveCompo(4)}> محاضرات السنتر</Button>,)
-        compos.push({ compo: <UserLectures query={{ isCenter: true }} accordionTitle='محاضرات السنتر' />, value: 4 },)
+        compos.push({ compo: <UserLectures key={4} query={{ isCenter: true, grade: user.grade }} accordionTitle='محاضرات السنتر' />, value: 4 },)
     }
     // const categories = ['يناير', "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر", "نوفبمر", "ديسمبر"]
 
@@ -130,7 +130,7 @@ function UserHome() {
             </>
             }
             <Separator />
-            <LatestCourses />
+            <LatestCourses user={user} />
         </Section>
     )
 }
