@@ -19,17 +19,17 @@ function UserLectures({ query, accordionTitle = 'محاضرات' }) {
     const [getUserLectures] = useLazyGetData(getData)
     const [grade, setGrade] = useState(query.grade)
 
-    const isShowSameGrades = useMemo(() => {
-        const grade = gradeConstants.find(g => g.index === query.grade)
-        if (grade?.share) {
-            return grade.share
-        }
-        return false
-    }, [query])
+    // const isShowSameGrades = useMemo(() => {
+    //     const grade = gradeConstants.find(g => g.index === query.grade)
+    //     if (grade?.share) {
+    //         return grade.share
+    //     }
+    //     return false
+    // }, [query])
 
-    const sharedGrades = useMemo(() =>
-        makeArrWithValueAndLabel(gradeConstants.filter(g => g.share), { value: 'index', label: 'name' }),
-        [])
+    // const sharedGrades = useMemo(() =>
+    //     makeArrWithValueAndLabel(gradeConstants.filter(g => g.share), { value: 'index', label: 'name' }),
+    //     [])
 
     useEffect(() => {
         const trigger = async () => {
@@ -42,9 +42,9 @@ function UserLectures({ query, accordionTitle = 'محاضرات' }) {
     return (
         <FlexColumn sx={{ gap: '12px' }}>
             <TextBorderWithIcons title={accordionTitle} startIcon={<FaSchool size="30px" />} />
-            {isShowSameGrades && (
+            {/* {isShowSameGrades && (
                 <TabsStyled tabs={sharedGrades} setValue={setGrade} value={grade} />
-            )}
+            )} */}
             {
                 status.isLoading && (
                     <LoaderWithText />
