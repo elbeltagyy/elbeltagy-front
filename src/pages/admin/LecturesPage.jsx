@@ -5,7 +5,7 @@ import { useLazyGetLecturesQuery, useUpdateLectureMutation } from "../../toolkit
 import FullComponent from "../../tools/datagrid/FullComponent"
 import TabInfo from "../../components/ui/TabInfo"
 import { convertObjToArray, makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
-import gradeConstants from "../../settings/constants/gradeConstants"
+
 import { getDateWithTime, getFullDate } from "../../settings/constants/dateConstants"
 import sectionConstants from "../../settings/constants/sectionConstants"
 import TitleWithDividers from "../../components/ui/TitleWithDividers"
@@ -16,11 +16,12 @@ import { useAddToUserMutation } from "../../toolkit/apis/usersApi"
 import usePostData from "../../hooks/usePostData"
 import BtnConfirm from "../../components/ui/BtnConfirm"
 import { IoIosAddCircleOutline } from "react-icons/io"
+import useGrades from "../../hooks/useGrades"
 
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -54,11 +55,12 @@ const exportObj = {
         return getDateWithTime(row.createdAt)
     },
 
-}
+})
 
 
 function LecturesPage() {
     const [sections] = convertObjToArray(sectionConstants)
+    const { grades } = useGrades()
 
     const [sendData, status] = useAddToUserMutation()
     const [reset, setReset] = useState(false)
@@ -103,9 +105,9 @@ function LecturesPage() {
             headerName: lang.GRADE,
             type: 'singleSelect',
             width: 200,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
             renderCell: (params) => {
-                const grade = gradeConstants.find(({ index }) => index === params.row.grade)
+                const grade = grades.find(({ index }) => index === params.row.grade)
                 return (
                     <Typography>
                         {grade.name}

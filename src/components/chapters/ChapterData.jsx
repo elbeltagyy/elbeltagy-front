@@ -38,10 +38,10 @@ function ChapterData({ chapter, setChapter, course, grade, deleteChapter, chapte
         setChapters(() => {
             return chapters.map(ch => {
                 if (ch._id === lecture.chapter) {
-                    return { ...ch, lectures: lectures.filter(lec => lec.chapter !== ch._id) }
+                    return { ...ch, lectures: lectures.filter(l => l._id !== lecture._id) }
                 }
                 if (ch._id === newChapterId) {
-                    const sortedLectures = [...(ch.lectures || []), lecture].sort((a, b) => a.index - b.index);
+                    const sortedLectures = [...(ch.lectures || []), { ...lecture, chapter: newChapterId }].sort((a, b) => a.index - b.index);
                     return { ...ch, lectures: sortedLectures }
                 }
                 return ch

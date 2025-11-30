@@ -6,6 +6,7 @@ import ShowPdf from './ShowPdf';
 
 
 export default function ShowFileSettings({ file, removeFile }) {
+    // console.log(file)
     const fileType = file?.resource_type?.split("/")[0] || file?.type?.split("/")[0] || null
 
     const [realFile, setFile] = React.useState({})

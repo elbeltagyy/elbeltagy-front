@@ -1,20 +1,17 @@
 import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 import { memo } from 'react'
-import { hasError } from '../constants/hasError'
 import { ErrorMessage, Field, } from 'formik'
 
-
-
 // {option, value}
-function MakeSelect({ props, inputName, input, value }) {
+function MakeSelect({ showError, inputName, input, value, setValue }) {
 
-    const setValue = (e) => {
-        props.setFieldValue(inputName, e.target.value)
+    const handelValue = (e) => {
+        setValue(e.target.value)
     }
     const disabledValues = input.disabledValues || []
 
     return (
-        <FormControl disabled={input.disabled ?? false} fullWidth error={hasError(props, inputName) ? true : false} color='warning'>
+        <FormControl disabled={input.disabled ?? false} fullWidth error={showError ? true : false} color='warning'>
             <InputLabel id="demo-simple-select-label">
                 <Box display={"flex"} alignItems={"center"} gap={".5rem"} sx={{
                     direction: 'ltr'
@@ -32,7 +29,7 @@ function MakeSelect({ props, inputName, input, value }) {
                 id="demo-simple-select"
                 value={value ?? ''} //value === 0 ? 0 : value ?? ""
                 label={input.label + "    --"}
-                onChange={setValue}
+                onChange={handelValue}
             >
                 {input.options && input.options.map((option, i) => {
                     if (option?.label) {

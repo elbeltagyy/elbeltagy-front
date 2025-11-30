@@ -1,11 +1,12 @@
-import { Alert, Box, Button, FormControlLabel, Radio } from '@mui/material'
-import React from 'react'
+import { Box } from '@mui/material'
+
 import MakeInput from './MakeInput'
 import MakeChoosed from './components/MakeChoosed'
-import { hasError } from './constants/hasError'
+import { memo } from 'react'
 
+const abcd = ['أ', 'ب', 'ج', 'د', 'ه', 'و', 'ي']
 
-export default function NestedInput({ inputName, input, props, index }) {
+function NestedInput({ inputName, input, index }) {
 
     return (
         <Box>
@@ -15,27 +16,23 @@ export default function NestedInput({ inputName, input, props, index }) {
 
                 if (nestedInput.choose) {
                     const fromName = `${inputName}.${index}.${nestedInput.from}`
-                    const fromValue = props.getFieldMeta(fromName).value
+                    // const fromValue = props.getFieldMeta(fromName).value
                     const nameArr = inputName.split('.')
                     const targetInputName = `${nameArr[0]}.${nameArr[1]}.${nestedInput.choose}`
 
-
                     return <MakeChoosed
-                        key={i}
+                        key={i} letter={abcd[index]}
                         input={nestedInput}
-                        props={props} inputName={nestedInputName} targetInputName={targetInputName} fromValue={fromValue} />
+                        inputName={nestedInputName} targetInputName={targetInputName} fromInputName={fromName} />
                 }
 
                 return (
                     <Box key={i} sx={{ my: '16px' }}>
-                        <MakeInput input={nestedInput} props={props} nestedInputName={nestedInputName} />
-
-                        {hasError(props, nestedInputName) && (
-                            <Alert sx={{ m: "5px" }} severity='error'>{props.getFieldMeta(nestedInputName).error}</Alert>
-                        )}
+                        <MakeInput input={nestedInput} nestedInputName={nestedInputName} />
                     </Box>
                 )
             })}
         </Box >
     )
 }
+export default memo(NestedInput)

@@ -3,7 +3,9 @@ import CreateFormik from './CreateFormik'
 import WrapperHandler from '../WrapperHandler'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 
-export default function MakeForm({ inputs, status = {}, onSubmit, btnWidth, enableReinitialize = true, modalInfo, formDirection, btnStyle, submitBtnStatus = false, disabledBtn, allowDirty, preValue, isResetNewVal = false }) {
+export default function MakeForm({ inputs, status = {}, onSubmit, btnWidth,
+    enableReinitialize = true, modalInfo, formDirection, btnStyle, submitBtnStatus = false,
+    disabledBtn, allowDirty, preValue = null, isResetNewVal = false, isAllDisabled }) {
 
     const [open, setOpen] = useState(false);
     const [values, setValues] = useState(null)
@@ -26,7 +28,7 @@ export default function MakeForm({ inputs, status = {}, onSubmit, btnWidth, enab
     return (
         <>
             <CreateFormik
-                inputs={inputs}
+                inputs={inputs} isAllDisabled={isAllDisabled}
                 onSubmit={openModal}
                 status={{ ...status }} btnWidth={btnWidth} enableReinitialize={enableReinitialize}
                 formDirection={formDirection} btnStyle={btnStyle}

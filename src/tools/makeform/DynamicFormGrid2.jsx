@@ -25,7 +25,7 @@ const sortInputs = (inputs) => {
 };
 
 
-export default function DynamicFormGrid({ inputs, props }) {
+export default function DynamicFormGrid({ inputs }) {
   const [columns, restInputs] = groupByColumn(inputs);
 
   return (
@@ -63,7 +63,7 @@ export default function DynamicFormGrid({ inputs, props }) {
                       }}
                     >
                       {!input.hidden && (
-                        <MakeInput input={input} props={props} />
+                        <MakeInput input={input} />
                       )}
                     </Grid>
                   ));
@@ -79,7 +79,7 @@ export default function DynamicFormGrid({ inputs, props }) {
 
           return (
             <Box key={input.name || i} sx={{ width: input.width || '100%', margin: !input.hidden && '14px 0' }}>
-              <MakeInput input={input} props={props} />
+              <MakeInput input={input} />
             </Box>
           )
         })}

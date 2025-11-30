@@ -1,7 +1,9 @@
 import { Box, Pagination, PaginationItem, useTheme } from '@mui/material'
+import { memo } from 'react'
 
-export default function MakePagination({ count, setIndex, index, errorsList = [] }) {
+function MakePagination({ count, setIndex, index, errorsList = [] }) {
     const theme = useTheme()
+    // console.log(errorsList)
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", m: "10px" }}>
@@ -41,3 +43,4 @@ export default function MakePagination({ count, setIndex, index, errorsList = []
         </Box>
     )
 }
+export default memo(MakePagination)

@@ -2,7 +2,7 @@ import { Avatar, Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 import { user_roles } from '../../settings/constants/roles'
 import { lang } from '../../settings/constants/arlang'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 
 import Grid from '../../style/vanilla/Grid'
 import DataWith3Items from './DataWith3Items'
@@ -20,9 +20,11 @@ import { HashLink } from 'react-router-hash-link';
 import governments from '../../settings/constants/governments'
 import TabInfo from './TabInfo'
 import { GrScorecard } from "react-icons/gr";
+import useGrades from '../../hooks/useGrades'
 
 // eslint-disable-next-line react/prop-types
 export default function UserHeader({ children, user, flexDirection = 'row', variant, isAll = false }) {
+    const { grades } = useGrades()
 
     const theme = useTheme()
     const isMobileScreen = useMediaQuery('(max-width:600px)');
@@ -59,7 +61,7 @@ export default function UserHeader({ children, user, flexDirection = 'row', vari
 
                 <Grid>
                     <DataWith3Items title={lang.NAME} icon={<MdOutlineDriveFileRenameOutline size={'2rem'} />} desc={user?.name} />
-                    <DataWith3Items title={lang.GRADE} icon={<IoSchool size={'2rem'} />} desc={user?.role === user_roles.ADMIN || user?.role === user_roles.SUBADMIN ? user?.role : gradeConstants.filter(g => g.index === Number(user?.grade))[0]?.name} />
+                    <DataWith3Items title={lang.GRADE} icon={<IoSchool size={'2rem'} />} desc={user?.role === user_roles.ADMIN || user?.role === user_roles.SUBADMIN ? user?.role : grades.filter(g => g.index === Number(user?.grade))[0]?.name} />
                     <DataWith3Items title={lang.ROLE} icon={<MdVerifiedUser size={'2rem'} />} desc={user?.role} />
                     {/* <DataWith3Items title={'الدرجات'} icon={<GrScorecard size={'1.8rem'} />} desc={<FlexBetween>
                         <TabInfo count={user.marks} i={1} title={'درجات الاسئله'} isBold={false} />

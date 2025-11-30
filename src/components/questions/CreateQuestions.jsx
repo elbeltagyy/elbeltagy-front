@@ -3,8 +3,9 @@ import { useCreateQuestionMutation } from '../../toolkit/apis/questionsApi'
 import useHandelQuestions from '../../hooks/useHandelQuestions'
 import { memo, useState } from 'react'
 import QuestionsForm from './QuestionsForm'
+import TitleWithDividers from '../ui/TitleWithDividers'
 
-function CreateQuestions({ setReset }) {
+function CreateQuestions({ setReset, defaultQuestion = {} }) {
 
     const [sendData, status] = useCreateQuestionMutation()
     const [createQuestionFc] = usePostData(sendData)
@@ -19,7 +20,6 @@ function CreateQuestions({ setReset }) {
             const { questions } = await saveFiles(values)
             await createQuestionFc(questions)
 
-            // localStorage.setItem("grade", questions[questions.length - 1]?.grade)
             if (setReset) {
                 setReset(pre => !pre)
             }
@@ -32,7 +32,10 @@ function CreateQuestions({ setReset }) {
 
     return (
         <div>
-            <QuestionsForm onSubmit={onSubmit} status={{ ...status, isLoading: loading }} />
+            {defaultQuestion?.tags && (
+                <TitleWithDividers title={'سيتم اضافه كل الاسئله الي الدرس ' + defaultQuestion.tags.name} />
+            )}
+            <QuestionsForm onSubmit={onSubmit} status={{ ...status, isLoading: loading }} defaultQuestion={defaultQuestion} />
         </div>
     )
 }

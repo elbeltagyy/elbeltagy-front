@@ -1,10 +1,10 @@
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import { formatDuration, getDateWithTime } from '../../settings/constants/dateConstants'
+import { getDateWithTime } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import usePostData from '../../hooks/usePostData'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import UserAvatar from '../users/UserAvatar'
 import { useDeleteQuestionMutation, useLazyGetQuestionsQuery, useLinkQuestionToTagsMutation, useUnlinkQuestionToTagsMutation, useUpdateQuestionMutation } from '../../toolkit/apis/questionsApi'
 import CreateQuestion from './CreateQuestions'
@@ -22,10 +22,12 @@ import Loader from '../../style/mui/loaders/Loader'
 import TabInfo from '../ui/TabInfo'
 import { IconButton } from '@mui/material'
 import BtnConfirm from '../ui/BtnConfirm'
+import useGrades from '../../hooks/useGrades'
+import AdminTagQs from './AdminTagQs'
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -40,10 +42,11 @@ const exportObj = {
     updatedAt: (row) => {
         return getDateWithTime(row.updatedAt)
     }
-}
+})
 
 
-function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, isShowCreate = true, colsIgnored = [], addColumns = [], disableAllActions = false, preReset = [] }) {
+function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, isShowCreate = true, colsIgnored = [], addColumns = [], disableAllActions = false, preReset = [], isShowHeader = false }) {
+    const { grades } = useGrades()
 
     const [reset, setReset] = useState(false)
 
@@ -65,9 +68,12 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
         await updateQuestion({ id: data._id, ...data })
         return data
     }
+    const [filterTags, setFilterTags] = useState([])
+    const [grade, setGrade] = useState()
 
     const fetchFc = async (params) => {
-        const res = await getQuestions({ ...params, ...filters }, false)
+        const filterByTags = filterTags.length ? filterTags : filters?.tags || []
+        const res = await getQuestions({ ...params, ...filters, tags: filterByTags }, false)
         const data = { values: res.questions, count: res.count }
         return data
     }
@@ -119,7 +125,7 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             width: 200,
             editable: true,
             filterable: true,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
@@ -277,19 +283,33 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             return columns
         }
     }, [colsIgnored])
+    const [activeTag, setActiveTag] = useState()
 
     return (
         <Section>
-            {/* <TabInfo count={viewsCount} title={'عدد المشاهدات'} i={1} /> */}
+            {isShowHeader && (
+                <AdminTagQs
+                    filterTags={filterTags}
+                    setFilterTags={setFilterTags}
+                    grade={grade} setGrade={setGrade}
+                    setReset={setReset}
+                    reset={reset} setActiveTag={setActiveTag}
+                />
+            )}
+
             {isShowCreate && (
-                <BtnModal btnName={'انشاء سؤال'} component={<CreateQuestion setReset={setReset} />} size='medium' isFilledHover={true} />
+                <BtnModal btnName={'انشاء سؤال' + ' ' + (activeTag ? activeTag.name : '')}
+                    component={<CreateQuestion defaultQuestion={{
+                        grade: activeTag?.grade ?? grade, tags: activeTag
+                    }} setReset={setReset} />}
+                    size='medium' isFilledHover={true} />
             )}
 
             <MeDatagrid
                 type={'crud'}
                 exportObj={exportObj} exportTitle={'تفاصيل المشاهدات'}
                 columns={modifiedCols} addColumns={addColumns} disableAllActions={disableAllActions}
-                reset={[reset, ...preReset]}
+                reset={[reset, ...preReset, filterTags]}
                 loading={status.isLoading || updateStatus.isLoading || isLoading}
                 fetchFc={fetchFc}
                 deleteFc={deleteFc} updateFc={updateFc} viewFc={viewFc}

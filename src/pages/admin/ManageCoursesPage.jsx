@@ -15,10 +15,12 @@ import AdminCourseDetails from '../../components/content/AdminCourseDetails'
 import ManageUnits from './ManageUnits'
 import ManageCourses from './ManageCourses'
 import { useSearchParams } from 'react-router-dom'
-import gradeConstants from '../../settings/constants/gradeConstants'
+import useGrades from '../../hooks/useGrades'
+ 
 
 
 function ManageCoursesPage() {
+    const { grades } = useGrades()
 
     //modals params
     const [searchParams, setSearchParams] = useSearchParams();
@@ -40,7 +42,7 @@ function ManageCoursesPage() {
         const trigger = async () => {
             const [...counts] = await Promise.all([
                 getCoursesCount({ grade: 'all' }),
-                ...gradeConstants.map(g => getCoursesCount({ grade: g.index })),
+                ...grades.map(g => getCoursesCount({ grade: g.index })),
             ])
             setCounts(counts)
         }

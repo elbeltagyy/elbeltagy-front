@@ -2,21 +2,22 @@ import { useState } from 'react'
 import TabInfo from '../../components/ui/TabInfo'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { lang } from '../../settings/constants/arlang'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { useLazyGetUsersQuery } from '../../toolkit/apis/usersApi'
 import Separator from '../../components/ui/Separator'
 import { red } from '@mui/material/colors'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { user_roles } from '../../settings/constants/roles'
 import UserAvatar from '../users/UserAvatar'
+import useGrades from '../../hooks/useGrades'
 
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -25,10 +26,11 @@ const exportObj = {
             return 'غير فعال'
         }
     }
-}
+})
 
 
-function GetStudentsNotViewed({  lectureId, lectureName, course, role }) { //grade,
+function GetStudentsNotViewed({ lectureId, lectureName, course, role }) { //grade,
+    const { grades } = useGrades()
 
     const [notViewedCount, setNotViewedCount] = useState('loading ...')
 
@@ -38,7 +40,7 @@ function GetStudentsNotViewed({  lectureId, lectureName, course, role }) { //gra
     const fetchFc = async (params) => {
         params = {
             ...params,
-            lectures: `!=_split_${lectureId}`,  courses: course //grade,
+            lectures: `!=_split_${lectureId}`, courses: course //grade,
         }
 
         if (role) {
@@ -105,7 +107,7 @@ function GetStudentsNotViewed({  lectureId, lectureName, course, role }) { //gra
             type: 'singleSelect',
             width: 200,
             filterable: false,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         },
     ]
 

@@ -1,5 +1,4 @@
 import MakeForm from '../../tools/makeform/MakeForm'
-import gradeConstants from '../../settings/constants/gradeConstants'
 
 // icons
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
@@ -15,8 +14,10 @@ import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray';
 import * as Yup from "yup"
 import { useCreateTagMutation } from '../../toolkit/apis/tagsApi';
 import TitleWithDividers from '../ui/TitleWithDividers';
+import useGrades from '../../hooks/useGrades';
 
 function CreateTag({ setReset, defaultGrade }) {
+    const { grades } = useGrades()
 
     const [sendData, status] = useCreateTagMutation()
     const [createTagFc] = usePostData(sendData)
@@ -38,7 +39,7 @@ function CreateTag({ setReset, defaultGrade }) {
             label: lang.GRADE,
             type: 'select',
             value: defaultGrade,
-            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            options: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
             icon: <IoSchool color='green' />,
             validation: Yup.string().required(lang.REQUERIED)
 

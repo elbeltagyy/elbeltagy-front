@@ -2,8 +2,8 @@ import { useAddUserToGroupMutation, useDeleteGroupMutation, useLazyGetGroupsQuer
 import { formatTime, getDateWithTime, getDay, getFullDate } from '../../settings/constants/dateConstants'
 import { lang } from '../../settings/constants/arlang'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
-import gradeConstants from '../../settings/constants/gradeConstants'
-import { Box, IconButton } from '@mui/material'
+
+import { IconButton } from '@mui/material'
 import TabInfo from '../ui/TabInfo'
 
 
@@ -22,10 +22,11 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import BtnConfirm from '../ui/BtnConfirm'
 import Section from '../../style/mui/styled/Section'
 import UpdateGroup from './UpdateGroup'
+import useGrades from '../../hooks/useGrades'
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -46,11 +47,12 @@ const exportObj = {
     price: (row) => {
         return row.price + ' جنيه'
     },
-}
+})
 
 const ViewRow = ({ row }) => <UpdateGroup group={row} />;
 
 function GetGroups({ reset, setReset }) {
+    const { grades } = useGrades()
 
     const [deleteData, removeStatus] = useRemoveUserFromGroupMutation()
     const [removeUserFromGroup] = usePostData(deleteData)
@@ -125,7 +127,7 @@ function GetGroups({ reset, setReset }) {
             type: 'singleSelect',
             width: 200,
             editable: true,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: 'showDayes',
             headerName: 'المواعيد',
@@ -287,7 +289,7 @@ function GetGroups({ reset, setReset }) {
                 useUpdate: useUpdateGroupMutation,
                 useDelete: useDeleteGroupMutation,
                 resKey: 'groups',
-                columns, exportObj, reset,
+                columns, exportObj: exportObj(grades), reset,
                 allStatuses,
                 ViewRow //Error when submit it reMount component so fixed by making it instance
             }}

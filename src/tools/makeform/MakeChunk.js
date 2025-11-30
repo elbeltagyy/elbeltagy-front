@@ -1,33 +1,34 @@
 import { Alert, Box, Button, Card, CardActions, CardContent, Typography, useTheme } from '@mui/material'
-import { FieldArray } from 'formik'
-import { useCallback, useEffect, useState } from 'react'
+import { FieldArray, useField } from 'formik'
+import { memo, useCallback, useEffect, useState } from 'react'
 
-import { hasError } from './constants/hasError'
-// import { buttonError, buttonStyle } from '../../../styles/buttonsStyles'
 import MakePagination from "./components/MakePagination"
-// import QuizPagination from "./quiz/QuizPagination";
+
 import NestedInput from './NestedInput'
 import { ErrorBtn, FilledHoverBtn } from '../../style/buttonsStyles'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
 import QNotSchema from './QNotSchema'
 
-export default function MakeChunk({ props, input, inputName, values }) {
+function MakeChunk({ input, inputName, values, showError, error }) {
     const theme = useTheme()
     const [currentValueIndex, setCurrentValueIndex] = useState(0)
     const [isRemove, setRemove] = useState(false)
     const [freeze, setFreeze] = useState({})
 
+    const [linkedQsState, meta, { setValue: setLinkedQs }] = useField('linkedQuestions')
 
+    // console.log('input Name from makeChunk ==>', inputName)
     const removeLinkedQ = useCallback((toRemove) => {
-        const linkedQs = props.getFieldMeta('linkedQuestions')?.value || []
+        const linkedQs = linkedQsState.value || []
         const matchIndex = linkedQs.findIndex(q => q._id === toRemove._id)
+
         if (matchIndex !== -1) {
             const updated = [...linkedQs]
             updated.splice(matchIndex, 1)
-            props.setFieldValue('linkedQuestions', updated)
+            setLinkedQs(updated)
         }
-    }, [props])
+    }, [linkedQsState.value])
 
     const disabledNext = values.length <= 0 || values.length === (currentValueIndex + 1) ? true : false
     const disabledPre = values.length <= 0 || (currentValueIndex) === 0 ? true : false
@@ -62,12 +63,10 @@ export default function MakeChunk({ props, input, inputName, values }) {
                                 {/* start of chunk */}
                                 <Card sx={{ bgcolor: theme.palette.background.alt, width: '100%', position: 'relative' }} >
 
-
                                     {values[currentValueIndex]?.notSchema && <QNotSchema
                                         freeze={freeze[currentValueIndex] ?? true}
                                         setFreeze={(v) => setFreeze({ ...freeze, [currentValueIndex]: v })}
-                                        props={props}
-                                        currentValueIndex={currentValueIndex}
+                                        origin={values[currentValueIndex]}
                                     />}
 
 
@@ -98,7 +97,11 @@ export default function MakeChunk({ props, input, inputName, values }) {
                                             textAlign={"center"}
                                         >
                                             السؤال {currentValueIndex + 1}</Typography>
-                                        <NestedInput inputName={inputName} input={input} props={props} index={currentValueIndex} />
+
+                                        <NestedInput
+                                            inputName={inputName}
+                                            input={input}
+                                            index={currentValueIndex} />
                                     </CardContent>
 
                                     <CardActions sx={{ width: '100%', justifyContent: 'space-evenly' }}>
@@ -114,7 +117,7 @@ export default function MakeChunk({ props, input, inputName, values }) {
                                     </CardActions>
 
                                     <Box sx={{ display: "flex", justifyContent: "center" }} >
-                                        <MakePagination errorsList={props.getFieldMeta(inputName)?.error || []} count={values.length} setIndex={setCurrentValueIndex} index={currentValueIndex} />
+                                        <MakePagination errorsList={error || []} count={values.length} setIndex={setCurrentValueIndex} index={currentValueIndex} />
                                     </Box>
 
                                     {input.removeLabel && (
@@ -140,20 +143,36 @@ export default function MakeChunk({ props, input, inputName, values }) {
                             </Box>
                         )}
 
-                        {hasError(props, inputName) && (
-                            <Alert sx={{ m: "5px" }} severity='error'>{props.getFieldMeta(inputName).error}</Alert>
+                        {showError && (
+                            <Alert sx={{ m: "5px" }} severity='error'>{error}</Alert>
                         )}
+                        <FlexRow gap={'16px'} my={'16px'} sx={{ width: '100%' }}>
 
-                        {input.addLabel && (
-                            <Box >
-                                <Button
-                                    style={{ width: "auto" }}
-                                    onClick={() => push(input.schema)}
-                                >
-                                    {input.addLabel}
-                                </Button>
-                            </Box>
-                        )}
+                            {input.addLabel && (
+                                <Box >
+                                    <Button
+                                        variant='outlined'
+                                        style={{ width: "auto" }}
+                                        onClick={() => push(input.schema)}
+                                    >
+                                        {input.addLabel}
+                                    </Button>
+                                </Box>
+                            )}
+
+                            {input.addLabeltAf && (
+                                <Box >
+                                    <Button
+                                        variant='outlined'
+                                        style={{ width: "auto" }}
+                                        onClick={() => push(input.tAfSchema)}
+                                    >
+                                        {input.addLabeltAf}
+                                    </Button>
+                                </Box>
+                            )}
+                        </FlexRow>
+
                     </Box>
                 )
             }
@@ -163,3 +182,5 @@ export default function MakeChunk({ props, input, inputName, values }) {
         </FieldArray >
     )
 }
+
+export default memo(MakeChunk)

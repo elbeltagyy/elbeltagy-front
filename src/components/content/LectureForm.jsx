@@ -386,7 +386,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
                     sectionType === sectionConstants.EXAM &&
                     <BtnModal
                         close={close}
-                        fullScreen
+                        fullScreen allowBackClose={true}
                         btnName={location === 'update' ? "تعديل الاختبار" : 'إنشاء اختبار'}>
                         {location === 'update' ?
                             <ExamUpdatePage lecId={lecture._id} setLectures={setLectures} /> :

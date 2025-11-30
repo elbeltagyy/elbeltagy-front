@@ -15,7 +15,7 @@ function GetQuestionsPage() {
 
     const tabs = [
         {
-            label: 'بنك الاسئله', component: <AdminGetQuestions />, count: data?.values?.count ?? 'laoding'
+            label: 'بنك الاسئله', component: <AdminGetQuestions isShowHeader={true} />, count: data?.values?.count ?? 'laoding'
         },
         {
             label: 'الروابط', component: <GetTags />, count: tagsCount?.values?.count ?? 'loading'

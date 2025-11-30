@@ -5,9 +5,11 @@ import MakeForm from "../../tools/makeform/MakeForm"
 import { IoSchool } from "react-icons/io5"
 import { green } from "@mui/material/colors"
 import { makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
-import gradeConstants from "../../settings/constants/gradeConstants"
+import useGrades from "../../hooks/useGrades"
+
 
 function GroupForm({ status, onSubmit, group = {}, enableReinitialize = false, isResetNewVal }) {
+    const { grades } = useGrades()
 
     const daySchema = {
         time: '',
@@ -23,7 +25,7 @@ function GroupForm({ status, onSubmit, group = {}, enableReinitialize = false, i
             label: 'اختر الصف الدراسى',
             validation: Yup.string().required(),
             type: 'select',
-            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            options: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
             icon: <IoSchool size={'1.5rem'} color={green[500]} />,
         }, {
             name: "name",

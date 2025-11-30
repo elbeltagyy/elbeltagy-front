@@ -60,7 +60,8 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
             attemptId: activeAttemptId || null,
             user: user._id,
             exam: exam._id,
-            answers
+            answers,
+            createdAt: new Date()
         }
         if (time && (exam.isTime ?? true)) {
             attempt.tokenTime = time // *_* modify it

@@ -8,7 +8,7 @@ import { FilledHoverBtn } from '../../style/buttonsStyles'
 import TitleWithDividers from './TitleWithDividers'
 
 function BtnModal({
-    parenetSx = {}, btn,
+    parenetSx = {}, btn, allowBackClose,
     btnName, icon, children, component, variant = 'contained', color, size = 'small', isFilledHover = false, fullWidth = true, fullScreen = false, titleInSection = false,
     close = false
 }) {
@@ -33,7 +33,7 @@ function BtnModal({
             }
 
 
-            <ModalStyled open={open} setOpen={setOpen} fullWidth={fullWidth} fullScreen={fullScreen}>
+            <ModalStyled allowBackClose={allowBackClose} open={open} setOpen={setOpen} fullWidth={fullWidth} fullScreen={fullScreen}>
                 <Section>
                     {titleInSection && (
                         <TitleWithDividers title={titleInSection} />

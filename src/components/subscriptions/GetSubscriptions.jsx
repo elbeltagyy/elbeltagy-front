@@ -2,24 +2,23 @@ import { useState } from 'react'
 import { useDeleteSubscriptionMutation, useLazyGetCourseSubscriptionsQuery, useUpdateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button} from '@mui/material'
 
 import TabInfo from '../../components/ui/TabInfo'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
-import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import usePostData from '../../hooks/usePostData'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { Link } from 'react-router-dom'
 import UserAvatar from '../users/UserAvatar'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import { useLazyAnalysisSubscriptionsQuery } from '../../toolkit/apis/statisticsApi'
-import DynamicBarChart from '../../tools/charts/BarChart'
+import useGrades from '../../hooks/useGrades'
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -40,10 +39,10 @@ const exportObj = {
     price: (row) => {
         return row.price + ' جنيه'
     },
-}
-
+})
 
 function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userName }) {
+    const { grades } = useGrades()
 
     // const { courseId } = useParams()
     const [subscriptionsCount, setSubscriptionsCount] = useState('loading ...')
@@ -155,15 +154,7 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             type: 'singleSelect',
             width: 200,
             filterable: false,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {grade?.name}
-                    </Typography>
-                )
-            }
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: 'payment',
             headerName: 'المبلغ المدفوع',

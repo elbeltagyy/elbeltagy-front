@@ -1,16 +1,14 @@
 import { Alert, Box, Button, Grid } from '@mui/material'
 import { FieldArray } from 'formik'
-import React from 'react'
 
-import MakeInput from './MakeInput'
-import { hasError } from './constants/hasError'
 import NestedInput from './NestedInput'
+import { memo } from 'react'
 
-export default function MakeFieldArray({ props, input, inputName, values }) {
+function MakeFieldArray({ input, inputName, values, showError, error }) {
 
     return (
         <FieldArray name={inputName}>
-            {({ insert, remove, push }) => (
+            {({ remove, push }) => ( //insert
                 <Box >
                     <Grid container spacing={2}>
 
@@ -19,11 +17,12 @@ export default function MakeFieldArray({ props, input, inputName, values }) {
                             return (
                                 <Grid key={index} item xs={12} md={6}>
 
-                                    <NestedInput inputName={inputName} input={input} props={props} index={index} />
+                                    <NestedInput inputName={inputName} input={input} index={index} />
 
                                     {input.removeLabel && (
                                         <Box >
                                             <Button
+                                                color='error'
                                                 style={{ width: "auto" }}
                                                 onClick={() => remove(index)}
                                             >
@@ -37,8 +36,8 @@ export default function MakeFieldArray({ props, input, inputName, values }) {
                         })}
                     </Grid>
 
-                    {hasError(props, inputName) && (
-                        <Alert sx={{ m: "8px 0" }} severity='error'>{props.getFieldMeta(inputName).error}</Alert>
+                    {showError && (
+                        <Alert sx={{ m: "8px 0" }} severity='error'>{error}</Alert>
                     )}
 
 
@@ -58,3 +57,4 @@ export default function MakeFieldArray({ props, input, inputName, values }) {
         </FieldArray>
     )
 }
+export default memo(MakeFieldArray)

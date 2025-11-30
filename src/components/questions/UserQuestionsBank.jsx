@@ -14,11 +14,11 @@ import { useNavigate } from "react-router-dom"
 import * as yup from 'yup'
 import examMethods from "../../settings/constants/examMethods"
 import { isDevelop } from "../../tools/isDevelop"
-import { Box, Typography } from "@mui/material"
+import { Alert, Box, Typography } from "@mui/material"
 import PaymentMethods from "../payment/PaymentMethods"
 import products from "../../settings/constants/products"
 
-function UserQuestionsBank() {
+function UserQuestionsBank({ grade }) {
     const navigate = useNavigate()
 
     const [sendData, status] = useStartQuestionBankMutation()
@@ -26,13 +26,12 @@ function UserQuestionsBank() {
 
     //Tags Handel
     const [chosenTags, setChosenTags] = useState([])
-    const { user } = useSelector(s => s.global)
     const [getData, { isLoading }] = useLazyGetTagsQuery()
     const [getTagsFc] = useLazyGetData(getData)
 
     const [methods, setMethods] = useState([])
     const fetchFc = async () => {
-        const res = await getTagsFc({ isActive: true, grade: user.grade, counting: true })
+        const res = await getTagsFc({ isActive: true, grade, counting: true }, true)
         const methods = res.tags.map(tag => {
             return {
                 value: tag._id, label: tag.name, description: tag.description,
@@ -41,10 +40,11 @@ function UserQuestionsBank() {
                     setTagToPay(tag)
                     setOpen(true)
                 }}
+
                     sx={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', bgcolor: '#00000073', zIndex: 2, cursor: 'pointer' }
                     }>
                     <Typography sx={{ color: 'grey.0', bgcolor: 'primary.main', width: 'fit-content', height: 'fit-content' }}>
-                        شراء الاسئله بسعر {tag.price} جنيه
+                        {tag.price || tag.price === 0 || tag.price === '0' ? ` شراء الاسئله بسعر ${tag.price} جنيه` : 'هذا الدرس غير متاح لك حاليا'}
                     </Typography>
                 </Box>,
                 disabled: tag.unansweredCount === 0
@@ -54,10 +54,8 @@ function UserQuestionsBank() {
     }
 
     useEffect(() => {
-        if (methods?.length === 0) {
-            fetchFc()
-        }
-    }, [user.grade])
+        fetchFc()
+    }, [grade])
 
     //Payments
     const [open, setOpen] = useState(false)
@@ -101,7 +99,7 @@ function UserQuestionsBank() {
                 }, [chosenTags])
 
                 if (isLoading) return <FlexColumn><Loader sx={{ textAlign: 'center' }} /> </FlexColumn>
-
+                if (methods?.length === 0) return <Alert severity="warning" variant="filled">لا يوجد دروس متاحه حاليا</Alert>
                 return <ListMethods
                     disableP={true}
                     itemWidth='fit-content'
@@ -116,10 +114,22 @@ function UserQuestionsBank() {
     const onSubmit = async (values) => {
         const res = await startBank(values)
 
-        if (res.length > 0) {
-            navigate('/exams/' + values.method, {
-                state: { questions: res, method: values.method, name: 'بنك الاسئله : ' + res.length + ' اسئله' }
-            })
+        // if (res.length > 0) {
+        //     navigate('/exams/' + values.method, {
+        //         state: { questions: res, method: values.method, name: 'بنك الاسئله : ' + res.length + ' اسئله' }
+        //     })
+        // }
+
+        if (Array.isArray(res) && res.length > 0) {
+            setTimeout(() => {
+                navigate(`/exams/${encodeURIComponent(values.method)}`, {
+                    state: {
+                        questions: res,
+                        method: values.method,
+                        name: `بنك الاسئله : ${res.length} اسئله`
+                    }
+                });
+            }, 100);
         }
         //exams/_id
     }

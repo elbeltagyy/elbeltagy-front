@@ -9,50 +9,63 @@ import { memo } from 'react'
 import examMethods, { getExamMethod } from '../../settings/constants/examMethods'
 import { isDevelop } from '../../tools/isDevelop'
 import { durationRegex } from '../content/LectureForm'
+import useQuestionsSchema from '../questions/useQuestionsSchema'
+import { useField } from 'formik'
+import MakeInput from '../../tools/makeform/MakeInput'
 
+const TimeInput = ({ value, input }) => {
+    const [{ value: isTime }] = useField('isTime')
 
+    return <>
+        {isTime && (
+            <MakeInput input={{ ...input, value: value }} />
+        )}
+    </>
+
+}
 
 function ExamForm({ lecture, status, onSubmit }) {
+    const questionsSchema = useQuestionsSchema({ grade: lecture.grade, questions: lecture?.exam?.questions ?? [] })
 
-    const questionSchema = {
-        title: "",
-        hints: "",
-        image: "",
-        rtOptionId: "",
-        points: 1,
-        grade: lecture.grade,
-        isShuffle: true,
-        clarifyText: '',
-        clarifyUrl: '',
-        options: [
-            {
-                id: uuidv4(),
-                title: "",
-                image: ""
-            }, {
-                id: uuidv4(),
-                title: "",
-                image: ""
+    // const questionSchema = {
+    //     title: "",
+    //     hints: "",
+    //     image: "",
+    //     rtOptionId: "",
+    //     points: 1,
+    //     grade: lecture.grade,
+    //     isShuffle: true,
+    //     clarifyText: '',
+    //     clarifyUrl: '',
+    //     options: [
+    //         {
+    //             id: uuidv4(),
+    //             title: "",
+    //             image: ""
+    //         }, {
+    //             id: uuidv4(),
+    //             title: "",
+    //             image: ""
 
-            }, {
-                id: uuidv4(),
-                title: "",
-                image: ""
+    //         }, {
+    //             id: uuidv4(),
+    //             title: "",
+    //             image: ""
 
-            }, {
-                id: uuidv4(),
-                title: "",
-                image: ""
-            }
-        ]
-    }
+    //         }, {
+    //             id: uuidv4(),
+    //             title: "",
+    //             image: ""
+    //         }
+    //     ]
+    // }
 
-    const optionSchema = [
-        {
-            id: uuidv4(),
-            title: ""
-        }
-    ]
+    // const optionSchema = [
+    //     {
+    //         id: uuidv4(),
+    //         title: ""
+    //     }
+    // ]
 
     //lecture info
     const lectureInfoInputs = [
@@ -181,9 +194,11 @@ function ExamForm({ lecture, status, onSubmit }) {
             name: "time",
             label: "الوقت",
             value: lecture?.exam?.time ?? '15m',
+            component: TimeInput,
+
             validation: Yup.string()
-                .matches(durationRegex, 'ارقام فقط, غير مسموح بوجود مساحات, h,m,s فقط')
-                .required(lang.REQUERIED),
+                // .required(lang.REQUERIED)
+                .matches(durationRegex, 'ارقام فقط, غير مسموح بوجود مساحات, h,m,s فقط'),
             column: 1,
             row: 4
         }, {
@@ -205,117 +220,7 @@ function ExamForm({ lecture, status, onSubmit }) {
     ]
 
     //exam info => in update nested
-    const inputs = [...lectureInfoInputs, {
-        name: "questions",
-        label: "الاسئله ==>",
-        value: lecture?.exam?.questions ?? [],
-        schema: questionSchema, //
-        addLabel: "اضافه سؤال", // add schema for reply this field in main values
-        removeLabel: "ازاله السؤال", //
-        type: "chunk", //
-        array: [ //inputs control to values of schema
-            {
-                name: "title",
-                label: "العنوان",
-            }, {
-                name: "hints",
-                label: "ملحوظه",
-            }, {
-                name: "image",
-                label: "اضافه صوره",
-                type: "file",
-                disabled: false
-            }, {
-                name: "points",
-                label: "عدد النقاط",
-                type: "number",
-            }, {
-                type: 'header',
-                title: 'الاختيارات'
-            }, {
-                name: "isShuffle",
-                label: "هل تريد جعل الاختيارات عشوائيه؟",
-                type: 'switch',
-            }, {
-                name: "rtOptionId",
-                label: "الايجابه الصحيحه",
-                disabled: true,
-                hidden: true
-            }, {
-                name: "options",
-                type: "array",
-                value: [],
-                schema: optionSchema,
-                array: [
-                    {
-                        name: "id",
-                        label: "...",
-                        disabled: true,
-                        hidden: true,
-                    }, {
-                        name: "title",
-                        label: "الايجابه",
-                        choose: "rtOptionId",
-                        from: 'id'
-                    }
-                ]
-            },
-            {
-                name: "clarifyText",
-                label: "ايضافه توضيح لايجابه (يظهر عن عرض الحل)",
-                rows: 4,
-                variant: 'filled'
-            }, {
-                name: "clarifyUrl",
-                label: "ايضافه لينك فيديو (يظهر عن عرض الحل)",
-                type: "url",
-                player: "youtube"
-            },
-        ], validation:
-            Yup.array()
-                .of(
-                    Yup.object().shape({
-                        title: Yup.string().required(lang.REQUERIED),
-                        rtOptionId: Yup.string().required('اختر الايجابه الصحيحه'),
-                        image: Yup.mixed()
-                            .test({
-                                message: 'Please provide a supported image typed(jpg or png)',
-                                test: (file, context) => {
-                                    if (file && !file.url) {
-                                        if (file?.url) {
-                                            file.type = file.resource_type + "/" + file.format
-                                        }
-                                        const isValid = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'].includes(file?.type);
-                                        if (!isValid) context?.createError();
-                                        return isValid;
-                                    } else {
-                                        return true
-                                    }
-                                }
-                            })
-                            .test({
-                                message: `يجب ان يكون حجم الملف اقل من ${Number(import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN) || 15} MB `,
-                                test: (file) => {
-                                    if (file && file.size) {
-                                        const isValid = file?.size <= (import.meta.env.VITE_MAX_IMAGE_SIZE_ADMIN || 15) * 1024 * 1024; // 15MB
-                                        return isValid;
-                                    } else {
-                                        return true
-                                    }
-                                }
-                            }),
-                        options: Yup.array().of(
-                            Yup.object().shape({
-                                title: Yup.string().required(lang.REQUERIED),
-                            })
-                        )
-                    })
-                )
-                .required('يجب ان يكون هناك اسئله') // these constraints are shown if and only if inner constraints are satisfied
-                .min(isDevelop ? 1 : 5, 'يجب إنشاء 5 اسئله على الاقل !')
-        ,
-    }
-    ]
+    const inputs = [...lectureInfoInputs, ...questionsSchema]
 
     return (
         <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} enableReinitialize={false} />

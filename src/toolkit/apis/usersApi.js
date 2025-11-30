@@ -28,6 +28,15 @@ const usersApi = apiSlice.injectEndpoints({
                 }
             },
         }),
+        analysisUsersByKeys: builder.query({
+            query: (queries) => {
+                const params = queries
+                return {
+                    url: "/users/analysisKeys",
+                    params
+                }
+            },
+        }),
         getOneUser: builder.query({
             query: (userName) => `/users/${userName}`
         }),
@@ -122,7 +131,7 @@ export const {
     useLazyGetUsersQuery,
     useDeleteManyUsersMutation,
     useLazyGetOneUserQuery,
-    useLazyAnalysisUsersQuery,
+    useLazyAnalysisUsersQuery, useLazyAnalysisUsersByKeysQuery,
 
     useCreateUserMutation,
     useAddToUserMutation,

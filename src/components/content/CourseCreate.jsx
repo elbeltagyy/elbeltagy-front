@@ -9,32 +9,9 @@ import { VscSymbolBoolean } from 'react-icons/vsc'
 import { AiFillPoundCircle } from 'react-icons/ai'
 
 import * as Yup from "yup"
-import { FlexRow } from '../../style/mui/styled/Flexbox'
-import { Box, FormControlLabel, Switch } from '@mui/material'
-import MakeInput from '../../tools/makeform/MakeInput'
 import { MdOutlineDriveFileRenameOutline } from 'react-icons/md'
 import dayjs from 'dayjs'
-
-const PreDiscount = ({ props, value, input, inputName }) => {
-
-    const [isPreDiscount, setPreDiscount] = useState(value ? true : false)
-
-    useEffect(() => {
-        props.setFieldValue(inputName, isPreDiscount ? value : '')
-    }, [isPreDiscount])
-
-    return <FlexRow sx={{
-        justifyContent: 'space-between', gap: '10px'
-    }}>
-        <FormControlLabel control={<Switch checked={isPreDiscount} onChange={() => setPreDiscount(!isPreDiscount)} />} label="اضافه سعر قبل الخصم" />
-        <Box sx={{ width: { xs: '100%', md: '40%' } }}>
-            {isPreDiscount && (
-                <MakeInput input={{ ...input, value: !isPreDiscount ? 0 : value }} props={props} />
-            )}
-        </Box>
-    </FlexRow>
-}
-
+import PreDiscount from './PreDiscount'
 
 function CourseCreate({ unit, grade, setCourses }) {
 

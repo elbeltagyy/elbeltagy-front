@@ -1,12 +1,15 @@
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import MakeForm from '../../tools/makeform/MakeForm'
 import { lang } from '../../settings/constants/arlang'
 import usePostData from '../../hooks/usePostData'
 import { useCreateReportMutation } from '../../toolkit/apis/reportsApi'
 import { user_roles } from '../../settings/constants/roles'
 import * as yup from 'yup'
-const ReportCompo = ({ course, excludedUsers, isExcluded }) => {
+import useGrades from '../../hooks/useGrades'
+const ReportCompo = ({ course, excludedUsers }) => {
+    const { grades } = useGrades()
+
     const inputs = [
         {
             name: 'title',
@@ -57,7 +60,7 @@ const ReportCompo = ({ course, excludedUsers, isExcluded }) => {
             name: 'grade',
             label: lang.GRADE,
             type: 'select',
-            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            options: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         })
     }
     return <MakeForm inputs={inputs} onSubmit={trigger} status={status} />

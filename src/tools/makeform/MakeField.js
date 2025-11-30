@@ -1,9 +1,10 @@
 import { Box, InputAdornment, TextField, Typography } from '@mui/material'
-import { ErrorMessage, Field, FastField } from 'formik'
+import { ErrorMessage, FastField } from 'formik'
+import { memo } from 'react'
 
-import { hasError } from './constants/hasError'
 
-function MakeField({ input, inputName, props }) {
+function MakeField({ input, inputName, showError }) {
+    // console.log('inputName ==>', inputName)
     return (
         <FastField
             as={TextField}
@@ -28,12 +29,12 @@ function MakeField({ input, inputName, props }) {
                         {input.label}
                     </Typography>
                 </Box>}
-            error={hasError(props, inputName) ? true : false}
-            helperText={hasError(props, inputName) ? < ErrorMessage name={inputName} /> : input.helperText || ""}
+            error={showError ? true : false}
+            helperText={showError ? < ErrorMessage name={inputName} /> : input.helperText || ""}
 
             placeholder={input.placeholder && input.placeholder}
             variant={input.variant ? input.variant : "outlined"}
-            color='success'
+            // color='success'
 
             required={input.required || false}
             disabled={input.disabled ? true : false}
@@ -55,4 +56,4 @@ function MakeField({ input, inputName, props }) {
     )
 }
 
-export default MakeField
+export default memo(MakeField)

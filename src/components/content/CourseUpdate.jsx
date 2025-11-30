@@ -15,32 +15,7 @@ import { Box, FormControlLabel, Switch} from '@mui/material'
 import MakeInput from '../../tools/makeform/MakeInput'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 import dayjs from 'dayjs'
-
-const PreDiscount = ({ props, value, input, inputName }) => {
-
-    const [isPreDiscount, setPreDiscount] = useState(value ? true : false)
-    const [initialVal] = useState(value)
-
-    useEffect(() => {
-        setPreDiscount(value || value === 0 ? true : false)
-    }, [value])
-
-    useEffect(() => {
-        const handledVal = value || initialVal
-        props.setFieldValue(inputName, isPreDiscount ? handledVal : '')
-    }, [isPreDiscount])
-
-    return <FlexRow sx={{
-        justifyContent: 'space-between', gap: '6px'
-    }}>
-        <FormControlLabel control={<Switch checked={isPreDiscount} onChange={() => setPreDiscount(!isPreDiscount)} />} label="اضافه سعر قبل الخصم" />
-        <Box sx={{ width: { xs: '100%', md: '60%' } }}>
-            {isPreDiscount && (
-                <MakeInput input={{ ...input, value: value }} props={props} />
-            )}
-        </Box>
-    </FlexRow>
-}
+import PreDiscount from './PreDiscount'
 
 
 function CourseUpdate({ course, setCourse, setCourses }) {

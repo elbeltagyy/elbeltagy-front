@@ -4,7 +4,7 @@ import { Button, Typography, useTheme } from "@mui/material";
 import jsPDF from "jspdf";
 
 import * as echarts from 'echarts/core';
-import Grid from "../../style/vanilla/Grid";
+
 import { FlexRow } from "../../style/mui/styled/Flexbox";
 import { PiFilePdf, PiFilePng, PiFileSvg } from "react-icons/pi";
 import { red } from "@mui/material/colors";

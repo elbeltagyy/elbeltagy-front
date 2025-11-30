@@ -6,13 +6,14 @@ import UserAvatar from "../users/UserAvatar"
 import TabInfo from "../ui/TabInfo"
 import { user_roles } from "../../settings/constants/roles"
 import { convertObjToArray, handelObjsOfArr, makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
-import gradeConstants from "../../settings/constants/gradeConstants"
 import governments from "../../settings/constants/governments"
 import { getFullDate } from "../../settings/constants/dateConstants"
-import { useState } from "react"
+ 
+import useGrades from "../../hooks/useGrades"
 const [roles] = convertObjToArray(user_roles)
 
 function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allStatuses, addColumns }) {
+    const { grades } = useGrades()
 
     const columns = [
         {
@@ -71,16 +72,8 @@ function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allSta
             headerName: lang.GRADE,
             type: 'singleSelect',
             width: 200,
-            valueOptions: handelObjsOfArr(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {params.row.role === user_roles.ADMIN ? user_roles.ADMIN
-                            : grade?.name}
-                    </Typography>
-                )
-            }
+            valueOptions: handelObjsOfArr(grades, { value: 'index', label: 'name' }),
+ 
         }, {
             field: "government",
             headerName: 'المحافظه',

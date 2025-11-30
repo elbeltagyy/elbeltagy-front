@@ -1,14 +1,14 @@
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import { formatDuration, getDateWithTime } from '../../settings/constants/dateConstants'
+import {  getDateWithTime } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import UserAvatar from '../users/UserAvatar'
 import { useState } from 'react'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
+
 // import UpdateQuestion from './UpdateQuestion'
-import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
+
 import TabInfo from '../ui/TabInfo'
 import { useLazyGetAnswersQuery, useRemoveAnswerMutation, useUpdateAnswerMutation } from '../../toolkit/apis/answersApi'
 import usePostData from '../../hooks/usePostData'
@@ -18,10 +18,11 @@ import { FaUsers } from 'react-icons/fa'
 import AnsweredQuestion from './AnsweredQuestion'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import { MdQuestionAnswer } from 'react-icons/md'
+import useGrades from '../../hooks/useGrades'
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     createdAt: (row) => {
         return getDateWithTime(row.createdAt)
@@ -41,9 +42,10 @@ const exportObj = {
     isHighlighted: (row) => {
         return row.isHighlighted ? 'محفوظه' : 'غير محفوظه'
     }
-}
+})
 
 function GetUserAnswers({ filters }) {
+    const { grades } = useGrades()
 
     const [count, setCount] = useState('loading ...')
 
@@ -153,7 +155,7 @@ function GetUserAnswers({ filters }) {
             <TabInfo count={count} title={'عدد الايجابات'} i={1} />
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj} exportTitle={'تفاصيل الايجابات'}
+                exportObj={exportObj(grades)} exportTitle={'تفاصيل الايجابات'}
                 columns={columns} //reset={[reset]}
                 loading={status.isLoading}
                 fetchFc={fetchFc}  //deleteFc={deleteFc} updateFc={updateFc}

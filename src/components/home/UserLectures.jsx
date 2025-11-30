@@ -7,7 +7,7 @@ import useLazyGetData from '../../hooks/useLazyGetData'
 import LectureUserCard from '../content/LectureUserCard'
 import { TextBorderWithIcons } from '../ui/TextBorderAround'
 import { FaSchool } from 'react-icons/fa6'
-import gradeConstants from '../../settings/constants/gradeConstants'
+ 
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import TabsStyled from '../../style/mui/styled/TabsStyled'
@@ -20,7 +20,7 @@ function UserLectures({ query, accordionTitle = 'محاضرات' }) {
     const [grade, setGrade] = useState(query.grade)
 
     // const isShowSameGrades = useMemo(() => {
-    //     const grade = gradeConstants.find(g => g.index === query.grade)
+    //     const grade = grades.find(g => g.index === query.grade)
     //     if (grade?.share) {
     //         return grade.share
     //     }
@@ -28,7 +28,7 @@ function UserLectures({ query, accordionTitle = 'محاضرات' }) {
     // }, [query])
 
     // const sharedGrades = useMemo(() =>
-    //     makeArrWithValueAndLabel(gradeConstants.filter(g => g.share), { value: 'index', label: 'name' }),
+    //     makeArrWithValueAndLabel(grades.filter(g => g.share), { value: 'index', label: 'name' }),
     //     [])
 
     useEffect(() => {

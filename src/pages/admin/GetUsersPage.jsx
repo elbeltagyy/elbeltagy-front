@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { user_roles } from '../../settings/constants/roles'
 import governments from '../../settings/constants/governments'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import { lang } from '../../settings/constants/arlang'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 
@@ -27,14 +27,14 @@ import TabInfo from '../../components/ui/TabInfo'
 import TitleSection from '../../components/ui/TitleSection'
 import GradesTabs from '../../components/grades/GradesTabs'
 import UserAvatar from '../../components/users/UserAvatar';
-import DynamicBarChart from '../../tools/charts/BarChart';
-import Grid from '../../style/vanilla/Grid';
+
 import UserShowTable from '../../components/users/UserShowTable';
+import useGrades from '../../hooks/useGrades';
 // import CreateUser from '../../components/users/CreateUser'
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -49,10 +49,11 @@ const exportObj = {
     createdAt: (row) => {
         return getDateWithTime(row.createdAt)
     }
-}
+})
 
 
 function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades = true }) {
+    const { grades } = useGrades()
 
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
@@ -89,7 +90,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
 
             const [...counts] = await Promise.all([
                 getUsersCount({ grade: 'all' }),
-                ...gradeConstants.map(g => getUsersCount({ grade: g.index })),
+                ...grades.map(g => getUsersCount({ grade: g.index })),
             ])
             setGradeCounts(counts)
         }
@@ -165,7 +166,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             editable: true,
             sortable: false,
             filterable: false,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: "government",
             headerName: 'المحافظه',

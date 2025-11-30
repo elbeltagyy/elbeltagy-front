@@ -19,6 +19,8 @@ import { setUser } from '../../toolkit/globalSlice'
 import UserLectures from './UserLectures'
 import { CoursesIcon, VidsIcon2 } from '../ui/svg/ContentSvgs'
 import LatestCourses from './LatestCourses'
+import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import AdminHome from './AdminHome'
 
 function UserHome() {
 
@@ -117,20 +119,22 @@ function UserHome() {
             </Typography>
             <Separator />
             <UserHeader user={user} flexDirection={'row'} variant={'circle'} />
-            <Box sx={{ my: '16px' }}></Box>
-            <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
+            {(user.role === user_roles.ONLINE || user.role == user_roles.STUDENT) ?
+                <Box sx={{ my: '16px' }}>
+                    <TitleSection title={lang.YOUR_SUBSCRIPTIONS} />
 
-            {(user.role === user_roles.ONLINE || user.role == user_roles.STUDENT) && <>
-                <Grid min='120px' sx={{ width: '100%' }}>
-                    {btns}
-                </Grid>
-
-
-                {compos.find(compo => compo.value === activeCompo)?.compo}
-            </>
+                    <Grid min='120px' sx={{ width: '100%' }}>
+                        {btns}
+                    </Grid>
+                    {compos.find(compo => compo.value === activeCompo)?.compo}
+                    <FlexColumn>
+                        <Separator />
+                        <Separator sx={{ width: '60%', opacity: "60%" }} />
+                    </FlexColumn>
+                    <LatestCourses user={user} />
+                </Box>
+                : (user.role === user_roles.ADMIN || user.role == user_roles.SUBADMIN) ? <AdminHome /> : ''
             }
-            <Separator />
-            <LatestCourses user={user} />
         </Section>
     )
 }

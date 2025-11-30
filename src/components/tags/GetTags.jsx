@@ -5,7 +5,7 @@ import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
 import { lang } from '../../settings/constants/arlang'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 
 import TabInfo from '../ui/TabInfo'
 
@@ -22,16 +22,17 @@ import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
 import { IconButton } from '@mui/material'
 import BtnConfirm from '../ui/BtnConfirm'
-import SwitchStyled from '../../style/mui/styled/SwitchStyled'
+
 import GetCoupons from '../coupons/GetCoupons'
 import Users from '../all/Users'
 import { useAddToUserMutation } from '../../toolkit/apis/usersApi'
 import { IoIosAddCircleOutline } from 'react-icons/io'
+import useGrades from '../../hooks/useGrades'
 
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -46,10 +47,11 @@ const exportObj = {
     updatedAt: (row) => {
         return getDateWithTime(row.updatedAt)
     }
-}
+})
 
 function GetTags({ filters = {}, setSelectedTags, preReset = [], addColumns, disabledActions = {}, disableAllActions, colsIgnored = [], isShowCreate = true, defaultGrade }) {
     const [reset, setReset] = useState(false)
+    const { grades } = useGrades()
 
     const [getData, status] = useLazyGetTagsQuery()
     const [getTags] = useLazyGetData(getData)
@@ -116,7 +118,7 @@ function GetTags({ filters = {}, setSelectedTags, preReset = [], addColumns, dis
             type: 'singleSelect',
             width: 200,
             editable: true,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: "price",
             headerName: 'سعر الرابط',
@@ -152,7 +154,7 @@ function GetTags({ filters = {}, setSelectedTags, preReset = [], addColumns, dis
             renderCell: (params) => {
 
                 const unLinkFc = async (questionId = null) => {
-                    console.log(unLinkedQs)
+                    // console.log(unLinkedQs)
                     await unLinkTag({ questions: questionId ? [questionId] : unLinkedQs, _id: params.row._id })
                     setUnLinkedQs([])
                     setReset(!reset)
@@ -176,7 +178,6 @@ function GetTags({ filters = {}, setSelectedTags, preReset = [], addColumns, dis
                         ]
                     }
                 }
-
                 return <BtnModal
                     btnName={'عرض الاسئله'}
                     fullScreen={true}

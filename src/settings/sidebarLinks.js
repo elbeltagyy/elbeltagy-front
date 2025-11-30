@@ -73,6 +73,7 @@ import TestPage from "../pages/test/TestPage.js";
 import { isDevelop } from "../tools/isDevelop.js";
 import ManagePaymentsPage from "../pages/admin/PaymentsPage.jsx";
 import CoursesPage from "../pages/user/CoursesPage.jsx";
+import GradesManage from "../pages/admin/GradesManage.jsx";
 
 const GetQuestionsPage = lazy(() => import("../pages/admin/GetQuestionsPage"))
 
@@ -142,6 +143,9 @@ export const sidebarLinks = [
         element: <FindUserPage />, id: 'findUser'
     }, {
         name: "إدارة المحتوى", icon: <SiGooglecampaignmanager360 size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
+    }, {
+        name: "السنوات الدراسيه", icon: <SiGooglecampaignmanager360 size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
+        element: <GradesManage />,to: "/management/grades",
     }, {
         name: "إدارة الكورسات", icon: <FaSchool size="22px" />, to: "/management/courses", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <ManageCoursesPage />, id: 'coursesManage'

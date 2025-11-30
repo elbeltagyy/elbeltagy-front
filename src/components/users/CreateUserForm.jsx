@@ -1,5 +1,5 @@
 import MakeForm from '../../tools/makeform/MakeForm'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import governments from '../../settings/constants/governments'
 
 // icons
@@ -20,8 +20,10 @@ import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray';
 import { user_roles } from '../../settings/constants/roles';
 
 import * as Yup from "yup"
+import useGrades from '../../hooks/useGrades';
 
 function CreateUserForm({ setReset }) {
+  const { grades } = useGrades()
 
   const [sendData, status] = useCreateUserMutation()
   const [createUser] = usePostData(sendData)
@@ -41,10 +43,10 @@ function CreateUserForm({ setReset }) {
       width: { xs: '100%', md: '49%' },
       icon: <MdOutlineDriveFileRenameOutline color='green' />,
       validation: Yup.string()
-      .required(lang.REQUERIED)
-      .matches(/^[a-z0-9@.]+$/, "Only lowercase letters, numbers, '@', and '.' are allowed")
-      .min(6, 'يجب ان يكون على الاقل 6 حروف')
-      .max(100, 'يجب ان يكون اقل من 100 حرف'),
+        .required(lang.REQUERIED)
+        .matches(/^[a-z0-9@.]+$/, "Only lowercase letters, numbers, '@', and '.' are allowed")
+        .min(6, 'يجب ان يكون على الاقل 6 حروف')
+        .max(100, 'يجب ان يكون اقل من 100 حرف'),
     }, {
       name: 'email',
       label: lang.EMAIL,
@@ -71,7 +73,7 @@ function CreateUserForm({ setReset }) {
       name: 'grade',
       label: lang.GRADE,
       type: 'select',
-      options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+      options: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
       icon: <IoSchool color='green' />,
       validation: Yup.string().required(lang.REQUERIED)
 

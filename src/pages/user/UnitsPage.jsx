@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 import Section from '../../style/mui/styled/Section'
@@ -15,11 +15,13 @@ import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 
 import UnitCourses from '../../components/content/UnitCourses'
 import { useSelector } from 'react-redux'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
+import useGrades from '../../hooks/useGrades'
 
 
 function UnitsPage() {
+  const { grades } = useGrades()
 
   const { gradeId } = useParams()
   const user = useSelector(s => s.global.user)
@@ -44,7 +46,7 @@ function UnitsPage() {
     }
   }, [gradeId, user])
 
-  if (!gradeConstants.find(g => g.index === Number(gradeId))) {
+  if (!grades.find(g => g.index === Number(gradeId))) {
     return
   }
 
@@ -53,7 +55,7 @@ function UnitsPage() {
   }
 
   const getGradeName = () => {
-    const grade = gradeConstants.find(g => g.index === Number(gradeId))
+    const grade = grades.find(g => g.index === Number(gradeId))
     if (grade) {
       return grade?.name
     } else {
@@ -62,7 +64,7 @@ function UnitsPage() {
   }
 
   const getGradeDesc = () => {
-    const grade = gradeConstants.find(g => g.index === Number(gradeId))
+    const grade = grades.find(g => g.index === Number(gradeId))
     if (grade) {
       return grade?.description
     } else {

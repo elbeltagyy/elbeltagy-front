@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { Form, Formik } from 'formik';
 
 import * as Yup from "yup"
+import MakeInput from './MakeInput';
 import Loader from '../../style/mui/loaders/Loader';
 import { FilledHoverBtn } from '../../style/buttonsStyles';
 import DynamicFormGrid from './DynamicFormGrid2';
@@ -14,13 +15,13 @@ const SEND = 'إرسال'
 // another solution but i don`t do => currentPrev, setCurrentPrev
 
 
-export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false, disabledBtn = false, allowDirty = true, preValue = null }) {
+export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false, disabledBtn = false, allowDirty = true, preValue = null, isAllDisabled = false }) {
     // arrange data of input with ===> name , validation, initial value
     const { data, validation } = useMemo(() => {
         let data = {}
         let validation = {}
-        //In Value => should check valid value => not empty Object, not null, not undefined
-        inputs.forEach((input) => {
+
+        inputs.forEach((input, i) => {
             if (input.name) {
                 if (preValue) {
                     data[input.name] = preValue[input.name] ?? ''
@@ -39,6 +40,10 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
             if (input.validation) {
                 validation[input.name] = input.validation
             }
+
+            if (isAllDisabled) {
+                input.disabled = true
+            }
         });
 
         return { data, validation }
@@ -47,24 +52,27 @@ export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enabl
     const validationSchema = Yup.object().shape(validation)
     return (
         <>
-            <Box width={"100%"}>
+            <Box width={"100%"} mt={'16px'}>
                 <Formik enableReinitialize={enableReinitialize} initialValues={data} onSubmit={onSubmit} validationSchema={validationSchema} validateOnChange={true}>
                     {(props) => (
                         <Form style={{ display: 'flex', alignItems: 'center', flexDirection: formDirection }}>
                             {/*  onChange={() => props.validateForm()} */}
 
-                            <DynamicFormGrid inputs={inputs} props={props} />
+                            <DynamicFormGrid inputs={inputs} />
 
-                            <FilledHoverBtn
-                                type='submit'
-                                disabled={disabledBtn ? disabledBtn : status?.isLoading || (!props.dirty && !submitBtnStatus && allowDirty) ? true : false}
-                                sx={{
-                                    width: btnWidth || '100%', py: '10px', ...btnStyle
-                                }}
-                            >
-                                {status?.isLoading ? <Loader color={'#fff'} /> : SEND}
-                            </FilledHoverBtn>
+                            {!isAllDisabled && (
+                                <FilledHoverBtn
+                                    type='submit'
+                                    disabled={disabledBtn ? disabledBtn : status?.isLoading || (!props.dirty && !submitBtnStatus && allowDirty) ? true : false}
+                                    sx={{
+                                        width: btnWidth || '100%', py: '10px', ...btnStyle
+                                    }}
+                                >
+                                    {status?.isLoading ? <Loader color={'#fff'} /> : SEND}
+                                </FilledHoverBtn>
+                            )}
                         </Form>
+
                     )}
                 </Formik>
 

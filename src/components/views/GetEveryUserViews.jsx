@@ -7,15 +7,16 @@ import TabInfo from '../../components/ui/TabInfo'
 import { formatDuration } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { useLazyGetByUserViewsQuery } from '../../toolkit/apis/videosStatisticsApi'
 import UserAvatar from '../users/UserAvatar'
 import { user_roles } from '../../settings/constants/roles'
+import useGrades from '../../hooks/useGrades'
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -30,10 +31,11 @@ const exportObj = {
     totalTime: (row) => {
         return formatDuration(row.totalTime, true, true)
     }
-}
+})
 
 
 function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) {
+    const { grades } = useGrades()
 
     const [usersCount, setUsersCount] = useState('')
 
@@ -147,15 +149,7 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
             width: 200,
             filterable: false,
             sortable: false,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = gradeConstants.filter(({ index }) => index === params.row.grade)[0]
-                return (
-                    <Typography>
-                        {grade?.name}
-                    </Typography>
-                )
-            }
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         },
     ]
 

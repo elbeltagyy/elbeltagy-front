@@ -1,23 +1,24 @@
 import { Alert, Box, Button } from '@mui/material'
-import React, { useRef } from 'react'
+import { memo, useRef } from 'react'
 // import { buttonStyle } from '../../../../styles/buttonsStyles'
 import ShowFileSettings from './ShowFileSettings'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { hasError } from '../constants/hasError';
+
 import { useDeleteFileMutation } from '../../../toolkit/apis/filesApi';
 import usePostData from '../../../hooks/usePostData'
 import WrapperHandler from '../../WrapperHandler';
 
-function MakeFile({ inputName, input, props, value }) {
+function MakeFile({ inputName, input, value, setValue, showError, error }) {
     const fileRef = useRef(null)
     const [sendData, status] = useDeleteFileMutation()
     const [deleteFile] = usePostData(sendData)
 
+    if (input.disabled) return <></>
     const removeFile = async () => {
         if (value?.url) {
             await deleteFile({ ...value })
         }
-        props.setFieldValue(inputName, '')
+        setValue('')
     }
 
     return (
@@ -29,8 +30,8 @@ function MakeFile({ inputName, input, props, value }) {
                 hidden
                 name={inputName}
                 onChange={(e) => {
-                    props.setFieldTouched(inputName, true)
-                    props.setFieldValue(inputName, e.target.files[0])
+                    // props.setFieldTouched(inputName, true)
+                    setValue(e.target.files[0])
                 }}
             />
             <Button
@@ -46,11 +47,11 @@ function MakeFile({ inputName, input, props, value }) {
                     <WrapperHandler status={status} />
                 </>
             )}
-            {hasError(props, inputName) && (
-                <Alert sx={{ my: "5px" }} severity='error'>{props.errors[inputName]}</Alert>
+            {showError && (
+                <Alert sx={{ my: "5px" }} severity='error'>{error}</Alert>
             )}
         </Box>
     )
 }
 
-export default MakeFile
+export default memo(MakeFile)

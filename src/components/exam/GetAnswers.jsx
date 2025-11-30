@@ -8,14 +8,15 @@ import AnsweredQuestion from './AnsweredQuestion'
 import { FaUsers } from 'react-icons/fa'
 import TabInfo from '../ui/TabInfo'
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import { useState } from 'react'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
+import useGrades from '../../hooks/useGrades'
 
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     createdAt: (row) => {
         return getDateWithTime(row.createdAt)
@@ -35,10 +36,12 @@ const exportObj = {
     isHighlighted: (row) => {
         return row.isHighlighted ? 'محفوظه' : 'غير محفوظه'
     }
-}
+})
 
 
 function GetAnswers() {
+    const { grades } = useGrades()
+
     const [reset, setReset] = useState(false)
 
     const fetchFc = (res) => {
@@ -134,7 +137,7 @@ function GetAnswers() {
             width: 200,
             filterable: false,
             sortable: false,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: 'createdAt',
             headerName: "تاريخ الانشاء",
@@ -153,7 +156,7 @@ function GetAnswers() {
         fetchFc,
         useUpdate: useUpdateAnswerMutation,
         useDelete: useRemoveAnswerMutation,
-        columns, reset, exportObj,exportTitle: 'تقرير الاجابات'
+        columns, reset, exportObj: exportObj(grades), exportTitle: 'تقرير الاجابات'
     }
 
     return (

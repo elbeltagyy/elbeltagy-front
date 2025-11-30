@@ -95,7 +95,7 @@ function AdminCourseDetails({ courseId, setActiveCourse, setCourses, setRefetchL
                         <AdminCourseStatisticsMenu course={course} />
                         <TabInfo count={subscribersCount?.values?.count ?? 0} title={lang.SUBSCRIBERS_NUMS} i={2} />
                         <TabInfo count={course?.isActive ? lang.ACTIVE : lang.NOT_ACTIVE} title={lang.IS_ACTIVE} i={course?.isActive ? 1 : 3} />
-                        <TabInfo count={lecturesCount + ' ' + 'محاضره'} title={'عدد المحاضرات'} i={1} />
+                        {/* <TabInfo count={lecturesCount + ' ' + 'محاضره'} title={'عدد المحاضرات'} i={1} /> */}
                         <TabInfo count={course.price + " " + lang.POUND} title={lang.PRICE} i={0} />
 
                         <TabInfo count={getFullDate(course.createdAt)} title={'تاريخ الانشاء'} i={1} />

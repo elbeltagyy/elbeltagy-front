@@ -4,10 +4,12 @@ import { useLazyGetLecturesQuery } from "../../toolkit/apis/lecturesApi"
 import FullComponent from "../../tools/datagrid/FullComponent"
 import TabInfo from "../ui/TabInfo"
 import { makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
-import gradeConstants from "../../settings/constants/gradeConstants"
+
 import { getFullDate } from "../../settings/constants/dateConstants"
+import useGrades from "../../hooks/useGrades"
 
 function Lectures({ filters, reset, viewFc, deleteFc, updateFc, massActions, allStatuses, addColumns }) {
+    const { grades } = useGrades()
 
     const columns = [
         {
@@ -31,7 +33,7 @@ function Lectures({ filters, reset, viewFc, deleteFc, updateFc, massActions, all
             headerName: lang.GRADE,
             type: 'singleSelect',
             width: 200,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: 'createdAt',
             headerName: 'تاريخ الانشاء',

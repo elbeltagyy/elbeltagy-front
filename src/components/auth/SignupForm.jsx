@@ -1,5 +1,5 @@
 import MakeForm from '../../tools/makeform/MakeForm'
-import gradeConstants from '../../settings/constants/gradeConstants'
+ 
 import governments from '../../settings/constants/governments'
 
 // icons
@@ -21,10 +21,12 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../toolkit/globalSlice';
 import { useSignupMutation } from '../../toolkit/apis/usersApi';
 import { makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray';
+import useGrades from '../../hooks/useGrades';
 // validation: Yup.string().required("مطلوب").min(6, "يجب ان يكون اكثر من 6")
 
 
 function SignupForm() {
+    const { grades } = useGrades()
 
     const inputs = [
         {
@@ -58,7 +60,7 @@ function SignupForm() {
             name: 'grade',
             label: lang.GRADE,
             type: 'select',
-            options: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            options: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
             icon: <IoSchool color='green' />,
             validation: Yup.string().required(lang.REQUERIED)
         }, {

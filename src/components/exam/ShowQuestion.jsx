@@ -6,9 +6,11 @@ import { useMarkAQuestionMutation } from '../../toolkit/apis/answersApi'
 import usePostData from '../../hooks/usePostData'
 import AnsweredQuestion from './AnsweredQuestion'
 import Loader from '../../style/mui/loaders/Loader'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FlexBetween, FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 import { useState } from 'react'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
+import { MdOutlineRemoveRedEye } from 'react-icons/md'
+import BtnModal from '../ui/BtnModal'
 
 function ShowQuestion({ question, index, setQuestions, method, editUser, activeAttemptId, setActiveAttemptId, examId, tokenTime, course }) {
 
@@ -47,17 +49,13 @@ function ShowQuestion({ question, index, setQuestions, method, editUser, activeA
     return (
         <>
             <CardContent>
-                <Box>
-                    <Box sx={{ width: "fit-content", m: 'auto' }}>
-                        <TextBorderAround>
-                            السؤال {index + 1}
-                        </TextBorderAround>
-                    </Box>
+                <Box sx={{ width: "fit-content", m: 'auto' }}>
+                    <TextBorderAround>
+                        السؤال {index + 1}
+                    </TextBorderAround>
+                </Box>
 
-                    {question.image?.url && (
-                        <Image img={question.image?.url} sx={{ maxWidth: '350px', m: 'auto', my: '16px' }} />
-                    )}
-
+                <FlexColumn sx={{ alignItems: 'flex-start' }}>
                     <Typography color="text.secondary">
                         درجه السؤال: {question.points} نقاط
                     </Typography>
@@ -71,53 +69,69 @@ function ShowQuestion({ question, index, setQuestions, method, editUser, activeA
                         </Typography>
                     )}
                     <Separator />
-                </Box>
+                </FlexColumn>
 
-                <Box sx={{ position: 'relative' }}>
-                    {status.isLoading && (
+                <FlexRow gap={'16px'} my={'12px'} sx={{ flexWrap: 'wrap-reverse', flexDirection: 'row-reverse', justifyContent: 'space-evenly', alignItems: 'flex-end' }}>
+                    <Box sx={{ flex: .9 }}>
+                        <Box sx={{ position: 'relative' }}>
+                            {status.isLoading && (
 
-                        <FlexColumn sx={{ bgcolor: 'grey.400', height: '100%', width: '100%', position: 'absolute', pointerEvents: 'none', zIndex: 3, opacity: '70%' }}>
-                            <Loader sx={{ opacity: '100%' }} color={'orange'} />
-                        </FlexColumn>
+                                <FlexColumn sx={{ bgcolor: 'grey.400', height: '100%', width: '100%', position: 'absolute', pointerEvents: 'none', zIndex: 3, opacity: '70%' }}>
+                                    <Loader sx={{ opacity: '100%' }} color={'orange'} />
+                                </FlexColumn>
+                            )}
+
+                            <FormControl disabled={status.isLoading} sx={{ width: '100%', color: 'neutral.0', overflow: 'auto' }}>
+
+                                <FormLabel id="demo-controlled-radio-buttons-group">اختر مما يلى</FormLabel>
+
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    name="row-radio-buttons-group"
+                                    value={question.chosenOptionId || ''}
+                                    onChange={(e, optionId) => {
+                                        handleChange(optionId)
+                                    }} >
+                                    <Grid container spacing={2}>
+                                        {question.options && question.options.map((option, i) => {
+
+                                            return (
+                                                <Grid key={i} item xs={12} >
+                                                    <Button disabled={status.isLoading} onClick={() => {
+                                                        handleChange(option.id)
+                                                    }} sx={{ color: 'inherit', textTransform: 'none', textAlign: "left" }}>
+                                                        {i + 1} -
+                                                        <FormControlLabel value={option.id} control={<Radio sx={{ mx: '6px', textTransform: 'default' }} />} label={option.title} />
+                                                    </Button>
+                                                </Grid>
+                                            )
+                                        })}
+                                    </Grid>
+                                </RadioGroup>
+                            </FormControl>
+                        </Box>
+                        {method?.markQ && (
+                            <Button color="warning" variant="contained" onClick={() => setOpen(true)} disabled={status.isLoading} sx={{ mx: '16px' }} >
+                                {status.isLoading ? <Loader /> : 'تصحيح السؤال'}
+                            </Button>
+                        )}
+                    </Box>
+
+                    {question.image?.url && (
+                        <Box sx={{ minWidth: '200px', flex: 1 }}>
+                            <BtnModal btn={<FlexColumn>
+                                <Image img={question.image?.url} sx={{ m: 'auto', my: '16px' }} />
+                                <Button size='small' variant='outlined' endIcon={<MdOutlineRemoveRedEye />}>عرض الصوره</Button>
+                            </FlexColumn>}>
+                                <Image img={question.image?.url} sx={{ m: 'auto', my: '16px' }} />
+                            </BtnModal>
+                        </Box>
                     )}
+                </FlexRow>
 
-                    <FormControl disabled={status.isLoading} sx={{ width: '100%', color: 'neutral.0', overflow: 'auto' }}>
-
-                        <FormLabel id="demo-controlled-radio-buttons-group">اختر مما يلى</FormLabel>
-
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                            value={question.chosenOptionId || ''}
-                            onChange={(e, optionId) => {
-                                handleChange(optionId)
-                            }} >
-                            <Grid container spacing={2}>
-                                {question.options && question.options.map((option, i) => {
-
-                                    return (
-                                        <Grid key={i} item xs={12} >
-                                            <Button disabled={status.isLoading} onClick={() => {
-                                                handleChange(option.id)
-                                            }} sx={{ color: 'inherit', textTransform: 'none' }}>
-                                                {i + 1} -
-                                                <FormControlLabel value={option.id} control={<Radio sx={{ mx: '6px', textTransform: 'default' }} />} label={option.title} />
-                                            </Button>
-                                        </Grid>
-                                    )
-                                })}
-                            </Grid>
-
-                        </RadioGroup>
-                    </FormControl>
-                </Box>
             </CardContent >
-            {method?.markQ && (
-                <Button color="warning" variant="contained" onClick={() => setOpen(true)} disabled={status.isLoading} sx={{ mx: '16px' }} >
-                    {status.isLoading ? <Loader /> : 'تصحيح السؤال'}
-                </Button>
-            )}
+
             <ModalStyled
                 open={open}
                 setOpen={setOpen}

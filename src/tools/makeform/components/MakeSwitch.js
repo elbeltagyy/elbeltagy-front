@@ -1,18 +1,13 @@
-import { FormControlLabel, FormGroup, FormLabel, Switch } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { getValues } from '../constants/getValue'
+import { FormGroup, FormLabel, Switch } from '@mui/material'
 import { Field } from 'formik'
-import { hasError } from '../constants/hasError'
+import { memo } from 'react'
 
-function MakeSwitch({ input, props, inputName }) {
+function MakeSwitch({ input, inputName, value, setValue, showError }) {
 
-
-    const value = getValues(inputName, props) || false
-
-    return <FormGroup error={hasError(props, inputName) ? true : undefined} >
+    return <FormGroup error={showError ? true : undefined} >
         <FormLabel >{input.label}</FormLabel>
-        <Field as={Switch} name={inputName} label={input.label} checked={Boolean(value)} onChange={() => props.setFieldValue(inputName, !value)} />
+        <Field disabled={input.disabled ?? false} as={Switch} name={inputName} label={input.label} checked={Boolean(value)} onChange={() => setValue(!value)} />
     </FormGroup>
 }
 
-export default MakeSwitch
+export default memo(MakeSwitch)

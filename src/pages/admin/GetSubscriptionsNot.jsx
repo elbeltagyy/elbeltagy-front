@@ -14,14 +14,15 @@ import { useCreateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi
 import usePostData from '../../hooks/usePostData'
 import { useGridApiRef } from '@mui/x-data-grid'
 import Loader from '../../style/mui/loaders/Loader'
-import gradeConstants from '../../settings/constants/gradeConstants'
+
 import { convertObjToArray, makeArrWithValueAndLabel } from '../../tools/fcs/MakeArray'
 import { user_roles } from '../../settings/constants/roles'
+import useGrades from '../../hooks/useGrades'
 
 
-const exportObj = {
+const exportObj = (grades) => ({
     grade: (row) => {
-        return gradeConstants.find(grade => grade.index === row.grade)?.name
+        return grades.find(grade => grade.index === row.grade)?.name
     },
     isActive: (row) => {
         if (row.isActive) {
@@ -30,10 +31,12 @@ const exportObj = {
             return 'غير فعال'
         }
     }
-}
+})
 
 
 function GetSubscriptionsNot({ grade }) {
+    const { grades } = useGrades()
+
     const [fileConfirm, setFileConfirm] = useState()
     const [openFileModal, setOpenFileModal] = useState(false)
     const [notSubCount, setNotCounts] = useState('loading ...')
@@ -131,7 +134,7 @@ function GetSubscriptionsNot({ grade }) {
             type: 'singleSelect',
             width: 200,
             filterable: false,
-            valueOptions: makeArrWithValueAndLabel(gradeConstants, { value: 'index', label: 'name' }),
+            valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
         }, {
             field: "addsubscribe",
             headerName: 'اضافه اشتراك',
