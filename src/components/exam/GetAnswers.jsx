@@ -84,6 +84,9 @@ function GetAnswers() {
             width: 200,
             filterable: true,
             sortable: false,
+            renderCell: (params) => {
+                return <span dangerouslySetInnerHTML={{ __html: params?.row?.title }} />
+            }
         }, {
             field: 'hints',
             headerName: "ملاحظات",
