@@ -60,7 +60,7 @@ function ShowQuestion({ question, index, setQuestions, method, editUser, activeA
                         درجه السؤال: {question.points} نقاط
                     </Typography>
                     <Typography variant="h5" component="div" my={'12px'} >
-                        السؤال :  {question.title}
+                        السؤال : <span dangerouslySetInnerHTML={{ __html: question.title }} />
                     </Typography>
 
                     {question.hints && (
