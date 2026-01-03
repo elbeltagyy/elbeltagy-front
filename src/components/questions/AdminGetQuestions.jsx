@@ -106,7 +106,9 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             field: 'title',
             headerName: 'عنوان السؤال',
             width: 200,
-            editable: true
+            renderCell: (params) => {
+                return <span dangerouslySetInnerHTML={{ __html: params?.row?.title }} />
+            }
         }, {
             field: 'hints',
             headerName: "ملاحظات",
