@@ -167,7 +167,7 @@ function CoursePage() {
             >
                 {(courseDetails?.course) ?
                     <FlexColumn>
-                        <CourseSubscribeCard course={courseDetails?.course} isSubscribed={courseDetails?.course?.isSubscribed} setCourseDetails={setCourseDetails} />
+                        <CourseSubscribeCard course={courseDetails?.course} isSubscribed={courseDetails?.course?.isSubscribed} setCourseDetails={setCourseDetails} setCurrentUserIndex={setCurrentUserIndex} />
                         <FlexColumn width={'100%'} gap={'12px'}>
                             {isLargeScreen && params.lectureId && (
                                 courseChapters

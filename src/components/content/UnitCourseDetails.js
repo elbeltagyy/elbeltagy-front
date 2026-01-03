@@ -57,7 +57,7 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                             <TabInfo fontSize={'9px'} count={getFullDate(subscribedAt)} i={'2'} title={'تاريخ الاشتراك '} icon={<MdDateRange size='.8rem' />} isBold={false} />
                         )}
                         {course.dateEnd && (
-                            <TabInfo count={getFullDate(course.dateEnd)} i={3} title={"موعد نهايه الكورس"} icon={<RiFolderUnknowFill size='1.3rem' />} isBold={false} />
+                            <TabInfo fontSize={'9px'} count={getFullDate(course.dateEnd)} i={3} title={"موعد نهايه الكورس"} icon={<RiFolderUnknowFill size='1.3rem' />} isBold={false} />
                         )}
                     </FlexColumn>
                 </>

@@ -107,7 +107,7 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
                         <Button sx={sendSuccess} disabled={isLoading} onClick={openModal}>
                             {isLoading ? <Loader color={'#fff'} /> : "ارسال"}
                         </Button>
-                    ) : <BankNavigateBtn exam={exam} navigateToAnswers={navigateToAnswers} questions={questions} submit={sendData} />}
+                    ) : method?.markQ ? 'قم بتصحيح جميع الاسئله من خلال زر تصحيح السؤال فى كل سؤال وعند ذلك ستكون قد سلمت التدريب تلقائيا!' : <BankNavigateBtn exam={exam} navigateToAnswers={navigateToAnswers} questions={questions} submit={sendData} />}
 
                 </CardActions>
 

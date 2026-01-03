@@ -37,7 +37,7 @@ function AnsweredQuestion({ currentQuestion, index, setQuestion }) {
                     i={currentQuestion.chosenOptionId === currentQuestion.rtOptionId ? 1 : 3}
                 />
                 <Typography variant="h5" component="div" my={'12px'} >
-                    السؤال :  {currentQuestion.title}
+                السؤال : <span dangerouslySetInnerHTML={{ __html: currentQuestion.title }} />
                 </Typography>
 
                 {currentQuestion.hints && (

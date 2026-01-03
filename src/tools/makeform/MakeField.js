@@ -45,10 +45,15 @@ function MakeField({ input, inputName, showError }) {
             rows={
                 input.rows || undefined
             }
-            InputProps={input.endIcon && {
-                endAdornment: (
+            InputProps={{
+                endAdornment: input.endIcon && (
                     <InputAdornment position="end">
                         {input.endIcon}
+                    </InputAdornment>
+                ),
+                startAdornment: input.startIcon && (
+                    <InputAdornment position="start">
+                        {input.startIcon}
                     </InputAdornment>
                 ),
             }}

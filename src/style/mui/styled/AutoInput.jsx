@@ -3,9 +3,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
 import { debounce } from '@mui/material/utils';
+import { Box } from '@mui/material';
 
 
-export default function AutoInput({ label = 'البحث', fetchFc, titleKey = 'title', setSearch, value, placeholder = 'ابحث' }) {
+export default function AutoInput({ label = 'البحث', fetchFc, setSearch, value, placeholder = 'ابحث', RenderOption = null }) {
 
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
@@ -25,8 +26,7 @@ export default function AutoInput({ label = 'البحث', fetchFc, titleKey = 't
         setLoading(true);
         const res = await fetchFc(filteredName); // For demo purposes.
         setLoading(false);
-
-        setOptions([...res]);
+        setOptions(res);
     }
 
     const debouncedFetchOptions = debounce(trigger, 300);
@@ -45,8 +45,8 @@ export default function AutoInput({ label = 'البحث', fetchFc, titleKey = 't
             onOpen={handleOpen}
             onClose={handleClose}
 
-            isOptionEqualToValue={(option, value) => option === value}
-            getOptionLabel={(option) => option[titleKey] || option}
+            isOptionEqualToValue={(option, value) => (option?.id ?? option) === (value?.id || value)}
+            getOptionLabel={(option) => option?.label || option}
             onChange={(e, newVal) => {
                 setSearch(newVal)
             }}
@@ -57,6 +57,15 @@ export default function AutoInput({ label = 'البحث', fetchFc, titleKey = 't
 
             options={options}
             loading={loading}
+            renderOption={RenderOption && ((props, option) => {
+                const { key, ...optionProps } = props;
+
+                return <Box key={key} {...optionProps}>
+                    <RenderOption props={props} option={option} />
+                </Box>
+            })}
+
+
             renderInput={(params) => (
                 <TextField
                     {...params}

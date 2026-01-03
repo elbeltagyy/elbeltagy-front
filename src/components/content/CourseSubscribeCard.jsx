@@ -27,7 +27,7 @@ import PaymentMethods from '../payment/PaymentMethods'
 
 import VerifyCoupon from '../coupons/VerifyCoupon'
 
-function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
+function CourseSubscribeCard({ course, isSubscribed, setCourseDetails, setCurrentUserIndex }) {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -50,9 +50,11 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails }) {
             setCourseDetails((pre) => {
                 return {
                     ...pre,
-                    course: res.course, lectures: res.lectures
+                    course: res.course, chapters: res.lectures
                 }
             })
+            // console.log(res)
+            setCurrentUserIndex(res.currentIndex)
         }
     }
 
