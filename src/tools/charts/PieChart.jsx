@@ -1,7 +1,7 @@
 import ReactECharts from "echarts-for-react";
 import { useEffect, useRef, useState } from "react";
 import useLazyGetData from "../../hooks/useLazyGetData";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { red } from "@mui/material/colors";
 import InfoText from "../../components/ui/InfoText";
 import { FlexRow } from "../../style/mui/styled/Flexbox";
@@ -59,7 +59,7 @@ function PieChart({ categories, title = 'pie', getData, filters, colors = [] }) 
         "#90CAF9",
         "#A5D6A7",
     ]
-
+    const theme = useTheme()
     /** @type {import('echarts').EChartsOption} */   // ← the magic line
     const option = {
         tooltip: {
@@ -68,18 +68,22 @@ function PieChart({ categories, title = 'pie', getData, filters, colors = [] }) 
         legend: {
             top: '0%',
             left: 'center',
-
+            textStyle: {
+                color: 'initial',
+                fontSize: '13px',
+                fontWeight: 500
+            },
         },
         series: [
             {
-                name: 'احصائياتك هذا العام',
+                name: title || 'احصائياتك هذا العام',
                 type: 'pie',
                 radius: ['40%', '70%'],
                 avoidLabelOverlap: false,
                 itemStyle: {
                     borderRadius: 10,
-                    borderColor: '#fff',
-                    borderType: 'dotted'
+                    // borderColor: '#fff',
+                    // borderType: 'dotted'
                 },
                 label: {
                     show: true,
@@ -88,6 +92,7 @@ function PieChart({ categories, title = 'pie', getData, filters, colors = [] }) 
                     formatter: '{b}: {c}', // name + value (optional)
                     fontSize: 14,
                     fontWeight: 'bold',
+                    color: theme.palette.neutral[0]
                 },
                 emphasis: {
                     label: {
@@ -129,7 +134,7 @@ function PieChart({ categories, title = 'pie', getData, filters, colors = [] }) 
         pdf.save("chart.pdf");
     };
     return (
-        <Box sx={{ width: '100%', backgroundColor: 'background.alt', padding: '12px 8px' }}>
+        <Box sx={{ width: '100%', backgroundColor: 'background.alt', padding: '12px 8px', color: 'neutral.0' }}>
             <Typography onClick={() => deActive()} sx={{ cursor: 'pointer', fontSize: '12px', color: red[400] }}>{isActive ? 'اخفاء' : 'اظهار'}</Typography>
             {title}
             {isActive && (
