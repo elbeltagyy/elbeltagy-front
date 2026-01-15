@@ -104,7 +104,7 @@ function MakeInput({ input, nestedInputName = null }) {
             return <MakeFile inputName={inputName} input={input} value={value} setValue={setValue} showError={showError} error={error} />
 
         case 'fullDate':
-            return <MakeFullDate inputName={inputName} setValue={setValue} value={value} input={input} />
+            return <MakeFullDate inputName={inputName} setValue={setValue} value={value} input={input} showError={showError} />
 
         case 'select':
             return <MakeSelect inputName={inputName} input={input} value={value} setValue={setValue} showError={showError} />

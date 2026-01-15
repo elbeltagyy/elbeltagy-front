@@ -1,6 +1,6 @@
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import {  getDateWithTime } from '../../settings/constants/dateConstants'
+import { getDateWithTime } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 
@@ -94,6 +94,9 @@ function GetUserAnswers({ filters }) {
             width: 200,
             filterable: true,
             sortable: false,
+            renderCell: (params) => {
+                return <span dangerouslySetInnerHTML={{ __html: params?.row?.title }} />
+            }
         }, {
             field: 'hints',
             headerName: "ملاحظات",

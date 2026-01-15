@@ -8,14 +8,14 @@ import MakeForm from "../../tools/makeform/MakeForm"
 import GetWhatsStatus from "../whatsapp/GetWhatsStatus"
 import * as yup from 'yup'
 
-const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
+const MessagesCompo = ({ course, excludedUsers, isExcluded, modalInfo }) => {
     const [whatsStatus, setWhatsStatus] = useState(false)
 
     const [sendData, status] = useSendToManyMutation()
     const [createReport] = usePostData(sendData)
 
     const trigger = async (values) => {
-        const params = { ...values, excludedUsers } //, isExcluded
+        const params = { ...values, excludedUsers, isExcluded } //, isExcluded
         if (course) {
             params.course = course
         }
@@ -25,7 +25,8 @@ const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
         {
             name: 'message',
             label: 'الرساله المراد ارسالها',
-            rows: 4
+            rows: 4,
+            validation: yup.string().required(),
         }, {
             name: 'method',
             label: 'طريقه الارسال',
@@ -33,7 +34,7 @@ const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
             options: [senderConstants.WHATSAPP, senderConstants.FAMILY_WHATSAPP],
             disabledValues: !whatsStatus ? [senderConstants.WHATSAPP, senderConstants.FAMILY_WHATSAPP] : [],
             value: senderConstants.FAMILY_WHATSAPP,
-            disabled: !whatsStatus
+            disabled: !whatsStatus,
         }, {
             name: 'role',
             label: lang.ROLE,
@@ -44,17 +45,14 @@ const MessagesCompo = ({ course, excludedUsers, isExcluded }) => {
             label: 'ارسال للطلاب الفعالين فقط',
             type: 'switch',
             value: true,
-        }, {
-            name: 'isExcluded',
-            label: 'هل تريد الارسال الي الطلاب المختارين ام استبعادهم',
-            type: 'select',
-            options: [{ value: true, label: 'استبعاد الطلاب' }, { value: false, label: 'الارسال الي الطلاب المختارين فقط' }],
-            validation: yup.boolean().required()
-        },
+        }
     ]
+
+    //get many numbers to send
+    //in Backend 
     return <>
         <GetWhatsStatus setWhatsStatus={setWhatsStatus} />
-        <MakeForm inputs={inputs} status={status} onSubmit={trigger} disabledBtn={!whatsStatus} />
+        <MakeForm modalInfo={modalInfo} inputs={inputs} status={status} onSubmit={trigger} disabledBtn={!whatsStatus} />
     </>
 }
 

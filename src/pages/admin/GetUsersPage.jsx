@@ -52,7 +52,7 @@ const exportObj = (grades) => ({
 })
 
 
-function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades = true }) {
+function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGrades = true, isShowCreate = true, setUsersNumber }) {
     const { grades } = useGrades()
 
     const navigate = useNavigate()
@@ -76,7 +76,9 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
 
     const fetchFc = async (params) => {
         const data = await getUsers({ ...params, grade: grade || 'all', courses }, false)
-        // const { data } = await getData({ ...params, grade: grade || 'all', courses }, false)
+        if (setUsersNumber) {
+            setUsersNumber(data.count)
+        }
         const res = { values: data.users, count: data.count } //res.users
         return res
     }
@@ -314,17 +316,17 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
             )}
 
             <FlexColumn sx={{ width: '100%' }}>
-                <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>
+                {isShowCreate && <FilledHoverBtn onClick={() => setOpen(true)} >{lang.CREATE_USER}</FilledHoverBtn>}
             </FlexColumn>
+
             {isShowGrades && (
                 <GradesTabs grade={grade} setGrade={changeGrade} counts={gradesCounts} />
             )}
 
-
             <MeDatagrid
                 apiRef={apiRef}
                 reset={[reset, grade]}
-                setSelection={setExcludedUsers}
+                setSelection={setExcludedUsers} 
                 type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE} analysisFc={analysisUsers}
                 columns={columns} allStatuses={[deleteManyStatus]} deleteMany={deleteManyUsers}
                 viewFc={viewFc} fetchFc={fetchFc} updateFc={updateFc} deleteFc={deleteFc}

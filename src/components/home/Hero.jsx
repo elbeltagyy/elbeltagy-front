@@ -1,5 +1,5 @@
 import './home.css'
-import { Box, IconButton, Typography,  useTheme } from '@mui/material'
+import { Box, IconButton, Typography, useTheme } from '@mui/material'
 
 import Section from '../../style/mui/styled/Section'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
@@ -25,7 +25,7 @@ function Hero() {
     return (
         <Section>
 
-            {isSee && (
+            {/* {isSee && (
                 <>
                     <Ballons />
                     <Box sx={{ position: 'absolute', top: 0, left: 0, bgcolor: "#00000090", width: '100%', height: '100%' }} />
@@ -41,7 +41,7 @@ function Hero() {
                         <span style={{ color: 'orangered' }}>2025</span> / <span style={{ color: 'red' }}>2026</span>
                     </Typography>
                 </>
-            )}
+            )} */}
             <FlexRow justifyContent={'center'} >
 
                 {/* content */}

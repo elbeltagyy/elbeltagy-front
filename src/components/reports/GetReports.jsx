@@ -83,12 +83,6 @@ function GetReports({ course = '', lecture = '' }) {
     const fetchFc = async (values) => {
 
         const params = { ...values, course, lecture }
-        // if (course) {
-        //     params.course = course
-        // }
-        // if (lecture) {
-        //     params.lecture = lecture
-        // }
 
         const res = await getReports(params)
         const data = { values: res.reports, count: res.count }
