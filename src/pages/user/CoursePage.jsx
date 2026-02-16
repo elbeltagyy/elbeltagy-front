@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { Alert, Box, Paper, useMediaQuery, } from '@mui/material'
+import { Alert, Paper, useMediaQuery, } from '@mui/material'
 
 import HeaderContent from '../../components/ui/HeaderContent'
 import { ExamIcon, FilesIcon, VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
-import TitleSection from '../../components/ui/TitleSection'
 import LectureUserCard from '../../components/content/LectureUserCard'
 import CourseSubscribeCard from '../../components/content/CourseSubscribeCard'
 
 import Section from '../../style/mui/styled/Section'
-import Grid from '../../style/vanilla/Grid'
 import Loader from '../../style/mui/loaders/Loader'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 
@@ -130,7 +128,7 @@ function CoursePage() {
                         return <LectureUserCard
                             key={lecture._id}
                             currentUserIndex={currentUserIndex}
-                            lecture={lecture} 
+                            lecture={lecture}
                             currentLectureIndex={lectureIndexInCourse} i={i} isSubscribed={courseDetails?.course?.isSubscribed}
                         />
                     }) : ''}
@@ -143,7 +141,7 @@ function CoursePage() {
         <Section>
             <SEOHelmetAsync
                 title={'صفحه الكورسات - ' + courseDetails?.course?.name}
-                desc="افضل كورسات مستر البلتاجى, الدرجات النهائيه مضمونه"
+                desc={lang.Course_Description}
                 url={window.location.href}
                 isSiteLink={true}
             />

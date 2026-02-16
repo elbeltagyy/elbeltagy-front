@@ -7,6 +7,7 @@ import { useGetPrivaciesQuery } from '../../toolkit/apis/privacyApi'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
+import { lang } from '../../settings/constants/arlang'
 
 
 function PrivacyPage() {
@@ -17,24 +18,12 @@ function PrivacyPage() {
 
     return (
         <Section>
-
             <SEOHelmetAsync
-                title={'Privacy - السياسات الخاصه بمنصه البلتاجى'}
-                desc={"كل التفاصيل الخاصه بمنصه البلتاجى , بطل تضيع وقت وابدا يلا "}
-                url={"https://mrelbeltagy.com/privacy"}
+                title={lang.Privacy.title}
+                desc={lang.Privacy.description}
+                url={lang.Website + "/privacy"}
                 isSiteLink={true}
             />
-
-            {/* <Helmet>
-                <title>Privacy - السياسات الخاصه بمنصه البلتاجى</title>
-                <meta name="description" content="كل التفاصيل الخاصه بمنصه البلتاجى , بطل تضيع وقت وابدا يلا " />
-                <meta property="og:title" content=" السياسات الخاصه بمنصه البلتاجى" />
-                <meta property="og:description" content="كل التفاصيل الخاصه بمنصه البلتاجى , بطل تضيع وقت وابدا يلا " />
-                <meta property="og:url" content="https://mrelbeltagy.com/privacy" />
-                <meta property="og:image" content="/assets/logo.webp" />
-                <meta property="og:site_name" content="Elbeltagy Platform" />
-            </Helmet> */}
-
 
             <BannerIcon title={'سياسات المنصه'} bgcolor='primary.main' icon={<IoIosCreate style={{
                 width: '3rem', height: '3rem', color: '#fff'

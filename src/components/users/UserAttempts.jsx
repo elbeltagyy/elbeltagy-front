@@ -60,11 +60,11 @@ function UserAttempts({ user }) {
                 const myObj = {
                     _id: attempt._id,
                     name: attempt.exam?.name,
-                    createdAt: attempt.createdAt,
-                    mark: attempt.mark,
+                    createdAt: attempt?.createdAt,
+                    mark: attempt?.mark,
                     total: totalDegree(attempt?.exam),
-                    time: attempt.exam?.time,
-                    tokenTime: attempt.tokenTime,
+                    time: attempt?.exam?.time,
+                    tokenTime: attempt?.tokenTime,
                     status: true
                 }
                 modifiedArray.push(myObj)
@@ -78,7 +78,7 @@ function UserAttempts({ user }) {
                     createdAt: false,
                     mark: 'لم يؤدى الاختبار',
                     total: lecture.exam?.total,
-                    time: lecture.exam.time,
+                    time: lecture.exam?.time,
                     tokenTime: 'لم يؤدى الاختبار',
                 }
                 modifiedArray.push(myObj)

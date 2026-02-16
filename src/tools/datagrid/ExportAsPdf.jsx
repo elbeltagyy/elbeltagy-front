@@ -4,6 +4,7 @@ import { memo, useState } from 'react'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { amiriFont } from './Amiri-Regular-normal';
+import { lang } from '../../settings/constants/arlang';
 // import { amiriFont } from './AmiriQuran-Regular-normal';
 // import { myFont } from './Rubik-Regular-normal';
 // import { rubikRegular } from './Rubik-Regular-normal';
@@ -11,7 +12,7 @@ import { amiriFont } from './Amiri-Regular-normal';
 function ExportAsPdf({
     fetchFc, sort = {}, filter = {},
     columns, rows,
-    exportObj = {}, exportTitle = 'مرحبا بكم في تقرير مستر البلتاجى', paginationModel = false
+    exportObj = {}, exportTitle = `مرحبا بكم في تقرير ${lang.LOGO_AR}`, paginationModel = false
 }) {
 
     const [isLoading, setLoading] = useState(false)
@@ -48,6 +49,7 @@ function ExportAsPdf({
             const tableColumnTitles = selectedColumnsData.map(col => col.headerName).reverse()
             const columnsField = selectedColumnsData.map(col => col.field)
 
+            //manage row 
             const exportFc = (rows) => {
                 const modify = rows.map(row => {
                     let clonedRow = JSON.parse(JSON.stringify(row));
@@ -94,21 +96,12 @@ function ExportAsPdf({
 
             doc.text(arabicText, x, 10, { font: 'Rubik-Regular', halign: 'center' }); // Now it is centered
 
-            for (let row of modifiedRows) {
-                for (let col of selectedColumnsData) {
-                    if (col?.qrcode) {
-                        row[col.field] = await col.qrcode(row); // store base64 directly in row
-                    }
-                }
-            }
-
             doc.autoTable({
                 head: [tableColumnTitles],
                 body: tableRows,
                 theme: 'striped',
                 styles: {
                     halign: 'right', // Right-to-right alignment for Arabic
-                    cellPadding: columns.some(col => col.qrcode) ? 5 : 1, //for padding
                 },
                 headStyles: {
                     halign: 'right',
@@ -119,25 +112,7 @@ function ExportAsPdf({
                     font: 'Amiri' // Align the body text to the right
                 },
                 tableWidth: 'auto', // Ensures table width is automatically calculated
-                direction: 'rtl',
-                didDrawCell: (data) => {
-                    if (data.section !== "body") return;
-                    const colIndex = data.column.index;
-                    const rowIndex = data.row.index;
-                    // const colDef = data.column; // get original column
-
-                    // const column = selectedColumnsData[colDef.index]
-                    const fieldIndex = selectedColumnsData.length - 1 - colIndex;
-                    const column = selectedColumnsData[fieldIndex];
-                    if (!column || !column.qrcode) return;
-
-                    const qrImage = modifiedRows[rowIndex][column.field]; // already base64
-                    if (qrImage) {
-                        const { x, y, width, height } = data.cell;
-                        const qrSize = Math.min(width, height) - 4; // fit inside cell
-                        doc.addImage(qrImage, "PNG", x + 2, y + 2, qrSize, qrSize);
-                    }
-                }
+                direction: 'rtl'
             });
 
             doc.save(arabicText);
@@ -146,7 +121,6 @@ function ExportAsPdf({
             }, 5000)
         } catch (error) {
             console.log(error)
-            setLoading(false)
         }
     };
 

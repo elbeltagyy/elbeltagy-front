@@ -28,7 +28,7 @@ function LoginPage() {
         if (user && isPrev) {
             navigate(-1)
         }
-        if (user && !isPrev) {
+        if (user) {
             navigate('/')
         }
     }, [user, navigate])
@@ -38,9 +38,9 @@ function LoginPage() {
         <Section sx={{ minHeight: '86vh' }}>
 
             <SEOHelmetAsync
-                title={'تسجيل الدخول - تسجيل الدخول لمنصه البلتاجى'}
-                desc={"سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى"}
-                url={"https://mrelbeltagy.com/login"}
+                title={lang.Login.title}
+                desc={lang.Login.description}
+                url={lang.Website + "/login"}
                 isSiteLink={true}
             />
 
@@ -88,17 +88,6 @@ function LoginPage() {
                 </Box>
             </FlexRow>
 
-            {/* form */}
-            {/* <ModalStyled
-                title={'هل نسيت كلمه السر ؟'}
-                desc={'إذا كنت قد نسيت كلمه السر, او تواجه مشكله فى تسجيل الدخول تواصل مع الدعم من الرقم المسجل به لاعاده ضبط الحساب'}
-                open={open}
-                setOpen={setOpen}
-                agree='التوصل مع الدعم'
-                action={() => {
-                    window.location.href = "https://api.whatsapp.com/send?phone=" + '2001026476593' + "&text=" + 'لقد نسيت كلمه السر';
-                }}
-            /> */}
             <ModalStyled open={open} setOpen={setOpen} fullWidth={true} >
                 <ForgetPassword />
             </ModalStyled>

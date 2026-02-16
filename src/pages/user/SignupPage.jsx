@@ -10,6 +10,7 @@ import SignupForm from '../../components/auth/SignupForm'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import SEOHelmetAsync from '../../tools/SEOHelmetAsync'
+import { lang } from '../../settings/constants/arlang'
 
 
 const BUILD = "انشاء"
@@ -33,22 +34,11 @@ function SignupPage() {
         <Section sx={{ minHeight: '86vh' }}>
 
             <SEOHelmetAsync
-                title={'انشاء حساب - انشئ حسابك الان على منصه البلتاجى'}
-                desc={"انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى"}
-                url={"https://mrelbeltagy.com/signup"}
+                title={lang.SignUp.title}
+                desc={lang.SignUp.description}
+                url={lang.Website + "/signup"}
                 isSiteLink={true}
             />
-
-            {/* <Helmet>
-                <title>Sign up - انشئ حسابك الان على منصه البلتاجى</title>
-                <meta name="description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
-                <meta property="og:title" content="انشئ حسابك الان على منصه البلتاجى" />
-                <meta property="og:description" content="انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى" />
-                <meta property="og:url" content="https://mrelbeltagy.com/signup" />
-                <meta property="og:image" content="/assets/logo.webp" />
-                <meta property="og:site_name" content="Elbeltagy Platform" />
-            </Helmet> */}
-
 
             <FlexRow height={'100%'} justifyContent={'space-evenly'}>
 
