@@ -143,23 +143,24 @@ function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون عام
             width: 170,
             type: 'actions',
             renderCell: (p) => {
-                if(p.row.type === codeConstants.DEFINED){
+                if (p.row.type === codeConstants.DEFINED) {
                     return <BtnModal
-                    btnName={'الكورسات'}
-                    component={<Joined
-                        Compo={Courses}
-                        object={{
-                            _id: p.row._id,
-                            courses: p.row?.courses?.length ? p.row.courses : null
-                        }}
-                        field={'courses'}
-                        editFc={addToCoupon}
-                        setReset={setReset}
+                        btnName={'الكورسات'}
+                        component={<Joined
+                            title={'كورسات الكوبون' + ': ' + p.row.coupon}
+                            Compo={Courses}
+                            object={{
+                                _id: p.row._id,
+                                courses: p.row?.courses?.length ? p.row.courses : null
+                            }}
+                            field={'courses'}
+                            editFc={addToCoupon}
+                            setReset={setReset}
                         />} />
-                    }else {
-                        return <>يجب ان يكون الكوبون محدد</>
-                    }
+                } else {
+                    return <>يجب ان يكون الكوبون محدد</>
                 }
+            }
         }, {
             field: 'numbers',
             headerName: "عدد مرات الاستخدام الباقيه",
