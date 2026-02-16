@@ -94,7 +94,8 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                         <TabInfo sx={{ width: '100%' }} count={"كورس مثبت"} i={0} icon={<MdGpsFixed size='1.3rem' />} isBold={false} />
 
                     )}
-                    {course.price === 0 && (
+              
+                    {(course.price === 0 && (course.isSalable ?? true))&& (
                         <FlexColumn sx={{ width: '100%' }}>
                             <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ bgcolor: orange[800], backgroundImage: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
                         </FlexColumn>
@@ -102,7 +103,7 @@ function UnitCourseDetails({ course, subscribedAt, lastLectureAt = false, curren
                 </FlexBetween>
 
 
-                {!subscribedAt && (
+                {(!subscribedAt  && (course.isSalable ?? true) )&& (
                     <Box flex={1}>
 
                         <RowInfo title={'سعر الكورس'} desc={<Typography variant='subtitle2' >{course.price} جنيها</Typography>} icon={<AiFillPoundCircle size='1rem' />} bgcolor='primary.500' />

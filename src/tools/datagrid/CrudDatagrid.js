@@ -28,7 +28,7 @@ import BtnConfirm from '../../components/ui/BtnConfirm';
 const BooleanSwitchCell = ({ field, row, updateFc, params }) => {
     const handleChange = async () => {
         const newRow = { [field]: !row[field], _id: row._id, id: row._id }
-        await updateFc(newRow);
+        await updateFc(newRow, field);
         params.api.updateRows([{ ...newRow }])
     };
 
@@ -51,12 +51,17 @@ function CrudDatagrid(
         filterParams = [], exportObj, exportTitle, reset, columns,
         editing = {},
         fetchFc, loading, updateFc, deleteFc, apiRef, viewFc, deleteMany, ViewRow, analysisFc,
-        setSelection = false, allSelected, viewRowModal = {},
+        selections = [], setSelection = false, allSelected, viewRowModal = {},
         massActions = [], allStatuses = [{ isLoading: false }]
     }) {
     reset = (Array.isArray(reset) ? reset : [reset])
 
-    const [selectionModel, setSelectionModel] = useState([])
+    const [selectionModel, setSelectionModel] = useState(selections)
+    // useEffect(()=> {
+    //     if(selections?.length){
+    //         setSelectionModel(selections) // watch from allSelection
+    //     }
+    // },[selections])
 
     const [isOpen, setOpenModal] = useState(false)
     const [openView, setView] = useState(false)

@@ -20,7 +20,7 @@ function CouponForm({ course, onSubmit, status, coupon = { type: codeConstants.P
             name: 'type',
             label: 'نوع الكوبون',
             type: 'select',
-            options: [codeConstants.GLOBAL, codeConstants.PRIVATE],
+            options: [codeConstants.GLOBAL, codeConstants.PRIVATE, codeConstants.DEFINED],
             value: coupon?.type,
             disabled: true
         }, {

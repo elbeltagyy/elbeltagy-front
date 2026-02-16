@@ -17,6 +17,14 @@ const couponsApi = apiSlice.injectEndpoints({
                     params
                 }
             }
+        }), addToCoupon: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/coupons/push`,
+                    method: 'PATCH',
+                    body: data
+                }
+            }
         }),
         // getOneCoupon: builder.query({
         //     query: (queries) => {
@@ -56,5 +64,6 @@ const couponsApi = apiSlice.injectEndpoints({
 })
 
 
-export const { useLazyGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation, useVerifyCouponMutation
+export const { useLazyGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation, useVerifyCouponMutation,
+    useAddToCouponMutation
 } = couponsApi

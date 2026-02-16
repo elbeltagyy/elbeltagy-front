@@ -84,7 +84,7 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails, setCurren
                         {course.preDiscount > course.price && (
                             <>
                                 <Separator sx={{ width: '100px', borderWidth: '2px', mr: 'auto' }} />
-                                <TabInfo title={lang.PRE_DISCOUNT} count={ <>{course.preDiscount}  جنيه </>}  icon={<AiFillPoundCircle size={'1.25rem'} />} i={0} sx={{ mr: 'auto' }} />
+                                <TabInfo title={lang.PRE_DISCOUNT} count={<>{course.preDiscount}  جنيه </>} icon={<AiFillPoundCircle size={'1.25rem'} />} i={0} sx={{ mr: 'auto' }} />
                             </>
                         )}
 
@@ -102,7 +102,7 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails, setCurren
 
                         <WrapperHandler status={status} showSuccess={true} />
                     </> : <FlexColumn>
-                        <TabInfo count={'لايمكن شراء الكورس ولكن يمكن شراء المحاضرات (المستر ماشي محاضره بمحاضره)'} i={2} />
+                        <TabInfo sx={{ flexWrap: 'wrap' }} count={'شراء المحاضرات فقط'} i={2} />
                         <ul>
                             {chapters?.map(ch => {
                                 return <li key={ch._id}><Typography>{ch.name}</Typography></li>

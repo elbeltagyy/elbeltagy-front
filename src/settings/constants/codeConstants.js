@@ -6,5 +6,6 @@ export const codeConstants = {
 
     GLOBAL: 'عام',
     PRIVATE: "خاص",
-    TAG: 'رابط'
+    TAG: 'رابط',
+    DEFINED: 'محدود'
 }

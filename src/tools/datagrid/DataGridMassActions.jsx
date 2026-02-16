@@ -65,7 +65,9 @@ const DataGridMassActions = ({ selectedIds, actions, setSelection, deleteMany })
                                 }}
                                 onClick={() => {
                                     action?.onClick(selectedIds);
-                                    setSelection()
+                                    if (!action.dontResetSelection) {
+                                        setSelection()
+                                    }
                                     handleClose();
                                 }}
                             >

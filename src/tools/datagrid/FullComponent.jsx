@@ -77,7 +77,8 @@ function FullComponent({ data }) {
 
             <MeDatagrid
                 reset={sanitizedData.reset} massActions={sanitizedData.massActions} allStatuses={sanitizedData.allStatuses}
-                setSelection={sanitizedData.setSelection && sanitizedData.setSelection}
+                setSelection={sanitizedData.setSelection && sanitizedData.setSelection} 
+                selections={sanitizedData.selections}
                 type={'crud'} exportObj={sanitizedData.exportObj && sanitizedData.exportObj} exportTitle={sanitizedData.exportTitle}
                 columns={sanitizedData.columns} addColumns={sanitizedData.addColumns}
                 viewFc={sanitizedData.viewFc} fetchFc={fetchFc}

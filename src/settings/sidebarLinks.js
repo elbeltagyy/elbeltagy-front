@@ -172,10 +172,12 @@ export const sidebarLinks = [
     }, {
         name: "عرض الكوبونات", icon: <MdOutlineCurrencyPound size="22px" />, to: "/management/coupons", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <GetCouponsPage />, id: 'coupons'
-    }, {
-        name: "انشاء كود", icon: <SiHashicorp size="22px" />, to: "/management/codes/create", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
-        element: <CreateCodePage />, id: 'createCode'
-    }, {
+    },
+    //  {
+    //     name: "انشاء كود", icon: <SiHashicorp size="22px" />, to: "/management/codes/create", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
+    //     element: <CreateCodePage />, id: 'createCode'
+    // }, 
+    {
         name: "إدارة المجموعات", icon: <MdGroups size="22px" />, to: "/management/groups", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <GetGroupsPage />, id: 'groups'
     }, {

@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-import { Alert, Box, Button, Grid } from "@mui/material"
+import { Alert, Box, Button } from "@mui/material"
 
-import { useDeleteCouponMutation, useLazyGetCouponsQuery, useUpdateCouponMutation } from "../../toolkit/apis/couponsApi"
+import { useAddToCouponMutation, useDeleteCouponMutation, useLazyGetCouponsQuery, useUpdateCouponMutation } from "../../toolkit/apis/couponsApi"
 import useLazyGetData from "../../hooks/useLazyGetData"
 import usePostData from "../../hooks/usePostData"
 import MeDatagrid from "../../tools/datagrid/MeDatagrid"
@@ -19,6 +19,9 @@ import { getFullDate } from "../../settings/constants/dateConstants"
 import { codeConstants } from "../../settings/constants/codeConstants"
 import BtnModal from "../ui/BtnModal"
 import CreateCoupon from "./CreateCoupon"
+import Joined from "../all/Joined"
+import Courses from "../all/Courses"
+import { FlexColumn } from "../../style/mui/styled/Flexbox"
 
 const exportObj = {
     isActive: (row) => {
@@ -46,7 +49,7 @@ const exportObj = {
     }
 }
 
-function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
+function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون عام' }) {
 
     const [reset, setReset] = useState(false)
 
@@ -78,6 +81,10 @@ function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
 
     const [usedBy, setUsedby] = useState([])
     const [openUsedBy, setOpenUsedBy] = useState(false)
+
+    const [addToCouponFc] = useAddToCouponMutation()
+    const [addToCoupon] = usePostData(addToCouponFc)
+
     const columns = [
         {
             field: 'coupon',
@@ -127,8 +134,32 @@ function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
             headerName: "الحاله",
             type: "boolean",
             width: 170,
-            editable: true
+            editable: true,
+            isSwitch: true
 
+        }, {
+            field: 'courses',
+            headerName: "الكورسات",
+            width: 170,
+            type: 'actions',
+            renderCell: (p) => {
+                if(p.row.type === codeConstants.DEFINED){
+                    return <BtnModal
+                    btnName={'الكورسات'}
+                    component={<Joined
+                        Compo={Courses}
+                        object={{
+                            _id: p.row._id,
+                            courses: p.row?.courses?.length ? p.row.courses : null
+                        }}
+                        field={'courses'}
+                        editFc={addToCoupon}
+                        setReset={setReset}
+                        />} />
+                    }else {
+                        return <>يجب ان يكون الكوبون محدد</>
+                    }
+                }
         }, {
             field: 'numbers',
             headerName: "عدد مرات الاستخدام الباقيه",
@@ -145,7 +176,7 @@ function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
             }
         },
     ]
-
+    //Groups ==> user.groups
     return (
         <Box>
             <BtnModal
@@ -156,6 +187,16 @@ function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
                 />}
                 isFilledHover={true}
             />
+            {(!course && !tag) &&
+                <BtnModal
+                    btnName={'انشاء كوبون محدد'}
+                    component={<CreateCoupon
+                        setReset={setReset} sectionName={'انشاء كوبون محدد'}
+                        coupon={{ type: codeConstants.DEFINED }}
+                    />}
+                    isFilledHover={true}
+                />
+            }
 
             <MeDatagrid
                 type={'crud'} columns={columns} reset={reset}
@@ -176,15 +217,15 @@ function GetCoupons({ course, tag, createBtnName = 'انشاء كوبون' }) {
                     <TabInfo count={'عدد مرات الاستخدام' + " " + usedBy.length + " " + "مرات"} i={1} />
                     <Separator />
                     <TitleWithDividers title={'المستخدمون'} />
-                    {usedBy.length !== 0 ? (
-                        <Grid>
-                            {usedBy.map((user, i) => (
+                    <FlexColumn gap={2} mt={2}>
+                        {usedBy.length !== 0 ? (
+                            usedBy.map((user, i) => (
                                 <DataWith3Items key={i} title={user?.userName} desc={user?.name} src={user?.avatar?.url || false} />
-                            ))}
-                        </Grid>
-                    ) : (
-                        <Alert variant='filled' severity='warning'>لم يتم استخدامه حتى الان !</Alert>
-                    )}
+                            ))
+                        ) : (
+                            <Alert variant='filled' severity='warning'>لم يتم استخدامه حتى الان !</Alert>
+                        )}
+                    </FlexColumn>
                 </Section>
             </ModalStyled>
 
