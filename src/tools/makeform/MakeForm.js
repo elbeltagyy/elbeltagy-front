@@ -5,13 +5,20 @@ import ModalStyled from '../../style/mui/styled/ModalStyled'
 
 export default function MakeForm({ inputs, status = {}, onSubmit, btnWidth,
     enableReinitialize = true, modalInfo, formDirection, btnStyle, submitBtnStatus = false,
-    disabledBtn, allowDirty, preValue = null, isResetNewVal = false, isAllDisabled }) {
+    disabledBtn, allowDirty, preValue = null, isResetNewVal = false, isAllDisabled, disableConfirm = false, SEND }) {
 
     const [open, setOpen] = useState(false);
     const [values, setValues] = useState(null)
     const [props, setProps] = useState(null)
 
-    const openModal = (values, props) => {
+    const openModal = async(values, props) => {
+        if(disableConfirm){
+            await onSubmit(values, props)
+            if (isResetNewVal) {
+                props.resetForm({ values })
+            }
+            return
+        }
         setValues(values)
         setProps(props)
         setOpen(true)
@@ -27,7 +34,7 @@ export default function MakeForm({ inputs, status = {}, onSubmit, btnWidth,
 
     return (
         <>
-            <CreateFormik
+            <CreateFormik SEND={SEND}
                 inputs={inputs} isAllDisabled={isAllDisabled}
                 onSubmit={openModal}
                 status={{ ...status }} btnWidth={btnWidth} enableReinitialize={enableReinitialize}

@@ -2,12 +2,11 @@ import { Box } from '@mui/material';
 import { Form, Formik } from 'formik';
 
 import * as Yup from "yup"
-import MakeInput from './MakeInput';
 import Loader from '../../style/mui/loaders/Loader';
 import { FilledHoverBtn } from '../../style/buttonsStyles';
 import DynamicFormGrid from './DynamicFormGrid2';
 import { useMemo } from 'react';
-const SEND = 'إرسال'
+
 
 //errors You fixed => 
 //1- when i call data={VIewCOmpo: ()=> } it recreates in every render || fixed by making const (ViwCompo)
@@ -15,7 +14,7 @@ const SEND = 'إرسال'
 // another solution but i don`t do => currentPrev, setCurrentPrev
 
 
-export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false, disabledBtn = false, allowDirty = true, preValue = null, isAllDisabled = false }) {
+export default function CreateFormik({ inputs, onSubmit, status, btnWidth, enableReinitialize = true, formDirection = 'column', btnStyle = {}, submitBtnStatus = false, disabledBtn = false, allowDirty = true, preValue = null, isAllDisabled = false, SEND = 'إرسال' }) {
     // arrange data of input with ===> name , validation, initial value
     const { data, validation } = useMemo(() => {
         let data = {}

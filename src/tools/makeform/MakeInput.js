@@ -35,6 +35,12 @@ const getGoogleDrivePreviewLink = (originalLink) => {
 
 function MakeInput({ input, nestedInputName = null }) {
     //nestedInputName in case used by field array
+    if(input.type === 'header'){
+        return <MakeTitle title={input.title} />
+    }else return <RenderInputByType input={input} nestedInputName={nestedInputName} />
+}
+
+function RenderInputByType({input, nestedInputName = null }) {
 
     const inputName = nestedInputName || input.name
     const [{ value }, { error, touched }, { setValue }] = useField(inputName)
@@ -94,9 +100,6 @@ function MakeInput({ input, nestedInputName = null }) {
         case 'array':
             return <MakeFieldArray inputName={inputName} input={input} values={value} showError={showError} error={error} />
 
-        case 'header':
-            return <MakeTitle title={input.title} />
-
         case 'radio':
             return <MakeRadio inputName={inputName} input={input} showError={showError} />
 
@@ -104,7 +107,7 @@ function MakeInput({ input, nestedInputName = null }) {
             return <MakeFile inputName={inputName} input={input} value={value} setValue={setValue} showError={showError} error={error} />
 
         case 'fullDate':
-            return <MakeFullDate inputName={inputName} setValue={setValue} value={value} input={input} showError={showError} />
+            return <MakeFullDate inputName={inputName} setValue={setValue} value={value} input={input} />
 
         case 'select':
             return <MakeSelect inputName={inputName} input={input} value={value} setValue={setValue} showError={showError} />

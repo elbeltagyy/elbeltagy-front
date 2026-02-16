@@ -68,6 +68,13 @@ const questionsApi = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        formatQAi : builder.mutation({
+            query: data => ({
+                url: '/questions/format/ai' ,
+                method: 'POST',
+                body: data
+            })
+        }),
 
     })
 })
@@ -79,5 +86,6 @@ export const {
     useLinkQuestionToTagsMutation, useUnlinkQuestionToTagsMutation,
 
     //user
-    useStartQuestionBankMutation
+    useStartQuestionBankMutation,
+    useFormatQAiMutation
 } = questionsApi

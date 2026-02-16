@@ -5,7 +5,7 @@ import { memo, useState } from 'react'
 import QuestionsForm from './QuestionsForm'
 import TitleWithDividers from '../ui/TitleWithDividers'
 
-function CreateQuestions({ setReset, defaultQuestion = {} }) {
+function CreateQuestions({ setReset, defaultQuestion = {}, questions }) {
 
     const [sendData, status] = useCreateQuestionMutation()
     const [createQuestionFc] = usePostData(sendData)
@@ -35,7 +35,10 @@ function CreateQuestions({ setReset, defaultQuestion = {} }) {
             {defaultQuestion?.tags && (
                 <TitleWithDividers title={'سيتم اضافه كل الاسئله الي الدرس ' + defaultQuestion.tags.name} />
             )}
-            <QuestionsForm onSubmit={onSubmit} status={{ ...status, isLoading: loading }} defaultQuestion={defaultQuestion} />
+            <QuestionsForm
+                onSubmit={onSubmit}
+                status={{ ...status, isLoading: loading }}
+                defaultQuestion={defaultQuestion} questions={questions} />
         </div>
     )
 }

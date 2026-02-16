@@ -11,19 +11,18 @@ export default function ShowImg({ file, removeFile }) {
         <Card sx={{ maxWidth: 345, backgroundColor: theme.palette.background.alt }}>
             <CardMedia
                 component={"img"}
-                sx={{ maxHeight: '400px' }}
+                sx={{ maxHeight: '400px' }} //, minHeight: '140px'
                 image={file?.url}
                 title="Image"
             />
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe">
-                        Ph
+                        w
                     </Avatar>
                 }
-                title={
-                    file?.original_filename || file?.name && (
-                        <Typography variant='body2' sx={{ maxWidth: '100px' }}>
+                title={(file?.original_filename || file?.name) && (
+                        <Typography variant='body2' sx={{ maxWidth: '100px', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                             {file?.original_filename || file?.name}
                         </Typography>
                     )}
@@ -36,7 +35,7 @@ export default function ShowImg({ file, removeFile }) {
             />
 
             {removeFile ?
-                <ModalStyled open={open} setOpen={setOpen} action={removeFile} />
+                <ModalStyled open={open} setOpen={setOpen} action={() => removeFile(file)} />
                 :
                 <ModalStyled open={open} setOpen={setOpen} />
             }

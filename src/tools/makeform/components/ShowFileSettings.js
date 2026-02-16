@@ -1,12 +1,12 @@
 import * as React from 'react';
 import ShowVid from './ShowVid';
 import ShowImg from './ShowImg';
-import { Alert } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 import ShowPdf from './ShowPdf';
+import { FlexColumn } from '../../../style/mui/styled/Flexbox';
 
 
 export default function ShowFileSettings({ file, removeFile }) {
-    // console.log(file)
     const fileType = file?.resource_type?.split("/")[0] || file?.type?.split("/")[0] || null
 
     const [realFile, setFile] = React.useState({})
@@ -41,6 +41,9 @@ export default function ShowFileSettings({ file, removeFile }) {
         return <ShowPdf file={realFile} removeFile={removeFile} />
     }
     return (
-        <Alert severity='error'>sorry, un supported file</Alert>
+        <FlexColumn>
+            <Alert severity='error'>sorry, un supported file</Alert>
+            <Button variant='outlined' color='error' onClick={removeFile}>ازاله الملف</Button>
+        </FlexColumn>
     );
 }

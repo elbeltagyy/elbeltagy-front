@@ -45,7 +45,13 @@ function MakeFieldArray({ input, inputName, values, showError, error }) {
                         <Box sx={{ m: "8px 0" }} >
                             <Button
                                 style={{ width: "auto" }}
-                                onClick={() => push(input.schema)}
+                                onClick={() => {
+                                    if(input.isSchemaFc){
+                                        push(input.schema())
+                                    }else {
+                                        push(input.schema)
+                                    }
+                                }}
                             >
                                 {input.addLabel}
                             </Button>

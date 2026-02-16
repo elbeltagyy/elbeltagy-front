@@ -4,10 +4,10 @@ import { getDateWithTime } from '../../settings/constants/dateConstants'
 import Section from '../../style/mui/styled/Section'
 import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import usePostData from '../../hooks/usePostData'
-
+ 
 import UserAvatar from '../users/UserAvatar'
 import { useDeleteQuestionMutation, useLazyGetQuestionsQuery, useLinkQuestionToTagsMutation, useUnlinkQuestionToTagsMutation, useUpdateQuestionMutation } from '../../toolkit/apis/questionsApi'
-import CreateQuestion from './CreateQuestions'
+
 import BtnModal from '../ui/BtnModal'
 import { useMemo, useState } from 'react'
 import ModalStyled from '../../style/mui/styled/ModalStyled'
@@ -22,10 +22,11 @@ import Loader from '../../style/mui/loaders/Loader'
 import TabInfo from '../ui/TabInfo'
 import { IconButton } from '@mui/material'
 import BtnConfirm from '../ui/BtnConfirm'
-import useGrades from '../../hooks/useGrades'
 import AdminTagQs from './AdminTagQs'
+import CreateQuestionsBtns from './CreateQuestionsBtns'
+import useGrades from '../../hooks/useGrades'
 
-const exportObj = (grades) => ({
+const exportObj = (grades)=>({
     grade: (row) => {
         return grades.find(grade => grade.index === row.grade)?.name
     },
@@ -45,8 +46,8 @@ const exportObj = (grades) => ({
 })
 
 
-function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, isShowCreate = true, colsIgnored = [], addColumns = [], disableAllActions = false, preReset = [], isShowHeader = false }) {
-    const { grades } = useGrades()
+function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, isShowCreate = true, isShowHeader = false, colsIgnored = [], addColumns = [], disableAllActions = false, preReset = [] }) {
+    const { grades} = useGrades()
 
     const [reset, setReset] = useState(false)
 
@@ -79,6 +80,7 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
     }
 
 
+
     //Linking
     const [chosenTags, setChosenTags] = useState([])
 
@@ -106,8 +108,9 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             field: 'title',
             headerName: 'عنوان السؤال',
             width: 200,
+            editable: true,
             renderCell: (params) => {
-                return <span dangerouslySetInnerHTML={{ __html: params?.row?.title }} />
+                return <span dangerouslySetInnerHTML={{ __html: params.row.title }} />
             }
         }, {
             field: 'hints',
@@ -285,10 +288,13 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             return columns
         }
     }, [colsIgnored])
+
+
     const [activeTag, setActiveTag] = useState()
 
     return (
         <Section>
+            {/* <TabInfo count={viewsCount} title={'عدد المشاهدات'} i={1} /> */}
             {isShowHeader && (
                 <AdminTagQs
                     filterTags={filterTags}
@@ -300,16 +306,12 @@ function AdminGetQuestions({ setSelectedQs, allSelected = false, filters = {}, i
             )}
 
             {isShowCreate && (
-                <BtnModal btnName={'انشاء سؤال' + ' ' + (activeTag ? activeTag.name : '')}
-                    component={<CreateQuestion defaultQuestion={{
-                        grade: activeTag?.grade ?? grade, tags: activeTag
-                    }} setReset={setReset} />}
-                    size='medium' isFilledHover={true} />
+                <CreateQuestionsBtns activeTag={activeTag} grade={grade} setReset={setReset} />
             )}
 
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj} exportTitle={'تفاصيل المشاهدات'}
+                exportObj={exportObj(grades)} exportTitle={'اسئله المنصه'}
                 columns={modifiedCols} addColumns={addColumns} disableAllActions={disableAllActions}
                 reset={[reset, ...preReset, filterTags]}
                 loading={status.isLoading || updateStatus.isLoading || isLoading}

@@ -7,9 +7,12 @@ import BtnModal from "../ui/BtnModal"
 import { useLazyGetTagsQuery } from "../../toolkit/apis/tagsApi"
 import useLazyGetData from "../../hooks/useLazyGetData"
 import useGrades from "../../hooks/useGrades"
+ 
 
 function AdminTagQs({ filterTags, setFilterTags, setGrade, grade, setReset, reset, setActiveTag }) {// grade, 
-    const { grades } = useGrades()
+
+    const {grades} = useGrades()
+
     const [tags, setTags] = useState([])
 
     const [getTags, { isLoading: tagsLoader }] = useLazyGetTagsQuery()
