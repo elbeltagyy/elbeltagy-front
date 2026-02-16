@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import  { memo } from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import Section from '../../style/mui/styled/Section'
 import usePostData from '../../hooks/usePostData'
@@ -9,8 +9,10 @@ import { VscSymbolBoolean } from 'react-icons/vsc'
 import { AiFillPoundCircle } from 'react-icons/ai'
 
 import * as Yup from "yup"
+
 import { MdOutlineDriveFileRenameOutline } from 'react-icons/md'
 import dayjs from 'dayjs'
+
 import PreDiscount from './PreDiscount'
 
 function CourseCreate({ unit, grade, setCourses }) {
@@ -57,6 +59,18 @@ function CourseCreate({ unit, grade, setCourses }) {
         }, {
             name: 'isMust',
             label: 'تفعيل اكمال المحاضرات',
+            type: 'switch',
+            icon: <VscSymbolBoolean />,
+            value: true
+        }, {
+            name: 'isSalable',
+            label: 'قايليه الشراء',
+            type: 'switch',
+            icon: <VscSymbolBoolean />,
+            value: true
+        }, {
+            name: 'isLecturesSalable',
+            label: 'قايليه شراء المحاضرات',
             type: 'switch',
             icon: <VscSymbolBoolean />,
             value: true

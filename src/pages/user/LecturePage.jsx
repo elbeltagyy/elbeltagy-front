@@ -1,9 +1,9 @@
 import { useEffect, useState, } from 'react'
-import { useGetLectureAndCheckQuery, useLazyGetLectureAndCheckQuery, usePassLectureMutation } from '../../toolkit/apis/coursesApi'
+import {  useLazyGetLectureAndCheckQuery, usePassLectureMutation } from '../../toolkit/apis/coursesApi'
 import { useLocation, useOutletContext, useParams } from 'react-router-dom'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
-import { FilledHoverBtn, OutLinedHoverBtn } from '../../style/buttonsStyles'
+import {  OutLinedHoverBtn } from '../../style/buttonsStyles'
 import usePostData from '../../hooks/usePostData'
 import WrapperHandler from '../../tools/WrapperHandler'
 import sectionConstants from '../../settings/constants/sectionConstants'
@@ -45,6 +45,7 @@ function LecturePage() {
         await passLecture({ courseId: course, lectureId: lecture._id, nextLectureIndex }) //linked to
         setCurrentIndex(nextLectureIndex)
     }
+    
     return (
         <FlexColumn sx={{ minHeight: '90vh', backgroundColor: 'background.alt', borderRadius: '16px', p: '12px', width: '100%' }}>
 
