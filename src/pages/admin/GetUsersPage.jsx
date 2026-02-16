@@ -327,7 +327,7 @@ function GetUsersPage({ setExcludedUsers, isShowTitle = true, courses, isShowGra
                 apiRef={apiRef}
                 reset={[reset, grade]}
                 setSelection={setExcludedUsers} 
-                type={'crud'} exportObj={exportObj} exportTitle={lang.USERS_PAGE} analysisFc={analysisUsers}
+                type={'crud'} exportObj={exportObj(grades)} exportTitle={lang.USERS_PAGE} analysisFc={analysisUsers}
                 columns={columns} allStatuses={[deleteManyStatus]} deleteMany={deleteManyUsers}
                 viewFc={viewFc} fetchFc={fetchFc} updateFc={updateFc} deleteFc={deleteFc}
                 ViewRow={UserShowTable} viewRowModal={{

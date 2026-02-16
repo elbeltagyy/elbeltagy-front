@@ -162,7 +162,7 @@ function GetSubscriptionsNot({ grade }) {
             <MeDatagrid
                 type={'crud'}
                 apiRef={apiRef}
-                exportObj={exportObj} exportTitle={'الطلاب الغير مشتركين'}
+                exportObj={exportObj(grades)} exportTitle={'الطلاب الغير مشتركين'}
                 columns={columns} fetchFc={fetchFc} loading={status.isLoading || isLoading}
                 editing={
                     {

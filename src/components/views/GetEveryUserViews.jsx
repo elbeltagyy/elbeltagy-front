@@ -159,7 +159,7 @@ function GetEveryUserViews({ lectureId, courseId, role, refetchUsers, userId }) 
             <TabInfo count={usersCount} title={'عدد الطلاب'} i={1} />
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj} exportTitle={'تفاصيل الطلاب'}
+                exportObj={exportObj(grades)} exportTitle={'تفاصيل الطلاب'}
                 columns={columns}
                 loading={status.isLoading}
                 fetchFc={fetchFc} reset={[courseId, window.location.href]}

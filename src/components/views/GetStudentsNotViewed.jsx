@@ -117,7 +117,7 @@ function GetStudentsNotViewed({ lectureId, lectureName, course, role }) { //grad
             <Separator sx={{ width: '200px' }} color={red[500]} />
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj} exportTitle={'عدد الطلاب الذين لم يشاهدوا المحاضره' + " : " + lectureName}
+                exportObj={exportObj(grades)} exportTitle={'عدد الطلاب الذين لم يشاهدوا المحاضره' + " : " + lectureName}
                 columns={columns} fetchFc={fetchFc} loading={status.isLoading}
                 editing={
                     {

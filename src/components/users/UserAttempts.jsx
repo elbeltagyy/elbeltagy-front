@@ -119,7 +119,7 @@ function UserAttempts({ user }) {
             width: 200,
             renderCell: (params) => {
                 return (
-                    <TabInfo count={ms(params.row.tokenTime)} i={1} />
+                    <TabInfo count={params.row.tokenTime && ms(params.row.tokenTime)} i={1} />
                 )
             }
         },

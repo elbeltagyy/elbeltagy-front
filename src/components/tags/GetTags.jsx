@@ -387,7 +387,7 @@ function GetTags({ filters = {}, setSelectedTags, preReset = [], addColumns, dis
             <MeDatagrid
                 type={'crud'}
                 reset={[reset, ...preReset]}
-                exportObj={exportObj} exportTitle={'الروابط'}
+                exportObj={exportObj(grades)} exportTitle={'الروابط'}
                 columns={modifiedCols} addColumns={addColumns}
                 // loading={status.isLoading || updateStatus.isLoading || isLoading}
                 allStatuses={statuses}

@@ -1,13 +1,76 @@
-export const lang = {
+import { IconButton } from "@mui/material";
+import { FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaWhatsapp } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { FiYoutube } from "react-icons/fi";
+
+export const PHONE = '01026476593'
+
+export const lang = { //Backend - Home - footer
     LOGO: 'منصة البلتاجى',
-    Platform_name: '',
+    LOGO_AR: 'منصة البلتاجى',//Home Page, ExportAsPdf
+    // TEACHER: 'وليدالشافى', Depracated
+    Website: 'https://mrelbeltagy.com', //For Pages
+    LOGO_Home_Description: "منصه مستر البلتاجي للتفوق فى الاحياء و الجيولوجيا والعلوم المتكامله",//for Home Page
+    Contact_Whatsapp: '20' + PHONE,
+    Mail: 'mrelbeltagy@gmail.com',
+    Course_Description: "افضل كورسات مستر البلتاجى, الدرجات النهائيه مضمونه", //CoursePage
+
+    SignUp: {
+        title: 'انشاء حساب - انشئ حسابك الان على منصه البلتاجى',
+        description: "انشئ حسابك الان, وابدا رحلتك فى منصه البلتاجى"
+    },
+    Privacy: {
+        title: 'Privacy - السياسات الخاصه بمنصه البلتاجى',
+        description: "كل التفاصيل الخاصه بمنصه البلتاجى , بطل تضيع وقت وابدا يلا "
+    },
+    Login: {
+        title: 'تسجيل الدخول - تسجيل الدخول لمنصه البلتاجى',
+        description: "سجل دخولك الان, وابدا رحلتك فى منصه البلتاجى"
+    },
+    LogoUri: '/assets/logo.webp', //Not done - footerPage
+    Socials: [ //Hero - footer
+        // {
+        //     to: 'https://www.facebook.com/profile.php?id=61573860324599', image: '/assets/facebook.webp', title: 'صفحه الفيس',
+        //     icon: <IconButton sx={{ color: 'neutral.0' }} component={Link} to={'https://www.facebook.com/profile.php?id=61573860324599'}>
+        //         <FaFacebook style={{
+        //             color: 'inherit',
+        //         }} />
+        //     </IconButton>
+        // },
+        // {
+        //     to: 'https://youtube.com/@mr.walidelshafi?si=CBA3KcC9Z0sCYW-L', image: '/assets/youtube.png', title: 'Youtube',
+        //     icon: <IconButton sx={{ color: 'neutral.0' }} component={Link} to={'https://youtube.com/@mr.walidelshafi?si=CBA3KcC9Z0sCYW-L'}>
+        //         <FiYoutube style={{
+        //             color: 'inherit',
+        //         }} />
+        //     </IconButton >
+        // },
+        // {
+        //     to: "https://www.instagram.com/mr.walidelshafi", image: '/assets/Instagram.png', title: 'Instagram', icon: <IconButton sx={{ color: 'neutral.0' }} component={Link} to={"https://www.instagram.com/mr.walidelshafi"}>
+        //         <FaInstagram style={{
+        //             color: 'inherit',
+        //         }} />
+        //     </IconButton >
+        // },
+        // {
+        //     to: "https://api.whatsapp.com/send?phone=20" + PHONE, image: '/assets/whatsapp.png', icon: <IconButton sx={{ color: 'neutral.0' }} component={Link} to={"https://api.whatsapp.com/send?phone=20" + PHONE}> 
+        //     {/* used in footer native */}
+        //         <FaWhatsapp style={{
+        //             color: 'inherit',
+        //         }} />
+        //     </IconButton>
+        // },
+    ],
+
+    WhatsAppContact: "https://api.whatsapp.com/send?phone=2001001902943&text=" + 'from Mr Elbeltagy Platform',// not done - footer
 
     LOGOUT: 'تسجيل الخروج',
     GRADES: "السنوات الدراسيه",
     COURSES: 'الكورسات',
     LOGIN_ENTRY: 'تسجيل دخول',
-    LOGIN : 'تسجيل',
-    ENTRY : "الدخول",
+    LOGIN: 'تسجيل',
+    ENTRY: "الدخول",
 
     //user 
     CREATE_USER: "إنشاء مستخدم",
@@ -76,7 +139,7 @@ export const lang = {
     ATTEMPT: 'محاوله',
     ATTEMPTS: 'المحاولات',
     YOUR_ATTEMPTS: 'عدد مرات اداء الاختبار',
-    START:"ابدا",
+    START: "ابدا",
     //errors
     REQUERIED: 'مطلوب',
     ARE_YOU_SURE: "هل انت متاكد ؟",

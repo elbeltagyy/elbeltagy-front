@@ -213,7 +213,7 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             <TabInfo count={subscriptionsCount} title={'عدد الاشتراكات'} i={1} />
             <MeDatagrid
                 type={'crud'}
-                exportObj={exportObj} exportTitle={'الاشتراكات'} filterParams={{ user }}
+                exportObj={exportObj(grades)} exportTitle={'الاشتراكات'} filterParams={{ user }}
                 columns={columns} fetchFc={fetchFc} analysisFc={analysisFc}
                 updateFc={updateFc} loading={status.isLoading || updateStatus.isLoading || isLoading} deleteFc={removeFc}
                 editing={
