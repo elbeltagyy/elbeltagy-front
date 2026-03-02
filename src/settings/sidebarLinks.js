@@ -74,6 +74,7 @@ import { isDevelop } from "../tools/isDevelop.js";
 import ManagePaymentsPage from "../pages/admin/PaymentsPage.jsx";
 import CoursesPage from "../pages/user/CoursesPage.jsx";
 import GradesManage from "../pages/admin/GradesManage.jsx";
+import ErrorsPage from "../pages/admin/ErrorsPage.jsx";
 
 const GetQuestionsPage = lazy(() => import("../pages/admin/GetQuestionsPage"))
 
@@ -210,6 +211,10 @@ const otherLinks = [
     {
         index: true, element: <HomePage />,
 
+    }, {
+        path: '/errors', element: <ProtectedRoute allowedTo={[user_roles.ADMIN]}>
+            <ErrorsPage />
+        </ProtectedRoute>
     }, {
         path: '/grades/:gradeId', element: <UnitsPage />
     }, {// Edit Path here 

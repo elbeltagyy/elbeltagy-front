@@ -39,6 +39,7 @@ function SEOHelmetAsync({
                     "@type": "WebSite",
                     "name": ${ogData.title},
                     "url": ${ogData.url},
+                    "description": ${ogData.description},
                     `}</script>
             )}
         </Helmet>
