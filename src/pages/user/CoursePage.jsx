@@ -100,7 +100,7 @@ function CoursePage() {
         </g>
     </svg>
 
-    const courseChapters = <Paper elevation={1} sx={{ width: '100%', p: '16px', mt: '16px' }}>
+    const courseChapters = <Paper elevation={1} sx={{ width: '100%', p: '16px', mt: '16px', overflow: 'auto', maxHeight: '100vh', scrollbarGutter: 'stable' }}>
         <TitleWithDividers title={'محتوى الكورس'} />
         {courseDetails?.chapters && courseDetails?.chapters.map(chapter => {
             const total = chapter.lectures?.length;

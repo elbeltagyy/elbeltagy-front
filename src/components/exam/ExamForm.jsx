@@ -27,46 +27,6 @@ const TimeInput = ({ value, input }) => {
 function ExamForm({ lecture, status, onSubmit }) {
     const questionsSchema = useQuestionsSchema({ grade: lecture.grade, questions: lecture?.exam?.questions ?? [] })
 
-    // const questionSchema = {
-    //     title: "",
-    //     hints: "",
-    //     image: "",
-    //     rtOptionId: "",
-    //     points: 1,
-    //     grade: lecture.grade,
-    //     isShuffle: true,
-    //     clarifyText: '',
-    //     clarifyUrl: '',
-    //     options: [
-    //         {
-    //             id: uuidv4(),
-    //             title: "",
-    //             image: ""
-    //         }, {
-    //             id: uuidv4(),
-    //             title: "",
-    //             image: ""
-
-    //         }, {
-    //             id: uuidv4(),
-    //             title: "",
-    //             image: ""
-
-    //         }, {
-    //             id: uuidv4(),
-    //             title: "",
-    //             image: ""
-    //         }
-    //     ]
-    // }
-
-    // const optionSchema = [
-    //     {
-    //         id: uuidv4(),
-    //         title: ""
-    //     }
-    // ]
-
     //lecture info
     const lectureInfoInputs = [
         {

@@ -50,6 +50,16 @@ function FooterPage() {
                 </Typography>
                 <Separator sx={{ borderColor: 'grey.100', borderWidth: '1px', width: '40vw' }} />
 
+                <Typography variant='body2' sx={{ color: "grey.0", textAlign: 'center' }}>
+                    email: menassty@gmail.com
+                </Typography>
+                <Typography variant='body2' sx={{ color: "grey.0", textAlign: 'center' }}>
+                    phone: 01026476593
+                </Typography>
+                <Typography variant='body2' sx={{ color: "grey.0", textAlign: 'center' }}>
+                    Currency: EGP
+                </Typography>
+
                 <FlexRow sx={{ gap: '8px' }}>
                     <Typography sx={{ color: "primary.600" }}>
                         &lt;/ ME&gt;
