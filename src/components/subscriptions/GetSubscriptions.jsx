@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDeleteSubscriptionMutation, useLazyGetCourseSubscriptionsQuery, useUpdateSubscriptionMutation } from '../../toolkit/apis/userCoursesApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import { lang } from '../../settings/constants/arlang'
-import { Box, Button} from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 import TabInfo from '../../components/ui/TabInfo'
 import { getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
@@ -97,17 +97,20 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             field: 'courseName',
             headerName: 'الكورس',
             width: 300,
-            // sortable: courseId ? false : true,
-            // filterable: courseId ? false : true,
+            sortable: courseId ? false : true,
+            filterable: courseId ? false : true,
         }, {
             field: 'name',
             headerName: lang.NAME,
-            width: 200
+            width: 200,
+            sortable: user ? false : true,
+            filterable: user ? false : true,
         }, {
             field: 'userName',
             headerName: lang.USERNAME,
-            width: 150
-
+            width: 150,
+            sortable: user ? false : true,
+            filterable: user ? false : true,
         }, {
             field: 'currentIndex',
             headerName: 'اخر محاضره',
@@ -121,11 +124,13 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
                     </Box>
                 )
             }
-        }, {
+        },
+        {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            valueGetter: (params) => params.row?.isActive,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => {
                 return (
                     <Box>
@@ -134,14 +139,19 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
                     </Box>
                 )
             }
-        }, {
+        },
+        {
             field: 'phone',
             headerName: lang.PHONE,
-            width: 200
+            width: 200,
+            filterable: false,
+            sortable: false
         }, {
             field: 'familyPhone',
             headerName: lang.FAMILY_PHONE,
-            width: 200
+            width: 200,
+            filterable: false,
+            sortable: false
         }, {
             field: 'role',
             headerName: lang.ROLE,
@@ -159,6 +169,7 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             field: 'payment',
             headerName: 'المبلغ المدفوع',
             width: 200,
+            type: 'number',
             renderCell: (params) => {
                 return <TabInfo count={(params.row.payment)} i={0} />
             }
@@ -175,6 +186,8 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             field: 'createdAt',
             headerName: 'تاريخ الاشتراك',
             width: 200,
+            type: 'date',
+            valueGetter: (createdAt) => new Date(createdAt),
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.createdAt)} i={1} />
             }
@@ -182,6 +195,8 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             field: 'updatedAt',
             headerName: 'تاريخ اخر محاضره تم انهائها',
             width: 200,
+            type: 'date',
+            valueGetter: (updatedAt) => new Date(updatedAt),
             renderCell: (params) => {
                 return <TabInfo count={getFullDate(params.row.updatedAt)} i={2} />
             }
@@ -189,9 +204,7 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             field: 'gotoCourse',
             headerName: 'احصائيات الكورس',
             width: 200,
-            disableExport: true,
-            filterable: false,
-            sortable: false,
+            type: 'actions',
             renderCell: (params) => {
                 return <Button disabled={courseId ? true : false} to={`/statistics/courses/${params.row?.courseId}`} component={Link}>
                     احصائيات الكورس

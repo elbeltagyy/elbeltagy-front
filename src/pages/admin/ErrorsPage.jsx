@@ -12,25 +12,45 @@ function ErrorsPage() {
             headerName: "Message",
             width: 200,
         }, {
+            field: "name",
+            headerName: "user",
+            width: 200,
+            filterable: false,
+            sortable: false,
+            renderCell: (p) => {
+                return p.row.user?.name
+            }
+        }, {
+            field: "userName",
+            headerName: "userName",
+            width: 200,
+            filterable: false,
+            sortable: false,
+            renderCell: (p) => p.row.user?.userName
+        }, {
             field: 'method',
-            label: "Method"
+            headerName: "Method"
         }, {
             field: 'url',
-            label: "URL",
+            headerName: "URL",
             width: 200,
 
         }, {
             field: 'stack',
-            label: "Stack",
+            headerName: "Stack",
             width: 400,
             flex: 1
         }, {
             field: 'isOperational',
-            label: "From User",
+            headerName: "From User",
             type: 'boolean',
         }, {
+            field: 'statusCode',
+            headerName: "statusCode",
+            type: 'number',
+        }, {
             field: 'createdAt',
-            label: "Created At",
+            headerName: "Created At",
             type: 'date',
             valueGetter: (createdAt) => new Date(createdAt)
         }
@@ -40,7 +60,7 @@ function ErrorsPage() {
         <Section>
             <TitleWithDividers title={'Errors Page'} />
             <FullComponent data={{
-                columns, useFetch: useLazyGetErrorsQuery, resKey: 'errors',
+                columns, useFetch: useLazyGetErrorsQuery, resKey: 'errors', fetchFilters: { populate: 'user' }
             }} />
         </Section>
     )

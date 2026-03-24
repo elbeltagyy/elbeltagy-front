@@ -21,6 +21,7 @@ const MessagesCompo = ({ course, excludedUsers, isExcluded, modalInfo }) => {
         }
         await createReport(params)
     }
+    
     const inputs = [
         {
             name: 'message',

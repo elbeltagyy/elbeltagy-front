@@ -8,7 +8,7 @@ export default function MeDatagrid({
     exportObj, exportTitle,
     viewFc, fetchFc, updateFc, deleteFc, apiRef, deleteMany, ViewRow, analysisFc, viewRowModal,
     setSelection = false, allSelected,selections,
-    disabledActions = [], disableAllActions, allStatuses
+    disabledActions = [], disableAllActions, allStatuses, setMatches
 }) {
 
     const modifiedColumns = useMemo(() => {
@@ -62,7 +62,7 @@ export default function MeDatagrid({
     if (type === "server") return <ServerSideDatagrid editing={editing} rows={data} columns={modifiedColumns} loading={loading} fetchFc={fetchFc} />
 
     if (type === "crud") return <CrudDatagrid
-        massActions={massActions} allStatuses={allStatuses}
+        massActions={massActions} allStatuses={allStatuses} setMatches={setMatches}
         exportTitle={exportTitle}
         exportObj={exportObj}
         apiRef={apiRef}

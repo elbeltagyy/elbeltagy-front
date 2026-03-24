@@ -20,6 +20,7 @@ import { routesLinks } from './settings/sidebarLinks';
 function App() {
 
   const { mode } = useSelector(s => s.global)
+  arSD.components.MuiDataGrid.defaultProps.localeText.toolbarFilters = 'البحث'
   const theme = useMemo(() => createTheme(themeSettings(mode), locales["arSD"], arSD), [mode]) // he used useMemo ???
 
   const routes = [

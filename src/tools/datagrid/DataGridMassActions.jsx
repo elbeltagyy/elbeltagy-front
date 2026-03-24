@@ -2,6 +2,7 @@
 import { useMemo, useState } from 'react';
 import { Box, Button, Menu, MenuItem } from '@mui/material';
 import BtnConfirm from '../../components/ui/BtnConfirm';
+import BtnModal from '../../components/ui/BtnModal';
 
 const DataGridMassActions = ({ selectedIds, actions, setSelection, deleteMany }) => {
 
@@ -9,18 +10,13 @@ const DataGridMassActions = ({ selectedIds, actions, setSelection, deleteMany })
     const [anchorEl, setAnchorEl] = useState(null);
     const modifiedItems = useMemo(() => {
         let mass = [
-            ...actions, {
-                label: 'reset to 0',
-                noConfirm: true,
-                onClick: () => {
-                    setSelection()
-                }
-            }
+            ...actions
         ]
+
         if (deleteMany) {
             mass = [
                 ...mass, {
-                    label: 'ازاله العناصر المختاره ' + '(' + selectedIds.length + ')',
+                    label: 'ازاله العناصر المختاره ' + '(' + selectedIds.length + ')', modalInfo: { desc: 'سيتم ازاله العناصر المختاره فقط' + ' ' + selectedIds.length + ' عنصر' },
                     onClick: () => {
                         deleteMany({
                             ids: selectedIds
@@ -29,6 +25,13 @@ const DataGridMassActions = ({ selectedIds, actions, setSelection, deleteMany })
                 }
             ]
         }
+        mass = [...mass, {
+            label: 'reset to 0',
+            noConfirm: true,
+            onClick: () => {
+                setSelection()
+            }
+        }]
         return mass
     }, [actions])
 
@@ -56,25 +59,33 @@ const DataGridMassActions = ({ selectedIds, actions, setSelection, deleteMany })
                 >
                     {action?.label || 'test'}
                 </MenuItem>
-                    : (
-                        <BtnConfirm
-                            key={i}
-                            btn={<MenuItem
-                                sx={{
-                                    ...action.sx
-                                }}
-                                onClick={() => {
-                                    action?.onClick(selectedIds);
-                                    if (!action.dontResetSelection) {
-                                        setSelection()
-                                    }
-                                    handleClose();
-                                }}
-                            >
-                                {action?.label || 'test'}
-                            </MenuItem>}
-                        />
-                    ))}
+                    : action.Component ? <MenuItem
+                        key={i}
+                        sx={{
+                            ...action.sx
+                        }} >
+                        <action.Component selectedIds={selectedIds} />
+                    </MenuItem>
+                        : (
+                            <BtnConfirm
+                                modalInfo={action.modalInfo}
+                                key={i}
+                                btn={<MenuItem
+                                    sx={{
+                                        ...action.sx
+                                    }}
+                                    onClick={() => {
+                                        action?.onClick(selectedIds);
+                                        if (!action.dontResetSelection) {
+                                            setSelection()
+                                        }
+                                        handleClose();
+                                    }}
+                                >
+                                    {action?.label || 'test'}
+                                </MenuItem>}
+                            />
+                        ))}
             </Menu>
         </Box>
     );

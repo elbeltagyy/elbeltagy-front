@@ -8,12 +8,24 @@ import { user_roles } from "../../settings/constants/roles"
 import { convertObjToArray, handelObjsOfArr, makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
 import governments from "../../settings/constants/governments"
 import { getFullDate } from "../../settings/constants/dateConstants"
- 
+
 import useGrades from "../../hooks/useGrades"
+import BtnModal from "../ui/BtnModal"
+import NotificationsForm from "../notifications/NotificationsForm"
 const [roles] = convertObjToArray(user_roles)
 
-function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allStatuses, addColumns }) {
+function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions = [], allStatuses, addColumns, setExcludedUsers, setMatches, setCount }) {
     const { grades } = useGrades()
+
+    const modifiedMassActions = [{
+        Component: ({ selectedIds = [] }) => {
+
+            return <BtnModal
+                btn={'ارسال الي : ' + selectedIds.length + ' ' + 'مستخدم'}
+                component={<NotificationsForm users={selectedIds} />}
+            />
+        }
+    }, ...massActions]
 
     const columns = [
         {
@@ -62,6 +74,14 @@ function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allSta
             headerName: lang.FAMILY_PHONE,
             width: 200
         }, {
+            field: 'sendNotification',
+            headerName: 'ارسال اشعار',
+            type: 'actions',
+            width: 200,
+            renderCell: (p) => {
+                return <BtnModal btnName={'ارسال رساله'} component={<NotificationsForm user={p.row} />} />
+            }
+        }, {
             field: 'role',
             headerName: lang.ROLE,
             type: 'singleSelect',
@@ -73,7 +93,7 @@ function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allSta
             type: 'singleSelect',
             width: 200,
             valueOptions: handelObjsOfArr(grades, { value: 'index', label: 'name' }),
- 
+
         }, {
             field: "government",
             headerName: 'المحافظه',
@@ -100,7 +120,7 @@ function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allSta
             }
         },
     ]
-    
+
     return (
         <div>
             <FullComponent data={{
@@ -108,8 +128,8 @@ function Users({ filters, reset, viewFc, deleteFc, updateFc, massActions, allSta
                 resKey: 'users',
                 fetchFilters: filters,
                 viewFc, deleteFc, updateFc,
-                columns, massActions, allStatuses,
-                reset, addColumns
+                columns, massActions: modifiedMassActions, allStatuses,
+                reset, addColumns, setSelection: setExcludedUsers, setMatches, setCount
                 //     reset, loading
             }} />
         </div>

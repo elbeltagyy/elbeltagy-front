@@ -6,17 +6,17 @@ import MeDatagrid from '../../tools/datagrid/MeDatagrid'
 import TabInfo from '../ui/TabInfo'
 import { getFullDate } from '../../settings/constants/dateConstants'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
-import ModalStyled from '../../style/mui/styled/ModalStyled'
+
 import NotificationsForm from '../notifications/NotificationsForm'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import usePostData from '../../hooks/usePostData'
+import BtnModal from '../ui/BtnModal'
 
 function UserNotifications({ user }) {
 
     const [getData, status] = useLazyGetNotificationsQuery()
     const [getUserNotifications] = useLazyGetData(getData)
 
-    const [open, setOpen] = useState(false)
     const [isReset, setIsReset] = useState(false)
 
     const resetFc = () => {
@@ -75,7 +75,12 @@ function UserNotifications({ user }) {
     return (
         <Box sx={{ width: '100%' }}>
             <TitleWithDividers title={'اشعارات الطالب'} />
-            <FilledHoverBtn onClick={() => setOpen(true)}>ارسال اشعار</FilledHoverBtn>
+
+            <BtnModal
+                btn={<FilledHoverBtn>ارسال اشعار</FilledHoverBtn>}
+                component={<NotificationsForm user={user} resetFc={resetFc} />}
+            />
+
             <Box sx={{ width: '100%' }}>
                 <MeDatagrid
                     type={'crud'}
@@ -91,10 +96,6 @@ function UserNotifications({ user }) {
                     }
                 />
             </Box>
-
-            <ModalStyled title={'ارسال اشعار ل ' + user.name} open={open} setOpen={setOpen}>
-                <NotificationsForm user={user} resetFc={resetFc} />
-            </ModalStyled>
         </Box>
     )
 }

@@ -1,0 +1,1 @@
+export const hasValidValue = (value) => value || value === false || value === 0

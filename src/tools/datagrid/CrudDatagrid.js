@@ -24,6 +24,8 @@ import DataGridMassActions from './DataGridMassActions';
 import SwitchStyled from '../../style/mui/styled/SwitchStyled';
 import DynamicBarChart from '../charts/BarChart';
 import BtnConfirm from '../../components/ui/BtnConfirm';
+import MultipleFilter from './MultipleFilter';
+import { hasValidValue } from '../fcs/hasValidValue';
 
 const BooleanSwitchCell = ({ field, row, updateFc, params }) => {
     const handleChange = async () => {
@@ -87,18 +89,34 @@ function CrudDatagrid(
         pageSize: 5, // =limit
     });
 
+    const handelFilteredItem = (item, field) => {
+        // console.log('item ==>', item, 'field ===>', field)
+        if (fullDateTimeRegex.test(item.value)) {
+            const date = new Date(item.value)
+            item.value = date.toISOString().slice(0, 10);
+        }
+
+        if (!hasValidValue(item.value) && field) {
+            return setFilter(p => {
+                console.log(p)
+                const { [field]: _, ...rest } = p || {}
+                return rest
+            })
+        }
+        const value = (item.operator && item.operator + '_split_') + (item.value ?? '') ?? ""
+        setFilter(p => { //Object
+            return {
+                ...(p || {}), [field]: value
+            }
+        })
+    }
+
     // filtering
     const onFilterChange = React.useCallback((filterModel) => {
-        const filtered = {}
+        // console.log(filterModel)
         filterModel?.items.map((item) => {
-            if (fullDateTimeRegex.test(item.value)) {
-                const date = new Date(item.value)
-                item.value = date.toISOString().slice(0, 10);
-            }
-            filtered[item.field] = item.operator + '_split_' + (item.value ?? '') ?? ""
-            return filtered
+            handelFilteredItem(item, item.field)
         })
-        setFilter(filtered)
     }, []);
 
     useEffect(() => {
@@ -283,7 +301,6 @@ function CrudDatagrid(
                 }
             })
             try {
-
                 const res = await fetchFc(
                     { ...sort, ...filter, limit: paginationModel.pageSize, page: paginationModel.page + 1 }
                 )
@@ -402,7 +419,7 @@ function CrudDatagrid(
                     height="300px"
                 />
             )}
-
+            <MultipleFilter tableName={'mu-' + exportTitle} columns={columns} setFilter={setFilter} filter={filter} handelFilteredItem={handelFilteredItem} />
             <DataGrid
                 apiRef={apiRef}
                 rows={rows || []}

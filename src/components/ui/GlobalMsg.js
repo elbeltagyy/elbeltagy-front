@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setGlobalMsg } from '../../toolkit/globalSlice';
 import { Alert, Box, useTheme } from '@mui/material';
 
-export default function GlobalMsg() {
+function GlobalMsg() {
     const globalMsg = useSelector(s => s.global.globalMsg)
-    const theme = useTheme()
 
     const dispatch = useDispatch()
     const handleClose = (event) => {
-        dispatch(setGlobalMsg(null))
+        dispatch(setGlobalMsg())
     };
 
     const action = (
@@ -42,3 +41,5 @@ export default function GlobalMsg() {
         </Box>
     );
 }
+
+export default React.memo(GlobalMsg)

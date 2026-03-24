@@ -10,13 +10,19 @@ import TitleWithDividers from './TitleWithDividers'
 function BtnModal({
     parenetSx = {}, btn,
     btnName, icon, children, component, variant = 'contained', color, size = 'small', isFilledHover = false, fullWidth = true, fullScreen = false, titleInSection = false,
-    close = false
+    close = false, onClose = false
 
 }) {
     const [open, setOpen] = useState(false)
     useEffect(() => {
         setOpen(false)
     }, [close])
+
+    useEffect(() => {
+        if (!open && onClose) {
+            onClose(r => !r)
+        }
+    }, [open])
 
     return (
         <FlexColumn sx={parenetSx}>

@@ -1,6 +1,6 @@
 import { Box, useMediaQuery } from '@mui/material'
 import { Suspense, useEffect, useState } from 'react'
-import { Outlet, useLocation, useNavigationType } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 
 import Navbar from '../components/header/Navbar'
 import Sidebar from '../components/header/Sidebar'

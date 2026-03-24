@@ -39,14 +39,23 @@ function FullComponent({ data }) {
 
     const fetchFc = async (params) => {
         if (!getFc) return { values: [], count: 0 }
+        const filters = { ...params, ...sanitizedData.fetchFilters }
+        
+        if (sanitizedData.setMatches) {
+            // console.log('setMatches ==>', filters)
+            sanitizedData.setMatches(filters)
+        }
 
-        let res = await getFc({ ...params, ...sanitizedData.fetchFilters }, false) //, ...data.fetchParams
-      
+        let res = await getFc(filters, false) //, ...data.fetchParams
+
         if (sanitizedData.fetchFc) {
             // data.invoices = modified ==> give error in main compo
             res = sanitizedData.fetchFc(res)
         }
         const modified = { values: res[sanitizedData.resKey], count: res.count }
+        if(sanitizedData.setCount){
+            sanitizedData.setCount(modified.count)
+        }
         setCount(modified.count)
         return modified
     }
@@ -77,7 +86,7 @@ function FullComponent({ data }) {
 
             <MeDatagrid
                 reset={sanitizedData.reset} massActions={sanitizedData.massActions} allStatuses={sanitizedData.allStatuses}
-                setSelection={sanitizedData.setSelection && sanitizedData.setSelection} 
+                setSelection={sanitizedData.setSelection && sanitizedData.setSelection}
                 selections={sanitizedData.selections}
                 type={'crud'} exportObj={sanitizedData.exportObj && sanitizedData.exportObj} exportTitle={sanitizedData.exportTitle}
                 columns={sanitizedData.columns} addColumns={sanitizedData.addColumns}

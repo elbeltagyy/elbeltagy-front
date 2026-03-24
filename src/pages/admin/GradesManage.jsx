@@ -30,7 +30,8 @@ function GradesManage() {
         }, {
             field: 'index',
             headerName: 'index',
-            editable: true
+            editable: true,
+            type: 'number'
         }, {
             field: 'name',
             headerName: 'الاسم',
@@ -40,7 +41,6 @@ function GradesManage() {
             headerName: 'الوصف',
             flex: 1,
             editable: true
-
 
         }, {
             field: 'isActive',

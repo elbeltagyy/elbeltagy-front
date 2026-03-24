@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 export default function usePostData(sendData, setLoading, setReset = null) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  let data
+ 
 
   if (!sendData) return [null]
 
@@ -16,7 +16,7 @@ export default function usePostData(sendData, setLoading, setReset = null) {
     }
 
     // data = values
-    data = Array.isArray(values) ? values : Object.fromEntries(
+     let data = Array.isArray(values) ? values : Object.fromEntries(
       Object.entries(values).filter(([k, v]) => v !== null && v !== undefined && v !== '')
     );
     // console.log(data)

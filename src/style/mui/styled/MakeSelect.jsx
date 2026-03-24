@@ -1,7 +1,9 @@
 import { memo, useEffect } from 'react'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select } from '@mui/material'
+import { hasValidValue } from '../../../tools/fcs/hasValidValue';
+import { GridClearIcon } from '@mui/x-data-grid';
 
-function MakeSelect({ title, value, setValue, options, reset = [], disabled = false, disableValue = [] }) {
+function MakeSelect({ title, value, setValue, options, reset = [], allowClear = false, disabled = false, disableValue = [], sx = {}, variant = 'outlined' }) {
 
     useEffect(() => {
         if (reset.length !== 0) {
@@ -11,7 +13,7 @@ function MakeSelect({ title, value, setValue, options, reset = [], disabled = fa
 
     // Validate the value to ensure it exists in the options array
     const isValidValue = options?.some(option => {
-        if (option.value) {
+        if (hasValidValue(option.value)) {
             return option.value === value;
         } else {
             return option === value;
@@ -20,18 +22,24 @@ function MakeSelect({ title, value, setValue, options, reset = [], disabled = fa
     const selectValue = isValidValue ? value : "";
 
     return (
-        <FormControl disabled={disabled} sx={{ maxWidth: '500px', minWidth: '250px' }}>
+        <FormControl disabled={disabled} sx={{ maxWidth: '500px', minWidth: '250px', ...sx }}>
             <InputLabel id="demo-simple-select-label">{title}</InputLabel>
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={selectValue || ""}
+                value={selectValue ?? ""}
                 label={title || "اختر"}
+                variant={variant}
+                endAdornment={(hasValidValue(value) && allowClear) && (<InputAdornment position='end'>
+                    <IconButton size='small' onClick={() => setValue("")}>
+                        <GridClearIcon sx={{ width: 'inherit' }} />
+                    </IconButton>
+                </InputAdornment>)}
                 // defaultValue={""} // Sets the default value to empty string
                 onChange={(e, newValue) => { setValue(e.target.value) }}
             >
                 {options?.map((option, i) => {
-                    if (option.value) {
+                    if (hasValidValue(option.value)) {
                         return <MenuItem key={i} value={option.value} disabled={disableValue.includes(option.value)}>{option.label}</MenuItem>
                     } else {
                         return (
