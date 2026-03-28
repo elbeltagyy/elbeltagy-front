@@ -12,8 +12,14 @@ const errorsApi = apiSlice.injectEndpoints({
         };
       },
     }),
-
+    deleteSameErrors: builder.mutation({
+      query: data => ({
+        url: '/errors/many/' + data._id,
+        method: 'DELETE',
+        body: data,
+      })
+    }),
   }),
 });
 
-export const { useLazyGetErrorsQuery } = errorsApi;
+export const { useLazyGetErrorsQuery, useDeleteSameErrorsMutation } = errorsApi;
