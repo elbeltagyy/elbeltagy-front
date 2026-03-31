@@ -7,6 +7,8 @@ import products from '../../settings/constants/products'
 import statusConstants from '../../settings/constants/status'
 import TabInfo from '../ui/TabInfo'
 import { useLazyGetInvoicesQuery } from '../../toolkit/apis/invoicesApi'
+import BtnModal from "../ui/BtnModal"
+import CompleteInvoice from "../payment/CompleteInvoice"
 
 const exportObj = {
     grade: (row) => {
@@ -61,15 +63,29 @@ function Invoices() {
             headerName: 'الوصف',
             width: 200
         }, {
+            field: 'action',
+            headerName: 'استكمال الدفع',
+            type: "actions",
+            width: 200,
+            renderCell: (params) => {
+                return (
+                    <BtnModal
+                        disabled={params.row.status !== statusConstants.PENDING}
+                        btnName={params.row.status === statusConstants.PENDING ? "استكمال الدفع" : params.row.status}
+                        component={<CompleteInvoice invoice={params.row} />}
+                    />
+                )
+            }
+        }, {
             field: 'status',
             headerName: lang.IS_ACTIVE,
             type: "singleSelect",
-            valueOptions: [statusConstants.FAILED, statusConstants.PAID, statusConstants.PENDING, statusConstants.REJECTED],
+            valueOptions: [statusConstants.FAILED, statusConstants.PAID, statusConstants.PENDING, statusConstants.REJECTED, statusConstants.CANCELLED],
             renderCell: (params) => {
                 return (
                     <TabInfo
                         count={params.row.status}
-                        i={(params.row.status === statusConstants.FAILED || params.row.status === statusConstants.REJECTED) ? 3 : params.row.status === statusConstants.PENDING ? 2 : 1} />
+                        i={(params.row.status === statusConstants.PAID ? 1 : params.row.status === statusConstants.PENDING ? 2 : 3)} />
                 )
             }
         }, {

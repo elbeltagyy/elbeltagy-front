@@ -18,6 +18,9 @@ import TabInfo from "../ui/TabInfo"
 import VerifyCoupon from "../coupons/VerifyCoupon"
 import * as Yup from 'yup'
 import fileValidation from "../../tools/validations/fileValidation"
+import { isDevelop } from "../../tools/isDevelop"
+
+import CompleteInvoice from "./CompleteInvoice"
 
 function PaymentMethods({ coupon, price, handelResponse,
     course, wallet, tag, setCoupon, isUseCoupon = true, lecture,
@@ -25,6 +28,8 @@ function PaymentMethods({ coupon, price, handelResponse,
     //make invoice
     const { data } = useGetPaymentsQuery({ isActive: true }) //, type: exclude.map(p => '!=' + p) 
     const [chosenPayment, setChosenPayment] = useState()
+
+    const [invoice, setInvoice] = useState({})
 
     const [sendData, status] = useMakeInvoiceMutation()
     const [makeInvoice] = usePostData(sendData)
@@ -58,27 +63,30 @@ function PaymentMethods({ coupon, price, handelResponse,
             name: 'file',
             type: 'file',
             label: 'صوره التحويل',
-            validation: fileValidation
+            validation: !isDevelop && fileValidation
         }
     ]
     const onSubmit = async (values) => {
         const res = await makeInvoice({
             ...values, coupon: couponName, course, wallet, tag, lecture,
             name: invoiceNameId,
-            description: subTitle + ' ' + '(السعر' + ' ' + price + 'جنيه' + ')',
+            description: subTitle + ' ' + '(السعر' + ' ' + price + 'جنيه' + ')', successUrl: location.href
         }, true)
 
+        if (res?.user?.wallet || res?.user?.wallet === 0) {
+            dispatch(setUser({ wallet: res.user.wallet }))
+        }
         if (res.redirectUrl) {
             location.href = res.redirectUrl
         }
-        if (res?.wallet || res?.wallet === 0) {
-            dispatch(setUser({ wallet: res.wallet }))
-        }
-
         if (handelResponse) {
             handelResponse(res)
         }
-        setOpen(false)
+        if (res.invoice?._id) {
+            setInvoice(res.invoice)
+        } else {
+            setOpen(false)
+        }
     }
 
     //01222832362
@@ -86,69 +94,70 @@ function PaymentMethods({ coupon, price, handelResponse,
         return (
             <ModalStyled fullWidth={true} open={open} setOpen={setOpen}>
                 <Box sx={{ width: '100%' }}>
-                    <Section>
-                        {title && (
-                            <Typography variant='h5' mt={'16px'}>
-                                {title}
-                            </Typography>
-                        )}
-                        {subTitle && (
-                            <Typography variant='subtitle2'>
-                                {subTitle}
-                            </Typography>
-                        )}
+                    {invoice._id ? <CompleteInvoice invoice={invoice} /> :
+                        <Section>
+                            {title && (
+                                <Typography variant='h5' mt={'16px'}>
+                                    {title}
+                                </Typography>
+                            )}
+                            {subTitle && (
+                                <Typography variant='subtitle2'>
+                                    {subTitle}
+                                </Typography>
+                            )}
 
-                        <InfoText label={'المبلغ المطلوب'} description={price + ' جنيه'} />
-                        <InfoText label={'اختر وسيله دفع'} />
-                        {isUseCoupon && (
-                            couponName ? (
-                                <TabInfo count={couponName} i={1} title={'الكوبون: '} />
+                            <InfoText label={'المبلغ المطلوب'} description={price + ' جنيه'} />
+                            <InfoText label={'اختر وسيله دفع'} />
+                            {isUseCoupon && (
+                                couponName ? (
+                                    <TabInfo count={couponName} i={1} title={'الكوبون: '} />
+                                ) : (
+                                    <VerifyCoupon setCoupon={(res) => {
+                                        setCoupon(res)
+                                        setCouponName(res.coupon)
+                                    }} prevPrice={price} params={{
+                                        course, tag
+                                    }} />
+                                )
+                            )}
+                            {note && (
+                                <Alert sx={{ maxWidth: '100%', m: '8px auto' }} variant="filled" severity="warning">
+                                    {note}
+                                </Alert>
+                            )}
+                            {payments.length ? (
+
+                                <ListMethods
+                                    setMethod={setChosenPayment}
+                                    methods={payments} activeMethod={chosenPayment}
+                                    disabled={exclude} excludeFc={(method) => exclude.includes(method.type)}
+                                />
                             ) : (
-                                <VerifyCoupon setCoupon={(res) => {
-                                    setCoupon(res)
-                                    setCouponName(res.coupon)
-                                }} prevPrice={price} params={{
-                                    course, tag
-                                }} />
-                            )
-                        )}
-                        {note && (
-                            <Alert sx={{ maxWidth: '100%', m: '8px auto' }} variant="filled" severity="warning">
-                                {note}
-                            </Alert>
-                        )}
-                        {payments.length ? (
-
-                            <ListMethods
-                                setMethod={setChosenPayment}
-                                methods={payments} activeMethod={chosenPayment}
-                                disabled={exclude} excludeFc={(method) => exclude.includes(method.type)}
-                            />
-                        ) : (
-                            <Alert sx={{ mt: '16px' }} severity="warning" variant="filled">لا يوجد وسائل دفع متاحه حاليا</Alert>
-                        )}
-                        <Box>
-                            {chosenPayment && (
-                                <InfoText label={'وسيله الدفع'} description={activePayment?.name} />
+                                <Alert sx={{ mt: '16px' }} severity="warning" variant="filled">لا يوجد وسائل دفع متاحه حاليا</Alert>
                             )}
-                            {activePayment && (
-                                {
-                                    [paymentInteg.WALLET]: <FlexColumn>
-                                        <Wallet price={price} />
-                                        <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
-                                    </FlexColumn>,
-                                    [paymentInteg.PAYMOB]:
-                                        <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
-                                    ,
-                                    [paymentInteg.FAWRY]:
-                                        <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
+                            <Box>
+                                {chosenPayment && (
+                                    <InfoText label={'وسيله الدفع'} description={activePayment?.name} />
+                                )}
+                                {activePayment && (
+                                    {
+                                        [paymentInteg.WALLET]: <FlexColumn>
+                                            <Wallet price={price} />
+                                            <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
+                                        </FlexColumn>,
+                                        [paymentInteg.PAYMOB]:
+                                            <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
+                                        ,
+                                        [paymentInteg.FAWATERK]:
+                                            <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
 
-                                }[activePayment.type] || <MakeForm status={status} onSubmit={onSubmit} inputs={inputs} enableReinitialize={true} />
+                                    }[activePayment.type] || <MakeForm status={status} onSubmit={onSubmit} inputs={inputs} enableReinitialize={true} />
 
-                            )}
-                        </Box>
-                    </Section>
-
+                                )}
+                            </Box>
+                        </Section>
+                    }
                 </Box>
             </ModalStyled>
         )

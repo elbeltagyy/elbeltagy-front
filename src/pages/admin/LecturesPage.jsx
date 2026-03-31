@@ -106,14 +106,6 @@ function LecturesPage() {
             type: 'singleSelect',
             width: 200,
             valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
-            renderCell: (params) => {
-                const grade = grades.find(({ index }) => index === params.row.grade)
-                return (
-                    <Typography>
-                        {grade.name}
-                    </Typography>
-                )
-            }
         },
         {
             field: 'users',

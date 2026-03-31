@@ -3,15 +3,19 @@ import { lang } from '../../settings/constants/arlang'
 import { useDeletePaymentMutation, useLazyGetPaymentsQuery, useUpdatePaymentMutation } from '../../toolkit/apis/paymentsApi'
 import FullComponent from '../../tools/datagrid/FullComponent'
 import BtnModal from '../ui/BtnModal'
-import DataWith3Items from '../ui/DataWith3Items'
+
 import TabInfo from '../ui/TabInfo'
 import UserAvatar from '../users/UserAvatar'
 import CreatePayment from './CreatePayment'
 import { getFullDate } from '../../settings/constants/dateConstants'
+import { useSelector } from 'react-redux'
+import UpdatePayment from './UpdatePayment'
 
 function GetPayments() {
 
     const [reset, setReset] = useState(false)
+    const { user } = useSelector(s => s.global)
+    const isShowDelete = user.userName === 'admin1' || user.userName === 'subadmin'
     const columns = [
         {
             field: 'index',
@@ -44,16 +48,25 @@ function GetPayments() {
             field: 'isActive',
             headerName: lang.IS_ACTIVE,
             type: "boolean",
-            editable: true,
+            isSwitch: true,
+            // editable: true,
+            // renderCell: (params) => {
+            //     return (
+            //         <>
+            //             {
+            //                 params.row.isActive ? <TabInfo count={lang.ACTIVE} i={1} />
+            //                     : <TabInfo count={lang.NOT_ACTIVE} i={3} />
+            //             }
+            //         </>
+            //     )
+            // }
+        }, {
+            field: 'updateFc',
+            headerName: "تعديل وسيله الدفع",
+            type: 'actions',
+            width: 150,
             renderCell: (params) => {
-                return (
-                    <>
-                        {
-                            params.row.isActive ? <TabInfo count={lang.ACTIVE} i={1} />
-                                : <TabInfo count={lang.NOT_ACTIVE} i={3} />
-                        }
-                    </>
-                )
+                return <BtnModal component={<UpdatePayment payment={params.row} setReset={setReset} />} btnName={'تعديل'} />
             }
         }, {
             field: 'startDate',
@@ -95,7 +108,7 @@ function GetPayments() {
                 isMultiPart: true,
                 // fetchFc,
                 useUpdate: useUpdatePaymentMutation,
-                useDelete: useDeletePaymentMutation,
+                useDelete: isShowDelete && useDeletePaymentMutation,
                 columns, reset
             }} />
         </div>

@@ -37,7 +37,7 @@ function PaymentForm({ payment, status, onSubmit }) {
         },
     ]
     return (
-        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} />
+        <MakeForm inputs={inputs} onSubmit={onSubmit} status={status} preValue={payment} />
     )
 }
 

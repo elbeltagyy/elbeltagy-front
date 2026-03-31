@@ -10,7 +10,7 @@ import TitleWithDividers from './TitleWithDividers'
 function BtnModal({
     parenetSx = {}, btn,
     btnName, icon, children, component, variant = 'contained', color, size = 'small', isFilledHover = false, fullWidth = true, fullScreen = false, titleInSection = false,
-    close = false, onClose = false
+    close = false, onClose = false, disabled = false
 
 }) {
     const [open, setOpen] = useState(false)
@@ -30,15 +30,14 @@ function BtnModal({
                 <Box onClick={() => setOpen(true)}>
                     {btn}
                 </Box> : isFilledHover ?
-                    <FilledHoverBtn endIcon={icon} size={size} onClick={() => setOpen(true)} colorm={color}>
+                    <FilledHoverBtn disabled={disabled} endIcon={icon} size={size} onClick={() => setOpen(true)} colorm={color}>
                         {btnName}
                     </FilledHoverBtn>
                     :
-                    <Button variant={variant} endIcon={icon} size={size} onClick={() => setOpen(true)} color={color}>
+                    <Button disabled={disabled} variant={variant} endIcon={icon} size={size} onClick={() => setOpen(true)} color={color}>
                         {btnName}
                     </Button>
             }
-
 
             <ModalStyled open={open} setOpen={setOpen} fullWidth={fullWidth} fullScreen={fullScreen}>
                 <Section>

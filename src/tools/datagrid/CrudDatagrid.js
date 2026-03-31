@@ -98,7 +98,7 @@ function CrudDatagrid(
 
         if (!hasValidValue(item.value) && field) {
             return setFilter(p => {
-                console.log(p)
+                // console.log(p)
                 const { [field]: _, ...rest } = p || {}
                 return rest
             })

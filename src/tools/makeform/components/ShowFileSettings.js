@@ -40,6 +40,9 @@ export default function ShowFileSettings({ file, removeFile }) {
     if (fileType === 'application') {
         return <ShowPdf file={realFile} removeFile={removeFile} />
     }
+    if (!fileType && file.url) {
+        return <ShowImg file={file} removeFile={removeFile} />
+    }
     return (
         <FlexColumn>
             <Alert severity='error'>sorry, un supported file</Alert>

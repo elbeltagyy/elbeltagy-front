@@ -62,8 +62,7 @@ function AdminCardLectureRow({ lecture, i, setLectures, courseId, attributes, li
                                     bgcolor: 'primary.main', color: 'grey.0', cursor: 'grab',        // Shows drag cursor
                                     '&:active': { cursor: 'grabbing' },
                                 }} aria-label="recipe">
-                                {lecture.index}
-
+                                {i + 1}
                             </Avatar>
                         }
                         action={
@@ -71,7 +70,7 @@ function AdminCardLectureRow({ lecture, i, setLectures, courseId, attributes, li
                                 <SectionIcon lecture={lecture} />
                             </IconButton>
                         }
-                        title={<Typography variant='subtitle1' >{lecture.name + ' (' + (i + 1) + ')'}</Typography>}
+                        title={<Typography variant='subtitle1' >{lecture.name + ' ( id-' + (lecture.index) + ')'}</Typography>}
                         subheader={<TabInfo count={getFullDate(lecture.createdAt)} i={2} />}
                     />
 

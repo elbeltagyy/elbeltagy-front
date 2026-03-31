@@ -4,7 +4,8 @@ const statusConstants = {
     ERROR: "error",
     PENDING: 'pending',
     PAID: 'paid',
-    REJECTED: "rejected"
+    REJECTED: "rejected",
+    CANCELLED: "cancelled",
 }
 // 200, 201 ==> added 400 ===> bad request client error 401 ==> not authorized 404 notfound
 // status,  data, msg, (statusCode),
