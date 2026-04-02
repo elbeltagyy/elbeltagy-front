@@ -4,7 +4,7 @@ import { FaFacebook, FaWhatsapp } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { FiYoutube } from "react-icons/fi";
 
-export const PHONE = '01026476593'
+export const PHONE = '01127078234' //01026476593
 
 export const lang = { //Backend - Home - footer
     LOGO: 'منصة البلتاجى',

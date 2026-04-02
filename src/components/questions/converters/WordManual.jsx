@@ -19,7 +19,7 @@ const lettersAndSymbols = {
 }
 
 const optionPatterns =
-    [...lettersAndSymbolsArray(lettersAndSymbols), '<a)>', '<(a)>', "<➀>", '<➁>', '<➂>', '<➂>', '<➃>']
+    [...lettersAndSymbolsArray(lettersAndSymbols), '<a)>', '<(a)>', '<A)>','<(A)>',"<➀>", '<➁>', '<➂>', '<➂>', '<➃>']
 
 
 function WordManual({ setQuestions, extractorFc, accept = '.docx', isAi = false ,aiFormatting, preDefined={},info={}}) {
