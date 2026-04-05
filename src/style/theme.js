@@ -57,7 +57,7 @@ const bgColors = {
         alt: 'rgb(244, 246, 248)',
     },
     dark: {
-        dafault: 'rgb(22, 27, 36)',
+        dafault: '#080c14', //rgb(22, 27, 36)
         alt: '#1C252E',
     }
 }

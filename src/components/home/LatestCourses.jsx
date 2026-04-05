@@ -23,32 +23,31 @@ const courseIcon =
 function LatestCourses({ user = null }) {
     const { data } = useGetCoursesQuery({ isFixed: true, limit: 10, isModernSort: true, grade: user?.grade ?? null })
 
-    if (data?.values?.courses)
-        return (
-            <Section>
-                <FlexColumn mb={'12px'}>
-                    <TextBorderWithIcons sx={{ my: '9px' }} colorOne={'primary.main'} color={'neutral.0'} title={'احدث الكورسات'} endIcon={courseIcon} />
-                    <OutLinedHoverBtn size="small" component={Link} to='/courses' >عرض كل الكورسات</OutLinedHoverBtn>
-                </FlexColumn>
+    return (
+        <Section>
+            <FlexColumn mb={'12px'}>
+                <TextBorderWithIcons sx={{ my: '9px' }} colorOne={'primary.main'} color={'neutral.0'} title={'احدث الكورسات'} endIcon={courseIcon} />
+                <OutLinedHoverBtn size="small" component={Link} to='/courses' >عرض كل الكورسات</OutLinedHoverBtn>
+            </FlexColumn>
 
-                <Swiper
-                    modules={[Navigation, Pagination, A11y]}
-                    navigation
-                    pagination={{ clickable: true }}
-                    // spaceBetween={25}
-                    // slidesPerView={2.5}
-                    breakpoints={{
-                        320: { slidesPerView: 1.2, spaceBetween: 15 },   // mobile
-                        640: { slidesPerView: 1.2, spaceBetween: 15 }, // small tablets
-                        768: { slidesPerView: 2.25, spaceBetween: 20 },   // tablets
-                    }}
-                // onSlideChange={() => console.log('slide change')}
-                // onSwiper={(swiper) => console.log(swiper)}
-                >
-                    {data?.values?.courses.map((course, i) => <SwiperSlide key={i}> <UnitCourseDetails course={course} /> </SwiperSlide>)}
-                </Swiper>
-            </Section>
-        )
+            <Swiper
+                modules={[Navigation, Pagination, A11y]}
+                navigation
+                pagination={{ clickable: true }}
+                // spaceBetween={25}
+                // slidesPerView={2.5}
+                breakpoints={{
+                    320: { slidesPerView: 1.2, spaceBetween: 15 },   // mobile
+                    640: { slidesPerView: 1.2, spaceBetween: 15 }, // small tablets
+                    768: { slidesPerView: 2.25, spaceBetween: 20 },   // tablets
+                }}
+            // onSlideChange={() => console.log('slide change')}
+            // onSwiper={(swiper) => console.log(swiper)}
+            >
+                {data?.values?.courses.map((course, i) => <SwiperSlide key={i}> <UnitCourseDetails course={course} /> </SwiperSlide>)}
+            </Swiper>
+        </Section>
+    )
 }
 
 export default LatestCourses

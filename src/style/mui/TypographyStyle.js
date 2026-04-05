@@ -22,12 +22,12 @@ export const typographies = {
     banner: {
 
         fontSize: '3.5rem',
-        fontWeight: 700,
+        fontWeight: 400,
         '@media (max-width:600px)': {
             fontSize: '2.8rem',
         },
-        textShadow: '0 20px 30px hsla(0, 0%, 0%, 0.1)',
-        fontFamily: '"Changa", sans-serif'
+        // textShadow: '0 20px 30px hsla(0, 0%, 0%, 0.1)',
+        fontFamily: '"main", sans-serif',
     }, subBanner: {
         fontSize: '1.8rem',
         fontWeight: 600,

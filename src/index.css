@@ -4,6 +4,19 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'main';
+  src: url('/fonts/main-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'second';
+  src: url('/fonts/second.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 body {

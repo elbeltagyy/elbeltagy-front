@@ -54,7 +54,7 @@ function FooterPage() {
                     email: menassty@gmail.com
                 </Typography>
                 <Typography variant='body2' sx={{ color: "grey.0", textAlign: 'center' }}>
-                    phone: 01026476593
+                    phone: 01127078234
                 </Typography>
                 <Typography variant='body2' sx={{ color: "grey.0", textAlign: 'center' }}>
                     Currency: EGP
