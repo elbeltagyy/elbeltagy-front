@@ -26,6 +26,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+html, body {
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
 
 img {
   height: 100%;
