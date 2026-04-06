@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from '@mui/material'
+import { Box, IconButton, useMediaQuery } from '@mui/material'
 import { Suspense, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
@@ -43,6 +43,9 @@ function Layout() {
             </Suspense>
             <FooterPage />
             <GlobalMsg />
+            <IconButton onClick={()=> window.location.href = "https://api.whatsapp.com/send?phone=2001127078234&text=from mrelbeltagy"} sx={{ position: 'fixed', bottom: '5%', right: '16px' }}>
+                <img src='/assets/whatsapp.png' style={{ width: '50px', height: '50px' }} />
+            </IconButton>
         </Box >
     )
 }
