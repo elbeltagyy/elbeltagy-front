@@ -156,6 +156,10 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
             width: 200,
             filterable: false,
             sortable: false
+        },{
+            field: 'userId',
+            headerName: 'userId',
+            width: 200,
         }, {
             field: 'familyPhone',
             headerName: lang.FAMILY_PHONE,
