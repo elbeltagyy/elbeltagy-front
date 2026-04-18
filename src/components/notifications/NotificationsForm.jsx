@@ -21,7 +21,7 @@ function NotificationsForm({ setNotifications, resetFc, user, users = [], matche
         {
             name: 'subject',
             label: 'الموضوع',
-            validation: Yup.string().required(lang.REQUERIED)
+            // validation: Yup.string().required(lang.REQUERIED)
         }, {
             name: 'message',
             label: 'الرساله المراد ارسالها',

@@ -15,6 +15,8 @@ import UserAvatar from '../users/UserAvatar'
 import TitleWithDividers from '../ui/TitleWithDividers'
 import { useLazyAnalysisSubscriptionsQuery } from '../../toolkit/apis/statisticsApi'
 import useGrades from '../../hooks/useGrades'
+import NotificationsForm from '../notifications/NotificationsForm'
+import BtnModal from '../ui/BtnModal'
 
 const exportObj = (grades) => ({
     grade: (row) => {
@@ -71,7 +73,7 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
         const res = await getSubscriptions({ ...params, course: courseId, populate: 'user course' }, false)
         const modifiedRes = res.subscriptions.map((subscribe) => {
             return {
-                ...subscribe.user,
+                ...subscribe.user, userId: subscribe?.user._id,
                 courseId: subscribe.course._id,
                 courseName: subscribe.course.name, price: subscribe.course.price,
                 _id: subscribe._id, createdAt: subscribe.createdAt, currentIndex: subscribe.currentIndex, updatedAt: subscribe.updatedAt, payment: subscribe.payment
@@ -123,6 +125,14 @@ function GetSubscriptions({ courseId = '', user = '', isShowTitle = false, userN
                         <TabInfo count={params.row.currentIndex} i={1} />
                     </Box>
                 )
+            }
+        }, {
+            field: 'sendNotification',
+            headerName: 'ارسال اشعار',
+            type: 'actions',
+            width: 200,
+            renderCell: (p) => {
+                return <BtnModal btnName={'ارسال رساله'} component={<NotificationsForm user={{ userName: p.row.userName, name: p.row.name, _id: p.row.userId }} />} />
             }
         },
         {
