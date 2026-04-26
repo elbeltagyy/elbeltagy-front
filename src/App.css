@@ -134,13 +134,13 @@ html{
     /* background-color: green; */
 }
 
-@media screen and (min-width: 900px) {
+/* @media screen and (min-width: 900px) {
     .fly-me {
         width: 100%;
         left: 0;
         height: 100%;
     }
-}
+} */
 
 .control--overlaid {
     z-index: 2 !important;
