@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { Alert, Paper, useMediaQuery, } from '@mui/material'
+import { Alert, Box, Paper, useMediaQuery, } from '@mui/material'
 
 import HeaderContent from '../../components/ui/HeaderContent'
 import { ExamIcon, FilesIcon, VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
+import TitleSection from '../../components/ui/TitleSection'
 import LectureUserCard from '../../components/content/LectureUserCard'
 import CourseSubscribeCard from '../../components/content/CourseSubscribeCard'
 
 import Section from '../../style/mui/styled/Section'
+import Grid from '../../style/vanilla/Grid'
 import Loader from '../../style/mui/loaders/Loader'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 
@@ -39,7 +41,9 @@ function CoursePage() {
             let counts = {
                 videos: allLectures.filter(lecture => lecture.sectionType === sectionConstants.VIDEO)?.length,
                 files: allLectures.filter(lecture => lecture.sectionType === sectionConstants.FILE)?.length,
-                exams: allLectures.filter(lecture => lecture.sectionType === sectionConstants.EXAM)?.length
+                exams: allLectures.filter(lecture => lecture.sectionType === sectionConstants.EXAM)?.length,
+                estimatedVideos: course.estimatedVideos,
+                estimatedFiles: course.estimatedFiles, estimatedExams: course.estimatedExams,
             }
             setCurrentUserIndex(currentIndex)
             setCourseDetails({ course, chapters: lectures, counts })
@@ -149,11 +153,11 @@ function CoursePage() {
             <HeaderContent title={courseDetails?.course?.name} body={<div dangerouslySetInnerHTML={{ __html: courseDetails?.course?.description }} />}
                 infos={[
                     {
-                        caption: lang.LECTURES, desc: '+ ' + courseDetails?.counts?.videos, icon: <VidsIcon2 size='1.5rem' />
+                        caption: lang.LECTURES, desc: courseDetails?.counts?.videos, icon: <VidsIcon2 size='1.5rem' />, estimated: courseDetails?.counts?.estimatedVideos
                     }, {
-                        caption: lang.FILES, desc: '+ ' + courseDetails?.counts?.files, icon: <FilesIcon size='1.5rem' />
+                        caption: lang.FILES, desc: courseDetails?.counts?.files, icon: <FilesIcon size='1.5rem' />, estimated: courseDetails?.counts?.estimatedFiles
                     }, {
-                        caption: lang.EXAMS, desc: '+ ' + courseDetails?.counts?.exams, icon: <ExamIcon size='1.5rem' />
+                        caption: lang.EXAMS, desc: courseDetails?.counts?.exams, icon: <ExamIcon size='1.5rem' />, estimated: courseDetails?.counts?.estimatedExams
                     }
                 ]}
                 sideChildren={<FlexColumn>

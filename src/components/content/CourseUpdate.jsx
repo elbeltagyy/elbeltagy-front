@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import { useUpdateCourseMutation } from '../../toolkit/apis/coursesApi'
 import usePostData from '../../hooks/usePostData'
@@ -8,8 +8,9 @@ import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
 import { AiFillPoundCircle } from "react-icons/ai";
 
 import { VscSymbolBoolean } from "react-icons/vsc";
-import * as Yup from "yup"
 
+
+import * as Yup from "yup"
 import dayjs from 'dayjs'
 
 import PreDiscount from './PreDiscount'
@@ -107,13 +108,37 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             column: 1, row: 5,
 
         }, {
+            name: 'estimatedVideos',
+            label: 'عدد الفيديوهات المتوقعة',
+            type: 'number',
+            value: course.estimatedVideos ?? 0,
+            icon: <VscSymbolBoolean />,
+            width: "100%",
+            column: 1, row: 6,
+
+        }, {
+            name: 'estimatedFiles',
+            label: 'عدد الملفات المتوقعة',
+            type: 'number',
+            value: course.estimatedFiles ?? 0,
+            icon: <VscSymbolBoolean />,
+            width: "100%",
+            column: 1, row: 6,
+        }, {
+            name: 'estimatedExams',
+            label: 'عدد الامتحانات المتوقعة',
+            type: 'number',
+            value: course.estimatedExams ?? 0,
+            icon: <VscSymbolBoolean />,
+            width: "100%",
+            column: 1, row: 6,
+        }, {
             name: 'dateStart',
             label: 'تاريخ بدايه الكورس',
             type: 'fullDate',
             width: "100%",
             value: course.dateStart ? dayjs(course.dateStart) : null,
             column: 2, row: 2,
-
         }, {
             name: 'dateEnd',
             label: 'تاريخ نهايه الكورس',
