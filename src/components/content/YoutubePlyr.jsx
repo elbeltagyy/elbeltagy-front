@@ -149,20 +149,6 @@ function YoutubePlyr({ url, videoId, course, lecture, sendStatistics, setForbidd
         };
     }, [lecture])
 
-    useEffect(() => {
-        const disableRightClick = (e) => {
-            e.preventDefault();
-        };
-
-        window.addEventListener('contextmenu', disableRightClick);
-        window.addEventListener('keydown', disableRightClick);
-
-        return () => {
-            window.removeEventListener('contextmenu', disableRightClick);
-            window.removeEventListener('keydown', disableRightClick);
-        };
-    }, []);
-
     return <div ref={plyrContainer} style={{ position: 'relative', boxShadow: theme.shadows[8], width: '100%', maxHeight: '500px !important', borderRadius: '16px', overflow: 'hidden', "--plyr-color-main": '#1ac266' }}  >
         <Plyr ref={vid} source={source} options={options} />
         {vid && (

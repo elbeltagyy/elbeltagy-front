@@ -11,9 +11,9 @@ export default function ShowVid({ file, removeFile }) {
     const theme = useTheme()
 
     const [open, setOpen] = useState(false)
-    if (!youtubeRegex.test(file?.url)) {
-        return <Alert sx={{ m: "5px" }} severity='error'>Invalid Youtube URL .</Alert>
-    }
+    // if (!youtubeRegex.test(file?.url)) {
+    //     return <Alert sx={{ m: "5px" }} severity='error'>Invalid Youtube URL .</Alert>
+    // }
     
     return (
         <Card sx={{ maxWidth: 345, backgroundColor: theme.palette.background.alt }}>

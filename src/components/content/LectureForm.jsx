@@ -12,6 +12,7 @@ import filePlayers from '../../settings/constants/filePlayers'
 import BtnModal from '../ui/BtnModal'
 import ExamCreatePage from '../../pages/admin/ExamCreatePage'
 import ExamUpdatePage from '../../pages/admin/ExamUpdatePage'
+import { Alert } from '@mui/material'
 
 const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(\?.*)?$/;
 
@@ -133,6 +134,32 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
             value: lecture?.video?.minDuration,
             startIcon: '%',
             helperText: 'يرجي العلم ان النسبه تحسب  من اجمالي عدد الدقائق المشاهده لذلك يمكن للطالب ان يشاهد الفيديو على سرعه 2x وبالتالي سيكون قد شاهد نصف الفيديو فقط ولكن فى الحقيقه قام بانهاء المحاضره'
+        },
+    ]
+
+    // <!-- <iframe id="iframeVideo" src="https://drive.google.com/file/d/1c87XMQ30HSEmO6FahFdUFIqWj9luRQdV/preview?modestbranding=1&amp;rel=0&amp;iv_load_policy=3&amp;enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen="">
+    // </iframe> -->
+    const googleDriveInputs = [
+        ...lectureInfoInputs,
+        {
+            name: 'player',
+            label: 'المشغل',
+            disabled: true,
+            value: filePlayers.GOOGLE_DRIVE
+        }, {
+            name: 'url',
+            label: 'الصق url',
+            type: 'url',
+            player: 'google',
+            value: lecture?.video?.url
+        }, {
+            name: 'duration',
+            label: 'الوقت',
+            validation: Yup.string()
+                .matches(durationRegex, 'ارقام فقط, غير مسموح بوجود مساحات, h,m,s فقط')
+                .required(lang.REQUERIED),
+            value: lecture?.video?.duration,
+            helperText: 'يرجي كتابه وقت الفيديو بدقه حتي يتم حساب وقت الفيديو اللازم للمشاهده بطريقه صحيحه'
         },
     ]
 
@@ -313,21 +340,6 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
         }
     ]
 
-    // //file bunny
-    // const fileBunnyInputs = [...lectureInfoInputs,
-    // {
-    //     name: 'player',
-    //     label: 'نوع المشغل',
-    //     value: activeFilePlayer,
-    //     disabled: true
-    // }, {
-    //     name: 'video',
-    //     label: 'اختر file',
-    //     type: 'file',
-    //     value: lecture?.file,
-    // }
-    // ]
-
     const createExamBtnUrl = '/management/courses/' + course + '/exams/create'
     const updateExamUrl = '/management/courses/' + lecture?.course + '/exams/' + lecture?._id
 
@@ -343,9 +355,9 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
                 {/* Video setup */}
                 {sectionType === sectionConstants.VIDEO && (
                     <MakeSelect disabled={location === 'update' ? true : false}
-                        disableValue={['bunny']}
+                        disableValue={['bunny', 'vidocipher']}
                         title={'نوع مشغل الفيديو'} value={videoPlayer} setValue={setVideoPlayer}
-                        options={[filePlayers.YOUTUBE, filePlayers.BUNNY]} /> //, filePlayers.BUNNY_UPLOAD, filePlayers.SERVER
+                        options={[filePlayers.YOUTUBE, filePlayers.GOOGLE_DRIVE, filePlayers.BUNNY, 'vidocipher']} /> //, filePlayers.BUNNY_UPLOAD, filePlayers.SERVER
                 )}
 
                 {sectionType === sectionConstants.VIDEO && videoPlayer && (
@@ -355,10 +367,15 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
                             : videoPlayer === filePlayers.BUNNY ?
                                 <MakeForm status={status} inputs={bunnyInputs} onSubmit={onSubmit} />
                                 : videoPlayer === filePlayers.BUNNY_UPLOAD ?
-                                    <MakeForm status={status} inputs={bunnyUploadInputs} onSubmit={onSubmit} />
-                                    :
-                                    videoPlayer === filePlayers.SERVER &&
-                                    <MakeForm status={status} inputs={videoServerInputs} onSubmit={onSubmit} />}
+                                    <MakeForm status={status} inputs={bunnyUploadInputs} onSubmit={onSubmit} /> :
+                                    videoPlayer === filePlayers.GOOGLE_DRIVE ?
+                                        <FlexColumn>
+                                            <Alert severity='warning'>جوجل درايف مبيسمحش بتسجيل عدد دقائق المشاهده - سرعه الطالب</Alert>
+                                            <MakeForm status={status} inputs={googleDriveInputs} onSubmit={onSubmit} />
+                                        </FlexColumn>
+                                        :
+                                        videoPlayer === filePlayers.SERVER &&
+                                        <MakeForm status={status} inputs={videoServerInputs} onSubmit={onSubmit} />}
                     </>
                     // End of videos section
                 )}

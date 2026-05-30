@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material'
 import filePlayers from '../../settings/constants/filePlayers'
 import { useVideoOnMutation } from '../../toolkit/apis/videosStatisticsApi'
 import usePostData from '../../hooks/usePostData'
+import GoogleDrive from './GoogleDrive'
+
 
 function VideoGenerate({ video, lecture, course }) {
     //youtube => button , iframe || bunny => iframe || server => iframe
@@ -22,8 +24,21 @@ function VideoGenerate({ video, lecture, course }) {
         await sendStatistics(cloned)
     }, []);
 
-    if(isForbidden) return <></>
+    useEffect(() => {
+        const disableRightClick = (e) => {
+            e.preventDefault();
+        };
 
+        window.addEventListener('contextmenu', disableRightClick);
+        window.addEventListener('keydown', disableRightClick);
+
+        return () => {
+            window.removeEventListener('contextmenu', disableRightClick);
+            window.removeEventListener('keydown', disableRightClick);
+        };
+    }, []);
+
+    if (isForbidden) return <></>
     return (
         <>
             {video.player === filePlayers.YOUTUBE ? (
@@ -41,9 +56,7 @@ function VideoGenerate({ video, lecture, course }) {
                         allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen={true}>
                     </iframe>
                 </div >
-            ) : (
-                <YoutubePlyr url={video.url} />
-            )}
+            ) : <GoogleDrive video={video} course={course} lecture={lecture._id} sendStatistics={trigger} />}
         </>
     )
 }
