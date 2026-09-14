@@ -22,7 +22,7 @@ const sanitizeData = (data) => ({
 //     useFetch: useLazyGetAnswersQuery,
 //     resKey: 'answers',
 //     fetchFc,
-//     useUpdate: useUpdateAnswerMutation,
+//     useUpdate: useUpdateAnswerMutation,isMultiPart
 //     useDelete: useRemoveAnswerMutation,
 //     columns, reset, loading,fetchFilters,
 //      viewFc, deleteFc, updateFc,
@@ -40,7 +40,7 @@ function FullComponent({ data }) {
     const fetchFc = async (params) => {
         if (!getFc) return { values: [], count: 0 }
         const filters = { ...params, ...sanitizedData.fetchFilters }
-        
+
         if (sanitizedData.setMatches) {
             // console.log('setMatches ==>', filters)
             sanitizedData.setMatches(filters)
@@ -53,7 +53,7 @@ function FullComponent({ data }) {
             res = sanitizedData.fetchFc(res)
         }
         const modified = { values: res[sanitizedData.resKey], count: res.count }
-        if(sanitizedData.setCount){
+        if (sanitizedData.setCount) {
             sanitizedData.setCount(modified.count)
         }
         setCount(modified.count)
@@ -85,6 +85,7 @@ function FullComponent({ data }) {
             {sanitizedData.showCount && <TabInfo count={count} i={1} title={sanitizedData.showCount} />}
 
             <MeDatagrid
+                apiRef={sanitizedData.apiRef}
                 reset={sanitizedData.reset} massActions={sanitizedData.massActions} allStatuses={sanitizedData.allStatuses}
                 setSelection={sanitizedData.setSelection && sanitizedData.setSelection}
                 selections={sanitizedData.selections}

@@ -11,7 +11,7 @@ import { lang } from '../../settings/constants/arlang';
 import * as Yup from "yup"
 import { useLoginMutation } from '../../toolkit/apis/usersApi';
 
-function LoginForm() {
+function LoginForm({ afterFc }) {
     const inputs = [
         {
             label: lang.PHONE,
@@ -43,6 +43,7 @@ function LoginForm() {
     const onSubmit = async (values) => {
         const res = await loginFc(values)
         dispatch(setUser(res))
+        if (afterFc) afterFc()
     }
 
     const modalInfo = useMemo(() => {

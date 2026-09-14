@@ -27,7 +27,11 @@ function BtnModal({
     return (
         <FlexColumn sx={parenetSx}>
             {btn ?
-                <Box onClick={() => setOpen(true)}>
+                <Box onClick={() => {
+                    if (!disabled) {
+                        setOpen(true)
+                    }
+                }}>
                     {btn}
                 </Box> : isFilledHover ?
                     <FilledHoverBtn disabled={disabled} endIcon={icon} size={size} onClick={() => setOpen(true)} colorm={color}>

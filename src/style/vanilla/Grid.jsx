@@ -1,9 +1,13 @@
-function Grid({ children, gap = '30px', min = '300px', sx }) {
+function Grid({ children, gap = '24px', min = '260px', maxCols = 4, sx }) {
     return (
         <div style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${'auto-fit'}, minmax(${min}, 1fr))`, width: '100%',
-            gap: gap, justifyItems: 'center', alignContent: 'center', ...sx
+            gridTemplateColumns: `repeat(auto-fit, minmax(max(${min}, calc((100% - ${maxCols - 1}*${gap})/${maxCols})), 1fr))`,
+            width: '100%',
+            gap: gap,
+            justifyItems: 'center',
+            alignContent: 'start',
+            ...sx
         }}>
             {children}
         </div>

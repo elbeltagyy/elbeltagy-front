@@ -8,7 +8,7 @@ import { makeArrWithValueAndLabel } from "../../tools/fcs/MakeArray"
 import TabInfo from "../ui/TabInfo"
 import UserAvatar from "../users/UserAvatar"
 
-function Courses({ filters, viewFc, updateFc, deleteFc, massActions, reset,selections,addColumns }) {
+function Courses({ filters, viewFc, updateFc, deleteFc, massActions, reset, selections, addColumns, setSelection }) {
     const { grades } = useGrades()
 
     const columns = [
@@ -26,7 +26,7 @@ function Courses({ filters, viewFc, updateFc, deleteFc, massActions, reset,selec
         },
         {
             field: 'name',
-            headerName: lang.NAME,
+            headerName: 'اسم الكورس',
             width: 200,
         }, {
             field: 'isActive',
@@ -39,7 +39,7 @@ function Courses({ filters, viewFc, updateFc, deleteFc, massActions, reset,selec
             type: 'singleSelect',
             width: 200,
             valueOptions: makeArrWithValueAndLabel(grades, { value: 'index', label: 'name' }),
-        },  {
+        }, {
             field: 'createdAt',
             headerName: 'تاريخ الانشاء',
             width: 200,
@@ -58,8 +58,8 @@ function Courses({ filters, viewFc, updateFc, deleteFc, massActions, reset,selec
                 resKey: 'courses',
                 fetchFilters: filters,
                 viewFc, deleteFc, updateFc,
-                columns, massActions,selections,
-                reset,addColumns
+                columns, massActions, selections, setSelection,
+                reset, addColumns
             }} />
         </div>
     )

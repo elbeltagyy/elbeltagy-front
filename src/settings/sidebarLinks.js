@@ -75,6 +75,21 @@ import ManagePaymentsPage from "../pages/admin/PaymentsPage.jsx";
 import CoursesPage from "../pages/user/CoursesPage.jsx";
 import GradesManage from "../pages/admin/GradesManage.jsx";
 import ErrorsPage from "../pages/admin/ErrorsPage.jsx";
+import FacebookPage from "../pages/admin/FacebookPage.jsx";
+
+import MessengerPage from "../pages/admin/MessengerPage.jsx";
+import WhatsappPage from "../pages/admin/WhatsappPage.jsx";
+import OfficialWhatsapp from "../pages/admin/OfficialWhatsapp.jsx";
+import { ManageHistory } from "@mui/icons-material";
+import PlannerPage from "../pages/admin/PlannerPage.jsx";
+import TempPage from "../pages/admin/TempPage.jsx";
+// import TempPageDelete from "../pages/admin/TempPageDelete.jsx";
+// import CentersSystem from "../pages/admin/CentersSystem.jsx";
+import BooksManage from "../pages/admin/BooksManage";
+// import CommunityManagePage from "../pages/admin/CommunityManagePage.jsx";
+import Application from "../pages/user/Application.jsx";
+import BooksPage from "../pages/user/BooksPage.jsx";
+import ApplicationManage from "../pages/admin/ApplicationManage.jsx";
 
 const GetQuestionsPage = lazy(() => import("../pages/admin/GetQuestionsPage"))
 
@@ -82,7 +97,7 @@ const AttemptPage = lazy(() => import("../pages/user/AttemptPage"))
 const AttemptsPage = lazy(() => import("../pages/admin/AttemptsPage"))
 
 const GetCodesPage = lazy(() => import("../pages/admin/GetCodesPage"))
-const CreateCodePage = lazy(() => import("../pages/admin/CreateCodePage"))
+// const CreateCodePage = lazy(() => import("../pages/admin/CreateCodePage"))
 
 const UnitsPage = lazy(() => import("../pages/user/UnitsPage"))
 const CoursePage = lazy(() => import("../pages/user/CoursePage"))
@@ -122,6 +137,10 @@ export const sidebarLinks = [
         name: "مجتمع الطلاب", icon: <TbWorldQuestion size="22px" />,
         to: "/community5050", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'قريبا', i: 2 },
     }, {
+        name: "متجر الكتب", icon: <FaSchool size="22px" />, to: "/books", id: 'books_std',
+        allowedTo: [user_roles.STUDENT, user_roles.ONLINE],
+        element: <BooksPage />
+    }, {
         name: "اداره الحساب", allowedTo: [user_roles.STUDENT, user_roles.ONLINE]
     }, {
         name: "حسابى", icon: <SignupIcon size="22px" />, to: "/user/profile",
@@ -143,10 +162,17 @@ export const sidebarLinks = [
         name: "البحث عن طالب", icon: <RiUserSettingsFill size="22px" />, to: "/management/users/view", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <FindUserPage />, id: 'findUser'
     }, {
+        name: "اداراه الاستمارات", icon: <ManageHistory size="22px" />, to: "/management/application",
+        allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <ApplicationManage />, id: 'applications_manage',
+    }, {
         name: "إدارة المحتوى", icon: <SiGooglecampaignmanager360 size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN]
     }, {
         name: "السنوات الدراسيه", icon: <SiGooglecampaignmanager360 size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
-        element: <GradesManage />,to: "/management/grades",
+        element: <GradesManage />, to: "/management/grades",
+    }, {
+        name: "المذكرات", icon: <ManageHistory size="22px" />, to: "/management/books", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <BooksManage />, id: 'centers',
     }, {
         name: "إدارة الكورسات", icon: <FaSchool size="22px" />, to: "/management/courses", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <ManageCoursesPage />, id: 'coursesManage'
@@ -154,10 +180,10 @@ export const sidebarLinks = [
         name: "عرض الاشتراكات", icon: <MdOutlineSubscriptions size="22px" />, to: '/statistics/courses', allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <GetSubscriptionsAll />, id: 'subscriptions' //'/management/subscriptions'
     }, {
-        name: "إدارة الاسئله", icon: <PiQuestionFill size="22px" />, to: "/management/questions", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false, info: { title: 'جديد', i: 1 },
+        name: "إدارة الاسئله", icon: <PiQuestionFill size="22px" />, to: "/management/questions", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,
         element: <GetQuestionsPage />, id: 'questions'
     }, {
-        name: "الاختبارات", icon: <MdQuestionAnswer size="22px" />, to: "/management/attempts", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false, info: { title: 'جديد', i: 1 },
+        name: "الاختبارات", icon: <MdQuestionAnswer size="22px" />, to: "/management/attempts", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,
         element: <AttemptsPage />, id: 'attempts'
     }, {
         name: "المحاضرات", icon: <LectureIcon size="22px" />, to: '/management/lectures', allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
@@ -190,21 +216,55 @@ export const sidebarLinks = [
     }, {
         name: "المدفوعات", icon: <SignupIcon size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], // info: { title: 'تحت الانشاء', i: 2 }
     }, {
-        name: "وسائل الدفع", icon: <RiSecurePaymentFill size="22px" />, to: "/management/payments", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false, info: { title: "جديد", i: 1 },
+        name: "وسائل الدفع", icon: <RiSecurePaymentFill size="22px" />, to: "/management/payments", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,
         element: <ManagePaymentsPage />, id: 'payments'
     }, {
-        name: "الفواتير", icon: <PiInvoiceBold size="22px" />, to: "/management/invoices", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false, info: { title: "جديد", i: 1 },
+        name: "الفواتير", icon: <PiInvoiceBold size="22px" />, to: "/management/invoices", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false,
         element: <InvoicesPage />, id: 'invoices'
     }, {
         name: 'المحفظه و المدفوعات', icon: <PiInvoiceBold size="22px" />, to: "/payments", allowedTo: [user_roles.ONLINE, user_roles.STUDENT],
         element: <PaymentsPage />
     }, {
-        name: "اقتراح/شكوي", icon: <VscFeedback size="22px" />, to: "/feedBacks", allowedTo: [user_roles.ONLINE, user_roles.STUDENT], info: { title: "جديد", i: 1 },
+        name: "اقتراح/شكوي", icon: <VscFeedback size="22px" />, to: "/feedBacks", allowedTo: [user_roles.ONLINE, user_roles.STUDENT],
         element: <FeedBacks />
     }, {
-        name: "اقتراحات/شكاوي", icon: <VscFeedback size="22px" />, to: "/management/feedBacks", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        name: "اقتراحات/شكاوي", icon: <VscFeedback size="22px" />, to: "/management/feedBacks", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <FeedBacks isAdmin={true} />, id: 'feedBacks'
+    }, {
+        name: "وسائل التواصل", icon: <VscFeedback size="22px" />, allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        id: 'social_title'
+    }, {
+        name: "اداره الخطط", icon: <ManageHistory size="22px" />, to: "/management/manager", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <PlannerPage />, id: 'manager',
+    }, {
+        name: "اجوبه سريعه", icon: <ManageHistory size="22px" />, to: "/management/templates", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <TempPage />, id: 'templates',
+    }, {
+        name: "صفحه الفيسبوك", icon: <VscFeedback size="22px" />, to: "/management/facebook", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <FacebookPage />, id: 'social_facebook',
+    }, {
+        name: "ماسنجر", icon: <VscFeedback size="22px" />, to: "/management/messenger", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <MessengerPage />, id: 'social_messenger',
+    }, {
+        name: "واتساب(غير رسمي)", icon: <VscFeedback size="22px" />, to: "/management/whatsapp", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <WhatsappPage />, id: 'social_whatsapp',
+    }, {
+        name: "واتساب (الرسمي)", icon: <VscFeedback size="22px" />, to: "/management/official_whatsapp", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+        element: <OfficialWhatsapp />, id: 'social_official_whatsapp',
     },
+    // {
+    //     name: "السناتر", icon: <ManageHistory size="22px" />, to: "/management/centers", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+    //     element: <CentersSystem />, id: 'centers',
+    // }, {
+    //     name: "منتدي الطلاب", icon: <ManageHistory size="22px" />, to: "/management/community", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1, disabled: false },
+    //     element: <CommunityManagePage />, id: 'centers', isDisabled: true
+    // }, {
+    //     name: "اجوبه سريعه demo", icon: <ManageHistory size="22px" />, to: "/management/templates_demo", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+    //     element: <TempPageDelete />, id: 'templates',
+    // }, {
+    //     name: "Template", icon: <VscFeedback size="22px" />, to: "/management/facebookd/", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },
+    //     element: <FacebookTemplate />, id: 'social_facebook',
+    // },
 ]
 
 const otherLinks = [
@@ -215,6 +275,8 @@ const otherLinks = [
         path: '/errors', element: <ProtectedRoute allowedTo={[user_roles.ADMIN]}>
             <ErrorsPage />
         </ProtectedRoute>
+    }, {
+        path: '/applications', element: <Application />
     }, {
         path: '/grades/:gradeId', element: <UnitsPage />
     }, {// Edit Path here 
@@ -227,6 +289,14 @@ const otherLinks = [
         ]
     }, {
         path: '/courses', element: <CoursesPage />
+    }, {
+        path: '/courses/:courseId', element: <CoursePage />, children: [
+            {
+                path: '/courses/:courseId/lectures/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.ONLINE, user_roles.STUDENT]}>
+                    <LecturePage />
+                </ProtectedRoute>
+            }
+        ]
     }, {
         path: '/lectures/:lectureId', element: <ProtectedRoute allowedTo={[user_roles.STUDENT, user_roles.ONLINE]}>
             <LectureCenterPage />
@@ -265,6 +335,10 @@ const otherLinks = [
         path: '*', element: <NotFoundPage />
     }
 ]
+
+// otherLinks.push({
+//     path: '/management/facebook/:postId/comments', element: <>Hello comments</>
+// })
 
 export const routesLinks = [...sidebarLinks.map(link => {
     if (link.Component) {

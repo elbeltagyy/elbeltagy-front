@@ -26,7 +26,7 @@ function CreateTag({ setReset, defaultGrade }) {
     const inputs = [
         {
             name: 'name',
-            label: lang.NAME,
+            label: 'اسم الموضوع',
             icon: <MdOutlineDriveFileRenameOutline color='green' />,
             validation: Yup.string().required(lang.REQUERIED)
         }, {

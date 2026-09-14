@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import ModalStyled from "../../style/mui/styled/ModalStyled"
 
-function BtnConfirm({ btn, children, modalInfo = {} }) {
+function BtnConfirm({ btn, children, modalInfo = {}, component }) {
     const [open, setOpen] = useState(false)
     const [confirmedAction, setConfirmedAction] = useState(() => () => { });
 
@@ -14,14 +14,14 @@ function BtnConfirm({ btn, children, modalInfo = {} }) {
         setOpen(true);
     };
 
-    const clonedBtn = React.cloneElement(btn || children, {
+    const clonedBtn = React.cloneElement(btn, {
         onClick: handleBtnClick
     });
 
     return (
         <div>
             {clonedBtn}
-            <ModalStyled action={confirmedAction} open={open} setOpen={setOpen} title={modalInfo.title} desc={modalInfo.desc} />
+            <ModalStyled action={confirmedAction} open={open} setOpen={setOpen} title={modalInfo.title} desc={modalInfo.desc} component={component} />
         </div>
     )
 }

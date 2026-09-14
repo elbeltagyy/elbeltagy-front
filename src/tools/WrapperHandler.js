@@ -14,7 +14,7 @@ function WrapperHandler({ children, status, showSuccess = false, width = '100%' 
           </Alert>}
 
           {status?.isError && <Alert sx={{ maxWidth: '100%,', m: '0 auto' }} variant="filled" severity="error">
-            {status?.error && status?.error.error || status.error.data.message || 'حدث خطا...!'}
+            {status?.error && status?.error?.message || status.error.data.message || 'حدث خطا...!'}
           </Alert>
           }
 

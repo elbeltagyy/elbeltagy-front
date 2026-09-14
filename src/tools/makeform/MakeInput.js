@@ -23,6 +23,7 @@ import { memo } from 'react'
 import ShowIframe from './components/ShowIframe'
 
 const getGoogleDrivePreviewLink = (originalLink) => {
+    if (!originalLink) return
     const fileIdRegex = /\/d\/(.*?)\//;
     const match = originalLink.match(fileIdRegex);
 

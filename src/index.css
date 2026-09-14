@@ -26,12 +26,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-html {
+.page-wrapper {
   overflow-x: clip;
-}
-
-body {
-  overflow-x: hidden;
 }
 
 img {

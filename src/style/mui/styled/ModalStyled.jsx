@@ -13,7 +13,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export default function ModalStyled({ allowBackClose = false, open, setOpen, title, desc = 'بمجرد الموافقه لن يمكنك العوده !', children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false }) {
+export default function ModalStyled({ allowBackClose = false, open, setOpen, title, desc = 'بمجرد الموافقه لن يمكنك العوده !', children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false, component }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -30,7 +30,7 @@ export default function ModalStyled({ allowBackClose = false, open, setOpen, tit
         // Push dummy history entry
         window.history.pushState({ popup: true }, "");
 
-        const handlePopState = (e) => {
+        const handlePopState = () => {
             if (open) {
                 setOpen(false);   // close popup
                 // Re-add the history entry to prevent leaving the page
@@ -64,8 +64,9 @@ export default function ModalStyled({ allowBackClose = false, open, setOpen, tit
                     <DialogTitle>{title || lang.ARE_YOU_SURE}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
+                            {desc}
                         </DialogContentText>
-                        {desc}
+                        {component}
                     </DialogContent>
                 </>)}
                 <DialogActions>

@@ -4,8 +4,7 @@ import { FlexBetween } from "../../style/mui/styled/Flexbox"
 import CardInfo from "../../style/mui/components/CardInfo"
 import Grid from "../../style/vanilla/Grid"
 import AnimatedCell from "./AnimatedCell"
-import Nucleus from "../animations/nucleus/Nucleus"
-
+// import Nucleus from "../animations/nucleus/Nucleus"
 
 const services = [
     {
@@ -33,6 +32,8 @@ const services = [
         next: '/assets/corona.svg'
     }
 ]
+
+
 function Services2() {
     const theme = useTheme()
     return (
@@ -75,9 +76,9 @@ function Services2() {
                 </Box>
 
                 <Box flex={1} sx={{ maxWidth: '800px', position: 'relative', }}>
-                    <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translateX(-50%)', opacity: .1 }}>
+                    {/* <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translateX(-50%)', opacity: .1 }}>
                         <Nucleus />
-                    </Box>
+                    </Box> */}
 
                     <Grid gap={2}>
                         {services.map((service, i) => (

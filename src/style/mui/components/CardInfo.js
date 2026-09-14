@@ -21,7 +21,7 @@ function AnimatedCounter({ from, to, duration = 1.5 }) {
     return <span>{display}</span>
 }
 
-function CardInfo({ icon, caption, desc, estimated }) {
+function CardInfo({ icon, caption, desc, estimated, sx, nextComponent }) {
     const theme = useTheme()
     const hasEstimated = estimated !== undefined && estimated !== null
     const [phase, setPhase] = useState(hasEstimated ? 'estimated' : 'real')
@@ -46,6 +46,9 @@ function CardInfo({ icon, caption, desc, estimated }) {
                 mt: '10px',
                 color: 'grey.1000',
                 width: '150px',
+                position: 'relative',
+                ...sx
+
             }}
         >
             <FlexColumn m={'0 auto'}>
@@ -87,7 +90,7 @@ function CardInfo({ icon, caption, desc, estimated }) {
                         )
                     ) : (
                         // No estimated prop — just show desc as-is
-                        desc
+                        nextComponent ?? desc
                     )}
                 </Typography>
             </FlexColumn>

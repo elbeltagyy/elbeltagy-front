@@ -15,13 +15,13 @@ function MakeFile({ inputName, input, value, setValue, showError, error }) {
 
     if (input.disabled) return <></>
     const removeFile = async (file) => {
-        if(Array.isArray(value) && file){
+        if (Array.isArray(value) && file) {
             const filteredElements = value.filter((f) => f.name !== file?.original_filename)
             const filtered = filteredElements.length ? filteredElements : ''
             setValue(filtered)
             return
         }
-  
+
         if (value?.url) {
             await deleteFile({ ...value })
         }
@@ -37,9 +37,9 @@ function MakeFile({ inputName, input, value, setValue, showError, error }) {
                 hidden multiple={input.multiple}
                 name={inputName}
                 onChange={(e) => {
-                    if(input.multiple){
+                    if (input.multiple) {
                         setValue(Array.from(e.target.files))
-                    }else{
+                    } else {
                         setValue(e.target.files[0])
                     }
                 }}
@@ -53,17 +53,17 @@ function MakeFile({ inputName, input, value, setValue, showError, error }) {
 
             {value && (
                 <>
-                    {Array.isArray(value) ? 
-                         <ImageList sx={{ width: 500, height: 450 }} cols={2}>
+                    {Array.isArray(value) ?
+                        <ImageList sx={{ width: 500, maxHeight: 450 }} cols={2}>
                             {value.map((val, i) => {
-                                   return <ImageListItem key={i} sx={{height: 'fit-content !important'}}>
-                                        <ShowFileSettings key={i} file={val} removeFile={removeFile} />
-                                    </ImageListItem>
-                                })}
-                                </ImageList>
-                        
+                                return <ImageListItem key={i} sx={{ height: 'fit-content !important' }}>
+                                    <ShowFileSettings key={i} file={val} removeFile={removeFile} />
+                                </ImageListItem>
+                            })}
+                        </ImageList>
+
                         // <ShowFileSettings key={i} file={val} removeFile={removeFile} />
-                    : <ShowFileSettings file={value} removeFile={removeFile} />}
+                        : <ShowFileSettings file={value} removeFile={removeFile} />}
                     <WrapperHandler status={status} />
                 </>
             )}

@@ -48,7 +48,7 @@ export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, styl
     const safeValue = useMemo(() => {
         return tabs.some(tab => tab.value === value) ? value : tabs[0]?.value;
     }, [value, tabs]);
-    const component = tabs.find(t => t.value === value)?.component
+    const component = useMemo(() => tabs.find(t => t.value === value)?.component, [tabs, value])
 
     return (
         <FlexColumn sx={{ width: '100%', gab: '16px', ...style }}>

@@ -23,8 +23,11 @@ import { isDevelop } from "../../tools/isDevelop"
 import CompleteInvoice from "./CompleteInvoice"
 
 function PaymentMethods({ coupon, price, handelResponse,
-    course, wallet, tag, setCoupon, isUseCoupon = true, lecture,
-    invoiceNameId, open, setOpen, title, subTitle, exclude = [], note }) {
+    course, wallet, tag, book,
+    setCoupon, isUseCoupon = true, lecture,
+    invoiceNameId, open, setOpen, title, subTitle, exclude = [], note,
+    inModal = true
+}) {
     //make invoice
     const { data } = useGetPaymentsQuery({ isActive: true }) //, type: exclude.map(p => '!=' + p) 
     const [chosenPayment, setChosenPayment] = useState()
@@ -38,7 +41,7 @@ function PaymentMethods({ coupon, price, handelResponse,
     const [couponName, setCouponName] = useState(coupon)
     useEffect(() => setCouponName(coupon), [coupon])
 
-    if (!data) return <> </>
+    if (!data) return <> NO data</>
     const payments = handelObjsOfArr(data?.values?.payments, { value: '_id', label: 'name', image: 'file.url', description: 'description', type: 'type' })
     const activePayment = (data?.values?.payments || []).length > 0 ? data?.values?.payments?.find(p => p._id === chosenPayment) : null
 
@@ -68,7 +71,7 @@ function PaymentMethods({ coupon, price, handelResponse,
     ]
     const onSubmit = async (values) => {
         const res = await makeInvoice({
-            ...values, coupon: couponName, course, wallet, tag, lecture,
+            ...values, coupon: couponName, course, wallet, tag, lecture, book,
             name: invoiceNameId,
             description: subTitle + ' ' + '(السعر' + ' ' + price + 'جنيه' + ')', successUrl: location.href
         }, true)
@@ -89,77 +92,84 @@ function PaymentMethods({ coupon, price, handelResponse,
         }
     }
 
+    const component = <Box sx={{ width: '100%' }}>
+        {invoice._id ? <CompleteInvoice invoice={invoice} /> :
+            <Section>
+                {title && (
+                    <Typography variant='h5' mt={'16px'} sx={{ fontWeight: '800' }}>
+                        {title}
+                    </Typography>
+                )}
+                {subTitle && (
+                    <Typography variant='subtitle2'>
+                        {subTitle}
+                    </Typography>
+                )}
+
+                <InfoText label={'المبلغ المطلوب'} description={price + ' جنيه'} />
+                <InfoText label={'اختر وسيله دفع'} />
+                {isUseCoupon && (
+                    couponName ? (
+                        <TabInfo count={couponName} i={1} title={'الكوبون: '} />
+                    ) : (
+                        <VerifyCoupon setCoupon={(res) => {
+                            setCoupon(res)
+                            setCouponName(res.coupon)
+                        }} prevPrice={price} params={{
+                            course, tag
+                        }} />
+                    )
+                )}
+                {note && (
+                    <Alert sx={{ maxWidth: '100%', m: '8px auto' }} variant="filled" severity="warning">
+                        {note}
+                    </Alert>
+                )}
+                {payments.length ? (
+
+                    <ListMethods
+                        setMethod={setChosenPayment}
+                        methods={payments} activeMethod={chosenPayment}
+                        disabled={exclude} excludeFc={(method) => exclude.includes(method.type)}
+                    />
+                ) : (
+                    <Alert sx={{ mt: '16px' }} severity="warning" variant="filled">لا يوجد وسائل دفع متاحه حاليا</Alert>
+                )}
+                <Box>
+                    {chosenPayment && (
+                        <InfoText label={'وسيله الدفع'} description={activePayment?.name} />
+                    )}
+                    {activePayment && (
+                        {
+                            [paymentInteg.WALLET]: <FlexColumn>
+                                <Wallet price={price} />
+                                <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
+                            </FlexColumn>,
+                            [paymentInteg.PAYMOB]:
+                                <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
+                            ,
+                            [paymentInteg.FAWATERK]:
+                                <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
+
+                        }[activePayment.type] || <MakeForm status={status} onSubmit={onSubmit} inputs={inputs} enableReinitialize={true} />
+
+                    )}
+                </Box>
+            </Section>
+        }
+    </Box>
+
     //01222832362
     if (price || price === 0 || price === '0')
         return (
-            <ModalStyled fullWidth={true} open={open} setOpen={setOpen}>
-                <Box sx={{ width: '100%' }}>
-                    {invoice._id ? <CompleteInvoice invoice={invoice} /> :
-                        <Section>
-                            {title && (
-                                <Typography variant='h5' mt={'16px'}>
-                                    {title}
-                                </Typography>
-                            )}
-                            {subTitle && (
-                                <Typography variant='subtitle2'>
-                                    {subTitle}
-                                </Typography>
-                            )}
-
-                            <InfoText label={'المبلغ المطلوب'} description={price + ' جنيه'} />
-                            <InfoText label={'اختر وسيله دفع'} />
-                            {isUseCoupon && (
-                                couponName ? (
-                                    <TabInfo count={couponName} i={1} title={'الكوبون: '} />
-                                ) : (
-                                    <VerifyCoupon setCoupon={(res) => {
-                                        setCoupon(res)
-                                        setCouponName(res.coupon)
-                                    }} prevPrice={price} params={{
-                                        course, tag
-                                    }} />
-                                )
-                            )}
-                            {note && (
-                                <Alert sx={{ maxWidth: '100%', m: '8px auto' }} variant="filled" severity="warning">
-                                    {note}
-                                </Alert>
-                            )}
-                            {payments.length ? (
-
-                                <ListMethods
-                                    setMethod={setChosenPayment}
-                                    methods={payments} activeMethod={chosenPayment}
-                                    disabled={exclude} excludeFc={(method) => exclude.includes(method.type)}
-                                />
-                            ) : (
-                                <Alert sx={{ mt: '16px' }} severity="warning" variant="filled">لا يوجد وسائل دفع متاحه حاليا</Alert>
-                            )}
-                            <Box>
-                                {chosenPayment && (
-                                    <InfoText label={'وسيله الدفع'} description={activePayment?.name} />
-                                )}
-                                {activePayment && (
-                                    {
-                                        [paymentInteg.WALLET]: <FlexColumn>
-                                            <Wallet price={price} />
-                                            <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
-                                        </FlexColumn>,
-                                        [paymentInteg.PAYMOB]:
-                                            <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
-                                        ,
-                                        [paymentInteg.FAWATERK]:
-                                            <MakeForm allowDirty={false} status={status} onSubmit={onSubmit} inputs={inputs.filter(i => i.type !== 'file' && i.name !== 'sendFrom')} enableReinitialize={true} />
-
-                                    }[activePayment.type] || <MakeForm status={status} onSubmit={onSubmit} inputs={inputs} enableReinitialize={true} />
-
-                                )}
-                            </Box>
-                        </Section>
-                    }
-                </Box>
-            </ModalStyled>
+            <>
+                {inModal ?
+                    <ModalStyled fullWidth={true} open={open} setOpen={setOpen}>
+                        {component}
+                    </ModalStyled>
+                    : component
+                }
+            </>
         )
 }
 

@@ -1,12 +1,5 @@
-import { useDispatch } from 'react-redux'
-import { logout, setGlobalMsg } from '../toolkit/globalSlice'
-import { useNavigate } from 'react-router-dom'
 
 export default function usePostData(sendData, setLoading, setReset = null) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
- 
-
   if (!sendData) return [null]
 
   const trigger = (values, isMultiPart, params) => {
@@ -16,7 +9,7 @@ export default function usePostData(sendData, setLoading, setReset = null) {
     }
 
     // data = values
-     let data = Array.isArray(values) ? values : Object.fromEntries(
+    let data = Array.isArray(values) ? values : Object.fromEntries(
       Object.entries(values).filter(([k, v]) => v !== null && v !== undefined && v !== '')
     );
     // console.log(data)
@@ -47,41 +40,17 @@ export default function usePostData(sendData, setLoading, setReset = null) {
     }
 
     return new Promise(async (resolve, reject) => {
-
       try {
         const res = await sendData(formData, params)
-        if (setLoading) {
-          setLoading(false)
-        }
-        
-        if (res.error) {
-          // error ===> invalid jwt or not user
-          if (res.error?.data?.isKick === true) {
-
-            dispatch(logout())
-            dispatch(setGlobalMsg({ message: res.error?.data?.message || "sorry!, you have to log in", severity: "error" }))
-            navigate('/')
-            return;
-          }
-
-          if (setLoading) {
-            setLoading(false)
-          }
-          //global error 
-          dispatch(setGlobalMsg({ message: res?.error?.data?.message || res?.error?.message, severity: "error" }))
-          return;
-        }
-
-        // in success
-        if (res.data?.message) {
-          dispatch(setGlobalMsg({ message: res.data?.message, severity: "success" }))
-        }
 
         if (setLoading) {
           setLoading(false)
         }
         if (setReset) {
           setReset(p => !p)
+        }
+        if (res.error) {
+          return reject(res.error)
         }
         resolve(res?.data?.values)
       } catch (error) {
@@ -91,7 +60,6 @@ export default function usePostData(sendData, setLoading, setReset = null) {
         if (setReset) {
           setReset(p => !p)
         }
-        dispatch(setGlobalMsg({ message: error.message, severity: "error" }))
         reject(error)
       }
     })

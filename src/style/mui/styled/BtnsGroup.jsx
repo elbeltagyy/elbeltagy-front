@@ -1,17 +1,23 @@
 import { Box, Button } from "@mui/material"
-import {  useState } from "react"
+import { useState } from "react"
 import { FlexRow } from "./Flexbox";
 
-
-
 // [{btn: <Button>test</Button>, component: <div>test</div>, label: 'Test Button (it or btn key)', icon: <div>icon</div>}]
-function BtnsGroup({ btns = [], defaultActive = 0, sx = {}, innerSx = {} }) {
-    const [active, setActive] = useState(defaultActive ?? 0);
+function BtnsGroup({ btns = [], defaultActive = 0, sx = {}, innerSx = {}, state = {} }) {
+    const [internalActive, setInternalActive] = useState(defaultActive ?? 0);
+
+    // single source of truth: external state wins if provided, else internal
+    const activeIndex = state.active ?? internalActive;
 
     const handleClick = (index) => {
-        setActive(index);
+        if (state.setActive) {
+            state.setActive(index);
+        } else {
+            setInternalActive(index);
+        }
     };
-    const activeBtn = btns[active]; //better than using useMemo
+
+    const activeBtn = btns[activeIndex];
 
     return (
         <Box width={'100%'} sx={{ ...sx }}>
@@ -23,16 +29,14 @@ function BtnsGroup({ btns = [], defaultActive = 0, sx = {}, innerSx = {} }) {
                         <Button
                             key={index}
                             endIcon={btn.icon}
-                            variant={active === index ? "contained" : "outlined"}
+                            variant={activeIndex === index ? "contained" : "outlined"}
                             onClick={() => handleClick(index)}
                         >{btn.label}</Button>
                 )}
             </FlexRow>
 
-            {/* <ButtonGroup sx={{ flexWrap: 'wrap', justifyContent: 'center', mb: '16px', ...sx }} color="primary" aria-label="Medium-sized button group">
-            </ButtonGroup> */}
-            {activeBtn?.component && activeBtn?.component}
-        </Box >
+            {activeBtn?.component}
+        </Box>
     )
 }
 

@@ -11,14 +11,14 @@ const whatsappApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        initWhatsapp: builder.query({
-            query: (queries) => {
-                const params = queries
+        initWhatsapp: builder.mutation({
+            query: (data) => {
                 return {
                     url: "/whatsapp/userId/init",
-                    params
+                    method: 'POST',
+                    body: data
                 }
-            },
+            }
         }),
         closeWhats: builder.query({
             query: (queries) => {
@@ -62,5 +62,5 @@ const whatsappApi = apiSlice.injectEndpoints({
 
 export const {
     useGetWhatsappStatusQuery, useLazyGetWhatsappQRQuery, useLazyCloseWhatsQuery,
-    useLazyInitWhatsappQuery, useSendWhatsappMsgMutation,
+    useInitWhatsappMutation, useSendWhatsappMsgMutation,
 } = whatsappApi

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import { FilledHoverBtn } from '../../style/buttonsStyles'
-import { useLazyInitWhatsappQuery } from '../../toolkit/apis/whatsappApi'
+import { useInitWhatsappMutation } from '../../toolkit/apis/whatsappApi'
 import useLazyGetData from '../../hooks/useLazyGetData'
 import WrapperHandler from '../../tools/WrapperHandler'
 import Loader from '../../style/mui/loaders/Loader'
@@ -9,28 +9,34 @@ import { FlexRow } from '../../style/mui/styled/Flexbox'
 import DeactivateWhats from './DeactivateWhats'
 import { useState } from 'react'
 import Image from '../ui/Image'
+import BtnConfirm from '../ui/BtnConfirm'
+import SwitchStyled from '../../style/mui/styled/SwitchStyled'
+import usePostData from '../../hooks/usePostData'
 
 function ActivateWhats() {
 
-    const [getData, status] = useLazyInitWhatsappQuery()
-    const [initWhatsFc] = useLazyGetData(getData, true)
+    const [sendData, status] = useInitWhatsappMutation()
+    const [initWhatsFc] = usePostData(sendData)
     const [qr, setQr] = useState()
+    const [recordMessages, setRecordMessages] = useState(false)
 
     const initWhats = async () => {
-        const res = await initWhatsFc()
+        const res = await initWhatsFc({ recordMessages })
         setQr(res)
-        console.log(res)
     }
+
 
     return (
         <Box>
             <FlexRow sx={{ flexDirection: 'row', width: '100%', gap: '12px' }}>
                 <WrapperHandler width='fit-content' status={status} showSuccess={true}>
-                    <FilledHoverBtn
-                        disabled={status.isLoading || status.isFetching}
-                        onClick={initWhats}>
-                        {status.isLoading ? <Loader color={'#fff'} /> : 'تفعيل الواتس'}
-                    </FilledHoverBtn>
+                    <BtnConfirm
+                        component={<SwitchStyled checked={recordMessages} onChange={setRecordMessages} label={'هل تريد حفظ و تسجيل الرسائل والمحادثات على المنصه'} />}
+                        btn={<FilledHoverBtn
+                            disabled={status.isLoading || status.isFetching}
+                            onClick={initWhats}>
+                            {status.isLoading ? <Loader color={'#fff'} /> : 'تفعيل الواتس'}
+                        </FilledHoverBtn>} />
                 </WrapperHandler>
                 <DeactivateWhats />
             </FlexRow>

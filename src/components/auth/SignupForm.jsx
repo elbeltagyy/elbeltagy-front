@@ -1,5 +1,5 @@
 import MakeForm from '../../tools/makeform/MakeForm'
- 
+
 import governments from '../../settings/constants/governments'
 
 // icons
@@ -25,7 +25,7 @@ import useGrades from '../../hooks/useGrades';
 // validation: Yup.string().required("مطلوب").min(6, "يجب ان يكون اكثر من 6")
 
 
-function SignupForm() {
+function SignupForm({ afterFc }) {
     const { grades } = useGrades()
 
     const inputs = [
@@ -92,7 +92,7 @@ function SignupForm() {
             icon: <TbPasswordUser color='green' />,
             validation: Yup.string().required("مطلوب")
                 .min(6, "يجب ان يكون اكثر من 6").oneOf([Yup.ref('password'), null], 'كلمة المرور غير متطابقه')
-        }, 
+        },
     ]
 
     const [sendData, status] = useSignupMutation()
@@ -106,9 +106,10 @@ function SignupForm() {
         if (user) {
             dispatch(setUser({ ...user }))
         }
+        if (afterFc) afterFc()
     }
     return (
-        <MakeForm inputs={inputs} onSubmit={onSubmit} modalInfo={{desc: 'هل انت متاكد من ان البيانات صحيحه ؟'}} btnWidth={'100%'} status={status} />
+        <MakeForm inputs={inputs} onSubmit={onSubmit} modalInfo={{ desc: 'هل انت متاكد من ان البيانات صحيحه ؟' }} btnWidth={'100%'} status={status} />
     )
 }
 

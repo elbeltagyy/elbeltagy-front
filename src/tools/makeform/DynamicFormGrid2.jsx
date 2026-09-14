@@ -78,7 +78,7 @@ export default function DynamicFormGrid({ inputs }) {
         {restInputs && restInputs.map((input, i) => {
 
           return (
-            <Box key={input.name || i} sx={{ width: input.width || '100%', margin: !input.hidden && '14px 0' }}>
+            <Box key={input.name || i} sx={{ width: input.width || '100%', margin: !input.hidden && '8px 0' }}>
               <MakeInput input={input} />
             </Box>
           )

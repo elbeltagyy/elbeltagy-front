@@ -37,13 +37,13 @@ function Layout() {
             <Navbar isOpenedSidebar={isOpenedSidebar} setSidebar={setSidebar} isMobileScreen={isMobileScreen} />
             <Sidebar isOpenedSideBar={isOpenedSidebar} setSideBar={setSidebar} />
             <Suspense fallback={<LoaderSkeleton />}>
-                <Box sx={{ width: '100%', minHeight: '80vh' }}>
+                <Box className='page-wrapper' sx={{ width: '100%', minHeight: '80vh' }}>
                     <Outlet />
                 </Box>
             </Suspense>
             <FooterPage />
             <GlobalMsg />
-            <IconButton onClick={()=> window.location.href = "https://api.whatsapp.com/send?phone=2001127078234&text=from mrelbeltagy"} sx={{ position: 'fixed', bottom: '5%', right: '16px' }}>
+            <IconButton onClick={()=> window.location.href = "https://api.whatsapp.com/send?phone=2001127078234&text=from mrelbeltagy"} sx={{ position: 'fixed', bottom: '5%', right: '16px', zIndex: 10 }}>
                 <img src='/assets/whatsapp.png' style={{ width: '50px', height: '50px' }} />
             </IconButton>
         </Box >
