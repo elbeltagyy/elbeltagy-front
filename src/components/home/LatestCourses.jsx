@@ -1,14 +1,11 @@
+import { useState } from "react";
+import { Box } from "@mui/material";
 import Section from "../../style/mui/styled/Section"
 import { useGetCoursesQuery } from "../../toolkit/apis/coursesApi"
 import { TextBorderWithIcons } from "../ui/TextBorderAround"
 import { Navigation, Pagination, A11y } from 'swiper/modules';
-
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
-import 'swiper/css';
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -23,6 +20,14 @@ const courseIcon =
 function LatestCourses({ user = null }) {
     const { data } = useGetCoursesQuery({ isFixed: true, limit: 10, isModernSort: true, grade: user?.grade ?? null })
 
+    const [isBeginning, setIsBeginning] = useState(true);
+    const [isEnd, setIsEnd] = useState(false);
+
+    const updateEdges = (swiper) => {
+        setIsBeginning(swiper.isBeginning);
+        setIsEnd(swiper.isEnd);
+    };
+
     return (
         <Section>
             <FlexColumn mb={'12px'}>
@@ -30,22 +35,61 @@ function LatestCourses({ user = null }) {
                 <OutLinedHoverBtn size="small" component={Link} to='/courses' >عرض كل الكورسات</OutLinedHoverBtn>
             </FlexColumn>
 
-            <Swiper
-                modules={[Navigation, Pagination, A11y]}
-                navigation
-                pagination={{ clickable: true }}
-                // spaceBetween={25}
-                // slidesPerView={2.5}
-                breakpoints={{
-                    320: { slidesPerView: 1.2, spaceBetween: 15 },   // mobile
-                    640: { slidesPerView: 1.2, spaceBetween: 15 }, // small tablets
-                    768: { slidesPerView: 2.25, spaceBetween: 20 },   // tablets
-                }}
-            // onSlideChange={() => console.log('slide change')}
-            // onSwiper={(swiper) => console.log(swiper)}
-            >
-                {data?.values?.courses.map((course, i) => <SwiperSlide key={i}> <UnitCourseDetails course={course} /> </SwiperSlide>)}
-            </Swiper>
+            <Box sx={{ position: 'relative' }}>
+                {/* left fade */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        width: { xs: '32px', md: '60px' },
+                        zIndex: 2,
+                        pointerEvents: 'none',
+                        background: (theme) =>
+                            `linear-gradient(to right, ${theme.palette.background.default}, transparent)`,
+                        opacity: isBeginning ? 0 : 1,
+                        transition: 'opacity 0.3s ease',
+                    }}
+                />
+                {/* right fade */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        right: 0,
+                        width: { xs: '32px', md: '60px' },
+                        zIndex: 2,
+                        pointerEvents: 'none',
+                        background: (theme) =>
+                            `linear-gradient(to left, ${theme.palette.background.default}, transparent)`,
+                        opacity: isEnd ? 0 : 1,
+                        transition: 'opacity 0.3s ease',
+                    }}
+                />
+
+                <Swiper
+                    style={{ paddingBottom: '32px' }}
+                    modules={[Navigation, Pagination, A11y]}
+                    navigation
+                    pagination={{ clickable: true }}
+                    onSwiper={updateEdges}
+                    onSlideChange={updateEdges}
+                    onResize={updateEdges}
+                    breakpoints={{
+                        320: { slidesPerView: 1.2, spaceBetween: 15 },
+                        640: { slidesPerView: 1.2, spaceBetween: 15 },
+                        768: { slidesPerView: 3.25, spaceBetween: 20 },
+                    }}
+                >
+                    {data?.values?.courses.map((course, i) => (
+                        <SwiperSlide key={i} style={{ height: 'auto', display: 'flex' }}>
+                            <UnitCourseDetails course={course} sx={{ width: '100%' }} />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </Box>
         </Section>
     )
 }

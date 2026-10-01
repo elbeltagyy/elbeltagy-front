@@ -54,8 +54,8 @@ function SignupPage() {
 
                         <TextBorderAround>
 
-                            <span style={{ color: theme.palette.neutral[0] }}> {BUILD} </span>
-                            <span style={{ marginRight: '10px', marginLeft: '10px' }}> {ACCOUNT}</span>
+                            <span style={{ color: theme.palette.neutral[0], fontFamily: 'second' }}> {BUILD} </span>
+                            <span style={{ marginRight: '10px', marginLeft: '10px', fontFamily: 'second' }}> {ACCOUNT}</span>
 
                             <FaFileSignature size='2rem' />
                         </TextBorderAround>

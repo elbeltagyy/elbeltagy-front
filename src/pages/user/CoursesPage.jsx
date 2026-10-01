@@ -2,7 +2,7 @@ import { useState } from "react"
 import GradesTabs from "../../components/grades/GradesTabs"
 import TitleSection from "../../components/ui/TitleSection"
 
-import { FlexColumn } from "../../style/mui/styled/Flexbox"
+import { FlexColumn, FlexRow } from "../../style/mui/styled/Flexbox"
 import Section from "../../style/mui/styled/Section"
 import { useSelector } from "react-redux"
 import CoursesList from "../../components/content/CoursesList"
@@ -15,7 +15,9 @@ function CoursesPage() {
         <Section>
             <TitleSection title={'كورسات المنصه'} />
             <FlexColumn gap={'16px'}>
-                <GradesTabs grade={grade} setGrade={setGrade} counts={{}} />
+                <FlexRow>
+                    <GradesTabs grade={grade} setGrade={setGrade} counts={{}} />
+                </FlexRow>
                 <CoursesList grade={grade} />
             </FlexColumn>
         </Section>

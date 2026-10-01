@@ -13,6 +13,7 @@ import { user_roles } from '../../settings/constants/roles'
 
 function AdminLectureDetails({ isNativeLecture, lecture, changeStatus, isLoading, courseId }) {
     const navigate = useNavigate()
+    const isChild = !!lecture.parent
     return (
         <FlexRow gap={'8px'}>
             {!isNativeLecture && (
@@ -24,20 +25,23 @@ function AdminLectureDetails({ isNativeLecture, lecture, changeStatus, isLoading
             {isNativeLecture && (
                 <>
                     <InfoText label={'الوصف'} description={lecture.description} />
-                    <FlexRow>
-                        <InfoText label={'سعر المحاضره'} description={lecture.price + ' ' + 'جنيه'} />
-                        <BtnModal
-                            btn={<TabInfo sx={{ cursor: 'pointer', margin: '0 8px' }} count={'اضغط لتعديل السعر'} i={2} />}
-                            component={<MakeForm inputs={[
-                                { name: 'price', label: 'السعر الجديد', type: 'number' }
-                            ]} onSubmit={changeStatus} status={{ isLoading }} formDirection={'row'} btnStyle={{ width: 'fit-content' }} />}
-                        />
-                        <SwitchStyled label={"قابله للبيع"} checked={lecture.isSalable} onChange={(value) => changeStatus({ isSalable: value })} isLoading={isLoading} />
-                    </FlexRow>
+                    {!isChild && (
+                        <FlexRow>
+                            <InfoText label={'سعر المحاضره'} description={lecture.price + ' ' + 'جنيه'} />
+                            <BtnModal
+                                btn={<TabInfo sx={{ cursor: 'pointer', margin: '0 8px' }} count={'اضغط لتعديل السعر'} i={2} />}
+                                component={<MakeForm inputs={[
+                                    { name: 'price', label: 'السعر الجديد', type: 'number' }
+                                ]} onSubmit={changeStatus} status={{ isLoading }} formDirection={'row'} btnStyle={{ width: 'fit-content' }} />}
+                            />
+                            <SwitchStyled label={"قابله للبيع"} checked={lecture.isSalable} onChange={(value) => changeStatus({ isSalable: value })} isLoading={isLoading} />
+                        </FlexRow>
+                    )}
 
                     <SwitchStyled label={"الحاله"} checked={lecture.isActive} onChange={(value) => changeStatus({ isActive: value })} isLoading={isLoading} />
-                    <SwitchStyled label={"جعل المحاضره مجانيه"} checked={lecture.isFree} onChange={(val) => changeStatus({ isFree: val })} isLoading={isLoading} />
-
+                    {!isChild && (
+                        <SwitchStyled label={"جعل المحاضره مجانيه"} checked={lecture.isFree} onChange={(val) => changeStatus({ isFree: val })} isLoading={isLoading} />
+                    )}
                     <div>
                         <LinkMui href={"/management/codes?lecture=" + lecture._id} underline="hover" mr={'auto'} onClick={(e) => {
                             e.preventDefault()
@@ -49,6 +53,7 @@ function AdminLectureDetails({ isNativeLecture, lecture, changeStatus, isLoading
 
                     {/* <Separator sx={{ my: '4px', borderWidth: '1px' }} /> */}
                     {/* <Typography sx={{ width: '100%', textAlign: 'center', textDecoration: 'underline' }} variant='subtitle2'>خاص بطلاب السنتر</Typography> */}
+                    <SwitchStyled label={"تفعيل المنتدي"} checked={lecture.isCommunity} onChange={(val) => changeStatus({ isCommunity: val })} isLoading={isLoading} />
                     <SwitchStyled label={"تفعيله لطلاب السنتر"} checked={lecture.isCenter} onChange={(val) => changeStatus({ isCenter: val })} isLoading={isLoading} />
 
                     {lecture.sectionType === sectionConstants.EXAM && (

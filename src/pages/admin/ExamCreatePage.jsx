@@ -14,7 +14,7 @@ import useHandelQuestions from '../../hooks/useHandelQuestions'
 import { useCreateExamMutation } from '../../toolkit/apis/examsApi'
 
 
-function ExamCreatePage({ courseIdVar, chapter, setLectures, setClose }) {
+function ExamCreatePage({ courseIdVar, chapter, parent, setLectures, setClose, grade }) {
     // const navigate = useNavigate()
     const { courseId } = useParams()
     const finalCourseId = courseId || courseIdVar
@@ -32,7 +32,7 @@ function ExamCreatePage({ courseIdVar, chapter, setLectures, setClose }) {
             const res = await getCourse({ _id: finalCourseId, select: "name grade" })
             setCourse(res)
         }
-        trigger()
+        if (finalCourseId) trigger()
     }, [finalCourseId])
 
     const [sendData, status] = useCreateExamMutation()
@@ -43,7 +43,7 @@ function ExamCreatePage({ courseIdVar, chapter, setLectures, setClose }) {
             // console.log(values)
             setLoading(true)
             const exam = await saveFiles(values)
-            const res = await createExam({ ...exam, chapter })
+            const res = await createExam({ ...exam, chapter, parent })
 
             setLectures(prev => ([...prev, res]))
             if (setClose) {
@@ -58,13 +58,13 @@ function ExamCreatePage({ courseIdVar, chapter, setLectures, setClose }) {
             setLoading(false)
         }
     }
-    if (!course) return <LoaderSkeleton />
+    if (!course && !parent) return <LoaderSkeleton />
 
     return (
         <Section>
-            <TitleWithDividers title={'انشاء اختبار : ' + course.name} />
+            <TitleWithDividers title={'انشاء اختبار : ' + (course && course?.name)} />
             {/* loading */}
-            <ExamForm lecture={{ course: course._id, grade: course.grade }} status={{ ...status, isLoading: loading }} onSubmit={onSubmit} />
+            <ExamForm lecture={{ course: course?._id, grade }} status={{ ...status, isLoading: loading }} onSubmit={onSubmit} />
         </Section>
     )
 }

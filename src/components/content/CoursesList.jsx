@@ -13,7 +13,7 @@ function CoursesList({ grade }) {
             {data?.values?.courses?.length === 0 && (
                 <Alert severity="warning" variant="filled">الكورسات هتنزل قريب, خليك متابع!</Alert>
             )}
-            <Grid>
+            <Grid maxCols={'3'}>
                 {data?.values?.courses && data?.values?.courses.map(course => {
                     return <UnitCourseDetails key={course._id} course={course} />
                 })}

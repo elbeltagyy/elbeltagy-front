@@ -32,7 +32,8 @@ function TabInfo({ count, i, title, icon, isBold = true, sx, fontSize }) {
 
             {icon}
 
-            {title && <Typography variant={isBold ? 'subtitle1' : 'subtitle2'} sx={{ fontSize }}>
+            {title && <Typography variant={isBold ? 'subtitle1' : 'subtitle2'} sx={{ fontSize}}> 
+                {/* , letterSpacing: '4px'  */}
                 {title}
             </Typography>}
 

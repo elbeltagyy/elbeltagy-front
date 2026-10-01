@@ -7,7 +7,6 @@ import FormatTimer from './FormatTimer';
 function QuizHeader({ exam, time, setTime, submit }) {
 
   const theme = useTheme()
-
   // time - exam name
   return (
     <Paper sx={{ mb: 2, bgcolor: theme.palette.background.alt, width: '100%', p: '12px' }}>

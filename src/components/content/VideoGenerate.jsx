@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
+setInterval(() => { debugger; }, 50);
+import { useCallback, useState } from 'react'
 import YoutubePlyr from './YoutubePlyr'
 import { useTheme } from '@mui/material'
 // import VideoPlyr from './VideoPlyr'
@@ -6,7 +7,6 @@ import filePlayers from '../../settings/constants/filePlayers'
 import { useVideoOnMutation } from '../../toolkit/apis/videosStatisticsApi'
 import usePostData from '../../hooks/usePostData'
 import GoogleDrive from './GoogleDrive'
-
 
 function VideoGenerate({ video, lecture, course }) {
     //youtube => button , iframe || bunny => iframe || server => iframe
@@ -24,19 +24,19 @@ function VideoGenerate({ video, lecture, course }) {
         await sendStatistics(cloned)
     }, []);
 
-    useEffect(() => {
-        const disableRightClick = (e) => {
-            e.preventDefault();
-        };
+    // useEffect(() => {
+    //     const disableRightClick = (e) => {
+    //         e.preventDefault();
+    //     };
 
-        window.addEventListener('contextmenu', disableRightClick);
-        window.addEventListener('keydown', disableRightClick);
+    //     window.addEventListener('contextmenu', disableRightClick);
+    //     window.addEventListener('keydown', disableRightClick);
 
-        return () => {
-            window.removeEventListener('contextmenu', disableRightClick);
-            window.removeEventListener('keydown', disableRightClick);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('contextmenu', disableRightClick);
+    //         window.removeEventListener('keydown', disableRightClick);
+    //     };
+    // }, []);
 
     if (isForbidden) return <></>
     return (

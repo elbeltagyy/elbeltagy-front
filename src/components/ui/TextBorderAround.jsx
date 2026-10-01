@@ -1,9 +1,8 @@
-import { Box, Typography, useTheme } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { FlexRow } from '../../style/mui/styled/Flexbox'
 
 function TextBorderAround({ children }) {
 
-    const theme = useTheme()
 
     return (
         <Typography variant='h5'
@@ -48,7 +47,7 @@ export const TextBorderWithIcons = ({ title = '', startIcon, endIcon, color, col
                     {startIcon}
                     <Box>
                         {textInArr?.map((text, i) => (
-                            <Box component='span' key={i} sx={{ color: i === 0 && colorOne || color, }}> {text} </Box>
+                            <Box component='span' key={i} sx={{ color: i === 0 && colorOne || color, fontFamily: 'second' }}> {text} </Box>
                         ))}
                     </Box>
 

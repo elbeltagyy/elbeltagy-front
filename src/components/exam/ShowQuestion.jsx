@@ -95,7 +95,6 @@ function ShowQuestion({ question, index, setQuestions, method, editUser, activeA
                                     }} >
                                     <Grid container spacing={2}>
                                         {question.options && question.options.map((option, i) => {
-
                                             return (
                                                 <Grid key={i} item xs={12} >
                                                     <Button disabled={status.isLoading} onClick={() => {

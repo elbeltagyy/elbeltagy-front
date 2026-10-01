@@ -6,6 +6,7 @@ import Loader from "../../../style/mui/loaders/Loader";
 import TypingBar from "../TypingBar";
 import { getFileType } from "../../../tools/fcs/getFileType";
 import InfoText from "../InfoText";
+import ShowMedia from "../ShowMedia";
 
 const DateSeparator = ({ date }) => (
     <Stack direction="row" alignItems="center" justifyContent="center"
@@ -49,23 +50,6 @@ const getDayKey = (dateStr) => {
 // Single message bubble — memoized
 const MessageBubbleComponent = ({ msg, isMine }) => {
 
-    const media = () => {
-        if (msg.media) {
-            const url = msg.media.url
-            const type = getFileType(url)
-            if (type === 'image')
-                return <Box component="img" src={url} sx={{ maxWidth: "100%", borderRadius: 2, mt: 0.5 }} />;
-            if (type === 'audio')
-                return <Box component="audio" controls src={url} sx={{ mt: 0.5 }} />;
-            if (type === "video")
-                return <Box component="video" controls src={url} sx={{ maxWidth: "100%", borderRadius: 2, mt: 0.5 }} />;
-            return (
-                <Chip label={"File"} component="a" href={url}
-                    target="_blank" clickable size="small" sx={{ mt: 0.5 }} />
-            );
-        }
-    }
-
     const deleted = msg.deleted
     const edited = msg.edited
     const isSeen = msg.isSeen
@@ -87,7 +71,7 @@ const MessageBubbleComponent = ({ msg, isMine }) => {
                         ? <Typography fontSize={14}>تم تعديل الرساله ولا يمكن عرضها على المنصه !</Typography>
                         : (<>
                             {msg.message && <Typography fontSize={14}>{msg.message}</Typography>}
-                            {media()}
+                            <ShowMedia msg={msg} />
                             {msg.attachments?.data?.map((att, i) => {
                                 const url = att?.image_data?.url || att.file_url
                                 const mime = att.mime_type || "";

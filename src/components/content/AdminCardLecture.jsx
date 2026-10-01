@@ -32,9 +32,9 @@ import MakeForm from '../../tools/makeform/MakeForm'
 // course => chapters => lectures(course, chapter)
 
 //Liking
-function AdminCardLecture({ lecture, i, setLectures, courseId }) {
+function AdminCardLecture({ lecture, i, setLectures, courseId, allowEdit = false }) {
   const [open, setOpen] = useState(false)
-  const isNativeLecture = (lecture?.course?._id === courseId || lecture?.course === courseId)
+  const isNativeLecture = allowEdit ? true : (lecture?.course?._id === courseId || lecture?.course === courseId)
 
   const [sendData, { isLoading }] = useUpdateLectureMutation()
   const [updateLecture] = usePostData(sendData)
@@ -82,7 +82,8 @@ function AdminCardLecture({ lecture, i, setLectures, courseId }) {
 
   return (
 
-    <Card elevation={4} sx={{ minWidth: '250px', width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+    <Card elevation={4} sx={{ minWidth: '250px', width: '100%', }}>
+      {/* display: 'flex', flexDirection: 'row', alignItems: 'flex-start' */}
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: 'primary.main', color: 'grey.0' }} aria-label="recipe">

@@ -13,19 +13,7 @@ function GradesTabs({ setGrade, counts = {}, grade, removeAll = false }) {
     const addedCounts = useMemo(() => gConst.map((g, i) => ({ ...g, count: counts[i + 1]?.count })), [counts, gConst])
     const grades = handelObjsOfArr(addedCounts, { value: 'index', label: 'name', count: 'count' })
 
-    // const [gradeOptions, setGradeOptions] = useState([])
     const gradeOptions = removeAll ? grades : [{ label: lang.ALL, value: 0, count: counts[0]?.count }, ...grades]
-
-    // useEffect(() => {
-    //     if (!removeAll) {
-    //         setGradeOptions(
-    //             [{ label: lang.ALL, value: 0, count: counts[0]?.count }, ...grades]
-    //         )
-    //     } else {
-    //         setGradeOptions(grades)
-    //     }
-    // }, [counts])
-
     if (gradeOptions.length === 0) return <LoaderSkeleton />
 
     return (

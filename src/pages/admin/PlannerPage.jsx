@@ -85,7 +85,7 @@ export default function PlannerPage() {
   const visibleSections = showHidden ? plans : plans.filter(s => !s.isHidden);
 
   return (
-    <Box sx={{ maxWidth: 820, mx: "auto", px: 2, py: 3, fontFamily: "Inter, sans-serif" }}>
+    <Box sx={{ maxWidth: 820, mx: "auto", px: 2, py: 3 }}>
 
       {/* Header */}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>

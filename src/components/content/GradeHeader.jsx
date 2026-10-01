@@ -9,8 +9,9 @@ import { filterArrWithValue } from '../../tools/fcs/MakeArray'
 
 import { CoursesIcon, UnitsIcon, VidsIcon2 } from '../ui/svg/ContentSvgs'
 import useGrades from '../../hooks/useGrades'
+import CardInfo from '../../style/mui/components/CardInfo'
 
-function GradeHeader({ gradeId }) {
+function GradeHeader({ gradeId, onlyInfo = false }) {
 
     const { grades } = useGrades()
 
@@ -56,18 +57,26 @@ function GradeHeader({ gradeId }) {
         filterArrWithValue(grades, { key: 'index', value: Number(gradeId) }, true).image?.url
         , [gradeId])
 
+    const info = [{
+        caption: lang.UNITS, desc: '+ ' + unitsCount, icon: <UnitsIcon size='1.5rem' />
+    },
+    {
+        caption: lang.COURSES_NUMBER, desc: '+ ' + coursesCount, icon: <CoursesIcon size='1.5rem' />
+    }, {
+        caption: lang.LECTURES, desc: '+ ' + lecturesCount, icon: <VidsIcon2 size='1.5rem' />
+    }
+    ]
 
+    if (onlyInfo) {
+        return <>
+            {info.length > 0 && info.map((info, i) => (
+                <CardInfo key={i} icon={info.icon} caption={info.caption} desc={info.desc} estimated={info.estimated} />
+            ))}
+        </>
+    }
     return (
         <HeaderContent title={gradeTitle} body={gradeDescription} img={gradeImage}
-            infos={[{
-                caption: lang.UNITS, desc: '+ ' + unitsCount, icon: <UnitsIcon size='1.5rem' />
-            },
-            {
-                caption: lang.COURSES_NUMBER, desc: '+ ' + coursesCount, icon: <CoursesIcon size='1.5rem' />
-            }, {
-                caption: lang.LECTURES, desc: '+ ' + lecturesCount, icon: <VidsIcon2 size='1.5rem' />
-            }
-            ]} />
+            infos={info} />
     )
 }
 

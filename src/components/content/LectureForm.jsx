@@ -54,15 +54,15 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
             label: '',
             value: lecture?.course ?? course,
             hidden: true,
-            validation: Yup.string()
-                .required(lang.REQUERIED)
+            // validation: Yup.string()
+            //     .required(lang.REQUERIED)
         }, {
             name: 'chapter',
             label: '',
             value: lecture?.chapter ?? '',
             hidden: true,
-            validation: Yup.string()
-                .required(lang.REQUERIED)
+            // validation: Yup.string()
+            //     .required(lang.REQUERIED)
         }, {
             name: 'name',
             label: lang.LECTURE_NAME,
@@ -91,6 +91,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
             label: 'السعر',
             type: 'number',
             value: lecture?.price ?? 0,
+            hidden: !!lecture.parent
         },
     ]
 
@@ -118,6 +119,11 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
             type: 'switch',
             value: lecture?.video?.isButton,
         }, {
+            name: 'summary',
+            label: 'تلخيص المحاضره',
+            value: lecture?.summary, rows: 3,
+            helperText: <span> خد اللينك - روح لموقع <a href='https://youtubetotranscript.com' target="_blank" rel="noopener noreferrer">transcript</a>  - ثم انسخ التلخيص</span>
+        }, {
             name: 'duration',
             label: 'الوقت',
             validation: Yup.string()
@@ -127,6 +133,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
             helperText: 'يرجي كتابه وقت الفيديو بدقه حتي يتم حساب وقت الفيديو اللازم للمشاهده بطريقه صحيحه'
         }, {
             name: 'minDuration',
+            hidden: !!lecture.parent,
             label: 'نسبه الفيديو اللازم مشاهدتها (اختياري)',
             validation: Yup.number()
                 .min(0, 'لا يمكن ان يكون بالسالب').max(100, 'القيمه من 0 : 100%'),
@@ -152,6 +159,11 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
             type: 'url',
             player: 'google',
             value: lecture?.video?.url
+        }, {
+            name: 'summary',
+            label: 'تلخيص المحاضره',
+            value: lecture?.summary, rows: 3,
+            helperText: <span> خد اللينك - روح لموقع <a href='https://youtubetotranscript.com' target="_blank" rel="noopener noreferrer">transcript</a>  - ثم انسخ التلخيص</span>
         }, {
             name: 'duration',
             label: 'الوقت',
@@ -408,7 +420,7 @@ function LectureForm({ grade, course, onSubmit, lecture, status, location, setLe
                         btnName={location === 'update' ? "تعديل الاختبار" : 'إنشاء اختبار'}>
                         {location === 'update' ?
                             <ExamUpdatePage lecId={lecture._id} setLectures={setLectures} /> :
-                            <ExamCreatePage setClose={setClose} courseIdVar={lecture.course} chapter={lecture.chapter} setLectures={setLectures} />}
+                            <ExamCreatePage parent={lecture.parent} grade={grade} setClose={setClose} courseIdVar={lecture.course} chapter={lecture.chapter} setLectures={setLectures} />}
                         {/* setClose={setClose} */}
                     </BtnModal>
                     // <Button

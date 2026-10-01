@@ -52,7 +52,7 @@ function ShowCourses({ C, onSelect, courses }) {
                                     "&:hover": { transform: "translateY(-3px)", borderColor: C.forge },
                                 }}
                             >
-                                <Box sx={{ position: "relative", height: 160 }}>
+                                <Box sx={{ position: "relative", minHeight: 160 }}>
                                     <Box
                                         component="img"
                                         src={course.thumbnail?.url}

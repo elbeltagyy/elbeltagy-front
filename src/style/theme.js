@@ -31,20 +31,31 @@ export const tokensDark = {
         800: "#00432c",
         900: "#002116"
     },
+
     secondary: {
-        // yellow
-        50: "#f0f0f0", // manually adjusted
-        100: "#fff6e0",
-        200: "#ffedc2",
-        300: "#ffe3a3",
-        400: "#ffda85",
-        500: "#ffd166",
-        600: "#cca752",
-        700: "#997d3d",
-        800: "#665429",
-        900: "#332a14",
+        100: "#ede9fe",
+        200: "#ddd6fe",
+        300: "#c4b5fd",
+        400: "#a78bfa",
+        500: "#8b5cf6", // basic
+        600: "#7c3aed",
+        700: "#6d28d9",
+        800: "#5b21b6",
+        900: "#4c1d95"
     },
-};
+
+    tertiary: {
+        100: "#fef3c7",
+        200: "#fde68a",
+        300: "#fcd34d",
+        400: "#fbbf24",
+        500: "#f59e0b", // basic
+        600: "#d97706",
+        700: "#b45309",
+        800: "#92400e",
+        900: "#78350f"
+    }
+}
 
 const primary = {
     light: tokensDark.primary[600],
@@ -78,7 +89,6 @@ const shadows = {
     shadowStandard: '0 20px 30px hsla(0, 0%, 0%, 0.1)'
 }
 
-
 // function that reverses the color palette
 function reverseTokens(tokensDark) {
     const reversedTokens = {};
@@ -98,13 +108,8 @@ function reverseTokens(tokensDark) {
 // light mode tokens
 export const tokensLight = reverseTokens(tokensDark);
 
-
-
-
 // mui theme settings
 export const themeSettings = (mode) => {
-
-
 
     return {
         direction: 'rtl',
@@ -123,6 +128,11 @@ export const themeSettings = (mode) => {
                         ...tokensDark.secondary,
                         main: tokensDark.secondary[500],
                     },
+                    tertiary: {
+                        ...tokensDark.tertiary,
+                        main: tokensDark.tertiary[500],
+                    },
+
                     neutral: {
                         ...tokensDark.grey,
                         main: tokensDark.grey[500],
@@ -151,6 +161,10 @@ export const themeSettings = (mode) => {
                         ...tokensLight.secondary,
                         main: tokensDark.secondary[700],
                         light: tokensDark.secondary[600],
+                    },
+                    tertiary: {
+                        ...tokensLight.tertiary,
+                        main: tokensDark.tertiary[500],
                     },
                     neutral: {
                         ...tokensLight.grey,
@@ -193,3 +207,33 @@ export const themeSettings = (mode) => {
 // secondary
 // grey    ==> not
 // neutral ==> reversed
+
+// # Main Colors
+// . -- texts
+// .      main
+// .      secondary
+// .      default ==> white - black
+// . -- wrapper       
+// .       1ry      
+// .       2nd      
+// .       body      
+// .       border       
+// .
+// .# Fonts
+//         main => Zain
+//         secondary => Zain
+//         default => madika - 29LTBukra
+// .# Typography
+    // Size - family - weight
+// .       h1,3,5 ==> main font
+// .       h2,4,6 ==> default font
+// .       subtitle1,2 || body1,2
+// .
+// .
+// .
+// .
+// .
+// .
+// .
+// .
+// .

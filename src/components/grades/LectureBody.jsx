@@ -64,7 +64,12 @@ function LectureBody({ lecture, lectureIndex, courseId }) {
                     <TabInfo count={formatDuration(lecture.video?.duration)} i={0} title={'وقت الفيديو'} />
                 }
                 <InfoText description={lecture.name} label={'الحصه'} />
-                <InfoText description={lecture.description} label={'الوصف'} />
+                <InfoText description={<span style={{
+                    whiteSpace: "pre-wrap",
+                    lineHeight: 1.8,
+                    overflowWrap: "break-word",
+                }}
+                >{lecture.description}</span>} label={'الوصف'} />
                 <Typography variant='body2'></Typography>
                 <Separator sx={{ maxWidth: '300px' }} />
             </FlexColumn>

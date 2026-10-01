@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+
+///All Works Well
+//if No setPaging => normal function with count limit page
+//if setPaging    => only controlled by loadNext, loadMore
 function usePaginate({ getData, params = {}, key, limit = 100, pollingInterval = 0, skip, pagingKey = 'count',
     setPaging = null, }) {
     //if SetPage ==> No limit or page default
@@ -8,7 +12,7 @@ function usePaginate({ getData, params = {}, key, limit = 100, pollingInterval =
     const [resetFlag, setResetFlag] = useState(false)
     const pollingRef = useRef(null)
     const modifiedPagingRef = useRef(null) // ← ref, not state
-
+    const [count, setCount] = useState(0)
 
     const pageRef = useRef(1)
 
@@ -35,6 +39,7 @@ function usePaginate({ getData, params = {}, key, limit = 100, pollingInterval =
         const items = !key ? newData.values : newData.values[key]
 
         setData(prev => append ? [...prev, ...items] : items)
+        setCount(count)
         if (setPaging) {
             setPaging(count)
         } else {
@@ -83,6 +88,7 @@ function usePaginate({ getData, params = {}, key, limit = 100, pollingInterval =
         fetchData(nextPage, true)
     }, [hasMore, fetchData, setPaging])
 
+
     const loadNext = useCallback((paging) => {
         if (setPaging) {
             fetchData(paging, false)
@@ -94,6 +100,15 @@ function usePaginate({ getData, params = {}, key, limit = 100, pollingInterval =
         fetchData(nextPage, false)
     }, [hasMore, fetchData, setPaging])
 
+    const loadPage = useCallback((newPage) => {
+        const page = Math.max(1, Number(newPage) || 1);
+
+        if (page === pageRef.current) return;
+
+        pageRef.current = page;
+        fetchData(page, false);
+    }, [fetchData]);
+
     const loadPrev = useCallback(() => {
         if (pageRef.current <= 1) return
         const prevPage = pageRef.current - 1
@@ -104,10 +119,10 @@ function usePaginate({ getData, params = {}, key, limit = 100, pollingInterval =
     const triggerReset = useCallback(() => setResetFlag(f => !f), [])
 
     return {
-        data,
+        data, page: pageRef.current, count, limit,
         hasMore,
         hasPrev,
-        loadMore,
+        loadMore, loadPage,
         loadPrev,
         loadNext,
         refetch,

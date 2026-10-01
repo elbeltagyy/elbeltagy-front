@@ -90,6 +90,9 @@ import BooksManage from "../pages/admin/BooksManage";
 import Application from "../pages/user/Application.jsx";
 import BooksPage from "../pages/user/BooksPage.jsx";
 import ApplicationManage from "../pages/admin/ApplicationManage.jsx";
+import CommunityPage from "../pages/user/CommunityPage.jsx";
+import CommunityAdminPage from "../pages/admin/CommunityAdminPage.jsx";
+import { FiUsers } from "react-icons/fi";
 
 const GetQuestionsPage = lazy(() => import("../pages/admin/GetQuestionsPage"))
 
@@ -135,7 +138,8 @@ export const sidebarLinks = [
         element: <GetUserAnswers />
     }, {
         name: "مجتمع الطلاب", icon: <TbWorldQuestion size="22px" />,
-        to: "/community5050", allowedTo: [user_roles.STUDENT, user_roles.ONLINE], isDisabled: true, info: { title: 'قريبا', i: 2 },
+        to: "/community", allowedTo: [user_roles.STUDENT, user_roles.ONLINE, user_roles.ADMIN, user_roles.SUBADMIN], isDisabled: false, info: { title: 'جديد', i: 1 },
+        element: <CommunityPage />,
     }, {
         name: "متجر الكتب", icon: <FaSchool size="22px" />, to: "/books", id: 'books_std',
         allowedTo: [user_roles.STUDENT, user_roles.ONLINE],
@@ -161,6 +165,9 @@ export const sidebarLinks = [
     }, {
         name: "البحث عن طالب", icon: <RiUserSettingsFill size="22px" />, to: "/management/users/view", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
         element: <FindUserPage />, id: 'findUser'
+    }, {
+        name: "منتدي الطلاب", icon: <TbWorldQuestion size="22px" />, to: "/management/community", allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN],
+        element: <CommunityAdminPage />, id: 'users', info: { title: 'جديد', i: 1 },
     }, {
         name: "اداراه الاستمارات", icon: <ManageHistory size="22px" />, to: "/management/application",
         allowedTo: [user_roles.ADMIN, user_roles.SUBADMIN], info: { title: "جديد", i: 1 },

@@ -14,12 +14,13 @@ import { red } from "@mui/material/colors"
 import BtnConfirm from "../ui/BtnConfirm"
 import Section from "../../style/mui/styled/Section"
 import ChangeLectureChapter from "../chapters/ChangeLectureChapter"
+import AdminLectureAssets from "./AdminLectureAssets"
 
 function AdminLectureBtns({ isNativeLecture, lecture, setLectures, isLoading, courseId, triggerDelete, chapters, changeLectureChapter, changeChapterStatus }) {
-
+    const isChild = !!lecture.parent
     return (
         <FlexRow gap={'12px'}>
-            {isNativeLecture && (
+            {(isNativeLecture && !isChild) && (
                 <BtnModal
                     component={<Section>
                         <ChangeLectureChapter chapters={chapters} lecture={lecture} changeLectureChapter={changeLectureChapter} status={changeChapterStatus} />
@@ -32,20 +33,27 @@ function AdminLectureBtns({ isNativeLecture, lecture, setLectures, isLoading, co
             {isNativeLecture && (
                 <BtnModal
                     component={<LectureUpdate lecture={lecture} setLectures={setLectures} />}
-                    btn={<FilledHoverBtn endIcon={<BiSolidShow />} disabled={isLoading}>
+                    btn={<FilledHoverBtn size="small" endIcon={<BiSolidShow />} disabled={isLoading}>
                         عرض التفاصيل
                     </FilledHoverBtn>} />
             )}
+            {(isNativeLecture && !isChild) && (
+                <BtnModal
+                    component={<AdminLectureAssets lecture={lecture} setLectures={setLectures} courseId={courseId} />}
+                    btn={<Button size="small" variant="outlined" endIcon={<BiSolidShow />} disabled={isLoading}>
+                        ملحقات المحاضره {lecture.children?.length}
+                    </Button>} />
+            )}
 
             {lecture.sectionType === sectionConstants.EXAM && (
-                <OutLinedHoverBtn
+                <OutLinedHoverBtn size="small"
                     colorm='orange'
                     component={Link} to={'/management/attempts?courseId=' + courseId + '&lectureId=' + lecture._id}
                     endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
             )}
 
             {lecture.sectionType === sectionConstants.VIDEO && (
-                <OutLinedHoverBtn
+                <OutLinedHoverBtn size="small"
                     colorm='orange'
                     component={Link} to={'/statistics/views?course=' + courseId + '&lecture=' + lecture._id} endIcon={<FcStatistics />}>{lang.STATISTICS}</OutLinedHoverBtn>
             )}

@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Typography } from "@mui/material"
+import { Avatar, Box, IconButton } from "@mui/material"
 import { lang } from "../../settings/constants/arlang"
 import Section from "../../style/mui/styled/Section"
 import { useLazyGetLecturesQuery, useUpdateLectureMutation } from "../../toolkit/apis/lecturesApi"
@@ -98,7 +98,7 @@ function LecturesPage() {
             sortable: false,
             filterable: false,
             renderCell: (params) => {
-                return <TabInfo count={(params.row.course.name)} i={0} />
+                return <TabInfo count={(params.row.course?.name)} i={0} />
             }
         }, {
             field: "grade",

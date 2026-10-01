@@ -1,7 +1,7 @@
 import { Avatar, Box, Divider, Typography } from '@mui/material'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 
-function TitleWithDividers({ title, desc = '', descVar = 'body1', color, variant = 'h5', avatar = '', icon, sx = {}, children }) {
+function TitleWithDividers({ title, desc = '', descVar = 'body1', color, variant = 'h4', avatar = '', icon, sx = {}, children }) {
     return ( // my: '16px',
         <Box sx={{ my: '16px', color: 'primary.main', ...sx }}>
             <Divider sx={{ border: '4px solid', borderColor: color || 'primary.main', borderRadius: '16px', opacity: '.7', width: '150px' }} />

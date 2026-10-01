@@ -10,9 +10,10 @@ import AdminLectureBtns from "./AdminLectureBtns"
 import AdminLectureDetails from "./AdminLectureDetails"
 import { memo } from "react"
 
-function AdminCardLectureRow({ lecture, i, setLectures, courseId, attributes, listeners, chapters, changeLectureChapter, changeChapterStatus }) {
+function AdminCardLectureRow({ lecture, i, setLectures,
+    courseId, attributes = {}, listeners = {}, chapters, changeLectureChapter, changeChapterStatus, allowEdit }) {
 
-    const isNativeLecture = (lecture?.course?._id === courseId || lecture?.course === courseId)
+    const isNativeLecture = allowEdit ? true : (lecture?.course?._id === courseId || lecture?.course === courseId)
 
     const [sendData, { isLoading }] = useUpdateLectureMutation()
     const [updateLecture] = usePostData(sendData)
@@ -20,7 +21,7 @@ function AdminCardLectureRow({ lecture, i, setLectures, courseId, attributes, li
     const changeStatus = async (object) => {
         const res = await updateLecture({ id: lecture._id, ...object }, true)
 
-        setLectures((pre) => {
+        if (setLectures) setLectures((pre) => {
 
             const modified = pre.map(storedLec => {
                 if (storedLec._id === res._id) {
@@ -45,7 +46,7 @@ function AdminCardLectureRow({ lecture, i, setLectures, courseId, attributes, li
 
     const triggerDelete = async () => {
         await deleteLecture({ id: lecture._id })
-        setLectures(prev => prev.filter(lect => lect._id !== lecture._id))
+        if (setLectures) setLectures(prev => prev.filter(lect => lect._id !== lecture._id))
     }
 
     if (!lecture) return <></>

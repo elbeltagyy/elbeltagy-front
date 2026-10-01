@@ -5,10 +5,19 @@
 }
 
 @font-face {
-  font-family: 'main';
+  font-family: 'main'; 
+  /* Graphic school font */
   src: url('/fonts/main-font.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+@font-face {
+  font-family: "Rubik";
+  src: url("/fonts/Rubik-VariableFont_wght.ttf") format("truetype-variations"),
+       url("/fonts/Rubik-VariableFont_wght.ttf") format("truetype");
+  font-weight: 300 900;   /* Rubik's actual variable range */
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {

@@ -1,7 +1,7 @@
 import { useGetGradesQuery } from "../toolkit/apis/gradesApi";
 
-const useGrades = () => {
-    const { data = [], ...status } = useGetGradesQuery();
+const useGrades = (filter = {}) => {
+    const { data = [], ...status } = useGetGradesQuery(filter);
 
     return {
         grades: data?.values?.grades || [],

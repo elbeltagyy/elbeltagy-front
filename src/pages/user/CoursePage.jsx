@@ -4,12 +4,10 @@ import { Alert, Box, Paper, useMediaQuery, } from '@mui/material'
 
 import HeaderContent from '../../components/ui/HeaderContent'
 import { ExamIcon, FilesIcon, VidsIcon2 } from '../../components/ui/svg/ContentSvgs'
-import TitleSection from '../../components/ui/TitleSection'
 import LectureUserCard from '../../components/content/LectureUserCard'
 import CourseSubscribeCard from '../../components/content/CourseSubscribeCard'
 
 import Section from '../../style/mui/styled/Section'
-import Grid from '../../style/vanilla/Grid'
 import Loader from '../../style/mui/loaders/Loader'
 import LoaderSkeleton from '../../style/mui/loaders/LoaderSkeleton'
 
@@ -23,6 +21,8 @@ import TitleWithDividers from '../../components/ui/TitleWithDividers'
 import AccordionStyled from '../../style/mui/styled/AccordionStyled'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
 import { OutLinedHoverBtn } from '../../style/buttonsStyles'
+import CommunityPage from './CommunityPage'
+import TabsAutoStyled from '../../style/mui/styled/TabsAutoStyled'
 
 function CoursePage() {
     const params = useParams() // {lectureId, courseId = index, gradeId}
@@ -104,8 +104,11 @@ function CoursePage() {
         </g>
     </svg>
 
-    const courseChapters = <Paper elevation={1} sx={{ width: '100%', p: '16px', mt: '16px', overflow: 'auto', maxHeight: '100vh', scrollbarGutter: 'stable' }}>
+    const courseChapters = <Paper variant='outlined' sx={{ width: '100%', p: '16px', mt: '16px', overflow: 'auto', maxHeight: '100vh', scrollbarGutter: 'stable' }}>
         <TitleWithDividers title={'محتوى الكورس'} />
+        {courseDetails?.chapters?.length === 0 && (
+            <Alert variant='filled' severity='warning'>المحاضرات هتنزل قريب, خليك متابعه</Alert>
+        )}
         {courseDetails?.chapters && courseDetails?.chapters.map(chapter => {
             const total = chapter.lectures?.length;
 
@@ -150,7 +153,9 @@ function CoursePage() {
                 isSiteLink={true}
             />
 
-            <HeaderContent title={courseDetails?.course?.name} body={<div dangerouslySetInnerHTML={{ __html: courseDetails?.course?.description }} />}
+            <HeaderContent
+                title={courseDetails?.course?.name}
+                body={<div dangerouslySetInnerHTML={{ __html: courseDetails?.course?.description }} />}
                 infos={[
                     {
                         caption: lang.LECTURES, desc: courseDetails?.counts?.videos, icon: <VidsIcon2 size='1.5rem' />, estimated: courseDetails?.counts?.estimatedVideos
@@ -161,16 +166,36 @@ function CoursePage() {
                     }
                 ]}
                 sideChildren={<FlexColumn>
-                    <Outlet context={[lectureIndexInCourse, setCurrentUserIndex, currentUserIndex, courseDetails.course._id]} />
-                    {(!isLargeScreen || !params.lectureId) && (
-                        courseChapters
-                    )}
+                    <TabsAutoStyled originalTabs={[{
+                        label: 'المحاضرات', component: <>
+                            <Outlet context={[lectureIndexInCourse, setCurrentUserIndex, currentUserIndex, courseDetails.course._id]} />
+                            {(!isLargeScreen || !params.lectureId) && (
+                                // Main + wrap
+                                courseChapters
+                            )}
+                        </>
+                    },
+                    {
+                        label: 'منتدي الطلاب', component: courseDetails.course?.isSubscribed ? <Box sx={{ mt: '16px', overflow: 'auto', maxHeight: '100vh', scrollbarGutter: 'stable' }}>
+                            <CommunityPage preCourse={courseDetails?.course?._id} forceMobile />  </Box> :
+                            <Alert severity='warning' variant='filled' sx={{ mt: '16px' }}>اشترك بالكورس لتتمكن من ارسال الاسئله و الاطلاع علي اسئله زملائك</Alert>
+                        , isActive: courseDetails?.course?.isCommunity
+                    }]} />
+
+
                 </FlexColumn>}
             >
                 {(courseDetails?.course) ?
                     <FlexColumn>
-                        <CourseSubscribeCard chapters={courseDetails?.chapters} course={courseDetails?.course} isSubscribed={courseDetails?.course?.isSubscribed} setCourseDetails={setCourseDetails} setCurrentUserIndex={setCurrentUserIndex} />
+                        <CourseSubscribeCard
+                            chapters={courseDetails?.chapters}
+                            course={courseDetails?.course}
+                            isSubscribed={courseDetails?.course?.isSubscribed}
+                            setCourseDetails={setCourseDetails}
+                            setCurrentUserIndex={setCurrentUserIndex}
+                        />
                         <FlexColumn width={'100%'} gap={'12px'}>
+                            {/* // this only works, when open Lecture */}
                             {isLargeScreen && params.lectureId && (
                                 courseChapters
                             )}
@@ -178,24 +203,6 @@ function CoursePage() {
                     </FlexColumn>
                     : <Loader />}
             </HeaderContent>
-
-            {/* Lecture Is Here */}
-            {/* <Outlet context={[getLectureCurrentIndex(), setCurrentIndex, currentIndex, courseDetails.course._id]} /> */}
-
-            {/* <TitleSection title={'محتوى الكورس'} /> */}
-
-            {/* <Box>
-                {courseDetails.lectures.length === 0 && status.isSuccess && (
-                    <Alert variant='filled' severity='warning'>المحاضرات هتنزل قريب , خليك متابع !</Alert>
-                )}
-                <Grid>
-                    {courseDetails.lectures.map((lecture, i) => {
-                        return <LectureUserCard
-                            key={i} lecture={lecture} currentIndex={currentIndex} lectureIndex={getLectureCurrentIndex()} i={i} isSubscribed={courseDetails?.course?.isSubscribed} />
-                    })}
-                </Grid>
-            </Box> */}
-
         </Section>
     )
 }

@@ -26,7 +26,8 @@ import { IoIosRadio } from 'react-icons/io'
 import PaymentMethods from '../payment/PaymentMethods'
 
 import VerifyCoupon from '../coupons/VerifyCoupon'
-import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { FlexBetween, FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
+import InfoText from '../ui/InfoText'
 
 function CourseSubscribeCard({ course, isSubscribed, setCourseDetails, setCurrentUserIndex, chapters }) {
 
@@ -71,22 +72,31 @@ function CourseSubscribeCard({ course, isSubscribed, setCourseDetails, setCurren
             }
         })
     }
+    const discount = course.preDiscount ? (((course.preDiscount - course.price) / course.preDiscount) * 100).toFixed(2) + "%" : null
 
     return (
-        <CardCourse img={course?.thumbnail?.url} title={course?.name} borderColor="transparent">
+        <CardCourse
+            img={course?.thumbnail?.url} title={course?.name} borderColor="transparent">
             {isSubscribed ? <TabInfo count={getFullDate(course?.subscribedAt)} i={1} title={'اشتركت فى'} /> :
                 (course?.isSalable ?? true) ?
                     <>
-                        {course.price === 0 && (
-                            <Chip label="كورس مجانى" size='small' variant="contained" sx={{ bgcolor: orange[800], color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
-                        )}
-                        <RowInfo title={'سعر الكورس'} desc={`${course.price} جنيها`} icon={<AiFillPoundCircle size={'1.25rem'} />} />
-                        {course.preDiscount > course.price && (
-                            <>
-                                <Separator sx={{ width: '100px', borderWidth: '2px', mr: 'auto' }} />
-                                <TabInfo title={lang.PRE_DISCOUNT} count={<>{course.preDiscount}  جنيه </>} icon={<AiFillPoundCircle size={'1.25rem'} />} i={0} sx={{ mr: 'auto' }} />
-                            </>
-                        )}
+                        <FlexBetween sx={{ width: '100%' }}>
+                            <FlexColumn gap={'6px'} sx={{ alignItems: 'flex-start' }}>
+                                <InfoText label={'سعر الكورس'} description={<Typography variant="h6" sx={{ fontWeight: 800 }}>{course.price} جنيه</Typography>} />
+                                {(course.preDiscount !== 0 && course.preDiscount > course.price) && (
+                                    <InfoText label={'بدلا من'} description={<Typography variant="subtitle1" sx={{ color: "error.dark", textDecoration: "line-through" }}>{course.preDiscount} جنيه</Typography>} />
+                                )}
+                            </FlexColumn>
+                            <FlexColumn gap={'6px'}  sx={{ alignItems: 'flex-start' }}>
+                                {discount && (
+                                    <TabInfo count={'خصم ' + discount} i={3} />
+                                )}
+                                {course.price === 0 && ( //course.price === 0
+                                    <Chip label="كورس مجانى !" size='small' variant="contained" sx={{ background: 'linear-gradient(to right,#f43f5e, #a855f7)', color: 'white' }} icon={<IoIosRadio size="1.3rem" color="#fff" />} />
+
+                                )}
+                            </FlexColumn>
+                        </FlexBetween>
 
                         <FilledHoverBtn sx={{ mt: '16px', width: '100%' }}
                             onClick={() => setOpen(true)} disabled={status.isLoading} > {status.isLoading ? <Loader color={'orange'} /> : "اشترك الان"} </FilledHoverBtn>

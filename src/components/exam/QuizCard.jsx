@@ -61,7 +61,6 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
             user: user._id,
             exam: exam._id,
             answers,
-            createdAt: new Date()
         }
         if (time && (exam.isTime ?? true)) {
             attempt.tokenTime = time // *_* modify it
@@ -90,7 +89,7 @@ export default function QuizCard({ exam, submit, isLoading, navigateToAnswers, e
             <Card sx={{ bgcolor: theme.palette.background.alt, width: "100%" }} >
 
                 <ShowQuestion
-                    activeAttemptId={activeAttemptId} setActiveAttemptId={setActiveAttemptId} examId={exam._id} tokenTime={time} course={exam.courseId}
+                    activeAttemptId={activeAttemptId} setActiveAttemptId={setActiveAttemptId} examId={exam._id} tokenTime={exam.isTime && time} course={exam.courseId}
                     index={currentQuestionIndex}
                     question={currentQ} isLoading={isLoading} setQuestions={setQuestions} method={method} editUser={editUser} />
 

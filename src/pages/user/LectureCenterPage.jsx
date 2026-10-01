@@ -9,6 +9,9 @@ import { FlexColumn } from '../../style/mui/styled/Flexbox';
 import { FilledHoverBtn } from '../../style/buttonsStyles';
 import useLazyGetData from '../../hooks/useLazyGetData';
 import { useEffect, useState } from 'react';
+import LectureAssets from '../../components/content/LectureAssets';
+import useCurrentAsset from '../../hooks/useCurrentLecture';
+import Grid from '../../style/vanilla/Grid';
 
 function LectureCenterPage() {
 
@@ -29,12 +32,18 @@ function LectureCenterPage() {
         }
     }, [lecture])
 
+    const currentLecture = useCurrentAsset(lecture)
+
     if (!lecture) return <LoaderSkeleton />
 
     return (
         <Section>
             <FlexColumn sx={{ backgroundColor: 'background.alt', p: '16px', gap: '12px' }}>
-                <LectureBody lecture={lecture} />
+                <Grid>
+                    <LectureBody lecture={currentLecture} />
+                    <LectureAssets lecture={lecture} currentLecture={currentLecture} />
+                </Grid>
+
                 <FilledHoverBtn onClick={() => navigate(-1)}>رجوع</FilledHoverBtn>
             </FlexColumn>
         </Section>

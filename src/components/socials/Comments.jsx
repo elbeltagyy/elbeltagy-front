@@ -54,7 +54,7 @@ function Comments({ post, page = { name: 'test' }, title = 'التعليقات:'
 
     const [sendDelete, statusDelete] = useDeleteCommentMutation()
     const [deleteComment] = usePostData(sendDelete, null, setReset)
-    console.log(paging)
+    // console.log(paging)
     return (
         <Section>
             {isLoading && <LoaderSkeleton />}

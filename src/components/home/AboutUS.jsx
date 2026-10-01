@@ -36,7 +36,7 @@ function AboutUS() {
 
                     <Typography variant='h6' component={'h5'} sx={{
                         color: '#16264c',
-                        fontFamily: 'Lemonada,sans-serif',
+                        // fontFamily: 'Lemonada,sans-serif',
                         zIndex: 1, position: 'absolute', top: '50%', transform: 'translateY(-50%)', fontSize: { xs: '.9rem', sm: '1.8rem' },//{ xs: '.9rem', sm: '1.5rem' }
                     }}>
                         شد حيلك يا بطل

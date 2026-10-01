@@ -28,7 +28,9 @@ function HeaderContent({ title, body, infos = [], img, sideImg, children, height
             }}>
                 <Box sx={{
                     position: 'absolute', top: '0', right: '0', width: '100%', height: '100%',
-                    background: `linear-gradient(to right,  ${theme.palette.primary.light}  , rgba(0,0 ,0,0) 10%)`, opacity: .9 //linear-gradient(to left, ${theme.palette.primary.light} 30%, ${theme.palette.primary.dark} 75%) `linear-gradient(45deg,transparent 42%,#9400ff 42%)`
+                    opacity: .9, //linear-gradient(to left, ${theme.palette.primary.light} 30%, ${theme.palette.primary.dark} 75%) `linear-gradient(45deg,transparent 42%,#9400ff 42%)`
+                    // background: `linear-gradient(to right,  ${theme.palette.primary.light}  , rgba(0,0 ,0,0) 10%)`,
+                    background: 'linear-gradient(135deg, #00a76f 0%, #5be49b 50%, #00a76f 100%)'
                 }} />
 
                 <FlexRow
@@ -41,19 +43,18 @@ function HeaderContent({ title, body, infos = [], img, sideImg, children, height
                 </FlexRow>
 
                 <FlexBetween>
-
                     <FlexColumn sx={{ zIndex: 1, p: '30px 15px', flex: 1, alignItems: 'flex-start' }}>
-                        <Typography variant='h5' sx={{
+                        <Typography variant='h4' sx={{
                             zIndex: 1, textShadow: theme.shadows[8], bgcolor: theme.palette.grey[0],
                             p: '12px 16px', color: 'primary.main',
-                            borderRadius: '50px', border: '3px solid', borderColor: theme.palette.primary.main, fontWeight: 700,
+                            borderRadius: '6px', border: '3px solid', borderColor: theme.palette.primary.main, fontWeight: 700,
                             textAlign: 'center'
                         }}>
                             {/* {sectionName && <span style={{ textDecoration: 'underline' }}>{sectionName}</span>} */}
                             {/* :   */}
                             {title}
                         </Typography>
-                        <Typography variant='body1' sx={{ color: '#fff', zIndex: 1, maxWidth: '800px', my: '16px' }}>
+                        <Typography variant='body1' sx={{ color: 'grey.0', zIndex: 1, maxWidth: '800px', my: '16px', textAlign: 'start' }}>
                             {body}
                         </Typography>
 
@@ -71,7 +72,7 @@ function HeaderContent({ title, body, infos = [], img, sideImg, children, height
 
             </Box>
 
-            <FlexRow sx={{ flexWrap: 'wrap', flexDirection: 'row-reverse', alignItems: 'flex-start', width: "100%" }}>
+            <FlexRow sx={{ flexWrap: { xs: 'wrap', md: 'nowrap' }, flexDirection: 'row-reverse', alignItems: 'flex-start', width: "100%" }}>
                 {(img || children) && (
                     <Box sx={{
                         zIndex: 5, position: 'relative',
@@ -108,7 +109,6 @@ function HeaderContent({ title, body, infos = [], img, sideImg, children, height
                 )}
 
             </FlexRow>
-
         </>
 
     )

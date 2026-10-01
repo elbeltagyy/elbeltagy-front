@@ -7,13 +7,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { ErrorBtn, FilledHoverBtn } from '../../buttonsStyles';
 import { lang } from '../../../settings/constants/arlang';
+import { Box, IconButton } from '@mui/material';
+import { CloseFullscreen, CloseOutlined } from '@mui/icons-material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
-export default function ModalStyled({ allowBackClose = false, open, setOpen, title, desc = 'بمجرد الموافقه لن يمكنك العوده !', children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false, component }) {
+export default function ModalStyled({ allowBackClose = false, screenType = 'sm',
+    open, setOpen, title, desc = 'بمجرد الموافقه لن يمكنك العوده !', children, action, agree, fullWidth = false, isKeepMounted = false, fullScreen = false, component }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -49,17 +52,37 @@ export default function ModalStyled({ allowBackClose = false, open, setOpen, tit
         <React.Fragment>
             <Dialog
                 open={open}
+                maxWidth={screenType}
                 TransitionComponent={Transition}
                 keepMounted={isKeepMounted}
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
                 fullScreen={fullScreen}
                 sx={{
+
                     '& .MuiPaper-root': {
-                        minWidth: '250px', border: '1px solid rgba(255 255 255, .1)', outline: '1px solid #fff', width: fullWidth ? '100%' : 'auto'
+                        minWidth: '250px', border: '1px solid rgba(255 255 255, .1)', outline: '1px solid #fff', width: fullWidth ? '100%' : 'auto',
+                        position: 'relative',
                     }
                 }}
             >
+                <IconButton
+                    onClick={handleClose}
+                    aria-label="Close dialog"
+                    sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        zIndex: 1,
+                        color: 'text.secondary',
+                        bgcolor: 'error.main',
+                        '&:hover': {
+                            bgcolor: 'error.dark',
+                        },
+                    }}
+                >
+                    <CloseOutlined />
+                </IconButton>
                 {children ? children : (<>
                     <DialogTitle>{title || lang.ARE_YOU_SURE}</DialogTitle>
                     <DialogContent>

@@ -53,11 +53,11 @@ function CardInfo({ icon, caption, desc, estimated, sx, nextComponent }) {
         >
             <FlexColumn m={'0 auto'}>
                 <Box>{icon}</Box>
-                <Typography fontSize={'.89rem'} variant='caption' noWrap>
+                <Typography fontSize={'.89rem'} variant='subtitle1' noWrap>
                     {caption}
                 </Typography>
 
-                <Typography variant='caption' component='div'>
+                <Typography variant='body2' component='div'>
                     {isNumeric ? (
                         phase === 'estimated' ? (
                             // Phase 1: count up from 0 to estimated

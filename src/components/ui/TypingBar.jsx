@@ -1,5 +1,5 @@
 import {
-    Box, Chip, IconButton, Stack, TextField
+    Box, IconButton, Stack, TextField
 } from "@mui/material";
 import {
     AttachFile as AttachFileIcon,
@@ -12,48 +12,56 @@ import {
 } from "@mui/icons-material";
 import { useCallback, useRef, useState } from "react";
 import Loader from "../../style/mui/loaders/Loader";
+import AttachmentPreview from "./TypingBarAttachmentPreview";
 
 // Isolated input so it never triggers parent re-render
-const MessageInput = ({ onSubmit, isLoading, resetAttachments, attachments }) => {
+const MessageInput = ({ onSubmit, isLoading, resetAttachments, attachments, hide = {}, activateSendBtn, placeholder }) => {
     const [text, setText] = useState("");
     const textRef = useRef("");
+    const cantSend =
+        !activateSendBtn &&
+        !text.trim() &&
+        attachments.length === 0;
 
     const handleChange = useCallback((e) => {
         textRef.current = e.target.value;
         setText(e.target.value);
     }, []);
 
+    //To use, u accept these params from onSubmit Fc
     const handleSubmit = useCallback(async () => {
-        if (!textRef.current.trim() && attachments.length === 0) return;
+        if (cantSend) return;
         await onSubmit({ text: textRef.current, attachments, attachment: attachments[0] });
         setText("");
         resetAttachments([])
         textRef.current = "";
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onSubmit, attachments]);
+    }, [onSubmit, attachments, cantSend]);
 
-    const handleKeyDown = useCallback((e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
-        }
-    }, [handleSubmit]);
+    // const handleKeyDown = useCallback((e) => {
+    //     if (e.key === "Enter" && !e.shiftKey) {
+    //         e.preventDefault();
+    //         handleSubmit();
+    //     }
+    // }, [handleSubmit]);
 
     return (
         <Stack direction="row" gap={1} alignItems="center" sx={{ flex: 1 }}>
-            <TextField
-                value={text}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                size="small"
-                fullWidth
-                placeholder="Aa"
-                multiline
-                maxRows={4}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 5 } }}
-            />
+            {!hide?.text && (
+                <TextField
+                    value={text}
+                    onChange={handleChange}
+                    // onKeyDown={handleKeyDown}
+                    size="small"
+                    fullWidth
+                    placeholder={placeholder}
+                    multiline
+                    maxRows={4}
+                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 5 }, minWidth: '150px' }}
+                />
+            )}
             <IconButton
-                disabled={isLoading || (!text.trim() && attachments.length === 0)}
+                disabled={isLoading || cantSend}
                 onClick={handleSubmit}
                 color="primary"
             >
@@ -63,38 +71,38 @@ const MessageInput = ({ onSubmit, isLoading, resetAttachments, attachments }) =>
     );
 };
 
-// Attachment preview strip
-const AttachmentPreview = ({ attachments, onRemove }) => {
-    if (!attachments.length) return null;
-    return (
-        <Box sx={{ px: 1.5, pt: 1, display: "flex", gap: 1, flexWrap: "wrap" }}>
-            {attachments.map((file, i) => {
-                const isImage = file.type.startsWith("image/");
-                const isAudio = file.type.startsWith("audio/");
-                const url = URL.createObjectURL(file);
-                return (
-                    <Box key={i} sx={{ position: "relative" }}>
-                        {isImage && (
-                            <Box component="img" src={url} sx={{ width: 60, height: 60, objectFit: "cover", borderRadius: 1 }} />
-                        )}
-                        {isAudio && (
-                            <Chip icon={<MicIcon />} label={file.name} size="small" />
-                        )}
-                        {!isImage && !isAudio && (
-                            <Chip label={file.name} size="small" />
-                        )}
-                        <IconButton size="small" onClick={() => onRemove(i)}
-                            sx={{ position: "absolute", top: -8, right: -8, bgcolor: "background.paper", p: 0.2 }}>
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    </Box>
-                );
-            })}
-        </Box>
-    );
-};
+// // Attachment preview strip
+// const AttachmentPreview = ({ attachments, onRemove }) => {
+//     if (!attachments.length) return null;
+//     return (
+//         <Box sx={{ px: 1.5, pt: 1, display: "flex", gap: 1, flexWrap: "wrap" }}>
+//             {attachments.map((file, i) => {
+//                 const isImage = file.type.startsWith("image/");
+//                 const isAudio = file.type.startsWith("audio/");
+//                 const url = URL.createObjectURL(file);
+//                 return (
+//                     <Box key={i} sx={{ position: "relative" }}>
+//                         {isImage && (
+//                             <Box component="img" src={url} sx={{ width: 60, height: 60, objectFit: "cover", borderRadius: 1 }} />
+//                         )}
+//                         {isAudio && (
+//                             <Chip icon={<MicIcon />} label={file.name} size="small" />
+//                         )}
+//                         {!isImage && !isAudio && (
+//                             <Chip label={file.name} size="small" />
+//                         )}
+//                         <IconButton size="small" onClick={() => onRemove(i)}
+//                             sx={{ position: "absolute", top: -8, right: -8, bgcolor: "background.paper", p: 0.2 }}>
+//                             <CloseIcon fontSize="inherit" />
+//                         </IconButton>
+//                     </Box>
+//                 );
+//             })}
+//         </Box>
+//     );
+// };
 
-function TypingBar({ status, handleSubmit, multipleAttachments = true }) {
+function TypingBar({ status = {}, handleSubmit, multipleAttachments = true, hide = {}, activateSendBtn, placeholder = 'Aa' }) {
     const imageInputRef = useRef(null);
     const fileInputRef = useRef(null);
 
@@ -148,20 +156,23 @@ function TypingBar({ status, handleSubmit, multipleAttachments = true }) {
             <AttachmentPreview attachments={attachments} onRemove={removeAttachment} />
             {/* Toolbar */}
             <Box sx={{ p: 1.5, borderTop: "1px solid #dddfe2" }}>
-                <Stack direction="row" gap={1} alignItems="center">
+                <Stack direction="row" gap={1} alignItems="center" sx={{ flexWrap: 'wrap' }}>
                     {/* Image picker */}
                     <input ref={imageInputRef} type="file" accept="image/*" multiple={multipleAttachments} hidden
                         onChange={e => handleFiles(e.target.files)} />
                     <IconButton disabled={disabled} size="small" color="primary" onClick={() => imageInputRef.current.click()}>
                         <ImageIcon />
                     </IconButton>
-
-                    {/* File picker */}
-                    <input ref={fileInputRef} type="file" multiple={multipleAttachments} hidden
-                        onChange={e => handleFiles(e.target.files)} />
-                    <IconButton disabled={disabled} size="small" color="primary" onClick={() => fileInputRef.current.click()}>
-                        <AttachFileIcon />
-                    </IconButton>
+                    {!(hide.file) && (
+                        <>
+                            {/* File picker */}
+                            < input ref={fileInputRef} type="file" multiple={multipleAttachments} hidden
+                                onChange={e => handleFiles(e.target.files)} />
+                            <IconButton disabled={disabled} size="small" color="primary" onClick={() => fileInputRef.current.click()}>
+                                <AttachFileIcon />
+                            </IconButton>
+                        </>
+                    )}
 
                     {/* Emoji placeholder */}
                     {/* <IconButton size="small" color="primary"><EmojiIcon /></IconButton> */}
@@ -173,7 +184,8 @@ function TypingBar({ status, handleSubmit, multipleAttachments = true }) {
                     </IconButton>
 
                     {/* Text input + send */}
-                    <MessageInput
+                    <MessageInput placeholder={placeholder}
+                        hide={hide} activateSendBtn={activateSendBtn}
                         onSubmit={handleSubmit}
                         isLoading={status.isLoading}
                         resetAttachments={resetAttachments}

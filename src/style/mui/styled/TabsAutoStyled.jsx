@@ -38,7 +38,7 @@ export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, styl
     }, [searchParams, searchVal, defaultVal]);
 
     const tabs = useMemo(() => {
-        return originalTabs.map((tab, i) => ({
+        return originalTabs.filter(tab => (tab.isActive ?? true)).map((tab, i) => ({
             ...tab,
             value: tab.value ?? i
         }));
@@ -49,6 +49,8 @@ export default function TabsAutoStyled({ originalTabs = [], defaultVal = 0, styl
         return tabs.some(tab => tab.value === value) ? value : tabs[0]?.value;
     }, [value, tabs]);
     const component = useMemo(() => tabs.find(t => t.value === value)?.component, [tabs, value])
+
+    if (!tabs?.length) return
 
     return (
         <FlexColumn sx={{ width: '100%', gab: '16px', ...style }}>

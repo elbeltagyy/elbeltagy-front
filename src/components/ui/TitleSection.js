@@ -19,13 +19,15 @@ function TitleSection({ title, icon }) {
                     }}>
                         {icon}
                     </span>
-                    <Typography variant='h4' component={'h2'} sx={{ textIndent: '10px', textShadow: '-9px 9px 0 hsla(0, 0%, 0%, 0.1)' }} >
+                    <Typography variant='h4'sx={{
+                        textIndent: '10px',textShadow: '-9px 9px 4px hsla(0, 0%, 0%, 0.1)',
+                    }} >
                         {title}
                     </Typography>
                 </FlexRow>
 
                 <Box sx={lineStyle("500px")}> </Box>
-                <Box sx={lineStyle("300px")}> </Box>
+                {/* <Box sx={lineStyle("300px")}> </Box> */}
             </Box>
         </Box>
     )

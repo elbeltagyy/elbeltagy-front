@@ -2,16 +2,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import AdminCardLectureRow from "./AdminCardLectureRow"
 import { CSS } from "@dnd-kit/utilities";
 
-function LectureDnd({ lecture, i, setLectures, courseId, chapters, changeLectureChapter, changeChapterStatus}) {
+function LectureDnd({ lecture, i, setLectures, courseId, chapters, changeLectureChapter, changeChapterStatus, allowEdit = false }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: lecture._id });
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition,width: '100%'
+        transition, width: '100%'
     };
 
     return (
         <div ref={setNodeRef} style={style} >
-            <AdminCardLectureRow
+            <AdminCardLectureRow allowEdit={allowEdit}
                 attributes={attributes} listeners={listeners}
                 lecture={lecture} i={i}
                 setLectures={setLectures}

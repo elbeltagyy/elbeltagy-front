@@ -51,8 +51,8 @@ function ExamForm({ lecture, status, onSubmit }) {
             label: '',
             value: lecture?.course,
             hidden: true,
-            validation: Yup.string()
-                .required(lang.REQUERIED),
+            // validation: Yup.string()
+            //     .required(lang.REQUERIED),
         }, {
             name: 'name',
             label: lang.LECTURE_NAME,

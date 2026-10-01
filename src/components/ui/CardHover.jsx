@@ -10,8 +10,8 @@ function CardHover({ img, title, desc, to, children, secure = false }) {
 
     return (
 
-        <Card sx={{
-            bgcolor: 'transparent', boxShadow: theme.shadows[8], maxWidth: '400px'
+        <Card elevation={4} sx={{
+            bgcolor: theme.palette.primary.main + 10, maxWidth: '400px'
         }}>
             <CardActionArea sx={{
                 p: '16px', bgcolor: 'none',
@@ -45,11 +45,11 @@ function CardHover({ img, title, desc, to, children, secure = false }) {
                     sx={{
                         position: 'relative',
                         zIndex: 8,
-                        borderRadius: '16px', bgcolor: 'none', minWidth: '250px', maxHeight: '250px'
+                        borderRadius: '16px', bgcolor: 'none', minWidth: '250px',
                     }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="div" fontWeight={'700'} >
+                    <Typography gutterBottom variant="h5" component="div" fontWeight={'500'} fontFamily={'main'} >
                         {title}
                     </Typography>
                     <Divider sx={{ borderColor: 'primary.main', borderWidth: '2px', my: '16px', borderRadius: '16px' }} />

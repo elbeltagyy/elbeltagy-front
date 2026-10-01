@@ -1,4 +1,4 @@
-import { alpha, AppBar, Avatar, Badge, Box, Button, IconButton, Toolbar, Tooltip, Typography, useTheme } from '@mui/material'
+import { alpha, AppBar, Badge, Box, Button, IconButton, Toolbar, Tooltip, Typography, useTheme } from '@mui/material'
 import { Link, } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -77,7 +77,7 @@ function Navbar({ setSidebar, isOpenedSidebar, isMobileScreen }) {
                                     borderColor: theme.palette.primary.main,
                                 }
                             }}>
-                                <Typography variant='subtitle2' color={'neutral.0'}>تسجيل</Typography>
+                                <Typography variant='subtitle1' color={'neutral.0'}>تسجيل</Typography>
                                 <Typography variant='subtitle1' ml={'5px'}>الدخول</Typography>
                             </Button>
 

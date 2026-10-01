@@ -9,25 +9,21 @@ import LoaderWithText from '../../style/mui/loaders/LoaderWithText'
 import { lang } from '../../settings/constants/arlang'
 import { StyledBtn } from '../../style/buttonsStyles'
 
-import AccordionStyled from '../../style/mui/styled/AccordionStyled'
 import BtnModal from '../ui/BtnModal'
 import CreateChapter from '../chapters/CreateChapter'
-import ChapterData from '../chapters/ChapterData'
-import UserAvatar from '../users/UserAvatar'
-import { Avatar, Box } from '@mui/material'
+
 import { useChangeChapterIndexMutation } from '../../toolkit/apis/chaptersApi'
 
 
 import { closestCorners, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable } from '@dnd-kit/sortable'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates} from '@dnd-kit/sortable'
 import usePostData from '../../hooks/usePostData'
 import ChapterDnD from '../chapters/ChapterDnD'
 import { FlexColumn } from '../../style/mui/styled/Flexbox'
+import { Box } from '@mui/material'
 
 function AdminLectures({ course, unit, grade, refetchLectures, setLecturesCount }) {
 
-  const [open, setOpen] = useState(false)
-  const [lectures, setLectures] = useState([])
   const [chapters, setChapters] = useState([])
 
   const [getData, status] = useLazyGetAllLecturesQuery()
@@ -36,12 +32,7 @@ function AdminLectures({ course, unit, grade, refetchLectures, setLecturesCount 
   useEffect(() => {
     const trigger = async () => {
       const res = await getLectures({ course }, false)
-      // setLectures(res.lectures) // Solitary lectures
       setChapters(res.lessons)
-      // console.log(res.lectures)
-      // if (setLecturesCount) {
-      //   setLecturesCount(res.lectures?.length || 'loading')
-      // }
     }
     trigger()
   }, [course, refetchLectures])
@@ -136,27 +127,6 @@ function AdminLectures({ course, unit, grade, refetchLectures, setLecturesCount 
         </SortableContext>
       </DndContext>
       {CreateChapterBtn}
-
-      {/* In columns System */}
-      {/* {status.isSuccess && lectures.length === 0 && (
-        <Alert variant="filled" severity="warning" sx={{ justifyContent: 'center', my: '16px' }}>
-          {lang.NO_LECTURES_IN_THIS_COURSE}
-        </Alert>
-      )} */}
-
-      {/* <Grid gap='10px'>
-        {lectures?.map((lecture, i) => {
-          return <AdminCardLecture key={i} i={i} courseId={course} lecture={lecture} setLectures={setLectures} />
-        })}
-      </Grid> */}
-      {/* 
-      <OutLinedHoverBtn disabled={!grade} sx={{ m: '16px auto', width: '100%' }} onClick={() => setOpen(true)} >{lang.ADD_LECTURE}</OutLinedHoverBtn>
-      <ModalStyled open={open} setOpen={setOpen} >
-        {(unit && grade && course) ?
-          <LectureCreate unit={unit} grade={grade} course={course} setLectures={setLectures} />
-          : <Alert severity='warning'>من فضلك اختر وحده !</Alert>
-        }
-      </ModalStyled> */}
     </div>
   )
 }

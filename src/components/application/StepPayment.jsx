@@ -39,7 +39,7 @@ function OrderSummary({ course, C }) {
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", pt: 2, borderTop: `1px solid ${C.line}` }}>
                     <Typography sx={{ fontSize: "0.85rem", color: C.muted }}>سعر الكورس الحالي</Typography>
-                    <Typography sx={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: "1.1rem", color: C.forge }}>
+                    <Typography sx={{ fontWeight: 700, fontSize: "1.1rem", color: C.forge }}>
                         ${course.price}
                     </Typography>
                 </Box>
@@ -67,7 +67,7 @@ function StepPayment({ course, C, setStep }) {
                         title={'شراء الكورس ' + course.name}
                         subTitle={'شراء الكورس ' + course.name}
                     />
-                    
+
                     {/* Handel response + Back Button */}
                     {paid && (<FlexColumn gap={'16px'}>
                         <Alert severity="success" variant="filled">تم ارسال الدفع, يمكنك متابعه الكورس من هنا </Alert>

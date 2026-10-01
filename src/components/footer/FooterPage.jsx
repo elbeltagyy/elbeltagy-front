@@ -20,7 +20,7 @@ function FooterPage() {
             <FlexColumn gap={'12px'}>
 
                 <Image img={'/assets/logo.webp'} maxWidth='160px' ratio={'auto'} />
-                <Typography variant='h5' sx={{ color: 'grey.0', fontFamily: '"Changa", sans-serif' }}>
+                <Typography variant='h5' sx={{ color: 'grey.0', fontFamily: 'main' }}>
                     {lang.LOGO}
                     {/* Menassty */}
                 </Typography>

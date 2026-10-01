@@ -59,8 +59,8 @@ function LoginPage() {
                         <TextBorderAround>
 
                             <ReactLoginIcon style={{ margin: '0 10px' }} size={'2rem'} />
-                            <span style={{ color: theme.palette.neutral[0] }}> {lang.LOGIN} </span>
-                            <span style={{ marginRight: '10px' }}> {lang.ENTRY}</span>
+                            <span style={{ color: theme.palette.neutral[0], fontFamily: 'second' }}> {lang.LOGIN} </span>
+                            <span style={{ marginRight: '10px', fontFamily: 'second' }}> {lang.ENTRY}</span>
                             <div style={{
                                 transform: 'rotate(180deg)'
                             }}>

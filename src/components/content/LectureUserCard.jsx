@@ -1,38 +1,34 @@
-import { alpha, Avatar, Box, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material'
-import { green, red } from '@mui/material/colors'
+import { alpha, Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography } from '@mui/material'
+import { red } from '@mui/material/colors'
 
 import TabInfo from '../ui/TabInfo'
-import { FilledHoverBtn, ScallyBtn } from '../../style/buttonsStyles'
 
-import { FaClock } from "react-icons/fa";
-import { MdDateRange } from 'react-icons/md'
-import { FaLock } from "react-icons/fa";
+import { FaClock, FaLock } from "react-icons/fa";
+import { MdArrowDownward, MdDateRange } from 'react-icons/md'
 import { IoMdDoneAll } from "react-icons/io";
 
-import { formatDuration, getDateWithTime, getFullDate } from '../../settings/constants/dateConstants'
-import { FlexBetween, FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
+import { formatDuration, getFullDate } from '../../settings/constants/dateConstants'
+import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
 
-import { Link, useNavigate } from 'react-router-dom'
 import SectionIcon from './SectionIcon'
-import { IoTimerSharp } from "react-icons/io5";
 import { useSelector } from 'react-redux';
-import ModalStyled from '../../style/mui/styled/ModalStyled';
+
 import { useState } from 'react';
-import PaymentMethods from '../payment/PaymentMethods';
+
 import statusConstants from '../../settings/constants/status';
 import InfoText from '../ui/InfoText';
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { AttemptsIcon } from '../ui/svg/ContentSvgs';
 import useGrades from '../../hooks/useGrades';
+import DataWith3Items from '../ui/DataWith3Items';
+import LectureUserCardBtn from './LectureUserCardBtn';
 
 
 function LectureUserCard({ lecture, isSubscribed, currentUserIndex, currentLectureIndex }) {
     const { grades } = useGrades()
 
-
-    const navigate = useNavigate()
     const user = useSelector(s => s.global.user)
-    const [open, setOpen] = useState(false)
+    const [openAssets, setOpenAssets] = useState(false)
 
     const [paidStatus, setIsPaid] = useState(lecture?.isPaid && statusConstants.PAID)
     const subscribe = (res) => {
@@ -42,24 +38,6 @@ function LectureUserCard({ lecture, isSubscribed, currentUserIndex, currentLectu
         if (res.invoice?.status === statusConstants.PENDING)
             setIsPaid(statusConstants.PENDING)
     }
-
-
-    const goLogin = () => {
-        if (!user) {
-            navigate("/login", { state: true })
-        } else {
-            navigate('/lectures/' + lecture._id)
-        }
-    }
-
-    const openModal = (e) => {
-        e.preventDefault()
-        setOpen(true)
-        if (user) {
-            navigate('/lectures/' + lecture._id)
-        }
-    }
-
     return (
         <Card sx={{
             display: 'flex', position: 'relative', bgcolor: 'background.alt', flexDirection: 'column', width: '100%', maxWidth: '550px'
@@ -99,6 +77,7 @@ function LectureUserCard({ lecture, isSubscribed, currentUserIndex, currentLectu
                     {lecture.video?.duration && (
                         <TabInfo count={formatDuration(lecture.video?.duration)} i={0} title={'الوقت'} icon={<FaClock size={'1.1rem'} />} />
                     )}
+
                     {lecture.exam && (
                         <>
                             <TabInfo count={lecture.exam?.time} i={0} title={'الوقت'} isBold={false} icon={<FaClock size={'1.1rem'} />} />
@@ -109,84 +88,42 @@ function LectureUserCard({ lecture, isSubscribed, currentUserIndex, currentLectu
                             )} */}
                         </>
                     )}
+                    {lecture.children?.length && (<>
+                        <Button size='small' onClick={() => setOpenAssets(!openAssets)} endIcon={<MdArrowDownward />}>عرض الملحقات</Button>
+                        <Collapse in={openAssets} sx={{ width: '100%' }}>
+                            <FlexRow sx={{ flexDirection: 'column', gap: '6px', width: '100%' }}>
+                                {lecture.children.map(asset => {
+                                    return <DataWith3Items
+                                        // action={<LectureAssetBtn notAppear={!isSubscribed} locked={lecture.locked} asset={asset} />}
+                                        key={asset._id} desc={asset.description} title={asset.name} icon={<SectionIcon lecture={asset} color='inherit' />} />
+
+                                })}
+                            </FlexRow>
+                        </Collapse>
+                    </>)}
                 </FlexRow>
 
             </CardContent>
 
             <CardActions disableSpacing>
-                <FilledHoverBtn sx={{ width: '100%', bgcolor: (lecture.index === currentUserIndex) ? 'orange' : 'primary.main' }}
-                    endIcon={<SectionIcon lecture={lecture} color='inherit' />}
-                    disabled={!isSubscribed || lecture?.isLocked || lecture.index === currentLectureIndex || false} onClick={() => {
-                        navigate("lectures/" + lecture._id)
-                    }}>
-                    {lecture.index === currentLectureIndex ? 'المحاضره قيد التشغيل' : lecture.index === currentUserIndex ? "المحاضره التاليه" : lecture.index < currentUserIndex ? 'تم الانتهاء' : "ابدا الان"}
-                </FilledHoverBtn>
+                <LectureUserCardBtn paidStatus={paidStatus}
+                    currentLectureIndex={currentLectureIndex} currentUserIndex={currentUserIndex}
+                    isSubscribed={isSubscribed} user={user} lecture={lecture} subscribe={subscribe}
+                />
             </CardActions>
-            {/* (!isSubscribed || lecture?.isLocked) */}
 
-            {(!isSubscribed || lecture?.locked) && (
+            {(isSubscribed && lecture?.locked) && ( //(!isSubscribed || lecture?.locked)
                 <Box sx={{ width: '100%', height: '100%', bgcolor: alpha('#000', .6), position: 'absolute', top: 0, }}>
                     <FlexColumn height={'100%'} gap={'10px'}>
-                        <Avatar sx={{ width: '4rem', height: '4rem', bgcolor: (lecture.isFree || lecture.isPaid) ? green[500] : red[500], color: 'grey.0' }}>
-                            {(lecture.isFree || lecture.isPaid) ? <IoTimerSharp size={'2rem'} /> : <FaLock size={'2rem'} />}
+                        <Avatar sx={{ width: '4rem', height: '4rem', bgcolor: red[500], color: 'grey.0' }}>
+                            <FaLock size={'2rem'} />
                         </Avatar>
-
-                        {/* when Locked And Free Lecture */}
                         <FlexColumn sx={{ color: 'grey.1000', bgcolor: 'grey.0', p: '8px 12px', borderRadius: '12px', minWidth: '150px' }}>
-                            {(lecture.isFree && !lecture.locked) ? (
-                                <>
-                                    <Typography variant='subtitl2'>
-                                        محاضره مجانيه
-                                    </Typography>
-                                    <ScallyBtn onClick={openModal} component={Link} to={user ? '/lectures/' + lecture._id : '/login'} sx={{ minWidth: '100px' }}>
-                                        فتح المحاضره
-                                    </ScallyBtn>
-                                </>
-                            ) : (paidStatus === statusConstants.PENDING) ?
-                                <Typography variant='subtitl1'>
-                                    تم ارسال طلب دفع
-                                </Typography> : (paidStatus === statusConstants.PAID) ? (
-                                    <>
-                                        <Typography variant='subtitle1'>
-                                            تم الدفع
-                                        </Typography>
-                                        <ScallyBtn component={Link} to={user ? '/lectures/' + lecture._id : '/login'} sx={{ minWidth: '100px' }}>
-                                            فتح المحاضره
-                                        </ScallyBtn>
-                                    </>
-                                ) : (lecture.price && (lecture.isSalable ?? false) && !isSubscribed) ? (
-                                    <>
-                                        <Typography variant='subtitle1'>
-                                            سعر المحاضره {lecture.price} جنيه
-                                        </Typography>
-                                        <ScallyBtn onClick={() => setOpen(true)} sx={{ minWidth: '100px' }}>
-                                            شراء المحاضره
-                                        </ScallyBtn>
-                                    </>
-                                ) : lecture.locked ? 'عليك اكمال المحاضرات السابقه' : 'اشترك الان'}
+                            <Typography variant='body2'>عليك اكمال المحاضرات السابقه</Typography>
                         </FlexColumn>
                     </FlexColumn>
                 </Box>
-            )
-            }
-
-            {!user ? (
-                <ModalStyled
-                    action={goLogin}
-                    open={open} setOpen={setOpen} title={'تسجيل الدخول اولا ؟'} desc={'الذهاب إلي صفحة تسجيل الدخول !'}
-                />
-            ) : (lecture.price && (lecture.isSalable ?? false) && !lecture.isPaid) ? (
-                <PaymentMethods
-                    title={'هل انت متاكد من شراء هذه المحاضره ؟'} subTitle={'الاشتراك فى المحاضره ' + lecture.name}
-                    handelResponse={subscribe}
-                    // coupon={course?.coupon} setCoupon={setCoupon}
-                    price={lecture.price}
-                    lecture={lecture?._id}
-                    invoiceNameId={'lecture'}
-                    open={open} setOpen={setOpen}
-                    note={'اذا تم شراء هذه المحاضره لن تكون قادرا على استرجاع المبلغ المدفوع حتى لو اشتركت بالكورس نفسه'}
-                />
-            ) : ''}
+            )}
         </Card >
     )
 }

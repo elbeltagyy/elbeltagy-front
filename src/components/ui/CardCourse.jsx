@@ -1,11 +1,9 @@
 import Typography from '@mui/material/Typography';
-import { Avatar, Box, Button, Chip, Divider, IconButton, ImageListItem, useTheme } from '@mui/material';
+import { Box, Divider, useTheme } from '@mui/material';
 
 
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox';
 import Image from './Image';
-
-
 
 
 export default function CardCourse({ img, title, children, borderColor }) {
@@ -14,29 +12,48 @@ export default function CardCourse({ img, title, children, borderColor }) {
   return (
     <Box
       sx={{
+        bgcolor: theme.palette.primary.light + 10,
         width: '100%',
         transition: '.3s all ease',
         '&:hover  img': {
           filter: 'saturate(140%) !important', transform: 'scale(1.1)'
 
         },
-        '&:hover > div:nth-of-type(2)': {
-          transform: 'scale(1.1)'
-        },
+        // '&:hover > div:nth-of-type(2)': {
+        //   transform: 'scale(1.1)'
+        // },
       }}
       display={'flex'} flexDirection={'column'}>
 
-      <Image img={img} saturate={true} sx={{minHeight: '100px'}} />
+      <Box sx={{ position: "relative", width: "100%", aspectRatio: "16 / 9" }}>
+        <Box sx={{ overflow: 'hidden' }}>
+          <Box
+            component="img"
+            src={img}
+            alt={title}
+            loading="lazy"
+            // onError={(e) => {
+            //   e.currentTarget.src = placeholderImage(a.light, a.dark, imgW, imgH);
+            // }}
+            sx={{
+              width: "100%", height: "100%", transition: '.3s',
+              objectFit: "cover", objectPosition: "center", display: "block", maxHeight: '500px'
+            }}
+          />
+        </Box>
+      </Box>
 
       <Box sx={{
         transition: '.3s all ease',
-        m: '8px auto', padding: '22px', width: '80%', flex: '1', mt: '-60px', position: 'relative', zIndex: '3',
-        bgcolor: 'background.alt', color: 'neutral.0',
-        boxShadow: theme.shadows[8], borderRadius: " 8px", display: 'flex', flexDirection: 'column', border: '4px solid ', borderColor: borderColor || 'orange'
+        flex: '1', position: 'relative', zIndex: '3',
+        color: 'neutral.0',
+        // boxShadow: theme.shadows[2],
+        borderRadius: " 0 0 8px 8px", p: '22px',
+        display: 'flex', flexDirection: 'column', border: '4px solid ', borderColor: borderColor || 'orange'
       }}>
 
         <FlexRow justifyContent={'center'} sx={{ flexWrap: 'nowrap' }}>
-          <Typography variant='h6' component={'h6'} textAlign={'center'} mr={'5px'}>
+          <Typography variant='h5' component={'h6'} textAlign={'center'} >
             <span>{title} </span>
           </Typography>
         </FlexRow>

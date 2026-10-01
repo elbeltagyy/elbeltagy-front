@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import MakeForm from '../../tools/makeform/MakeForm'
 import { useUpdateCourseMutation } from '../../toolkit/apis/coursesApi'
 import usePostData from '../../hooks/usePostData'
@@ -75,6 +75,15 @@ function CourseUpdate({ course, setCourse, setCourses }) {
             icon: <VscSymbolBoolean />,
             width: "100%",
             column: 1, row: 4,
+
+        }, {
+            name: 'isCommunity',
+            label: 'تفعيل المنتدي',
+            type: 'switch',
+            value: course.isCommunity ?? false,
+            icon: <VscSymbolBoolean />,
+            width: "100%",
+            column: 1, row: 5,
 
         }, {
             name: 'isFixed',

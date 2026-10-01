@@ -9,7 +9,8 @@ import useGrades from '../../hooks/useGrades';
 
 function Grades() {
     const theme = useTheme()
-    const { grades } = useGrades()
+    const { grades } = useGrades({ sortkey: 'order', sortValue: 1 })
+
 
     return (
         <Section>
@@ -20,7 +21,7 @@ function Grades() {
                 endIcon={<FaSchool size={'1.5rem'} />}
             />
             <Box>
-                <Grid>
+                <Grid sx={{ justifyItems: 'flex-start' }} >
                     {grades?.map((grade, i) => (
                         <CardHover key={i} img={grade.image?.url} title={grade.name} desc={grade.description} to={'/grades/' + grade.index} />
                     ))}
