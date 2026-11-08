@@ -4,7 +4,7 @@ import Section from '../../style/mui/styled/Section'
 import Image from '../ui/Image'
 import Separator from '../ui/Separator'
 import { FlexColumn, FlexRow } from '../../style/mui/styled/Flexbox'
-import { lang } from '../../settings/constants/arlang'
+import { lang, PHONE } from '../../settings/constants/arlang'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -35,7 +35,7 @@ function FooterPage() {
                         {/*  */}
                         <Image img={'/assets/youtube.png'} maxWidth='50px' ratio={'auto'} />
                     </IconButton>
-                    <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=2001127078234&text=" + whatsText}>
+                    <IconButton component={Link} to={"https://api.whatsapp.com/send?phone=20" + PHONE + "&text=" + whatsText}>
                         {/*   */}
                         <Image img={'/assets/whatsapp.png'} maxWidth='50px' ratio={'auto'} />
                     </IconButton>
