@@ -8,6 +8,7 @@ import GlobalMsg from '../components/ui/GlobalMsg'
 
 import LoaderSkeleton from "../style/mui/loaders/LoaderSkeleton"
 import FooterPage from '../components/footer/FooterPage'
+import { PHONE } from '../settings/constants/arlang'
 
 
 function Layout() {
@@ -43,7 +44,7 @@ function Layout() {
             </Suspense>
             <FooterPage />
             <GlobalMsg />
-            <IconButton onClick={()=> window.location.href = "https://api.whatsapp.com/send?phone=2001127078234&text=from mrelbeltagy"} sx={{ position: 'fixed', bottom: '5%', right: '16px', zIndex: 10 }}>
+            <IconButton onClick={()=> window.location.href = "https://api.whatsapp.com/send?phone=20" + PHONE + "&text=from"} sx={{ position: 'fixed', bottom: '5%', right: '16px', zIndex: 10 }}>
                 <img src='/assets/whatsapp.png' style={{ width: '50px', height: '50px' }} />
             </IconButton>
         </Box >
