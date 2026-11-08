@@ -25,7 +25,7 @@ export default defineConfig(({ mode, command }) => {
       },
     }, // pre
     react(),
-    (mode === 'production' && command === 'build' && false) &&
+    (mode === 'production' && command === 'build') &&
     sentryVitePlugin({
       org: 'elawadii',
       project: 'elbeltagy',
@@ -91,7 +91,7 @@ export default defineConfig(({ mode, command }) => {
     },
 
     build: {
-      sourcemap: false, //mode === 'development'
+      sourcemap: true, //mode === 'development'
     },
     assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.webp'],
   }
